@@ -1,9 +1,7 @@
 #include "FantasyCIV.hpp"
 #include <QStatusBar>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QPushButton>
-#include <QApplication>
+#include "MenuController.hpp"
 
 FantasyCIV::FantasyCIV(QWidget *parent) : QMainWindow(parent), buildVersion_(1)
 {
@@ -17,80 +15,18 @@ FantasyCIV::~FantasyCIV()
 
 void FantasyCIV::createMenus()
 {
-	menus_ = new QStackedWidget(this);
+	widgets_ = new QStackedWidget(this);
 	QWidget *placeholder = new QWidget(this);
 	
 	QHBoxLayout *layout = new QHBoxLayout();
 	
-	MainMenu *mainMenu = new MainMenu(this);
+	MenuController *menuController = new MenuController(this);
+	//MainMenu *mainMenu = new MainMenu(this);
 	layout->addStretch(); //REMOVELATER
-	layout->addWidget(mainMenu);
+	layout->addWidget(menuController);
 	layout->addStretch(); //REMOVELATER
 	placeholder->setLayout(layout);
-	menus_->addWidget(placeholder);
-	menus_->setCurrentWidget(placeholder);
-	setCentralWidget(menus_);
+	widgets_->addWidget(placeholder);
+	widgets_->setCurrentWidget(placeholder);
+	setCentralWidget(widgets_);
 }
-
-//--------------------- MainMenu --------------------------//
-
-
-MainMenu::MainMenu(QWidget* parent): QWidget(parent)
-{
-	createLayout();
-}
-
-MainMenu::~MainMenu()
-{}
-
-void MainMenu::createLayout()
-{
-	QVBoxLayout *layout = new QVBoxLayout();
-	
-	QPushButton *newGameButton = new QPushButton("New Game");
-	connect(newGameButton, &QPushButton::clicked, this, &MainMenu::newGame);
-	layout->addWidget(newGameButton);
-	
-	QPushButton *loadGameButton = new QPushButton("Load Game");
-	connect(loadGameButton, &QPushButton::clicked, this, &MainMenu::loadGame);
-	layout->addWidget(loadGameButton);
-	
-	QPushButton *optionsButton = new  QPushButton("Options");
-	connect(optionsButton, &QPushButton::clicked, this, &MainMenu::options);
-	layout->addWidget(optionsButton);
-	
-	QPushButton *exitButton = new QPushButton("Exit");
-	connect(exitButton, &QPushButton::clicked, qApp, &QApplication::exit);
-	layout->addWidget(exitButton);
-	
-	setLayout(layout);
-}
-
-
-//--------------------- PlayMenu --------------------------//
-
-
-PlayMenu::PlayMenu(QWidget* parent): QWidget(parent)
-{
-
-}
-
-PlayMenu::~PlayMenu()
-{
-
-}
-
-
-//--------------------- OptionsMenu ------------------------//
-
-
-OptionsMenu::OptionsMenu(QWidget* parent): QWidget(parent)
-{
-
-}
-
-OptionsMenu::~OptionsMenu()
-{
-
-}
-

@@ -11,51 +11,9 @@ public:
 	virtual ~FantasyCIV();
 private:
 	int buildVersion_;
-	QStackedWidget *menus_;
+	QStackedWidget *widgets_;
 	
 	
 	void createMenus();
 };
-
-
-/*
- * MainMenu
- */
-
-class MainMenu : public QWidget {
-Q_OBJECT
-public:
-	MainMenu(QWidget *parent = nullptr);
-	virtual ~MainMenu();
-private:
-	void createLayout();
-signals:
-	void newGame();
-	void loadGame();
-	void options();
-};
-
-
-/*
- * PlayMenu
- */
-
-class PlayMenu : public QWidget {
-Q_OBJECT
-public :
-	PlayMenu(QWidget *parent = nullptr);
-	virtual ~PlayMenu();
-};
-
-/*
- * OptionsMenu
- */
-
-class OptionsMenu : public QWidget {
-Q_OBJECT
-public :
-	OptionsMenu(QWidget *parent = nullptr);
-	virtual ~OptionsMenu();
-};
-
 #endif
