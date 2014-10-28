@@ -27,19 +27,12 @@ MainMenu::~MainMenu()
 
 void MainMenu::createLayout()
 {
-	QVBoxLayout *layout = new QVBoxLayout();
 	QList<QPair<QString, void (MainMenu::*)()>> list({ qMakePair(QString("New Game"), &MainMenu::newGame),
 																		qMakePair(QString("Load Game"), &MainMenu::loadGame),
 																		qMakePair(QString("Options"), &MainMenu::options),
 																		qMakePair(QString("Exit"), &MainMenu::exit)});
 	
-	for (QPair<QString, void (MainMenu::*)()> p: list) {
-		QPushButton *b = new QPushButton(p.first);
-		connect(b, &QPushButton::clicked, this, p.second);
-		layout->addWidget(b);
-	}
-	
-	setLayout(layout);
+	setButtons<MainMenu>(list, this);
 }
 
 
@@ -58,16 +51,8 @@ PlayMenu::~PlayMenu()
 
 void PlayMenu::createLayout()
 {
-	QVBoxLayout *layout = new QVBoxLayout();
 	QList<QPair<QString, void (PlayMenu::*)()>> list({ qMakePair(QString("Back"), &PlayMenu::back)});
-	
-	for (QPair<QString, void (PlayMenu::*)()> p: list) {
-		QPushButton *b = new QPushButton(p.first);
-		connect(b, &QPushButton::clicked, this, p.second);
-		layout->addWidget(b);
-	}
-	
-	setLayout(layout);
+	setButtons<PlayMenu>(list, this);
 }
 
 
@@ -86,15 +71,7 @@ OptionsMenu::~OptionsMenu()
 
 void OptionsMenu::createLayout()
 {
-	QVBoxLayout *layout = new QVBoxLayout();
 	QList<QPair<QString, void (OptionsMenu::*)()>> list({ qMakePair(QString("Back"), &OptionsMenu::back)});
-	
-	for (QPair<QString, void (OptionsMenu::*)()> p: list) {
-		QPushButton *b = new QPushButton(p.first);
-		connect(b, &QPushButton::clicked, this, p.second);
-		layout->addWidget(b);
-	}
-	
-	setLayout(layout);
+	setButtons<OptionsMenu>(list, this);
 }
 

@@ -15,6 +15,17 @@ public:
 	virtual ~Menu();
 protected:
 	virtual void createLayout() = 0;
+	template <class T>
+	void setButtons(QList<QPair<QString, void (T::*)()>> &list, T *object)
+	{
+		QVBoxLayout *layout = new QVBoxLayout();
+		for (QPair<QString, void (T::*)()> p: list) {
+			QPushButton *b = new QPushButton(p.first);
+			connect(b, &QPushButton::clicked, object, p.second);
+			layout->addWidget(b);
+		}
+		setLayout(layout);
+	}
 };
 
 
