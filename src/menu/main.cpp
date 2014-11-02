@@ -1,12 +1,12 @@
 #include <QApplication>
-#include "FantasyCIV.hpp"
+#include "SteamNations.hpp"
 
 
 int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
-	FantasyCIV *fantasyciv = new FantasyCIV();
-	fantasyciv->showFullScreen();
+	SteamNations *steamNations = new SteamNations();
+	steamNations->showFullScreen();
 	return app.exec();
 }
 

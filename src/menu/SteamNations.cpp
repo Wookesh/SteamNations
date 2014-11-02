@@ -1,19 +1,18 @@
-#include "FantasyCIV.hpp"
-#include <QStatusBar>
+#include "SteamNations.hpp"
 #include <QHBoxLayout>
 #include "MenuController.hpp"
+#include "../GameGraphics/GraphicInterface.h"
 
-FantasyCIV::FantasyCIV(QWidget *parent) : QMainWindow(parent), buildVersion_(1)
+SteamNations::SteamNations(QWidget *parent) : QMainWindow(parent)
 {
-	statusBar()->showMessage("Build v" + QString::number(buildVersion_));
 	createMenus();
 }
 
-FantasyCIV::~FantasyCIV()
+SteamNations::~SteamNations()
 {}
 
 
-void FantasyCIV::createMenus()
+void SteamNations::createMenus()
 {
 	widgets_ = new QStackedWidget(this);
 	QWidget *placeholder = new QWidget(this);
@@ -21,7 +20,10 @@ void FantasyCIV::createMenus()
 	QHBoxLayout *layout = new QHBoxLayout();
 	
 	MenuController *menuController = new MenuController(this);
-	//MainMenu *mainMenu = new MainMenu(this);
+	
+	GraphicInterface *gi = new GraphicInterface(this);
+	widgets_->addWidget(gi);
+	connect(menuController, &MenuController::setView, [this, gi](){widgets_->setCurrentWidget(gi);});
 	layout->addStretch(); //REMOVELATER
 	layout->addWidget(menuController);
 	layout->addStretch(); //REMOVELATER

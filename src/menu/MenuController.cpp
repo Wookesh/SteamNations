@@ -10,6 +10,7 @@ MenuController::MenuController(QWidget *parent): QStackedWidget(parent)
 	
 	playMenu_ = new PlayMenu(this);
 	connect(playMenu_, &PlayMenu::back, [this](){setCurrentWidget(mainMenu_);});
+	connect(playMenu_, &PlayMenu::startGame, this, &MenuController::setView);
 	
 	optionsMenu_ = new OptionsMenu(this);
 	connect(optionsMenu_, &OptionsMenu::back, [this](){setCurrentWidget(mainMenu_);});

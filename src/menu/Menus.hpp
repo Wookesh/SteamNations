@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QString>
 
 /*
  * Menu (abstract)
@@ -55,12 +56,13 @@ signals:
 
 class PlayMenu : public Menu {
 Q_OBJECT
-public :
+public:
 	PlayMenu(QWidget *parent = nullptr);
 	virtual ~PlayMenu();
 protected:
 	virtual void createLayout() override;
 signals:
+	void startGame();
 	void back();
 };
 
@@ -70,7 +72,7 @@ signals:
 
 class OptionsMenu : public Menu {
 Q_OBJECT
-public :
+public:
 	OptionsMenu(QWidget *parent = nullptr);
 	virtual ~OptionsMenu();
 protected:

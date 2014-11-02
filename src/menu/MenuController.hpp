@@ -4,15 +4,17 @@
 #include <QStackedWidget>
 #include "Menus.hpp"
 
-
 class MenuController : public QStackedWidget {
-public :
+Q_OBJECT
+public:
 	MenuController(QWidget *parent = nullptr);
 	~MenuController();
-private :
+private:
 	MainMenu *mainMenu_;
 	PlayMenu *playMenu_;
 	OptionsMenu *optionsMenu_;
+signals:
+	void setView();
 };
 
 #endif
