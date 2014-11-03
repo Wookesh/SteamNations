@@ -1,1 +1,2 @@
-add_subdirectory(menu)
+add_subdirectory(SNCore)
+add_subdirectory(SNGame)

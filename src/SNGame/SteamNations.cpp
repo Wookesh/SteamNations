@@ -1,7 +1,7 @@
 #include "SteamNations.hpp"
 #include <QHBoxLayout>
 #include "MenuController.hpp"
-#include "../GameGraphics/GraphicInterface.h"
+#include "GraphicInterface.h"
 
 SteamNations::SteamNations(QWidget *parent) : QMainWindow(parent)
 {
