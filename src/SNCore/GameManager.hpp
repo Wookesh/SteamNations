@@ -27,7 +27,7 @@ private:
 	Player *currentPlayer_;
 	Board *board_;
 	int currentTurn_;
-	
+	Object *selectedObject;
 	void setNextPlayer();
 	void setWinConditions();
 public slots:

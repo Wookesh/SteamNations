@@ -3,6 +3,9 @@ add_executable(SteamNations
 	Menus.cpp
 	MenuController.cpp
 	SteamNations.cpp
+	TileGraphics.cpp
+	UnitGraphics.cpp
+	TownGraphics.cpp
 	GameView.cpp
 	GraphicInterface.cpp
 	)

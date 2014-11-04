@@ -5,6 +5,7 @@
 #include "GameView.hpp"
 #include <QResizeEvent>
 #include <QPushButton>
+#include "../SNCore/GameManager.hpp"
 
 class GraphicInterface : public QWidget {
 Q_OBJECT
@@ -16,6 +17,7 @@ protected:
 private:
 	QPushButton *testButton_;
 	GameView *gameView_;
+	GameManager *gameManager_;
 };
 
 #endif

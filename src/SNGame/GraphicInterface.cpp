@@ -4,6 +4,7 @@
 
 GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
+	gameManager_ = new GameManager();
 	gameView_ = new GameView(this);
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->addWidget(gameView_);

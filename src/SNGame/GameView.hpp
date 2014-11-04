@@ -10,6 +10,8 @@ public:
 	GameView(QWidget *parent = nullptr);
 protected:
 	bool event(QEvent *e);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void wheelEvent(QWheelEvent *event);
 };
 
 #endif

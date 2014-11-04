@@ -18,3 +18,13 @@ bool GameView::event(QEvent *e)
 {
 	return QGraphicsView::event(e);
 }
+
+void GameView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+
+}
+
+void GameView::wheelEvent(QWheelEvent* event)
+{
+    QGraphicsView::wheelEvent(event);
+}
