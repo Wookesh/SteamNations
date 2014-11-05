@@ -19,9 +19,9 @@ protected:
 private:
 	Tile *tile_;
 	static const int RADIUS = 80;
+	bool pressed_;
 	
 	void highlight(SN::Action action);
-	
 };
 
 #endif // TILEGRAPHICS _H

@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 #include <QPoint>
+#include <QList>
 
 class Object;
 class Town;
@@ -12,13 +13,13 @@ public:
 	Tile();
 	~Tile();
 	
-	void reactWith(Object *object);
-	
-	Town *town() const;
+	Town *town();
 	void setTown(Town *town);
 	
-	Unit *unit() const;
+	Unit *unit();
 	void setUnit(Unit *unit);
+	
+	QList<const Object *> getObjects() const;
 private:
 	Town *town_;
 	Unit *unit_;

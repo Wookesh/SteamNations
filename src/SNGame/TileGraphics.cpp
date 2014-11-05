@@ -1,4 +1,7 @@
 #include "TileGraphics.hpp"
+#include "SNScene.hpp"
+
+#include <QGraphicsSceneMouseEvent>
 
 TileGraphics::TileGraphics(Tile *tile): QGraphicsPolygonItem() , tile_(tile)
 {
@@ -12,12 +15,19 @@ TileGraphics::~TileGraphics()
 
 void TileGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsItem::mousePressEvent(event);
+	if (event->button() == Qt::LeftButton)
+		pressed_ = true;
+	QGraphicsItem::mousePressEvent(event);
 }
 
 void TileGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsItem::mouseReleaseEvent(event);
+	if (event->button() == Qt::LeftButton) {
+		if (pressed_)
+				dynamic_cast<SNScene *>(scene())->select(tile_);
+		pressed_ = false;
+	}
+	QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -27,6 +37,5 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 void TileGraphics::highlight(SN::Action action)
 {
-
 }
 
