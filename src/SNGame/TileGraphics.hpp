@@ -8,7 +8,7 @@
 class TileGraphics : public QGraphicsPolygonItem {
 
 public:
-	TileGraphics(Tile *tile);
+	TileGraphics(Tile *tile, QGraphicsItem *parent = nullptr);
 	~TileGraphics();
 	
 protected:
@@ -22,6 +22,8 @@ private:
 	bool pressed_;
 	
 	void highlight(SN::Action action);
+	
+	static QPolygonF &hexagon();
 };
 
 #endif // TILEGRAPHICS _H

@@ -10,8 +10,11 @@ public:
 	GameView(QWidget *parent = nullptr);
 protected:
 	bool event(QEvent *e);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
+private:
+	bool pressed_;
+	QPoint startingPos_;
+	QPointF startingPosScene_;
 };
 
 #endif

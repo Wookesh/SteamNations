@@ -1,9 +1,24 @@
 #include "TileGraphics.hpp"
-#include "SNScene.hpp"
 
 #include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QDebug>
+#include "SNScene.hpp"
 
-TileGraphics::TileGraphics(Tile *tile): QGraphicsPolygonItem() , tile_(tile)
+
+QPolygonF &TileGraphics::hexagon()
+{
+	static QPolygonF hexagon_;
+	if (hexagon_.size() == 0)
+		for (int i = 0; i < 6; ++i)
+			hexagon_ << QPointF(RADIUS * cos(2 * 3.14 / 6 * i), RADIUS * sin(2 * 3.14 / 6 * i));
+	return hexagon_;
+}
+
+
+
+TileGraphics::TileGraphics(Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
+tile_(tile)
 {
 	
 }
@@ -15,24 +30,25 @@ TileGraphics::~TileGraphics()
 
 void TileGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton)
-		pressed_ = true;
+ 	qDebug() << "mousePressEvent";
+// 	if (event->button() == Qt::LeftButton)
+// 		dynamic_cast<SNScene *>(scene())->select(tile_);
 	QGraphicsItem::mousePressEvent(event);
 }
 
 void TileGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
-		if (pressed_)
-				dynamic_cast<SNScene *>(scene())->select(tile_);
-		pressed_ = false;
-	}
 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QGraphicsPolygonItem::paint(painter, option, widget);
+	QPen pen = painter->pen();
+	pen.setWidth(5);
+	pen.setColor(Qt::green);
+	painter->setPen(pen);
+	painter->drawPolygon(polygon(), Qt::OddEvenFill);
+	//QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
 void TileGraphics::highlight(SN::Action action)
