@@ -10,14 +10,17 @@ class Unit;
 
 class Tile {
 public:
-	Tile();
+	Tile(unsigned int x, unsigned int y);
 	~Tile();
 	
-	Town *town();
+	Town *town() const;
 	void setTown(Town *town);
 	
-	Unit *unit();
+	Unit *unit() const;
 	void setUnit(Unit *unit);
+	
+	QPoint position() const;
+	QPoint axial() const;
 	
 	QList<const Object *> getObjects() const;
 private:

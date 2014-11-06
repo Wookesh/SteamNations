@@ -17,7 +17,7 @@ public:
 protected:
 	const Prototype *prototype_;
 signals:
-	void unitDesrtoyed();
+	void unitDestroyed();
 };
 
 #endif
