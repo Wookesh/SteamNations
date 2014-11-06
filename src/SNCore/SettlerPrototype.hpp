@@ -7,6 +7,8 @@ class SettlerPrototype : public Prototype {
 public:
 	SettlerPrototype(const QString &name, int moveRange, int cost);
 	~SettlerPrototype();
+	
+	virtual Unit *createUnit() override;
 private:
 };
 

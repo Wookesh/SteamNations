@@ -15,6 +15,10 @@ QString Player::name() const
 	return name_;
 }
 
+void Player::updateBefore() {
+
+}
+
 void Player::updateAfter()
 {
 
@@ -22,5 +26,6 @@ void Player::updateAfter()
 
 Prototype *Player::prototype(Prototype::Type type)
 {
-
+	// Placeholder
+	return nullptr;
 }

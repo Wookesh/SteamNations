@@ -18,6 +18,7 @@ public:
 	Tile *tile() const;
 	void setTile(Tile *tile);
 	
+	virtual void updateBefore() = 0;
 	virtual void updateAfter() = 0;
 protected:
 	Player *owner_;

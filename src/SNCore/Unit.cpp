@@ -9,6 +9,10 @@ Unit::~Unit()
 	
 }
 
+void Unit::updateBefore() {
+
+}
+
 void Unit::updateAfter()
 {
 	
@@ -16,7 +20,8 @@ void Unit::updateAfter()
 
 bool Unit::move(Tile *tile)
 {
-
+	// Placeholder
+	return false;
 }
 
 void Unit::getAttacked(Unit *)

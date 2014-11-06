@@ -16,7 +16,7 @@ public:
 	Prototype(const QString &name, int moveRange, int cost);
 	~Prototype();
 	
-	Unit *createUnit();
+	virtual Unit *createUnit() = 0;
 	
 	QString name() const;
 	void setName(const QString &name);

@@ -2,7 +2,8 @@
 #define SETTLER_HPP
 
 #include "Unit.hpp"
-#include "SettlerPrototype.hpp"
+
+class SettlerPrototype;
 class Town;
 
 class Settler : public Unit {

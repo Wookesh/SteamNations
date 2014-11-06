@@ -16,6 +16,7 @@ public:
 	
 	QString name() const;
 	
+	void updateBefore();
 	void updateAfter();
 	Prototype *prototype(Prototype::Type type);
 private:
