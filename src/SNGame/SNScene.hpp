@@ -16,6 +16,7 @@ public:
 	void setBoard(Board *board);
 	
 	void select(const Tile *tile);
+	const Object *selectedObject();
 protected:
 	
 private:
@@ -24,9 +25,10 @@ private:
 	QList<const SN::Action *> possibleActions_;
 	GameManager *gameManager_;
 	
-	
 	void highlightActions();
-	
+signals:
+	void selectedTown();
+	void selectedUnit();
 };
 
 

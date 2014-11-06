@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "GameView.hpp"
 #include <QResizeEvent>
-#include "../SNCore/GameManager.hpp"
 #include "NextTurnButton.hpp"
 #include "SNScene.hpp"
 
@@ -19,7 +18,6 @@ private:
 	NextTurnButton *nextTurn_;
 	GameView *gameView_;
 	SNScene *scene_;
-	GameManager *gameManager_;
 };
 
 #endif

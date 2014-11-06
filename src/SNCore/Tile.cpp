@@ -2,7 +2,7 @@
 #include "Town.hpp"
 #include "Unit.hpp"
 
-Tile::Tile(unsigned int x_, unsigned int y_): position_(x_, y_) {
+Tile::Tile(unsigned int x_, unsigned int y_) : town_(nullptr), unit_(nullptr), position_(x_, y_) {
 
 }
 
@@ -39,8 +39,18 @@ QPoint Tile::axial() const {
 	return positionAxial;
 }
 
+Town *Tile::town() const
+{
+	return town_;
+}
+
 void Tile::setTown(Town *town) {
 	town_ = town;
+}
+
+Unit *Tile::unit() const
+{
+	return unit_;
 }
 
 void Tile::setUnit(Unit *unit) {

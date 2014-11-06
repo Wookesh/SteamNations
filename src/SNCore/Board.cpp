@@ -57,7 +57,7 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
 	static QPoint neighbours[] = {
 		QPoint(1, 0), QPoint(1, -1), QPoint(0, -1), 
-		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)		
+		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)
 	};
 	
 	QVector<Tile *> ret;

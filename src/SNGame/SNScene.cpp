@@ -1,13 +1,15 @@
 #include "SNScene.hpp"
 #include "SNHelpers.hpp"
+#include "TownGraphics.hpp"
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
 	gameManager_(gameManager)
 {
 	Board *b = gameManager_->board();
 	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
-			TileGraphics *tileG = new TileGraphics(*tile);
-			addItem(tileG);
+			addItem(new TileGraphics(*tile));
+			if ((*tile)->town() != nullptr)
+				addItem(new TownGraphics((*tile)->town()));
 	}
 }
 

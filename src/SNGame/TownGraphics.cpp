@@ -3,7 +3,7 @@
 #include "SNHelpers.hpp"
 #include <QPainter>
 
-TownGraphics::TownGraphics(Town *town, QGraphicsItem *parent) : 
+TownGraphics::TownGraphics(const Town *town, QGraphicsItem *parent) : 
 	QGraphicsRectItem(coordToPos(town_->tile()->position()).x() - SIZE / 2,
 	coordToPos(town_->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent), town_(town)
 {

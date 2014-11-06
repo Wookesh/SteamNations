@@ -2,7 +2,7 @@
 
 UnitGraphics::UnitGraphics(Unit *unit): QGraphicsPolygonItem() , unit_(unit)
 {
-	
+	setZValue(2);
 }
 
 UnitGraphics::~UnitGraphics()

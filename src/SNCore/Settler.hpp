@@ -15,6 +15,8 @@ public:
 	
 	virtual void getAttacked(Unit *) override;
 private:
+signals:
+	void cityCreated();
 };
 
 #endif
