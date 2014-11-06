@@ -8,8 +8,9 @@
 class GameManager : public QObject {
 Q_OBJECT
 public:
-	GameManager(QObject *parent = nullptr);
-	virtual ~GameManager();
+	static GameManager *get();
+	static void init();
+	static void clean();
 	
 	void initGame();
 	void endGame();
@@ -22,7 +23,13 @@ public:
 	
 	Player *currentPlayer() const;
 	int currentTurn() const;
+	
+protected:
+	GameManager(QObject *parent = nullptr);
+	virtual ~GameManager();
+	
 private:
+	static GameManager *instance;
 	QList<Player *> players_;
 	Player *currentPlayer_;
 	Board *board_;
@@ -30,10 +37,12 @@ private:
 	Object *selectedObject;
 	void setNextPlayer();
 	void setWinConditions();
+	
 public slots:
 	void startGame();
 	void checkIfWin();
 	void endTurn();
+	
 signals:
 	void gameInitialized();
 	void gameEnded();

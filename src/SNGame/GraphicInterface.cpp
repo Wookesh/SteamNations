@@ -3,7 +3,8 @@
 
 GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
-	gameManager_ = new GameManager();
+	GameManager::init();
+	gameManager_ = GameManager::get();
 	gameView_ = new GameView(this);
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->addWidget(gameView_);
@@ -14,7 +15,7 @@ GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 
 GraphicInterface::~GraphicInterface()
 {
-	
+	GameManager::clean();
 }
 
 void GraphicInterface::resizeEvent(QResizeEvent *event)

@@ -1,5 +1,27 @@
 #include "GameManager.hpp"
 
+GameManager *GameManager::instance = 0;
+
+GameManager *GameManager::get() {
+	if (instance == nullptr) {
+		// TODO: Add a proper exception
+		throw;
+	}
+	return instance;
+}
+
+void GameManager::init() {
+	clean();
+	instance = new GameManager();
+}
+
+void GameManager::clean() {
+	if (instance != nullptr) {
+		delete instance;
+		instance = nullptr;
+	}
+}
+
 GameManager::GameManager(QObject *parent): QObject(parent)
 {
 
@@ -10,7 +32,6 @@ GameManager::~GameManager()
 
 }
 
-
 Board *GameManager::board() const
 {
 	return board_;
@@ -18,7 +39,7 @@ Board *GameManager::board() const
 
 void GameManager::setBoard(Board *board)
 {
-
+	board_ = board;
 }
 
 QList< Player * > GameManager::players() const
