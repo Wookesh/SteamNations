@@ -1,14 +1,14 @@
 #ifndef TOWNRAPHICS_H
 #define TOWNRAPHICS_H
 
-#include <QGraphicsPolygonItem>
+#include <QGraphicsRectItem>
 #include "../SNCore/SNCommon.hpp"
 #include "../SNCore/Town.hpp"
 
-class TownGraphics : public QGraphicsPolygonItem {
+class TownGraphics : public QGraphicsRectItem {
 
 public:
-	TownGraphics(Town *town);
+	TownGraphics(Town *town, QGraphicsItem *parent = nullptr);
 	~TownGraphics();
 	
 protected:
@@ -16,7 +16,7 @@ protected:
 	
 private:
 	Town *town_;
-	static const int RADIUS = 80;
+	static const int SIZE = 90;
 };
 
 #endif // TILEGRAPHICS _H

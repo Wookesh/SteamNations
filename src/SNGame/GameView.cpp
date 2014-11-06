@@ -27,7 +27,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 			scene->addItem(tile);
 		}
 	}
-	//scene->addItem(new TownGraphics(nullptr));
 	setScene(scene);
 }
 
