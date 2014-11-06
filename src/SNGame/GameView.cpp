@@ -15,7 +15,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 	setDragMode(QGraphicsView::ScrollHandDrag);
 	setRenderHint(QPainter::Antialiasing);
 	setOptimizationFlag(QGraphicsView::DontSavePainterState);
-	
+	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	QGraphicsScene *scene = new QGraphicsScene();
 	for (int i = 0; i < 50; ++i) {
 		
