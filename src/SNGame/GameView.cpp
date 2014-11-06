@@ -1,5 +1,6 @@
 #include "GameView.hpp"
 #include "TileGraphics.hpp"
+#include "TownGraphics.hpp"
 #include <QTouchEvent>
 #include <QVBoxLayout>
 #include <QGraphicsProxyWidget>
@@ -14,6 +15,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 	setDragMode(QGraphicsView::ScrollHandDrag);
 	setRenderHint(QPainter::Antialiasing);
 	setOptimizationFlag(QGraphicsView::DontSavePainterState);
+	
 	QGraphicsScene *scene = new QGraphicsScene();
 	for (int i = 0; i < 50; ++i) {
 		
@@ -25,6 +27,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 			scene->addItem(tile);
 		}
 	}
+	//scene->addItem(new TownGraphics(nullptr));
 	setScene(scene);
 }
 
@@ -38,5 +41,4 @@ void GameView::wheelEvent(QWheelEvent* event)
 	mapToScene(event->pos());
 	qreal factor = std::pow(1.0005, event->delta());
 	scale(factor, factor);
-	QGraphicsView::wheelEvent(event);
 }
