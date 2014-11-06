@@ -7,8 +7,8 @@
 class Board {
 public:
 	typedef QVector<const Tile *>::const_iterator const_iterator;
-	const_iterator begin() const { return tiles_.begin(); };
-	const_iterator end() const { return tiles_.end(); };
+	const_iterator begin() const { return tiles_.constBegin(); };
+	const_iterator end() const { return tiles_.constEnd(); };
 	
 	Board(unsigned int width, unsigned int height);
 	~Board();

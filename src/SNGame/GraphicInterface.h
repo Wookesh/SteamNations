@@ -6,6 +6,7 @@
 #include <QResizeEvent>
 #include "../SNCore/GameManager.hpp"
 #include "NextTurnButton.hpp"
+#include "SNScene.hpp"
 
 class GraphicInterface : public QWidget {
 Q_OBJECT
@@ -17,6 +18,7 @@ protected:
 private:
 	NextTurnButton *nextTurn_;
 	GameView *gameView_;
+	SNScene *scene_;
 	GameManager *gameManager_;
 };
 

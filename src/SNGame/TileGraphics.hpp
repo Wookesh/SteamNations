@@ -8,7 +8,7 @@
 class TileGraphics : public QGraphicsPolygonItem {
 
 public:
-	TileGraphics(Tile *tile, QGraphicsItem *parent = nullptr);
+	TileGraphics(const Tile *tile, QGraphicsItem *parent = nullptr);
 	~TileGraphics();
 	
 protected:
@@ -17,7 +17,7 @@ protected:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	
 private:
-	Tile *tile_;
+	const Tile *tile_;
 	static const int RADIUS = 80;
 	bool pressed_;
 	

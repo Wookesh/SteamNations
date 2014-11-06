@@ -16,18 +16,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 	setRenderHint(QPainter::Antialiasing);
 	setOptimizationFlag(QGraphicsView::DontSavePainterState);
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-	QGraphicsScene *scene = new QGraphicsScene();
-	for (int i = 0; i < 50; ++i) {
-		
-		qreal k = (i % 2 == 0 ? 0 : 120);
-		
-		for (int j = 0; j < 25; ++j) {
-			TileGraphics *tile = new TileGraphics(nullptr);
-			tile->setPos(j * 240 + k, i * 40 * sqrt(3));
-			scene->addItem(tile);
-		}
-	}
-	setScene(scene);
 }
 
 bool GameView::event(QEvent *e)

@@ -10,7 +10,7 @@
 class SNScene : public QGraphicsScene {
 Q_OBJECT
 public:
-	SNScene(QObject *object);
+	SNScene(GameManager *gameManager, QObject *parent = nullptr);
 	~SNScene();
 	
 	void setBoard(Board *board);
@@ -22,7 +22,7 @@ private:
 	QMap<const Tile *, TileGraphics *> tileToGraphics_;
 	const Object *selectedObject_;
 	QList<const SN::Action *> possibleActions_;
-	GameManager *game_;
+	GameManager *gameManager_;
 	
 	
 	void highlightActions();

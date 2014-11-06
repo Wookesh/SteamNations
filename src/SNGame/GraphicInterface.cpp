@@ -5,11 +5,10 @@ GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
 	GameManager::init();
 	gameManager_ = GameManager::get();
+	gameManager_->setBoard(new Board(50, 50));
+	scene_ = new SNScene(gameManager_, this);
 	gameView_ = new GameView(this);
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(gameView_);
-	layout->setMargin(0);
-	setLayout(layout);
+	gameView_->setScene(scene_);
 	nextTurn_ = new NextTurnButton(gameView_);
 }
 

@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QDebug>
 #include "SNScene.hpp"
-
+#include "SNHelpers.hpp"
 
 QPolygonF &TileGraphics::hexagon()
 {
@@ -17,10 +17,10 @@ QPolygonF &TileGraphics::hexagon()
 
 
 
-TileGraphics::TileGraphics(Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
+TileGraphics::TileGraphics(const Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
 tile_(tile)
 {
-	
+	setPos(coordToPos(tile->position()));
 }
 
 TileGraphics::~TileGraphics()

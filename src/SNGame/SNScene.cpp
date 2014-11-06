@@ -1,8 +1,14 @@
 #include "SNScene.hpp"
+#include "SNHelpers.hpp"
 
-SNScene::SNScene(QObject *object): QGraphicsScene(object)
+SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
+	gameManager_(gameManager)
 {
-
+	Board *b = gameManager_->board();
+	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
+			TileGraphics *tileG = new TileGraphics(*tile);
+			addItem(tileG);
+	}
 }
 
 SNScene::~SNScene()
