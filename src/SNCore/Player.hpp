@@ -1,11 +1,12 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <QString>
-#include <QList>
 #include <QMap>
+#include <QString>
+#include <QVector>
 
 #include "Prototype.hpp"
+
 class Town;
 class Unit;
 
@@ -18,11 +19,13 @@ public:
 	
 	void updateBefore();
 	void updateAfter();
+	
+	Unit *createUnit(Prototype::Type type);
 	Prototype *prototype(Prototype::Type type);
 private:
 	QString name_;
-	QList<Town *> towns_;
-	QList<Unit *> units_;
+	QVector<Town *> towns_;
+	QVector<Unit *> units_;
 	QMap<Prototype::Type, Prototype *> prototypes_;
 };
 

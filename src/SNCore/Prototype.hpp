@@ -14,7 +14,7 @@ public:
 	};
 	
 	Prototype(const QString &name, int moveRange, int cost);
-	~Prototype();
+	virtual ~Prototype();
 	
 	virtual Unit *createUnit() = 0;
 	

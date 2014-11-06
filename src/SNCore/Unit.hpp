@@ -15,7 +15,7 @@ public:
 	virtual void updateAfter() override;
 	
 	bool move(Tile *tile);
-	void getAttacked(Unit *);
+	virtual void getAttacked(Unit *) = 0;
 protected:
 	const Prototype *prototype_;
 signals:

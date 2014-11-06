@@ -15,3 +15,7 @@ Town *Settler::createTown()
 {
 	return nullptr;
 }
+
+void Settler::getAttacked (Unit *) {
+	
+}

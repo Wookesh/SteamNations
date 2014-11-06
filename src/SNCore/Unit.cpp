@@ -24,8 +24,3 @@ bool Unit::move(Tile *tile)
 	return false;
 }
 
-void Unit::getAttacked(Unit *)
-{
-
-}
-

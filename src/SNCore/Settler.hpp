@@ -12,6 +12,8 @@ public:
 	~Settler();
 	
 	Town *createTown();
+	
+	virtual void getAttacked(Unit *) override;
 private:
 };
 
