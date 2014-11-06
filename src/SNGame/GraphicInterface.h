@@ -4,8 +4,8 @@
 #include <QWidget>
 #include "GameView.hpp"
 #include <QResizeEvent>
-#include <QPushButton>
 #include "../SNCore/GameManager.hpp"
+#include "NextTurnButton.hpp"
 
 class GraphicInterface : public QWidget {
 Q_OBJECT
@@ -15,7 +15,7 @@ public:
 protected:
 	void resizeEvent(QResizeEvent *event);
 private:
-	QPushButton *testButton_;
+	NextTurnButton *nextTurn_;
 	GameView *gameView_;
 	GameManager *gameManager_;
 };

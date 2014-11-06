@@ -1,6 +1,5 @@
 #include "GraphicInterface.h"
 #include <QVBoxLayout>
-#include <QPushButton>
 
 GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
@@ -10,7 +9,7 @@ GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 	layout->addWidget(gameView_);
 	layout->setMargin(0);
 	setLayout(layout);
-	testButton_ = new QPushButton(gameView_);
+	nextTurn_ = new NextTurnButton(gameView_);
 }
 
 GraphicInterface::~GraphicInterface()
@@ -21,6 +20,6 @@ GraphicInterface::~GraphicInterface()
 void GraphicInterface::resizeEvent(QResizeEvent *event)
 {
 	gameView_->setGeometry(QRect(0, 0, event->size().width(), event->size().height()));
-	testButton_->setGeometry(QRect(event->size().width() - 100, event->size().height() - 100, 100, 100));
+	nextTurn_->move(0, event->size().height() - nextTurn_->sizeHint().height());
 	QWidget::resizeEvent(event);
 }

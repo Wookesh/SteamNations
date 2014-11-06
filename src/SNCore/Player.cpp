@@ -2,7 +2,12 @@
 
 Player::Player(const QString &name) : name_(name)
 {
+	
+}
 
+Player::~Player()
+{
+	
 }
 
 QString Player::name() const

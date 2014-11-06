@@ -8,6 +8,7 @@ add_executable(SteamNations
 	UnitGraphics.cpp
 	TownGraphics.cpp
 	GameView.cpp
+	NextTurnButton.cpp
 	GraphicInterface.cpp
 	)
 qt5_use_modules(SteamNations Widgets Gui)
