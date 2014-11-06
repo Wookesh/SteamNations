@@ -39,5 +39,6 @@ void GameView::wheelEvent(QWheelEvent* event)
 {
 	mapToScene(event->pos());
 	qreal factor = std::pow(1.0005, event->delta());
-	scale(factor, factor);
+	if((factor > 1 && transform().m11() < maxZoom) || (factor < 1 && transform().m11() > minZoom))
+		scale(factor, factor);
 }

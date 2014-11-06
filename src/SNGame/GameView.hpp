@@ -13,6 +13,8 @@ protected:
 	virtual void wheelEvent(QWheelEvent *event);
 private:
 	bool pressed_;
+	float minZoom = 0.3;
+	float maxZoom = 1.8;
 	QPoint startingPos_;
 	QPointF startingPosScene_;
 };

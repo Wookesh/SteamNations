@@ -1,7 +1,6 @@
 add_library(SNCore 
 	Player.cpp
 	Prototype.cpp
-	InfantryPrototype.cpp
 	SettlerPrototype.cpp
 	Tile.cpp
 	Object.cpp
