@@ -1,22 +1,23 @@
 #ifndef UNITGRAPHICS_H
 #define UNITGRAPHICS_H
 
-#include <QGraphicsPolygonItem>
+
+#include <QGraphicsRectItem>
 #include "../SNCore/SNCommon.hpp"
 #include "../SNCore/Unit.hpp"
 
-class UnitGraphics : public QGraphicsPolygonItem {
+class UnitGraphics : public QGraphicsRectItem {
 
 public:
-	UnitGraphics(Unit *unit);
+	UnitGraphics(const Unit *unit, QGraphicsItem *parent = nullptr);
 	~UnitGraphics();
 	
 protected:
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	
 private:
-	Unit *unit_;
-	static const int RADIUS = 80;
+	const Unit *unit_;
+	static const int SIZE = 80;
 	void animate(SN::Action action);
 };
 
