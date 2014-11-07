@@ -4,6 +4,7 @@
 #include <QString>
 
 class Unit;
+class Tile;
 
 class Prototype {
 public:
