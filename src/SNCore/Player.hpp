@@ -6,7 +6,9 @@
 #include <QVector>
 
 #include "Prototype.hpp"
+#include "Tile.hpp"
 
+class Tile;
 class Town;
 class Unit;
 
@@ -20,7 +22,9 @@ public:
 	void updateBefore();
 	void updateAfter();
 	
-	Unit *createUnit(Prototype::Type type);
+	void obtainTown(Town *town);
+	
+	Unit *createUnit(Prototype::Type type, Tile *tile);
 	Prototype *prototype(Prototype::Type type);
 private:
 	QString name_;

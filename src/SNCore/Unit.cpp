@@ -1,4 +1,5 @@
 #include "Unit.hpp"
+#include "Tile.hpp"
 #include "Prototype.hpp"
 
 Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : Object(tile, parent), prototype_(prototype)
@@ -7,7 +8,8 @@ Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : Object(til
 
 Unit::~Unit()
 {
-	
+	if (tile_ != nullptr)
+		tile_->setUnit(nullptr);
 }
 
 void Unit::updateBefore() {

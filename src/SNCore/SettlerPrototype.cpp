@@ -12,8 +12,9 @@ SettlerPrototype::~SettlerPrototype()
 
 }
 
-Unit *SettlerPrototype::createUnit() {
-// 	Settler *settler = new Settler(this);
-// 	return settler;
-// commented due to changed cosntructor;
+Unit *SettlerPrototype::createUnit(Tile *tile) {
+ 	//Settler *settler = new Settler(tile, this);
+ 	//return settler;
+	
+	return nullptr;
 }

@@ -1,4 +1,6 @@
+#include "Player.hpp"
 #include "Town.hpp"
+#include "Tile.hpp"
 
 Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, parent), name_(name)
 {
@@ -7,7 +9,19 @@ Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, paren
 
 Town::~Town()
 {
+	if (tile_ != nullptr)
+		tile_->setTown(nullptr);
+}
 
+void Town::updateBefore() 
+{
+
+}
+
+
+QString Town::name() const
+{
+	return name_;
 }
 
 void Town::updateAfter()
@@ -15,22 +29,14 @@ void Town::updateAfter()
 
 }
 
-void Town::updateBefore()
+Unit *Town::createUnit(Prototype::Type type)
 {
-
+	//Unit *newUnit = owner_->createUnit(type);
+	//return newUnit;
+	return nullptr;
 }
 
-QString Town::name() const
+void Town::getCaptured(Player *player)
 {
-	return name_;
-}
-
-Unit *Town::createUnit(Prototype *)
-{
-
-}
-
-void Town::getCaptured(Player *)
-{
-
+	player->obtainTown(this);
 }

@@ -25,6 +25,12 @@ QString Player::name() const
 	return name_;
 }
 
+void Player::obtainTown (Town *town) 
+{
+	town->setOwner(this);
+	towns_.push_back(town);
+}
+
 void Player::updateBefore() {
 	// internal stuff
 	// doSth()...
@@ -62,11 +68,12 @@ void Player::updateAfter()
 	// wrapUp()...
 }
 
-Unit *Player::createUnit (Prototype::Type type) {
-	Unit *newUnit = prototype(type)->createUnit();
-	units_.push_back(newUnit);
+Unit *Player::createUnit (Prototype::Type type, Tile *tile) {
+	//Unit *newUnit = prototypes_[type]->createUnit(tile);
+	//units_.push_back(newUnit);
 	
-	return newUnit;
+	//return newUnit;
+	return nullptr;
 }
 
 Prototype *Player::prototype(Prototype::Type type)

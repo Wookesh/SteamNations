@@ -8,7 +8,7 @@ Object::Object(Tile *tile, QObject *parent) : QObject(parent), owner_(nullptr), 
 
 Object::~Object()
 {
-
+	
 }
 void Object::setTile(Tile* tile)
 {
