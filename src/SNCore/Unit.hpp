@@ -8,11 +8,13 @@ class Prototype;
 class Unit : public Object {
 Q_OBJECT
 public:
-	Unit(const Prototype *prototype, QObject *parent = nullptr);
+	Unit(Tile *tile, const Prototype *prototype, QObject *parent = nullptr);
 	virtual ~Unit();
 	
 	virtual void updateBefore() override;
 	virtual void updateAfter() override;
+	
+	virtual QString name() const override;
 	
 	bool move(Tile *tile);
 	virtual void getAttacked(Unit *) = 0;

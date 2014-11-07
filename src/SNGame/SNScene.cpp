@@ -1,6 +1,7 @@
 #include "SNScene.hpp"
 #include "SNHelpers.hpp"
 #include "TownGraphics.hpp"
+#include "UnitGraphics.hpp"
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
 	gameManager_(gameManager)
@@ -10,6 +11,8 @@ SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(par
 			addItem(new TileGraphics(*tile));
 			if ((*tile)->town() != nullptr)
 				addItem(new TownGraphics((*tile)->town()));
+			if ((*tile)->unit() != nullptr)
+				addItem(new UnitGraphics((*tile)->unit()));
 	}
 }
 

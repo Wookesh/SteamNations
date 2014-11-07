@@ -1,6 +1,7 @@
 #include "Unit.hpp"
+#include "Prototype.hpp"
 
-Unit::Unit(const Prototype *prototype, QObject *parent) : Object(parent), prototype_(prototype)
+Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : Object(tile, parent), prototype_(prototype)
 {
 }
 
@@ -17,6 +18,12 @@ void Unit::updateAfter()
 {
 	
 }
+
+QString Unit::name() const
+{
+	return prototype_->name();
+}
+
 
 bool Unit::move(Tile *tile)
 {

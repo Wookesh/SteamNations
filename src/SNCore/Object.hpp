@@ -9,7 +9,7 @@ class Tile;
 class Object : public QObject {
 Q_OBJECT
 public:
-	Object(QObject *parent = nullptr);
+	Object(Tile *tile, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner() const;
@@ -17,6 +17,8 @@ public:
 	
 	Tile *tile() const;
 	void setTile(Tile *tile);
+	
+	virtual QString name() const = 0;
 	
 	virtual void updateBefore() = 0;
 	virtual void updateAfter() = 0;

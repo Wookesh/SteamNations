@@ -24,7 +24,8 @@ QList<const Object *> Tile::getObjects() const {
 	return l;
 }
 
-QPoint Tile::position() const {
+QPoint Tile::position() const 
+{
 	return position_;
 }
 
@@ -44,7 +45,8 @@ Town *Tile::town() const
 	return town_;
 }
 
-void Tile::setTown(Town *town) {
+void Tile::setTown(Town *town)
+{
 	town_ = town;
 }
 
@@ -53,6 +55,7 @@ Unit *Tile::unit() const
 	return unit_;
 }
 
-void Tile::setUnit(Unit *unit) {
+void Tile::setUnit(Unit *unit)
+{
 	unit_ = unit;
 }

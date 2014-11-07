@@ -8,7 +8,7 @@ class Town;
 
 class Settler : public Unit {
 public:
-	Settler(const SettlerPrototype *prototype, QObject *parent = nullptr);
+	Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent = nullptr);
 	~Settler();
 	
 	Town *createTown();

@@ -2,10 +2,11 @@
 #include "../SNCore/Tile.hpp"
 #include "SNHelpers.hpp"
 #include <QPainter>
+#include <QDebug>
 
 TownGraphics::TownGraphics(const Town *town, QGraphicsItem *parent) : 
-	QGraphicsRectItem(coordToPos(town_->tile()->position()).x() - SIZE / 2,
-	coordToPos(town_->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent), town_(town)
+	QGraphicsRectItem(coordToPos(town->tile()->position()).x() - SIZE / 2,
+	coordToPos(town->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent), town_(town)
 {
 	setZValue(1);
 }
@@ -26,6 +27,6 @@ void TownGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setColor(Qt::black);
 	painter->setPen(pen);
 	painter->drawText(QRect(boundingRect().x() + SIZE / 4, boundingRect().y() + SIZE / 4,
-		SIZE / 2, SIZE / 2), town_->objectName());
+		SIZE / 2, SIZE / 2), town_->name());
 	//QGraphicsRectItem::paint(painter, option, widget);
 }

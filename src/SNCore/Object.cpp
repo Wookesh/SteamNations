@@ -1,6 +1,7 @@
 #include "Object.hpp"
+#include "Tile.hpp"
 
-Object::Object(QObject *parent) : QObject(parent)
+Object::Object(Tile *tile, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile)
 {
 	
 }
@@ -11,12 +12,12 @@ Object::~Object()
 }
 void Object::setTile(Tile* tile)
 {
-
+	tile_ = tile;
 }
 
 Tile* Object::tile() const
 {
-	
+	return tile_;
 }
 
 Player *Object::owner() const

@@ -3,8 +3,8 @@
 #include "SNHelpers.hpp"
 #include <QPainter>
 
-UnitGraphics::UnitGraphics(const Unit *unit, QGraphicsItem *parent):  QGraphicsRectItem(coordToPos(unit_->tile()->position()).x() - SIZE / 2,
-	coordToPos(unit_->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent) , unit_(unit)
+UnitGraphics::UnitGraphics(const Unit *unit, QGraphicsItem *parent):  QGraphicsRectItem(coordToPos(unit->tile()->position()).x() - SIZE / 2,
+	coordToPos(unit->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent) , unit_(unit)
 {
 	setZValue(2);
 }
@@ -25,7 +25,7 @@ void UnitGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setColor(Qt::black);
 	painter->setPen(pen);
 	painter->drawText(QRect(boundingRect().x() + SIZE / 4, boundingRect().y() + SIZE / 4,
-		SIZE / 2, SIZE / 2), unit_->objectName());
+		SIZE / 2, SIZE / 2), unit_->name());
 }
 
 void UnitGraphics::animate(SN::Action action)

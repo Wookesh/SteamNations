@@ -1,7 +1,7 @@
 #include "Settler.hpp"
 #include "SettlerPrototype.hpp"
 
-Settler::Settler(const SettlerPrototype *prototype, QObject *parent): Unit(prototype, parent)
+Settler::Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent): Unit(tile, prototype, parent)
 {
 
 }
