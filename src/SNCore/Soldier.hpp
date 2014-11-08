@@ -2,7 +2,9 @@
 #define SOLDIER_HPP
 #include "Unit.hpp"
 
+class Tile;
 class Town;
+
 
 class Soldier : public Unit {
 Q_OBJECT
@@ -10,7 +12,7 @@ public:
 	Soldier(Tile *tile, const Prototype *prototype, QObject *parent = nullptr);
 	
 	bool canCapture(Tile *currTile);
-	bool captuer(Town *town);
+	bool capture(Town *town);
 	
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
