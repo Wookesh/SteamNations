@@ -13,7 +13,7 @@ Action::~Action()
 
 const Tile *Action::tile() const
 {
-	return tile();
+	return tile_;
 }
 
 Action::Type Action::type() const
