@@ -26,14 +26,13 @@ QString Town::name() const
 
 void Town::updateAfter()
 {
-
+	
 }
 
 Unit *Town::createUnit(Prototype::Type type)
 {
-	//Unit *newUnit = owner_->createUnit(type);
-	//return newUnit;
-	return nullptr;
+	Unit *newUnit = owner_->createUnit(type, tile_);
+	return newUnit;
 }
 
 void Town::getCaptured(Player *player)

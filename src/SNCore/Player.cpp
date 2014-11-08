@@ -68,12 +68,11 @@ void Player::updateAfter()
 	// wrapUp()...
 }
 
-Unit *Player::createUnit (Prototype::Type type, Tile *tile) {
-	//Unit *newUnit = prototypes_[type]->createUnit(tile);
-	//units_.push_back(newUnit);
+Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
+	Unit *newUnit = prototypes_[type]->createUnit(tile);
+	units_.push_back(newUnit);
 	
-	//return newUnit;
-	return nullptr;
+	return newUnit;
 }
 
 Prototype *Player::prototype(Prototype::Type type)
