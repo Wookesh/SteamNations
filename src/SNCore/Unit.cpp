@@ -1,8 +1,9 @@
 #include "Unit.hpp"
 #include "Tile.hpp"
 #include "Prototype.hpp"
+#include "SNCommon.hpp"
 
-Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : Object(tile, parent), prototype_(prototype)
+Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : Object(tile, SN::ObjectType::Unit, parent), prototype_(prototype)
 {
 }
 

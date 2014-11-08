@@ -2,9 +2,8 @@
 #include "Town.hpp"
 #include "Tile.hpp"
 
-Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, parent), name_(name)
+Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, SN::ObjectType::Town, parent), name_(name)
 {
-	
 }
 
 Town::~Town()

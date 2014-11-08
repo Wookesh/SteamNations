@@ -47,6 +47,35 @@ QList< Player * > GameManager::players() const
 	return players_;
 }
 
+QList<Action * >& GameManager::actions(Object* object)
+{
+	switch(object->type()) {
+		case Object::Type::Unit:
+			Unit * unit = dynamic_cast<Unit *>(object);
+			QVector<Tile *> tiles = board_->getInRange(unit->currentMoveRange());
+			QVector<SN::Action *> unitActions;
+			for(Tile * currTile : tiles) {
+				if(unit->canMove(currTile))
+					unitActions.push_back(new MoveAction(unit, currTile));
+				
+				if(unit->type() == Prototype::Type::Soldier) {
+					if(unit->canAttack(currTile))
+						unitActions.push_back(new AttackAction(dynamic_cast<Soldier *>(unit), currTile->unit()));
+					if(unit->canCapture(currTile))
+						unitActions.push_back(new CaptureAction(dynamic_cast<Soldier *>(unit), currTile->town()));
+				}
+				
+				if(unit->type() == Prototype::Type::Settler)
+					if(unit->canSettle(currTile))
+						unitActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
+				
+			}
+			return *unitActions;
+		
+	}
+}
+
+
 void GameManager::setPlayers(QList< Player * > &players)
 {
 

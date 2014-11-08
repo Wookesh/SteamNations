@@ -2,6 +2,7 @@
 #define OBJECT_HPP
 
 #include <QObject>
+#include "SNCommon.hpp"
 
 class Player;
 class Tile;
@@ -9,7 +10,12 @@ class Tile;
 class Object : public QObject {
 Q_OBJECT
 public:
-	Object(Tile *tile, QObject *parent = nullptr);
+	enum class Type {
+		Town,
+		Unit
+	};
+	
+	Object(Tile *tile, SN::ObjectType type, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner() const;
@@ -18,6 +24,9 @@ public:
 	Tile *tile() const;
 	void setTile(Tile *tile);
 	
+	SN::ObjectType type();
+	void setType(SN::ObjectType type);
+	
 	virtual QString name() const = 0;
 	
 	virtual void updateBefore() = 0;
@@ -25,6 +34,8 @@ public:
 protected:
 	Player *owner_;
 	Tile *tile_;
+	SN::ObjectType type_;
+	
 signals:
 	void ownerChanged();
 	void positionChanged();

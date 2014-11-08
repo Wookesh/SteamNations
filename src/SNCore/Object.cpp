@@ -1,7 +1,7 @@
 #include "Object.hpp"
 #include "Tile.hpp"
 
-Object::Object(Tile *tile, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile)
+Object::Object(Tile *tile, SN::ObjectType type, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile), type_(type)
 {
 	
 }
@@ -29,5 +29,14 @@ void Object::setOwner(Player *owner)
 {
 	owner_ = owner;
 	emit ownerChanged();
+}
+void Object::setType(SN::ObjectType type)
+{
+	type_ = type;
+}
+
+SN::ObjectType Object::type()
+{
+	return type_;
 }
 
