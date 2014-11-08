@@ -10,5 +10,5 @@ CaptureAction::CaptureAction(Soldier *mainObject, Town *town):
 
 bool CaptureAction::perform()
 {
-	return dynamic_cast<Soldier *>(mainObject)->capture(town_);
+	return dynamic_cast<Soldier *>(mainObject_)->capture(town_);
 }

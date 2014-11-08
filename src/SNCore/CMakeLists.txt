@@ -1,5 +1,6 @@
 add_library(SNCore 
 	Action.cpp
+	AttackAction.cpp
 	MoveAction.cpp
 	SettleAction.cpp
 	CaptureAction.cpp
@@ -10,6 +11,7 @@ add_library(SNCore
 	Object.cpp
 	Unit.cpp
 	Settler.cpp
+	Soldier.cpp
 	Town.cpp
 	Board.cpp
 	GameManager.cpp
