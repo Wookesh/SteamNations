@@ -11,6 +11,9 @@ public:
 	Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent = nullptr);
 	~Settler();
 	
+	
+	bool canSettle() const;
+	bool settle();
 	Town *createTown();
 	
 	virtual void getAttacked(Unit *) override;

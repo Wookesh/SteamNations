@@ -4,8 +4,8 @@
 #include <QObject>
 #include "Player.hpp"
 #include "Board.hpp"
-#include "SNCommon.hpp"
 #include "Object.hpp"
+#include "Action.hpp"
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -26,7 +26,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
-	QList<SN::Action *> &actions(Object *object);
+	QVector<Action *> &actions(Object *object);
 	
 protected:
 	GameManager(QObject *parent = nullptr);
@@ -38,7 +38,6 @@ private:
 	Player *currentPlayer_;
 	Board *board_;
 	int currentTurn_;
-	Object *selectedObject;
 	void setNextPlayer();
 	void setWinConditions();
 	

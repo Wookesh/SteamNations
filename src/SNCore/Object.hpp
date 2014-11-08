@@ -2,7 +2,6 @@
 #define OBJECT_HPP
 
 #include <QObject>
-#include "SNCommon.hpp"
 
 class Player;
 class Tile;
@@ -15,7 +14,7 @@ public:
 		Unit
 	};
 	
-	Object(Tile *tile, SN::ObjectType type, QObject *parent = nullptr);
+	Object(Tile *tile, Type type, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner() const;
@@ -24,8 +23,8 @@ public:
 	Tile *tile() const;
 	void setTile(Tile *tile);
 	
-	SN::ObjectType type();
-	void setType(SN::ObjectType type);
+	Type type();
+	void setType(Type type);
 	
 	virtual QString name() const = 0;
 	
@@ -34,7 +33,7 @@ public:
 protected:
 	Player *owner_;
 	Tile *tile_;
-	SN::ObjectType type_;
+	Type type_;
 	
 signals:
 	void ownerChanged();

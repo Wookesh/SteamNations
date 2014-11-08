@@ -2,7 +2,6 @@
 #define TOWNRAPHICS_H
 
 #include <QGraphicsRectItem>
-#include "../SNCore/SNCommon.hpp"
 #include "../SNCore/Town.hpp"
 
 class TownGraphics : public QGraphicsRectItem {

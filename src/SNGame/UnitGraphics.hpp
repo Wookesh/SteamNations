@@ -3,8 +3,8 @@
 
 
 #include <QGraphicsRectItem>
-#include "../SNCore/SNCommon.hpp"
 #include "../SNCore/Unit.hpp"
+#include "../SNCore/Action.hpp"
 
 class UnitGraphics : public QGraphicsRectItem {
 
@@ -18,7 +18,7 @@ protected:
 private:
 	const Unit *unit_;
 	static const int SIZE = 80;
-	void animate(SN::Action action);
+	void animate(Action *action);
 };
 
 #endif // TILEGRAPHICS _H

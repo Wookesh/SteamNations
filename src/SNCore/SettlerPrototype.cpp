@@ -2,7 +2,7 @@
 #include "Settler.hpp"
 
 SettlerPrototype::SettlerPrototype(const QString &name, int moveRange, int cost) :
-	Prototype(name, moveRange, cost)
+	Prototype(Type::Settler, name, moveRange, cost)
 {
 
 }

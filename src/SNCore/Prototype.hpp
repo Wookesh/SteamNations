@@ -11,13 +11,15 @@ public:
 	
 	enum class Type : qint8 {
 		Settler,
-		Fighter,
+		Soldier,
 	};
 	
-	Prototype(const QString &name, int moveRange, int cost);
+	Prototype(Type type, const QString &name, int moveRange, int cost);
 	virtual ~Prototype();
 	
 	virtual Unit *createUnit(Tile *tile) = 0;
+	
+	Type type() const;
 	
 	QString name() const;
 	void setName(const QString &name);
@@ -27,7 +29,8 @@ public:
 	
 	int cost() const;
 	void setCost(int cost);
-private:
+protected:
+	Type type_;
 	QString name_;
 	quint8 moveRange_;
 	int cost_;

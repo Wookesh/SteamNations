@@ -2,6 +2,7 @@
 #define UNIT_HPP
 
 #include "Object.hpp"
+#include "Prototype.hpp"
 
 class Prototype;
 
@@ -15,6 +16,8 @@ public:
 	virtual void updateAfter() override;
 	
 	virtual QString name() const override;
+	
+	Prototype::Type pType() const;
 	
 	quint8 moveRange() const;
 	quint8 currentMoveRange() const;

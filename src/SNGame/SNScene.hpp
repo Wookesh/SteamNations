@@ -22,7 +22,7 @@ protected:
 private:
 	QMap<const Tile *, TileGraphics *> tileToGraphics_;
 	const Object *selectedObject_;
-	QList<const SN::Action *> possibleActions_;
+	QList<const Action *> possibleActions_;
 	GameManager *gameManager_;
 	
 	void highlightActions();

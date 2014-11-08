@@ -33,6 +33,12 @@ QString Unit::name() const
 	return prototype_->name();
 }
 
+Prototype::Type Unit::pType() const
+{
+	return prototype_->type();
+}
+
+
 quint8 Unit::moveRange() const
 {
 	return prototype_->moveRange();

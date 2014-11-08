@@ -2,8 +2,8 @@
 #define TILEGRAPHICS_H
 
 #include <QGraphicsPolygonItem>
-#include "../SNCore/SNCommon.hpp"
 #include "../SNCore/Tile.hpp"
+#include "../SNCore/Action.hpp"
 
 class TileGraphics : public QGraphicsPolygonItem {
 
@@ -21,7 +21,7 @@ private:
 	static const int RADIUS = 80;
 	bool pressed_;
 	
-	void highlight(SN::Action action);
+	void highlight(Action::Type actionType);
 	
 	static QPolygonF &hexagon();
 };

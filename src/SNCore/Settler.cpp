@@ -11,6 +11,17 @@ Settler::~Settler()
 
 }
 
+bool Settler::canSettle() const
+{
+	return true;
+}
+
+bool Settler::settle()
+{
+	return canSettle();
+}
+
+
 Town *Settler::createTown()
 {
 	return nullptr;

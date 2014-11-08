@@ -51,7 +51,7 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	//QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-void TileGraphics::highlight(SN::Action action)
+void TileGraphics::highlight(Action::Type actionType)
 {
 }
 

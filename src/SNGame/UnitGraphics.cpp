@@ -28,7 +28,7 @@ void UnitGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 		SIZE / 2, SIZE / 2), unit_->name());
 }
 
-void UnitGraphics::animate(SN::Action action)
+void UnitGraphics::animate(Action *action)
 {
 
 }

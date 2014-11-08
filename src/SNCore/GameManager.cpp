@@ -1,4 +1,11 @@
 #include "GameManager.hpp"
+#include "Object.hpp"
+#include "Soldier.hpp"
+#include "Settler.hpp"
+#include "AttackAction.hpp"
+#include "MoveAction.hpp"
+#include "CaptureAction.hpp"
+#include "SettleAction.hpp"
 
 GameManager *GameManager::instance = 0;
 
@@ -47,31 +54,31 @@ QList< Player * > GameManager::players() const
 	return players_;
 }
 
-QList<Action * >& GameManager::actions(Object* object)
+QVector<Action *> &GameManager::actions(Object *object)
 {
 	switch(object->type()) {
 		case Object::Type::Unit:
 			Unit * unit = dynamic_cast<Unit *>(object);
-			QVector<Tile *> tiles = board_->getInRange(unit->currentMoveRange());
-			QVector<SN::Action *> unitActions;
-			for(Tile * currTile : tiles) {
-				if(unit->canMove(currTile))
+			QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
+			QVector<Action *> unitActions;
+			for (Tile *currTile : tiles) {
+				if (unit->canMove(currTile))
 					unitActions.push_back(new MoveAction(unit, currTile));
 				
-				if(unit->type() == Prototype::Type::Soldier) {
-					if(unit->canAttack(currTile))
+				if (unit->pType() == Prototype::Type::Soldier) {
+					if (dynamic_cast<Soldier *>(unit)->canAttack(currTile))
 						unitActions.push_back(new AttackAction(dynamic_cast<Soldier *>(unit), currTile->unit()));
-					if(unit->canCapture(currTile))
+					
+					if (dynamic_cast<Soldier *>(unit)->canCapture(currTile))
 						unitActions.push_back(new CaptureAction(dynamic_cast<Soldier *>(unit), currTile->town()));
 				}
 				
-				if(unit->type() == Prototype::Type::Settler)
-					if(unit->canSettle(currTile))
+				if (unit->pType() == Prototype::Type::Settler)
+					if (dynamic_cast<Settler *>(unit)->canSettle())
 						unitActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 				
 			}
-			return *unitActions;
-		
+			return unitActions;
 	}
 }
 
