@@ -10,6 +10,7 @@ Object::~Object()
 {
 	
 }
+
 void Object::setTile(Tile* tile)
 {
 	tile_ = tile;

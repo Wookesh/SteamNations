@@ -22,14 +22,14 @@ public:
 	QString name() const;
 	void setName(const QString &name);
 	
-	int moveRange() const;
-	void setMoveRange(int moveRange);
+	quint8 moveRange() const;
+	void setMoveRange(quint8 moveRange);
 	
 	int cost() const;
 	void setCost(int cost);
 private:
 	QString name_;
-	int moveRange_;
+	quint8 moveRange_;
 	int cost_;
 };
 

@@ -33,12 +33,12 @@ void Prototype::setName(const QString &name)
 	name_ = name;
 }
 
-int Prototype::moveRange() const
+quint8 Prototype::moveRange() const
 {
 	return moveRange_;
 }
 
-void Prototype::setMoveRange(int moveRange)
+void Prototype::setMoveRange(quint8 moveRange)
 {
 	moveRange_ = moveRange;
 }

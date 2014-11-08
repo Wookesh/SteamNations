@@ -58,4 +58,5 @@ Unit *Tile::unit() const
 void Tile::setUnit(Unit *unit)
 {
 	unit_ = unit;
+	unit_->setTile(this);
 }
