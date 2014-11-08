@@ -16,10 +16,15 @@ public:
 	
 	virtual QString name() const override;
 	
+	quint8 moveRange() const;
+	quint8 currentMoveRange() const;
+	
+	bool canMove(const Tile *tile) const;
 	bool move(Tile *tile);
 	virtual void getAttacked(Unit *) = 0;
 protected:
 	const Prototype *prototype_;
+	quint8 currentMoveRange_;
 signals:
 	void unitDestroyed();
 };
