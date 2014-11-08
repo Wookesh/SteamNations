@@ -20,10 +20,13 @@ private:
 	const Tile *tile_;
 	static const int RADIUS = 80;
 	bool pressed_;
+	Action::Type actionType_;
 	
 	void highlight(Action::Type actionType);
 	
 	static QPolygonF &hexagon();
+	static QColor highlightColor(Action::Type type);
+	static constexpr qreal OPACITY = 0.2;
 };
 
 #endif // TILEGRAPHICS _H

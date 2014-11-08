@@ -5,6 +5,7 @@
 #include <QDebug>
 #include "SNScene.hpp"
 #include "SNHelpers.hpp"
+#include <QMap>
 
 QPolygonF &TileGraphics::hexagon()
 {
@@ -15,10 +16,20 @@ QPolygonF &TileGraphics::hexagon()
 	return hexagon_;
 }
 
-
+QColor TileGraphics::highlightColor(Action::Type type)
+{
+	static QMap<Action::Type, QColor> map({
+		{Action::Type::Attack, Qt::red},
+		{Action::Type::Capture, Qt::magenta},
+		{Action::Type::Move, Qt::cyan},
+		{Action::Type::None, Qt::white},
+		{Action::Type::Settle, Qt::yellow}
+	});
+	return map[type];
+}
 
 TileGraphics::TileGraphics(const Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
-tile_(tile)
+tile_(tile), actionType_(Action::Type::None)
 {
 	setPos(coordToPos(tile->position()));
 }
@@ -48,10 +59,17 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setColor(Qt::green);
 	painter->setPen(pen);
 	painter->drawPolygon(polygon(), Qt::OddEvenFill);
-	//QGraphicsPolygonItem::paint(painter, option, widget);
+	if (actionType_ != Action::Type::None) {
+		QPainterPath path;
+		path.addPolygon(polygon());
+		painter->setOpacity(OPACITY);
+		painter->fillPath(path, highlightColor(actionType_));
+	}
 }
 
 void TileGraphics::highlight(Action::Type actionType)
 {
+	actionType_ = actionType;
+	update();
 }
 

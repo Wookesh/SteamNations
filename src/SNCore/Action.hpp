@@ -10,6 +10,7 @@ class Action {
 public:
 	
 	enum class Type : quint8 {
+		None,
 		Move,
 		Attack,
 		Capture,
