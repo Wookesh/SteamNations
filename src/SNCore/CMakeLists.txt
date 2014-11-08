@@ -1,6 +1,8 @@
 add_library(SNCore 
 	Action.cpp
 	MoveAction.cpp
+	SettleAction.cpp
+	CaptureAction.cpp
 	Player.cpp
 	Prototype.cpp
 	SettlerPrototype.cpp
