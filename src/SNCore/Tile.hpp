@@ -13,10 +13,12 @@ public:
 	Tile(unsigned int x, unsigned int y);
 	~Tile();
 	
-	Town *town() const;
+	Town *town();
+	const Town *town() const;
 	void setTown(Town *town);
 	
-	Unit *unit() const;
+	Unit *unit();
+	const Unit *unit() const;
 	void setUnit(Unit *unit);
 	
 	QPoint position() const;

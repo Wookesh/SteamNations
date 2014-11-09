@@ -11,17 +11,27 @@ Object::~Object()
 	
 }
 
-void Object::setTile(Tile* tile)
+void Object::setTile(Tile *tile)
 {
 	tile_ = tile;
 }
 
-Tile* Object::tile() const
+Tile *Object::tile()
 {
 	return tile_;
 }
 
-Player *Object::owner() const
+const Tile *Object::tile() const
+{
+	return tile_;
+}
+
+Player *Object::owner()
+{
+	return owner_;
+}
+
+const Player *Object::owner() const
 {
 	return owner_;
 }

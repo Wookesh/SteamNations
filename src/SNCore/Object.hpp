@@ -17,10 +17,12 @@ public:
 	Object(Tile *tile, Type type, QObject *parent = nullptr);
 	virtual ~Object();
 	
-	Player *owner() const;
+	Player *owner();
+	const Player *owner() const;
 	void setOwner(Player *owner);
 	
-	Tile *tile() const;
+	Tile *tile();
+	const Tile *tile() const;
 	void setTile(Tile *tile);
 	
 	Type type();

@@ -40,7 +40,12 @@ QPoint Tile::axial() const {
 	return positionAxial;
 }
 
-Town *Tile::town() const
+Town *Tile::town()
+{
+	return town_;
+}
+
+const Town *Tile::town() const
 {
 	return town_;
 }
@@ -50,7 +55,12 @@ void Tile::setTown(Town *town)
 	town_ = town;
 }
 
-Unit *Tile::unit() const
+Unit *Tile::unit()
+{
+	return unit_;
+}
+
+const Unit *Tile::unit() const
 {
 	return unit_;
 }
