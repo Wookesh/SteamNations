@@ -9,7 +9,7 @@ Object::Object(Tile *tile, Type type, QObject *parent) : QObject(parent), owner_
 
 Object::~Object()
 {
-	
+	emit objectDestroyed(id_);
 }
 
 void Object::setTile(Tile *tile)

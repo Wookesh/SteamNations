@@ -44,6 +44,7 @@ protected:
 signals:
 	void ownerChanged();
 	void positionChanged();
+	void objectDestroyed(UID id);
 };
 
 #endif

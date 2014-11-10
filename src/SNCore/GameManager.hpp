@@ -51,6 +51,7 @@ private:
 	void setWinConditions();
 	
 public slots:
+	void removeObject(UID uid);
 	void startGame();
 	void checkIfWin();
 	void endTurn();

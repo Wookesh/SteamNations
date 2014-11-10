@@ -27,8 +27,6 @@ public:
 private:
 	QString name_;
 	Player *owner_;
-signals:
-	void townDestroyed();
 };
 
 #endif

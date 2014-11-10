@@ -48,8 +48,14 @@ void GameManager::addObject(UID uid, Object *object)
 {
 	objects_[uid] = object;
 	emit objectCreated(uid);
-	
+	connect(object, &Object::objectDestroyed, this, &GameManager::removeObject);
 }
+
+void GameManager::removeObject(UID uid)
+{
+	objects_.remove(uid);
+}
+
 
 Object *GameManager::object(UID uid)
 {

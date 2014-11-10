@@ -28,8 +28,6 @@ public:
 protected:
 	const Prototype *prototype_;
 	quint8 currentMoveRange_;
-signals:
-	void unitDestroyed();
 };
 
 #endif
