@@ -65,7 +65,7 @@ void SNScene::createTown(const Town *town)
 void SNScene::connectUnit(const Unit *unit, UnitGraphics *unitG)
 {
 	connect(unit, &Unit::positionChanged, [unitG](){unitG->updatePosition();});
-	connect(unit, &Unit::unitDestroyed, [this, unitG](){removeItem(unitG); delete unitG;});
+	connect(unit, &Object::objectDestroyed, [this, unitG](){removeItem(unitG); delete unitG;});
 }
 
 void SNScene::createSettler(const Settler *settler)

@@ -1,5 +1,7 @@
 #include "Settler.hpp"
 #include "SettlerPrototype.hpp"
+#include "Town.hpp"
+#include "Tile.hpp"
 
 Settler::Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent): Unit(tile, prototype, parent)
 {
@@ -11,20 +13,29 @@ Settler::~Settler()
 
 }
 
-bool Settler::canSettle() const
+bool Settler::canSettle(Tile * tile) const
 {
-	return false;
+	if(tile == tile_)
+		return true;
+	else
+		return false;
+	
 }
 
 bool Settler::settle()
 {
-	return canSettle();
+	createTown();
+	return true;
+	
 }
 
 
 Town *Settler::createTown()
 {
-	return nullptr;
+	Town * town = new Town(tile_);
+	tile_->setTown(town);
+	delete this;
+	return town;
 }
 
 void Settler::getAttacked (Unit *) {

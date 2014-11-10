@@ -104,7 +104,7 @@ QVector<Action *> GameManager::actions(const Object *objectC)
 				}
 				
 				if (unit->pType() == Prototype::Type::Settler)
-					if (dynamic_cast<Settler *>(unit)->canSettle())
+					if (dynamic_cast<Settler *>(unit)->canSettle(currTile))
 						unitActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 			}
 			return unitActions;

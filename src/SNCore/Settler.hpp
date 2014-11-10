@@ -12,7 +12,7 @@ public:
 	Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent = nullptr);
 	~Settler();
 	
-	bool canSettle() const;
+	bool canSettle(Tile *tile) const;
 	bool settle();
 	Town *createTown();
 	
