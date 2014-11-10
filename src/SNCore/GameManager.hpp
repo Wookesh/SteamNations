@@ -32,6 +32,7 @@ public:
 	void addObject(UID uid, Object *object);
 	const Object *object(UID uid) const;
 	
+	Object *object(UID uid);
 	QVector<Action *> actions(const Object *object);
 	
 protected:
@@ -48,7 +49,6 @@ private:
 	QHash<UID,Object *> objects_;
 	void setNextPlayer();
 	void setWinConditions();
-	Object *object(UID uid);
 	
 public slots:
 	void startGame();
