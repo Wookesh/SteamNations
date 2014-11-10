@@ -4,6 +4,7 @@
 
 Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, Type::Town, parent), name_(name)
 {
+	
 }
 
 Town::~Town()

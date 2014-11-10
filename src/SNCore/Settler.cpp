@@ -2,6 +2,7 @@
 #include "SettlerPrototype.hpp"
 #include "Town.hpp"
 #include "Tile.hpp"
+#include <QDebug>
 
 Settler::Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent): Unit(tile, prototype, parent)
 {
@@ -15,10 +16,10 @@ Settler::~Settler()
 
 bool Settler::canSettle(Tile * tile) const
 {
-	if(tile == tile_)
+	if(tile == tile_ && tile->town() == nullptr)
 		return true;
-	else
-		return false;
+	
+	return false;
 	
 }
 
@@ -34,6 +35,7 @@ Town *Settler::createTown()
 {
 	Town * town = new Town(tile_);
 	tile_->setTown(town);
+	tile_->setUnit(nullptr);
 	delete this;
 	return town;
 }

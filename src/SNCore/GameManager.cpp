@@ -86,29 +86,41 @@ QList< Player * > GameManager::players() const
 QVector<Action *> GameManager::actions(const Object *objectC)
 {
 	Object *objectN = object(objectC->id());
+	QVector<Action *> possibleActions;
 	switch(objectN->type()) {
+		case Object::Type::Town:
+		{
+			return possibleActions;
+		}
 		case Object::Type::Unit:
+		{
 			Unit *unit = dynamic_cast<Unit *>(objectN);
 			QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
-			QVector<Action *> unitActions;
 			for (Tile *currTile : tiles) {
 				if (unit->canMove(currTile))
-					unitActions.push_back(new MoveAction(unit, currTile));
+					possibleActions.push_back(new MoveAction(unit, currTile));
 				
 				if (unit->pType() == Prototype::Type::Soldier) {
 					if (dynamic_cast<Soldier *>(unit)->canAttack(currTile))
-						unitActions.push_back(new AttackAction(dynamic_cast<Soldier *>(unit), currTile->unit()));
+						possibleActions.push_back(new AttackAction(dynamic_cast<Soldier *>(unit), currTile->unit()));
 					
 					if (dynamic_cast<Soldier *>(unit)->canCapture(currTile))
-						unitActions.push_back(new CaptureAction(dynamic_cast<Soldier *>(unit), currTile->town()));
+						possibleActions.push_back(new CaptureAction(dynamic_cast<Soldier *>(unit), currTile->town()));
 				}
 				
 				if (unit->pType() == Prototype::Type::Settler)
 					if (dynamic_cast<Settler *>(unit)->canSettle(currTile))
-						unitActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
+						possibleActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 			}
-			return unitActions;
+			return possibleActions;
+		}
+		default:
+		{
+			return possibleActions;
+		}
+			
 	}
+	
 	
 	
 }

@@ -5,6 +5,7 @@
 #include "UnitGraphics.hpp"
 #include "../SNCore/Settler.hpp"
 #include "../SNCore/Soldier.hpp"
+#include <QDebug>
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
 	selectedObject_(nullptr), gameManager_(gameManager)
@@ -37,7 +38,8 @@ void SNScene::createObject(UID id)
 	
 	switch (object->type()) {
 		case Object::Type::Town: {
-			createTown(dynamic_cast<const Town *>(object));
+			
+			createTown(static_cast<const Town *>(object));
 			break;
 		}
 		case Object::Type::Unit: {
