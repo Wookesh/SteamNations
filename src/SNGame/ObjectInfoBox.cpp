@@ -14,16 +14,6 @@ ObjectInfoBox::~ObjectInfoBox()
 	
 }
 
-void ObjectInfoBox::setTown(const Town *town)
-{
-	setObject(town);
-}
-
-void ObjectInfoBox::setUnit(const Unit *unit)
-{
-	setObject(unit);
-}
-
 void ObjectInfoBox::setObject(const Object *object)
 {
 	nameDisplay_->setText(object->name());

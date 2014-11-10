@@ -11,8 +11,6 @@ public:
 	ObjectInfoBox(QWidget *parent = nullptr);
 	virtual ~ObjectInfoBox();
 	
-	void setUnit(const Unit *unit);
-	void setTown(const Town *town);
 	void setObject(const Object *object);
 	
 	virtual QSize minimumSizeHint() const;

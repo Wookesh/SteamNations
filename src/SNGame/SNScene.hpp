@@ -42,8 +42,7 @@ private:
 private slots:
 	void createObject(UID id);
 signals:
-	void selectedTown();
-	void selectedUnit();
+	void selected();
 };
 
 
