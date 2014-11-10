@@ -37,8 +37,10 @@ private:
 	void createSettler(const Settler *settler);
 	void createSoldier(const Soldier *soldier);
 	void createTile(const Tile *tile);
-	void createGraphicItems();
+	void createBoard();
 	void clearHighlight();
+private slots:
+	void createObject(UID id);
 signals:
 	void selectedTown();
 	void selectedUnit();
