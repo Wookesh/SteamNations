@@ -6,6 +6,7 @@
 #include <QResizeEvent>
 #include "NextTurnButton.hpp"
 #include "SNScene.hpp"
+#include "ObjectInfoBox.hpp"
 
 class GraphicInterface : public QWidget {
 Q_OBJECT
@@ -18,6 +19,10 @@ private:
 	NextTurnButton *nextTurn_;
 	GameView *gameView_;
 	SNScene *scene_;
+	ObjectInfoBox *infobox_;
+	
+	void createInterface();
+	void createConnections();
 };
 
 #endif
