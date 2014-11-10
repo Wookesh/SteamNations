@@ -47,9 +47,16 @@ Serial *GameManager::serial()
 void GameManager::addObject(UID uid, Object *object)
 {
 	objects_[uid] = object;
+	emit objectCreated(uid);
+	
 }
 
 Object *GameManager::object(UID uid)
+{
+	return objects_[uid];
+}
+
+const Object *GameManager::object(UID uid) const
 {
 	return objects_[uid];
 }
@@ -125,6 +132,7 @@ void GameManager::endTurn()
 {
 
 }
+
 
 int GameManager::currentTurn() const
 {

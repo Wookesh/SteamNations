@@ -30,7 +30,7 @@ public:
 	Serial *serial();
 	
 	void addObject(UID uid, Object *object);
-	Object *object(UID uid);
+	const Object *object(UID uid) const;
 	
 	QVector<Action *> actions(const Object *object);
 	
@@ -48,6 +48,7 @@ private:
 	QHash<UID,Object *> objects_;
 	void setNextPlayer();
 	void setWinConditions();
+	Object *object(UID uid);
 	
 public slots:
 	void startGame();
@@ -58,6 +59,7 @@ signals:
 	void gameInitialized();
 	void gameEnded();
 	void turnReady();
+	void objectCreated(UID uid);
 };
 
 #endif
