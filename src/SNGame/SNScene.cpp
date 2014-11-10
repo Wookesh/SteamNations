@@ -9,34 +9,51 @@
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
 	selectedObject_(nullptr), gameManager_(gameManager)
 {
-	createGraphicItems();
+	connect(gameManager_, &GameManager::objectCreated, this, &SNScene::createObject);
+	createBoard();
 }
 
 SNScene::~SNScene()
 {
-
+	
 }
 
-void SNScene::createGraphicItems()
+void SNScene::createBoard()
 {
 	Board *b = gameManager_->board();
 	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
 			createTile(*tile);
-			if ((*tile)->town() != nullptr)
-				createTown((*tile)->town());
-			
-			if ((*tile)->unit() != nullptr) {
-				switch ((*tile)->unit()->pType()) {
-					case Prototype::Type::Settler : {
-						createSettler(dynamic_cast<const Settler *>((*tile)->unit()));
-						break;
-					}
-					case Prototype::Type::Soldier : {
-						createSoldier(dynamic_cast<const Soldier *>((*tile)->unit()));
-						break;
-					}
+			for (const Object *object : (*tile)->getObjects())
+				createObject(object->id());
+	}
+}
+
+
+void SNScene::createObject(UID id)
+{
+	const Object *object = GameManager::get()->object(id);
+	if (object == nullptr)
+		return;
+	
+	switch (object->type()) {
+		case Object::Type::Town: {
+			createTown(dynamic_cast<const Town *>(object));
+			break;
+		}
+		case Object::Type::Unit: {
+			const Unit *unit = dynamic_cast<const Unit *>(object);
+			switch (unit->pType()) {
+				case Prototype::Type::Settler : {
+					createSettler(dynamic_cast<const Settler *>(unit));
+					break;
+				}
+				case Prototype::Type::Soldier : {
+					createSoldier(dynamic_cast<const Soldier *>(unit));
+					break;
 				}
 			}
+			break;
+		}
 	}
 }
 
@@ -48,6 +65,7 @@ void SNScene::createTown(const Town *town)
 void SNScene::connectUnit(const Unit *unit, UnitGraphics *unitG)
 {
 	connect(unit, &Unit::positionChanged, [unitG](){unitG->updatePosition();});
+	connect(unit, &Unit::unitDestroyed, [this, unitG](){removeItem(unitG); delete unitG;});
 }
 
 void SNScene::createSettler(const Settler *settler)
@@ -95,6 +113,7 @@ void SNScene::select(const Tile *tile)
 			}
 		selectedObject_ = nullptr;
 		clearHighlight();
+		possibleActions_.clear();
 		update();
 	}
 }
