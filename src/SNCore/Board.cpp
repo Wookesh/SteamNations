@@ -1,11 +1,17 @@
 #include <algorithm>
 
 #include "Board.hpp"
+#include "Settler.hpp"
+#include "SettlerPrototype.hpp"
 
 Board::Board(unsigned int width, unsigned int height): height_(height), width_(width) {
 	for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j) {
 			Tile *tile = new Tile(j, i);
+			if (j == 25 && i == 25) {
+				Settler *settler = new Settler(tile, new SettlerPrototype("Settler", 3, 0));
+				tile->setUnit(settler);
+			}
 			tiles_.push_back(tile);
 		}
 }

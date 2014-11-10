@@ -2,6 +2,7 @@
 #define ACTION_HPP
 
 #include <QtGlobal>
+#include <QMap>
 
 class Object;
 class Tile;
@@ -16,6 +17,8 @@ public:
 		Capture,
 		Settle
 	};
+	
+	static QString name(Type type);
 	
 	Action(Object *mainObject, Tile *tile, Type type);
 	~Action();

@@ -4,3 +4,4 @@ build
 *.swp
 *.swo
 moc_*
+*.user

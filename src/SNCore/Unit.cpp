@@ -52,8 +52,8 @@ quint8 Unit::currentMoveRange() const
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange() &&
-		(GameManager::get()->currentPlayer() == owner()))
+		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange()/* &&
+		(GameManager::get()->currentPlayer() == owner())*/)
 		return true;
 	return false;
 }
@@ -62,9 +62,11 @@ bool Unit::canMove(const Tile *tile) const
 bool Unit::move(Tile *tile)
 {
 	if (canMove(tile)) {
-		tile_->setUnit(this);
-		return true;
+		tile_->setUnit(nullptr);
+		tile->setUnit(this);
+		setTile(tile);
 		emit positionChanged();
+		return true;
 	}
 	return false;
 }

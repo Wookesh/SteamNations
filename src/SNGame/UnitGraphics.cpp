@@ -4,21 +4,21 @@
 #include <QPainter>
 
 UnitGraphics::UnitGraphics(const Unit *unit, QGraphicsItem *parent) :  
-	QGraphicsRectItem(coordToPos(unit->tile()->position()).x() - SIZE / 2,
-	coordToPos(unit->tile()->position()).y() - SIZE / 2 , SIZE, SIZE, parent) , unit_(unit)
+	QGraphicsRectItem( -SIZE / 2, -SIZE / 2, SIZE, SIZE, parent), unit_(unit)
 {
+	setPos(coordToPos(unit->tile()->position()).x(), coordToPos(unit->tile()->position()).y());
 	setZValue(2);
 }
 
 UnitGraphics::~UnitGraphics()
 {
-
+	
 }
 
 void UnitGraphics::updatePosition()
 {
-	setPos(coordToPos(unit_->tile()->position().x() - SIZE / 2,
-		coordToPos(unit_->tile()->position()).y() - SIZE / 2));
+	setPos(coordToPos(unit_->tile()->position()).x(),
+		coordToPos(unit_->tile()->position()).y());
 	update();
 }
 

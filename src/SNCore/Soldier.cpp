@@ -10,7 +10,7 @@ Soldier::Soldier(Tile* tile, const Prototype* prototype, QObject* parent): Unit(
 
 bool Soldier::canAttack(Tile* currTile)
 {
-	if((GameManager::get()->currentPlayer() == owner()) &&
+	if(/*(GameManager::get()->currentPlayer() == owner()) &&*/
 		(currTile->unit() != nullptr) &&
 		(currTile->unit()->owner() != owner()))
 		return true;
@@ -29,7 +29,7 @@ bool Soldier::attack(Unit* unit)
 
 bool Soldier::canCapture(Tile* currTile)
 {	
-	if((GameManager::get()->currentPlayer() == owner()) &&
+	if(/*(GameManager::get()->currentPlayer() == owner()) &&*/
 		(currTile->town() != nullptr) &&
 		(currTile->town()->owner() != owner()))
 		return true;

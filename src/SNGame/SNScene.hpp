@@ -5,7 +5,12 @@
 #include <QMap>
 #include "../SNCore/Board.hpp"
 #include "../SNCore/GameManager.hpp"
-#include "TileGraphics.hpp"
+
+class Settler;
+class Soldier;
+class Unit;
+class TileGraphics;
+class UnitGraphics;
 
 class SNScene : public QGraphicsScene {
 Q_OBJECT
@@ -16,16 +21,24 @@ public:
 	void setBoard(Board *board);
 	
 	void select(const Tile *tile);
-	const Object *selectedObject();
+	const Object *selectedObject() const;
 protected:
 	
 private:
-	QMap<const Tile *, TileGraphics *> tileToGraphics_;
+	QMap<const Tile *, TileGraphics *> tileToItem_;
+	QMap<const Unit *, UnitGraphics *> unitToItem_;
 	const Object *selectedObject_;
-	QList<const Action *> possibleActions_;
+	QVector<Action *> possibleActions_;
 	GameManager *gameManager_;
 	
 	void highlightActions();
+	void connectUnit(const Unit *unit, UnitGraphics *unitG);
+	void createTown(const Town *town);
+	void createSettler(const Settler *settler);
+	void createSoldier(const Soldier *soldier);
+	void createTile(const Tile *tile);
+	void createGraphicItems();
+	void clearHighlight();
 signals:
 	void selectedTown();
 	void selectedUnit();

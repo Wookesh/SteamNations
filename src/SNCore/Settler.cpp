@@ -13,7 +13,7 @@ Settler::~Settler()
 
 bool Settler::canSettle() const
 {
-	return true;
+	return false;
 }
 
 bool Settler::settle()

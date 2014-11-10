@@ -72,10 +72,10 @@ QList< Player * > GameManager::players() const
 
 QVector<Action *> GameManager::actions(const Object *objectC)
 {
-	switch(objectC->type()) {
+	Object *objectN = object(objectC->id());
+	switch(objectN->type()) {
 		case Object::Type::Unit:
-			Object *objectN = object(objectC->id());
-			Unit * unit = dynamic_cast<Unit *>(objectN);
+			Unit *unit = dynamic_cast<Unit *>(objectN);
 			QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
 			QVector<Action *> unitActions;
 			for (Tile *currTile : tiles) {

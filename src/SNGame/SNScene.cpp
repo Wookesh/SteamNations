@@ -1,24 +1,80 @@
 #include "SNScene.hpp"
 #include "SNHelpers.hpp"
+#include "TileGraphics.hpp"
 #include "TownGraphics.hpp"
 #include "UnitGraphics.hpp"
+#include "../SNCore/Settler.hpp"
+#include "../SNCore/Soldier.hpp"
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
-	gameManager_(gameManager)
+	selectedObject_(nullptr), gameManager_(gameManager)
 {
-	Board *b = gameManager_->board();
-	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
-			addItem(new TileGraphics(*tile));
-			if ((*tile)->town() != nullptr)
-				addItem(new TownGraphics((*tile)->town()));
-			if ((*tile)->unit() != nullptr)
-				addItem(new UnitGraphics((*tile)->unit()));
-	}
+	createGraphicItems();
 }
 
 SNScene::~SNScene()
 {
 
+}
+
+void SNScene::createGraphicItems()
+{
+	Board *b = gameManager_->board();
+	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
+			createTile(*tile);
+			if ((*tile)->town() != nullptr)
+				createTown((*tile)->town());
+			
+			if ((*tile)->unit() != nullptr) {
+				switch ((*tile)->unit()->pType()) {
+					case Prototype::Type::Settler : {
+						createSettler(dynamic_cast<const Settler *>((*tile)->unit()));
+						break;
+					}
+					case Prototype::Type::Soldier : {
+						createSoldier(dynamic_cast<const Soldier *>((*tile)->unit()));
+						break;
+					}
+				}
+			}
+	}
+}
+
+void SNScene::createTown(const Town *town)
+{
+	addItem(new TownGraphics(town));
+}
+
+void SNScene::connectUnit(const Unit *unit, UnitGraphics *unitG)
+{
+	connect(unit, &Unit::positionChanged, [unitG](){unitG->updatePosition();});
+}
+
+void SNScene::createSettler(const Settler *settler)
+{
+	UnitGraphics *unitG = new UnitGraphics(settler);
+	addItem(unitG);
+	connectUnit(settler, unitG);
+}
+
+void SNScene::createSoldier(const Soldier *soldier)
+{
+	UnitGraphics *unitG = new UnitGraphics(soldier);
+	addItem(unitG);
+	connectUnit(soldier, unitG);
+}
+
+void SNScene::createTile(const Tile *tile)
+{
+	TileGraphics *tileG = new TileGraphics(tile);
+	tileToItem_[tile] = tileG;
+	addItem(tileG);
+}
+
+
+const Object *SNScene::selectedObject() const
+{
+	return selectedObject_;
 }
 
 void SNScene::select(const Tile *tile)
@@ -27,22 +83,39 @@ void SNScene::select(const Tile *tile)
 		QList<const Object *> objects = tile->getObjects();
 		if (objects.size() == 1) {
 			selectedObject_ = objects.first();
-			//highlightActions(game_->actions(selectedObject_));
+			qDebug() << "Selected Object :" << selectedObject_->name();
+			possibleActions_ = gameManager_->actions(selectedObject_);
+			highlightActions();
 		}
 	} else {
-		//for (SN::Action *action : possibleActions_)
-			//if (action.finalTile == tile)
-				//action.perform;
+		for (Action *action : possibleActions_)
+			if (action->tile() == tile) {
+				qDebug() << "Performing Action" << Action::name(action->type());
+				qDebug() << "\tWith result :" << action->perform();
+			}
+		selectedObject_ = nullptr;
+		clearHighlight();
+		update();
 	}
 }
 
 void SNScene::setBoard(Board *board)
 {
-
+	
 }
 
 void SNScene::highlightActions()
 {
-	
+	for (Action *action : possibleActions_) {
+		tileToItem_[action->tile()]->highlight(action->type());
+	}
 }
+
+void SNScene::clearHighlight()
+{
+	for (Action *action : possibleActions_) {
+		tileToItem_[action->tile()]->highlight(Action::Type::None);
+	}
+}
+
 
