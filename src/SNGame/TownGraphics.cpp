@@ -28,5 +28,4 @@ void TownGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	painter->setPen(pen);
 	painter->drawText(QRect(boundingRect().x() + SIZE / 4, boundingRect().y() + SIZE / 4,
 		SIZE / 2, SIZE / 2), town_->name());
-	//QGraphicsRectItem::paint(painter, option, widget);
 }

@@ -54,7 +54,7 @@ QList< Player * > GameManager::players() const
 	return players_;
 }
 
-QVector<Action *> &GameManager::actions(Object *object)
+QVector<Action *> GameManager::actions(const Object *object)
 {
 	switch(object->type()) {
 		case Object::Type::Unit:
@@ -76,7 +76,6 @@ QVector<Action *> &GameManager::actions(Object *object)
 				if (unit->pType() == Prototype::Type::Settler)
 					if (dynamic_cast<Settler *>(unit)->canSettle())
 						unitActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
-				
 			}
 			return unitActions;
 	}

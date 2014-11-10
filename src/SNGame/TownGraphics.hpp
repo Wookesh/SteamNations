@@ -5,7 +5,6 @@
 #include "../SNCore/Town.hpp"
 
 class TownGraphics : public QGraphicsRectItem {
-
 public:
 	TownGraphics(const Town *town, QGraphicsItem *parent = nullptr);
 	~TownGraphics();

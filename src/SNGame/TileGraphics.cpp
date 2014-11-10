@@ -41,7 +41,7 @@ TileGraphics::~TileGraphics()
 
 void TileGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
- 	qDebug() << "mousePressEvent";
+	qDebug() << "mousePressEvent";
 // 	if (event->button() == Qt::LeftButton)
 // 		dynamic_cast<SNScene *>(scene())->select(tile_);
 	QGraphicsItem::mousePressEvent(event);

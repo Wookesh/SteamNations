@@ -26,7 +26,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
-	QVector<Action *> &actions(Object *object);
+	QVector<Action *> actions(const Object *object);
 	
 protected:
 	GameManager(QObject *parent = nullptr);
