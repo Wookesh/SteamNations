@@ -1,7 +1,8 @@
 #include "Object.hpp"
 #include "Tile.hpp"
+#include "GameManager.hpp"
 
-Object::Object(Tile *tile, Type type, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile), type_(type)
+Object::Object(Tile *tile, Type type, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile), type_(type), id_(GameManager::get()->serial()->next())
 {
 	
 }
@@ -46,8 +47,13 @@ void Object::setType(Type type)
 	type_ = type;
 }
 
-Object::Type Object::type()
+Object::Type Object::type() const
 {
 	return type_;
+}
+
+UID Object::id() const
+{
+	return id_;
 }
 

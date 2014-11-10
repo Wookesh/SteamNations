@@ -29,7 +29,7 @@ void GameManager::clean() {
 	}
 }
 
-GameManager::GameManager(QObject *parent): QObject(parent)
+GameManager::GameManager(QObject *parent): QObject(parent), serial_(new Serial())
 {
 
 }
@@ -38,6 +38,22 @@ GameManager::~GameManager()
 {
 
 }
+
+Serial *GameManager::serial()
+{
+	return serial_;
+}
+
+void GameManager::addObject(UID uid, Object *object)
+{
+	objects_[uid] = object;
+}
+
+Object *GameManager::object(UID uid)
+{
+	return objects_[uid];
+}
+
 
 Board *GameManager::board() const
 {
@@ -54,11 +70,12 @@ QList< Player * > GameManager::players() const
 	return players_;
 }
 
-QVector<Action *> GameManager::actions(const Object *object)
+QVector<Action *> GameManager::actions(const Object *objectC)
 {
-	switch(object->type()) {
+	switch(objectC->type()) {
 		case Object::Type::Unit:
-			Unit * unit = dynamic_cast<Unit *>(object);
+			Object *objectN = object(objectC->id());
+			Unit * unit = dynamic_cast<Unit *>(objectN);
 			QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
 			QVector<Action *> unitActions;
 			for (Tile *currTile : tiles) {
@@ -79,6 +96,8 @@ QVector<Action *> GameManager::actions(const Object *object)
 			}
 			return unitActions;
 	}
+	
+	
 }
 
 

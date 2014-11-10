@@ -6,6 +6,7 @@
 #include "Board.hpp"
 #include "Object.hpp"
 #include "Action.hpp"
+#include "Serial.hpp"
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -26,6 +27,11 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
+	Serial *serial();
+	
+	void addObject(UID uid, Object *object);
+	Object *object(UID uid);
+	
 	QVector<Action *> actions(const Object *object);
 	
 protected:
@@ -37,7 +43,9 @@ private:
 	QList<Player *> players_;
 	Player *currentPlayer_;
 	Board *board_;
+	Serial *serial_;
 	int currentTurn_;
+	QHash<UID,Object *> objects_;
 	void setNextPlayer();
 	void setWinConditions();
 	

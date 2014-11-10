@@ -2,6 +2,7 @@
 #define OBJECT_HPP
 
 #include <QObject>
+#include "Serial.hpp"
 
 class Player;
 class Tile;
@@ -25,10 +26,12 @@ public:
 	const Tile *tile() const;
 	void setTile(Tile *tile);
 	
-	Type type();
+	Type type() const;
 	void setType(Type type);
 	
 	virtual QString name() const = 0;
+	
+	UID id() const;
 	
 	virtual void updateBefore() = 0;
 	virtual void updateAfter() = 0;
@@ -36,6 +39,7 @@ protected:
 	Player *owner_;
 	Tile *tile_;
 	Type type_;
+	UID id_;
 	
 signals:
 	void ownerChanged();
