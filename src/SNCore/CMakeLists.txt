@@ -3,6 +3,7 @@ add_library(SNCore
 	AttackAction.cpp
 	MoveAction.cpp
 	SettleAction.cpp
+	CreateUnitAction.cpp
 	CaptureAction.cpp
 	Player.cpp
 	Prototype.cpp

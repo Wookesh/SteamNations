@@ -6,6 +6,8 @@
 #include "MoveAction.hpp"
 #include "CaptureAction.hpp"
 #include "SettleAction.hpp"
+#include "CreateUnitAction.hpp"
+#include "Town.hpp"
 
 GameManager *GameManager::instance = 0;
 
@@ -90,6 +92,13 @@ QVector<Action *> GameManager::actions(const Object *objectC)
 	switch(objectN->type()) {
 		case Object::Type::Town:
 		{
+			Town *town = dynamic_cast<Town *>(objectN);
+			//przydałaby się jakaś lista typów żeby fora zrobić jak będzie więcej jednostek
+			if(town->canRecruit(Prototype::Type::Settler))
+				possibleActions.push_back(new CreateUnitAction(town, Prototype::Type::Settler));
+// 			if(town->canRecruit(Prototype::Type::Soldier))
+// 				possibleActions.push_back(new CreateUnitAction(town, Prototype::Type::Soldier));
+// 			
 			return possibleActions;
 		}
 		case Object::Type::Unit:

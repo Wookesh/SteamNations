@@ -22,6 +22,8 @@ public:
 	
 	virtual QString name() const override;
 	
+	bool canRecruit(Prototype::Type type);
+	
 	Unit *createUnit(Prototype::Type type);
 	void getCaptured(Player *player);
 private:
