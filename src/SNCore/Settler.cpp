@@ -43,3 +43,4 @@ Town *Settler::createTown()
 void Settler::getAttacked (Unit *) {
 	
 }
+

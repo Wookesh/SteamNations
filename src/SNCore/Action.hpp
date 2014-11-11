@@ -15,7 +15,8 @@ public:
 		Move,
 		Attack,
 		Capture,
-		Settle
+		Settle,
+		CreateUnit
 	};
 	
 	static QString name(Type type);

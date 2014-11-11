@@ -1,6 +1,8 @@
 #include "Player.hpp"
 #include "Town.hpp"
 #include "Tile.hpp"
+#include "Unit.hpp"
+#include <QDebug>
 
 Town::Town(Tile *tile, const QString &name, QObject *parent): Object(tile, Type::Town, parent), name_(name)
 {
@@ -31,6 +33,7 @@ void Town::updateAfter()
 
 Unit *Town::createUnit(Prototype::Type type)
 {
+	qDebug() << "leci Town::createUnit";
 	Unit *newUnit = owner_->createUnit(type, tile_);
 	return newUnit;
 }
@@ -38,4 +41,9 @@ Unit *Town::createUnit(Prototype::Type type)
 void Town::getCaptured(Player *player)
 {
 	player->obtainTown(this);
+}
+
+bool Town::canRecruit(Prototype::Type type)
+{
+	return tile_->unit() == nullptr;
 }

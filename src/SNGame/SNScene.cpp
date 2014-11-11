@@ -106,6 +106,7 @@ void SNScene::select(const Tile *tile)
 			emit selected();
 			qDebug() << "Selected Object :" << selectedObject_->name();
 			possibleActions_ = gameManager_->actions(selectedObject_);
+			//qDebug() << possibleActions_.size();
 			highlightActions();
 		}
 	} else {

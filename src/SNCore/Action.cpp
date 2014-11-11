@@ -9,7 +9,8 @@ QString Action::name(Action::Type type)
 		{Type::Capture, "Capture"},
 		{Type::Move, "Move"},
 		{Type::None, "None"},
-		{Type::Settle, "Settle"}
+		{Type::Settle, "Settle"},
+		{Type::CreateUnit, "CreateUnit"}
 	});
 	return map[type];
 }

@@ -23,7 +23,8 @@ QColor TileGraphics::highlightColor(Action::Type type)
 		{Action::Type::Capture, Qt::magenta},
 		{Action::Type::Move, Qt::cyan},
 		{Action::Type::None, Qt::white},
-		{Action::Type::Settle, Qt::yellow}
+		{Action::Type::Settle, Qt::yellow},
+		{Action::Type::CreateUnit, Qt::darkYellow}
 	});
 	return map[type];
 }
