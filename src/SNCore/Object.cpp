@@ -2,7 +2,7 @@
 #include "Tile.hpp"
 #include "GameManager.hpp"
 
-Object::Object(Tile *tile, Type type, QObject *parent) : QObject(parent), owner_(nullptr), tile_(tile), type_(type), id_(GameManager::get()->serial()->next())
+Object::Object(Tile *tile, Type type, Player *owner, QObject *parent) : QObject(parent), owner_(owner), tile_(tile), type_(type), id_(GameManager::get()->serial()->next())
 {
 	GameManager::get()->addObject(id(), this);
 }

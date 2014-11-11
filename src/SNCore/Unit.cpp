@@ -5,8 +5,8 @@
 #include "Object.hpp"
 
 
-Unit::Unit(Tile *tile, const Prototype *prototype, QObject *parent) : 
-	Object(tile, Type::Unit, parent),
+Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
+    Object(tile, Type::Unit, owner, parent),
 	prototype_(prototype),
 	currentMoveRange_(prototype->moveRange())
 {
@@ -52,8 +52,8 @@ quint8 Unit::currentMoveRange() const
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange()/* &&
-		(GameManager::get()->currentPlayer() == owner())*/)
+        GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange() &&
+        (GameManager::get()->currentPlayer() == owner()))
 		return true;
 	return false;
 }

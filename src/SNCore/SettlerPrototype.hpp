@@ -12,7 +12,7 @@ public:
 	SettlerPrototype(const QString &name, int moveRange, int cost);
 	~SettlerPrototype();
 	
-	virtual Unit *createUnit(Tile *tile) override;
+    virtual Unit *createUnit(Tile *tile, Player *owner) override;
 private:
 };
 

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "Serial.hpp"
+#include "Player.hpp"
 
 class Player;
 class Tile;
@@ -15,7 +16,7 @@ public:
 		Unit
 	};
 	
-	Object(Tile *tile, Type type, QObject *parent = nullptr);
+    Object(Tile *tile, Type type, Player *owner, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner();

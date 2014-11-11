@@ -12,8 +12,8 @@ SettlerPrototype::~SettlerPrototype()
 
 }
 
-Unit *SettlerPrototype::createUnit(Tile *tile) 
+Unit *SettlerPrototype::createUnit(Tile *tile, Player *owner)
 {
-	Settler *settler = new Settler(tile, this);
+    Settler *settler = new Settler(tile, this, owner);
 	return settler;
 }

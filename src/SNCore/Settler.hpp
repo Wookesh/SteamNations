@@ -9,7 +9,7 @@ class Town;
 class Settler : public Unit {
 Q_OBJECT
 public:
-	Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent = nullptr);
+    Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent = nullptr);
 	~Settler();
 	
 	bool canSettle(Tile *tile) const;

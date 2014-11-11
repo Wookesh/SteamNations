@@ -3,6 +3,7 @@
 
 #include <QString>
 
+class Player;
 class Unit;
 class Tile;
 
@@ -17,7 +18,7 @@ public:
 	Prototype(Type type, const QString &name, int moveRange, int cost);
 	virtual ~Prototype();
 	
-	virtual Unit *createUnit(Tile *tile) = 0;
+    virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
 	
 	Type type() const;
 	

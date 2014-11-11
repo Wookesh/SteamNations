@@ -8,6 +8,7 @@
 #include "SettleAction.hpp"
 #include "CreateUnitAction.hpp"
 #include "Town.hpp"
+#include "SettlerPrototype.hpp"
 
 GameManager *GameManager::instance = 0;
 
@@ -77,7 +78,16 @@ Board *GameManager::board() const
 
 void GameManager::setBoard(Board *board)
 {
-	board_ = board;
+    board_ = board;
+    Player *andrzej = new Player("Andrzej");
+    Player *zbyszek = new Player("Zbyszek");
+    QList<Player *> lista;
+    lista.push_back(andrzej);
+    lista.push_back(zbyszek);
+    setPlayers(lista);
+    currentPlayer_ = andrzej;
+    Settler *settler = new Settler(board_->getTile(25,25), new SettlerPrototype("Settler", 3, 0), currentPlayer_);
+    board->getTile(25, 25)->setUnit(settler);
 }
 
 QList< Player * > GameManager::players() const
@@ -145,7 +155,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 
 void GameManager::setPlayers(QList< Player * > &players)
 {
-
+    players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
 }
 
 void GameManager::initGame()

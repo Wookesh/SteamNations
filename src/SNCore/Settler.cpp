@@ -4,7 +4,7 @@
 #include "Tile.hpp"
 #include <QDebug>
 
-Settler::Settler(Tile *tile, const SettlerPrototype *prototype, QObject *parent): Unit(tile, prototype, parent)
+Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent): Unit(tile, prototype, owner, parent)
 {
 
 }
@@ -33,7 +33,7 @@ bool Settler::settle()
 
 Town *Settler::createTown()
 {
-	Town * town = new Town(tile_);
+    Town * town = new Town(tile_, owner_);
 	tile_->setTown(town);
 	tile_->setUnit(nullptr);
 	delete this;

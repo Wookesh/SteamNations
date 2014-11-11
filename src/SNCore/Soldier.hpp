@@ -9,7 +9,7 @@ class Town;
 class Soldier : public Unit {
 Q_OBJECT
 public:
-	Soldier(Tile *tile, const Prototype *prototype, QObject *parent = nullptr);
+    Soldier(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
 	
 	bool canCapture(Tile *currTile);
 	bool capture(Town *town);
