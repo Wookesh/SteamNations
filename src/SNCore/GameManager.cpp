@@ -101,6 +101,13 @@ QVector<Action *> GameManager::objectActions(const Object *objectC)
 			
 			return possibleActions;
 		}
+		case Object::Type::Unit:
+		{
+			Unit *unit = dynamic_cast<Unit *>(objectN);
+			if (unit->pType() == Prototype::Type::Settler)
+				if (dynamic_cast<Settler *>(unit)->canSettle(unit->tile()))
+					possibleActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
+		}
 		default:
 		{
 			return possibleActions;
@@ -128,10 +135,6 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 					if (dynamic_cast<Soldier *>(unit)->canCapture(currTile))
 						possibleActions.push_back(new CaptureAction(dynamic_cast<Soldier *>(unit), currTile->town()));
 				}
-				
-				if (unit->pType() == Prototype::Type::Settler)
-					if (dynamic_cast<Settler *>(unit)->canSettle(currTile))
-						possibleActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 			}
 			return possibleActions;
 		}
