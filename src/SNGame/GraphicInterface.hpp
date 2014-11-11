@@ -17,6 +17,7 @@ protected:
 	void resizeEvent(QResizeEvent *event);
 private:
 	NextTurnButton *nextTurn_;
+	QPushButton *exitButton_;
 	GameView *gameView_;
 	SNScene *scene_;
 	ObjectInfoBox *infobox_;
