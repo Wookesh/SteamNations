@@ -8,8 +8,7 @@ Board::Board(unsigned int width, unsigned int height): height_(height), width_(w
     for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j) {
 			Tile *tile = new Tile(j, i);
-
-            tiles_.push_back(tile);
+			tiles_.push_back(tile);
 		}
 }
 

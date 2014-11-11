@@ -18,6 +18,7 @@ ObjectInfoBox::ObjectInfoBox(QWidget *parent) : QWidget(parent), displayed_(0)
 		ActionButton *button =  new ActionButton(type, this);
 		actionButtons_.insert(type, button);
 		connect(button, &ActionButton::clicked, this, &ObjectInfoBox::hideAll);
+		connect(button, &ActionButton::performed, this, &ObjectInfoBox::actionPerformed);
 	}
 }
 
@@ -136,8 +137,10 @@ void ActionButton::perform()
 	if (actions_.empty())
 		return;
 	
-	if (actions_.size() == 1)
+	if (actions_.size() == 1) {
 		actions_.first()->perform();
+		emit performed();
+	}
 }
 
 void ActionButton::addAction(Action *action)
@@ -154,10 +157,12 @@ void ActionButton::addAction(Action *action)
 		setMenu(new QMenu(Action::name(type_), this));
 		QAction *menuAction = menu()->addAction(Action::name(type_));
 		connect(menuAction, &QAction::triggered, [this](){actions_.first()->perform();});
+		connect(menuAction, &QAction::triggered, this, &ActionButton::performed);
 	}
 	
 	QAction *menuAction = menu()->addAction(Action::name(type_));
 	connect(menuAction, &QAction::triggered, [action](){action->perform();});
+	connect(menuAction, &QAction::triggered, this, &ActionButton::performed);
 }
 
 void ActionButton::clear()
@@ -165,6 +170,10 @@ void ActionButton::clear()
 	actions_.clear();
 	hide();
 	setDisabled(true);
+	if (menu() != nullptr) {
+		delete menu();
+		setMenu(nullptr);
+	}
 }
 
 

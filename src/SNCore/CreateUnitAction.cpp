@@ -16,7 +16,7 @@ bool CreateUnitAction::perform()
 	return unit != nullptr;
 }
 
-Prototype::Type CreateUnitAction::type()
+Prototype::Type CreateUnitAction::pType()
 {
 	return type_;
 }

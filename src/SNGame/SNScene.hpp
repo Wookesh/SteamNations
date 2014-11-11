@@ -41,8 +41,12 @@ private:
 	void createTile(const Tile *tile);
 	void createBoard();
 	void clearHighlight();
+	void getActions();
+	void clearActions();
 private slots:
 	void createObject(UID id);
+public slots:
+	void clearSelect();
 signals:
 	void selectionUpdate();
 	void noSelection();

@@ -102,28 +102,50 @@ const QVector<Action *> &SNScene::objectActions() const
 	return objectActions_;
 }
 
+void SNScene::getActions()
+{
+	qDebug() << "Selected Object :" << selectedObject_->name();
+	mapActions_ = gameManager_->mapActions(selectedObject_);
+	objectActions_ = gameManager_->objectActions(selectedObject());
+	highlightActions();
+	emit selectionUpdate();
+}
+
+void SNScene::clearActions()
+{
+	clearHighlight();
+	mapActions_.clear();
+	update();
+}
+
+void SNScene::clearSelect()
+{
+	selectedObject_ = nullptr;
+	clearActions();
+	emit noSelection();
+}
+
+
 void SNScene::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
 		QList<const Object *> objects = tile->getObjects();
-		if (objects.size() == 1) {
+		if (objects.size() == 0) {
+			emit noSelection();
+		} else if (objects.size() == 1) {
 			selectedObject_ = objects.first();
-			qDebug() << "Selected Object :" << selectedObject_->name();
-			mapActions_ = gameManager_->mapActions(selectedObject_);
-			objectActions_ = gameManager_->objectActions(selectedObject());
-			highlightActions();
-			emit selectionUpdate();
+			getActions();
 		}
 	} else {
 		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
 				qDebug() << "Performing Action" << Action::name(action->type());
 				qDebug() << "\tWith result :" << action->perform();
+				clearActions();
+				getActions();
+				return;
 			}
-		selectedObject_ = nullptr;
-		clearHighlight();
-		mapActions_.clear();
-		update();
+		clearSelect();
 	}
 }
 

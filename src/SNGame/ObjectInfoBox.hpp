@@ -31,6 +31,8 @@ private:
 	Action::Type type_;
 private slots:
 	void perform();
+signals:
+	void performed();
 };
 
 
@@ -59,6 +61,8 @@ private:
 	void displayButton(ActionButton *button);
 private slots:
 	void hideAll();
+signals:
+	void actionPerformed();
 };
 
 

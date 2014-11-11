@@ -25,9 +25,13 @@ void GraphicInterface::createInterface()
 	connect(exitButton_, &QPushButton::clicked, qApp, &QApplication::exit);
 	nextTurn_ = new NextTurnButton(gameView_);
 	connect(nextTurn_, &NextTurnButton::clicked, GameManager::get(), &GameManager::endTurn);
+	connect(nextTurn_, &NextTurnButton::clicked, scene_, &SNScene::clearSelect);
+// 	connect(nextTurn_, &NextTurnButton::clicked, [this](){gameView_->setInteractive(false);});
+// 	connect(GameManager::get(), &GameManager::turnReady, [this](){gameView_->setInteractive(true);});
 	infobox_ = new ObjectInfoBox(gameView_);
 	connect(scene_, &SNScene::selectionUpdate, this, &GraphicInterface::displayInfo);
 	connect(scene_, &SNScene::noSelection, infobox_, &ObjectInfoBox::hide);
+	connect(infobox_, &ObjectInfoBox::actionPerformed, scene_, &SNScene::clearSelect);
 }
 
 void GraphicInterface::displayInfo()
