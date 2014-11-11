@@ -112,7 +112,7 @@ void SNScene::select(const Tile *tile)
 			mapActions_ = gameManager_->mapActions(selectedObject_);
 			objectActions_ = gameManager_->objectActions(selectedObject());
 			highlightActions();
-			emit selected();
+			emit selectionUpdate();
 		}
 	} else {
 		for (Action *action : mapActions_)

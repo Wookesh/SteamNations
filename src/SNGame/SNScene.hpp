@@ -44,7 +44,8 @@ private:
 private slots:
 	void createObject(UID id);
 signals:
-	void selected();
+	void selectionUpdate();
+	void noSelection();
 };
 
 

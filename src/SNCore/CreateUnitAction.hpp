@@ -11,6 +11,7 @@ public:
 	CreateUnitAction(Town *town, Prototype::Type type);
 	
 	virtual bool perform();
+	Prototype::Type type();
 protected:
 	Prototype::Type type_;
 };

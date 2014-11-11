@@ -16,3 +16,7 @@ bool CreateUnitAction::perform()
 	return unit != nullptr;
 }
 
+Prototype::Type CreateUnitAction::type()
+{
+	return type_;
+}
