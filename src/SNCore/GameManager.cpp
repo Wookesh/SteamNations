@@ -165,11 +165,11 @@ void GameManager::endGame()
 
 void GameManager::endTurn()
 {
-    this->currentPlayer_->updateAfter();
-    this->setNextPlayer();
-    this->currentPlayer_->updateBefore();
-    this->currentTurn_++;
-    this->turnReady();
+    currentPlayer_->updateAfter();
+    setNextPlayer();
+    currentPlayer_->updateBefore();
+    currentTurn_++;
+    turnReady();
 }
 
 
@@ -185,17 +185,15 @@ Player *GameManager::currentPlayer() const
 
 void GameManager::setNextPlayer()
 {
-    auto it = this->players_.begin();
-    while ((*it)->name() != this->currentPlayer()->name())
-    {
+    QList<Player *>::iterator it = players_.begin();
+    while ((*it) != currentPlayer())
         it++;
-    }
+
     it++;
-    if (it == this->players_.end())
-    {
-        it = this->players_.begin();
-    }
-    this->currentPlayer_ = *it;
+    if (it == players_.end())
+        it = players_.begin();
+
+    currentPlayer_ = *it;
 }
 
 void GameManager::checkIfWin()
