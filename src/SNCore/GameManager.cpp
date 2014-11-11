@@ -165,7 +165,11 @@ void GameManager::endGame()
 
 void GameManager::endTurn()
 {
-
+    this->currentPlayer_->updateAfter();
+    this->setNextPlayer();
+    this->currentPlayer_->updateBefore();
+    this->currentTurn_++;
+    this->turnReady();
 }
 
 
@@ -181,7 +185,17 @@ Player *GameManager::currentPlayer() const
 
 void GameManager::setNextPlayer()
 {
-
+    auto it = this->players_.begin();
+    while ((*it)->name() != this->currentPlayer()->name())
+    {
+        it++;
+    }
+    it++;
+    if (it == this->players_.end())
+    {
+        it = this->players_.begin();
+    }
+    this->currentPlayer_ = *it;
 }
 
 void GameManager::checkIfWin()

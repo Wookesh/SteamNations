@@ -23,7 +23,7 @@ public:
 	
 	Board *board() const;
 	void setBoard(Board *board);
-	
+
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
@@ -47,7 +47,7 @@ private:
 	Serial *serial_;
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
-	void setNextPlayer();
+    void setNextPlayer();//TODO
 	void setWinConditions();
 	Object *objectP(UID uid);
 	
@@ -55,7 +55,7 @@ public slots:
 	void removeObject(UID uid);
 	void startGame();
 	void checkIfWin();
-	void endTurn();
+    void endTurn();//TODOD
 	
 signals:
 	void gameInitialized();
