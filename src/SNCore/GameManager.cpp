@@ -86,8 +86,10 @@ void GameManager::setBoard(Board *board)
     lista.push_back(zbyszek);
     setPlayers(lista);
     currentPlayer_ = andrzej;
-    Settler *settler = new Settler(board_->getTile(25,25), new SettlerPrototype("Settler", 3, 0), currentPlayer_);
-    board->getTile(25, 25)->setUnit(settler);
+    Settler *settlerA = new Settler(board_->getTile(25,25), new SettlerPrototype("Settler", 3, 0), andrzej);
+    board->getTile(25, 25)->setUnit(settlerA);
+    Settler *settlerZ = new Settler(board_->getTile(24,25), new SettlerPrototype("Settler", 3, 0), zbyszek);
+    board->getTile(24, 25)->setUnit(settlerZ);
 }
 
 QList< Player * > GameManager::players() const
