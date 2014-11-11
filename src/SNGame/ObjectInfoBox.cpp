@@ -17,6 +17,14 @@ ObjectInfoBox::~ObjectInfoBox()
 void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &actions)
 {
 	nameDisplay_->setText(object->name());
+	switch (object->type()) {
+		case Unit::Type::Town: {
+			break;
+		}
+		case Unit::Type::Unit: {
+			break;
+		}
+	}
 }
 
 QSize ObjectInfoBox::minimumSizeHint() const

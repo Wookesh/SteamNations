@@ -29,7 +29,8 @@ private:
 	QMap<const Tile *, TileGraphics *> tileToItem_;
 	QMap<const Unit *, UnitGraphics *> unitToItem_;
 	const Object *selectedObject_;
-	QVector<Action *> possibleActions_;
+	QVector<Action *> mapActions_;
+	QVector<Action *> objectActions_;
 	GameManager *gameManager_;
 	
 	void highlightActions();

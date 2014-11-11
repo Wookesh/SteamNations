@@ -99,7 +99,7 @@ const Object *SNScene::selectedObject() const
 
 const QVector<Action *> &SNScene::objectActions() const
 {
-	return possibleActions_;
+	return objectActions_;
 }
 
 void SNScene::select(const Tile *tile)
@@ -109,20 +109,20 @@ void SNScene::select(const Tile *tile)
 		if (objects.size() == 1) {
 			selectedObject_ = objects.first();
 			qDebug() << "Selected Object :" << selectedObject_->name();
-			possibleActions_ = gameManager_->actions(selectedObject_);
-			//qDebug() << possibleActions_.size();
+			mapActions_ = gameManager_->mapActions(selectedObject_);
+			objectActions_ = gameManager_->objectActions(selectedObject());
 			highlightActions();
 			emit selected();
 		}
 	} else {
-		for (Action *action : possibleActions_)
+		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
 				qDebug() << "Performing Action" << Action::name(action->type());
 				qDebug() << "\tWith result :" << action->perform();
 			}
 		selectedObject_ = nullptr;
 		clearHighlight();
-		possibleActions_.clear();
+		mapActions_.clear();
 		update();
 	}
 }
@@ -134,14 +134,14 @@ void SNScene::setBoard(Board *board)
 
 void SNScene::highlightActions()
 {
-	for (Action *action : possibleActions_) {
+	for (Action *action : mapActions_) {
 		tileToItem_[action->tile()]->highlight(action->type());
 	}
 }
 
 void SNScene::clearHighlight()
 {
-	for (Action *action : possibleActions_) {
+	for (Action *action : mapActions_) {
 		tileToItem_[action->tile()]->highlight(Action::Type::None);
 	}
 }
