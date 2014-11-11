@@ -32,8 +32,8 @@ public:
 	void addObject(UID uid, Object *object);
 	const Object *object(UID uid) const;
 	
-	Object *object(UID uid);
-	QVector<Action *> actions(const Object *object);
+	QVector<Action *> mapActions(const Object *object);
+	QVector<Action *> objectActions(const Object *object);
 	
 protected:
 	GameManager(QObject *parent = nullptr);
@@ -49,6 +49,7 @@ private:
 	QHash<UID,Object *> objects_;
 	void setNextPlayer();
 	void setWinConditions();
+	Object *objectP(UID uid);
 	
 public slots:
 	void removeObject(UID uid);

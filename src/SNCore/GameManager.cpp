@@ -59,7 +59,7 @@ void GameManager::removeObject(UID uid)
 }
 
 
-Object *GameManager::object(UID uid)
+Object *GameManager::objectP(UID uid)
 {
 	return objects_[uid];
 }
@@ -85,9 +85,9 @@ QList< Player * > GameManager::players() const
 	return players_;
 }
 
-QVector<Action *> GameManager::actions(const Object *objectC)
+QVector<Action *> GameManager::objectActions(const Object *objectC)
 {
-	Object *objectN = object(objectC->id());
+	Object *objectN = objectP(objectC->id());
 	QVector<Action *> possibleActions;
 	switch(objectN->type()) {
 		case Object::Type::Town:
@@ -96,11 +96,23 @@ QVector<Action *> GameManager::actions(const Object *objectC)
 			//przydałaby się jakaś lista typów żeby fora zrobić jak będzie więcej jednostek
 			if(town->canRecruit(Prototype::Type::Settler))
 				possibleActions.push_back(new CreateUnitAction(town, Prototype::Type::Settler));
-// 			if(town->canRecruit(Prototype::Type::Soldier))
-// 				possibleActions.push_back(new CreateUnitAction(town, Prototype::Type::Soldier));
-// 			
+			if(town->canRecruit(Prototype::Type::Soldier))
+				possibleActions.push_back(new CreateUnitAction(town, Prototype::Type::Soldier));
+			
 			return possibleActions;
 		}
+		default:
+		{
+			return possibleActions;
+		}
+	}
+}
+
+QVector<Action *> GameManager::mapActions(const Object *objectC)
+{
+	Object *objectN = objectP(objectC->id());
+	QVector<Action *> possibleActions;
+	switch(objectN->type()) {
 		case Object::Type::Unit:
 		{
 			Unit *unit = dynamic_cast<Unit *>(objectN);
@@ -127,11 +139,7 @@ QVector<Action *> GameManager::actions(const Object *objectC)
 		{
 			return possibleActions;
 		}
-			
 	}
-	
-	
-	
 }
 
 
