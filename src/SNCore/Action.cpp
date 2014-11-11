@@ -1,5 +1,6 @@
 #include "Action.hpp"
 #include <QMap>
+#include <QVector>
 #include <QString>
 
 QString Action::name(Action::Type type)
@@ -7,12 +8,21 @@ QString Action::name(Action::Type type)
 	static QMap<Type, QString> map({
 		{Type::Attack, "Attack"},
 		{Type::Capture, "Capture"},
+		{Type::CreateUnit, "Create unit"},
 		{Type::Move, "Move"},
 		{Type::None, "None"},
 		{Type::Settle, "Settle"},
-		{Type::CreateUnit, "CreateUnit"}
 	});
 	return map[type];
+}
+
+const QVector<Action::Type> &Action::types()
+{
+	static QVector<Action::Type> types_({
+		Type::Attack, Type::Capture, Type::CreateUnit,
+		Type::Move, Type::None, Type::Settle,
+	});
+	return types_;
 }
 
 

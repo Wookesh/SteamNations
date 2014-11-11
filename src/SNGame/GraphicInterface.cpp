@@ -24,12 +24,16 @@ void GraphicInterface::createInterface()
 	exitButton_ = new QPushButton("Exit", gameView_);
 	connect(exitButton_, &QPushButton::clicked, qApp, &QApplication::exit);
 	nextTurn_ = new NextTurnButton(gameView_);
+	connect(nextTurn_, &NextTurnButton::clicked, GameManager::get(), &GameManager::endTurn);
 	infobox_ = new ObjectInfoBox(gameView_);
-	connect(scene_, &SNScene::selected, this, &GraphicInterface::displayInfo);
+	connect(scene_, &SNScene::selectionUpdate, this, &GraphicInterface::displayInfo);
+	connect(scene_, &SNScene::noSelection, infobox_, &ObjectInfoBox::hide);
 }
 
 void GraphicInterface::displayInfo()
 {
+	if (!infobox_->isVisible())
+		infobox_->setVisible(true);
 	infobox_->setObject(scene_->selectedObject(), scene_->objectActions());
 }
 

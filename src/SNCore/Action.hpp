@@ -20,6 +20,7 @@ public:
 	};
 	
 	static QString name(Type type);
+	static const QVector<Action::Type> &types();
 	
 	Action(Object *mainObject, Tile *tile, Type type);
 	~Action();
