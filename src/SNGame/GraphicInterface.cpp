@@ -25,7 +25,12 @@ void GraphicInterface::createInterface()
 	connect(exitButton_, &QPushButton::clicked, qApp, &QApplication::exit);
 	nextTurn_ = new NextTurnButton(gameView_);
 	infobox_ = new ObjectInfoBox(gameView_);
-	connect(scene_, &SNScene::selected, [this](){infobox_->setObject(scene_->selectedObject());});
+	connect(scene_, &SNScene::selected, this, &GraphicInterface::displayInfo);
+}
+
+void GraphicInterface::displayInfo()
+{
+	infobox_->setObject(scene_->selectedObject(), scene_->objectActions());
 }
 
 void GraphicInterface::resizeEvent(QResizeEvent *event)

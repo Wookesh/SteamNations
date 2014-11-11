@@ -97,16 +97,21 @@ const Object *SNScene::selectedObject() const
 	return selectedObject_;
 }
 
+const QVector<Action *> &SNScene::objectActions() const
+{
+	return possibleActions_;
+}
+
 void SNScene::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
 		QList<const Object *> objects = tile->getObjects();
 		if (objects.size() == 1) {
 			selectedObject_ = objects.first();
-			emit selected();
 			qDebug() << "Selected Object :" << selectedObject_->name();
 			possibleActions_ = gameManager_->actions(selectedObject_);
 			highlightActions();
+			emit selected();
 		}
 	} else {
 		for (Action *action : possibleActions_)

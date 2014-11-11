@@ -24,6 +24,7 @@ private:
 	
 	void createInterface();
 	void createConnections();
+	void displayInfo();
 };
 
 #endif

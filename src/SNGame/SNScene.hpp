@@ -22,6 +22,7 @@ public:
 	
 	void select(const Tile *tile);
 	const Object *selectedObject() const;
+	const QVector<Action *> &objectActions() const;
 protected:
 	
 private:

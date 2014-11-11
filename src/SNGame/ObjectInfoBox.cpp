@@ -14,7 +14,7 @@ ObjectInfoBox::~ObjectInfoBox()
 	
 }
 
-void ObjectInfoBox::setObject(const Object *object)
+void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &actions)
 {
 	nameDisplay_->setText(object->name());
 }
