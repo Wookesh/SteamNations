@@ -47,7 +47,7 @@ private:
 	Serial *serial_;
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
-    void setNextPlayer();//TODO
+    void setNextPlayer();
 	void setWinConditions();
 	Object *objectP(UID uid);
 	
@@ -55,7 +55,7 @@ public slots:
 	void removeObject(UID uid);
 	void startGame();
 	void checkIfWin();
-    void endTurn();//TODOD
+    void endTurn();
 	
 signals:
 	void gameInitialized();
