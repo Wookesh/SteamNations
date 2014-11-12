@@ -104,7 +104,9 @@ const QVector<Action *> &SNScene::objectActions() const
 
 void SNScene::getActions()
 {
+	
 	qDebug() << "Selected Object :" << selectedObject_->name();
+	clearActions();
 	mapActions_ = gameManager_->mapActions(selectedObject_);
 	objectActions_ = gameManager_->objectActions(selectedObject());
 	highlightActions();
@@ -132,16 +134,19 @@ void SNScene::select(const Tile *tile)
 		QList<const Object *> objects = tile->getObjects();
 		if (objects.size() == 0) {
 			emit noSelection();
-		} else if (objects.size() == 1) {
+		} else {
 			selectedObject_ = objects.first();
 			getActions();
 		}
+	} else if (selectedObject_->tile() == tile) {
+		QList<const Object *> objects = tile->getObjects();
+		selectedObject_ =  selectedObject_ == objects.first() ? objects.last() : objects.first();
+		getActions();
 	} else {
 		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
 				qDebug() << "Performing Action" << Action::name(action->type());
 				qDebug() << "\tWith result :" << action->perform();
-				clearActions();
 				getActions();
 				return;
 			}
