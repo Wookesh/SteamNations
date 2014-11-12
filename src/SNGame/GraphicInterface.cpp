@@ -7,6 +7,7 @@ GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
 	GameManager::init();
 	GameManager::get()->setBoard(new Board(50, 50));
+	GameManager::get()->initGame();
 	connect(GameManager::get(), &GameManager::gameEnded, [this](){gameView_->setInteractive(false);});
 	scene_ = new SNScene(GameManager::get(), this);
 	gameView_ = new GameView(this);

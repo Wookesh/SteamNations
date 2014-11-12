@@ -71,12 +71,9 @@ void Player::updateAfter()
 }
 
 Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
-	
-	
     Unit *newUnit = prototypes_[type]->createUnit(tile, this);
-	
-
 	units_.push_back(newUnit);
+	tile->setUnit(newUnit);
 	
 	return newUnit;
 }
