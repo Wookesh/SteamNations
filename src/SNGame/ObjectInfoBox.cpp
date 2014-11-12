@@ -7,9 +7,8 @@
 ObjectInfoBox::ObjectInfoBox(QWidget *parent) : QWidget(parent), displayed_(0)
 {
 	hide();
-	nameDisplay_ = new QLabel(tr("Object Name"), this);
-	nameDisplay_->setGeometry(0, 0, sizeHint().width(), 50);
-	
+	objectName_ = new StatDisplay(tr("Object"), this);
+	playerName_ = new StatDisplay(tr("Player"), this);
 	unitDamage_ = new StatDisplay(tr("Damage"), this);
 	unitRange_ = new StatDisplay(tr("Range"), this);
 	unitMoveRange_ = new StatDisplay(tr("Move"), this);
@@ -30,7 +29,10 @@ ObjectInfoBox::~ObjectInfoBox()
 void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &actions)
 {
 	hideAll();
-	nameDisplay_->setText(object->name());
+	objectName_->setValue(object->name());
+	displayStat(objectName_);
+	playerName_->setValue(object->owner()->name());
+	displayStat(playerName_);
 	switch (object->type()) {
 		case Unit::Type::Town: {
 			displayButton(actionButtons_[Action::Type::CreateUnit]);
@@ -63,14 +65,14 @@ void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &act
 void ObjectInfoBox::displayStat(StatDisplay *stat)
 {
 	stat->show();
-	stat->setGeometry(0, 50 * (displayed_ + 1), size().width(), 50);
+	stat->setGeometry(0, 50 * displayed_, size().width(), 50);
 	++displayed_;
 }
 
 void ObjectInfoBox::displayButton(ActionButton *button)
 {
 	button->show();
-	button->setGeometry(0, 50 * (displayed_ + 1), size().width(), 50);
+	button->setGeometry(0, 50 * displayed_, size().width(), 50);
 	++displayed_;
 }
 
@@ -118,9 +120,14 @@ StatDisplay::StatDisplay(const QString &stat, QWidget *parent): QLabel(parent), 
 
 void StatDisplay::setValue(int v)
 {
-	val_ = v;
-	setText(stat_ + " : " + QString::number(val_));
+	setText(stat_ + " : " + QString::number(v));
 }
+
+void StatDisplay::setValue(const QString &text)
+{
+	setText(stat_ + " : " + text);
+}
+
 
 
 /*--------------ActionButton------------------*/

@@ -14,9 +14,9 @@ public:
 	explicit StatDisplay(const QString &stat, QWidget *parent = nullptr);
 	
 	void setValue(int v);
+	void setValue(const QString &text);
 private:
 	QString stat_;
-	int val_;
 };
 
 
@@ -50,7 +50,8 @@ protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void resizeEvent(QResizeEvent *);
 private:
-	QLabel *nameDisplay_;
+	StatDisplay *objectName_;
+	StatDisplay *playerName_;
 	StatDisplay *unitRange_;
 	StatDisplay *unitDamage_;
 	StatDisplay *unitMoveRange_;
