@@ -17,7 +17,6 @@ public:
 	Town *createTown();
 	
 	virtual void getAttacked(Unit *) override;
-private:
 signals:
 	void cityCreated();
 };

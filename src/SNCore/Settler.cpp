@@ -33,6 +33,7 @@ bool Settler::settle()
 Town *Settler::createTown()
 {
 	Town * town = new Town(tile_, owner_);
+	GameManager::get()->addObject(town->id(), town);
 	tile_->setTown(town);
 	tile_->setUnit(nullptr);
 	delete this;

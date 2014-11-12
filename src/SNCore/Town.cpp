@@ -33,7 +33,6 @@ void Town::updateAfter()
 
 Unit *Town::createUnit(Prototype::Type type)
 {
-	qDebug() << "leci Town::createUnit";
 	Unit *newUnit = owner_->createUnit(type, tile_);
 	return newUnit;
 }

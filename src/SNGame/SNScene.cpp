@@ -39,7 +39,7 @@ void SNScene::createObject(UID id)
 	switch (object->type()) {
 		case Object::Type::Town: {
 			
-			createTown(static_cast<const Town *>(object));
+			createTown(dynamic_cast<const Town *>(object));
 			break;
 		}
 		case Object::Type::Unit: {

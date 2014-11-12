@@ -28,7 +28,6 @@ public:
 	void getCaptured(Player *player);
 private:
 	QString name_;
-	Player *owner_;
 };
 
 #endif

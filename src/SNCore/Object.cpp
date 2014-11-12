@@ -4,7 +4,6 @@
 
 Object::Object(Tile *tile, Type type, Player *owner, QObject *parent) : QObject(parent), owner_(owner), tile_(tile), type_(type), id_(GameManager::get()->serial()->next())
 {
-	GameManager::get()->addObject(id(), this);
 }
 
 Object::~Object()
