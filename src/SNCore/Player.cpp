@@ -6,7 +6,7 @@
 
 #include <QtCore>
 
-Player::Player(const QString &name) : name_(name)
+Player::Player(const QString &name) : capital_(nullptr), name_(name)
 {
 	SettlerPrototype *settlerPrototype = new SettlerPrototype(
 		BASE_SETTLER_NAME, BASE_SETTLER_MOVERANGE, BASE_SETTLER_COST);
@@ -18,6 +18,16 @@ Player::~Player()
 {
 	for (auto element : prototypes_.keys()) {
 		Prototype *aux = prototypes_.take(element);
+		delete aux;
+	}
+	
+	while (!units_.isEmpty()) {
+		Unit *aux = units_.takeLast();
+		delete aux;
+	}
+	
+	while (!towns_.isEmpty()) {
+		Town *aux = towns_.takeLast();
 		delete aux;
 	}
 }
@@ -32,6 +42,16 @@ void Player::obtainTown (Town *town)
 	town->setOwner(this);
 	towns_.push_back(town);
 }
+
+void Player::destroyTown (Town *town) {
+	for (auto iter = towns_.begin(); iter != towns_.end(); ++iter) {
+		if (*(iter) == town) {
+			towns_.erase(iter);
+			break;
+		}
+	}
+}
+
 
 void Player::updateBefore() {
 	// internal stuff
@@ -70,6 +90,17 @@ void Player::updateAfter()
 	// wrapUp()...
 }
 
+Town *Player::capital() 
+{
+	return capital_;
+}
+
+void Player::setCapital (Town *town) 
+{
+	capital_ = town;
+}
+
+
 Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
     Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
@@ -77,6 +108,17 @@ Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
 	
 	return newUnit;
 }
+
+void Player::destroyUnit(Unit *toKill) 
+{
+	for (auto iter = units_.begin(); iter != units_.end(); ++iter) {
+		if (*(iter) == toKill) {
+			units_.erase(iter);
+			break;
+		}
+	}
+}
+
 
 Prototype *Player::prototype(Prototype::Type type)
 {

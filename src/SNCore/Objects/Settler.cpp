@@ -12,7 +12,11 @@ Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, Q
 
 Settler::~Settler()
 {
-
+	if (tile_ != nullptr)
+		tile_->setUnit(nullptr);
+	
+	if (owner_ != nullptr)
+		owner_->destroyUnit(this);
 }
 
 bool Settler::canSettle(Tile * tile) const
@@ -24,9 +28,17 @@ bool Settler::canSettle(Tile * tile) const
 
 bool Settler::settle()
 {
-	createTown();
-	return true;
+	if (tile_->town() != nullptr)
+		return false;
 	
+	Town *town = createTown();
+	
+	if (owner()->capital() == nullptr) {
+		owner()->setCapital(town);
+		emit capitalCreated();
+	}
+	
+	return true;
 }
 
 
@@ -35,7 +47,6 @@ Town *Settler::createTown()
 	Town * town = new Town(tile_, owner_);
 	GameManager::get()->addObject(town->id(), town);
 	tile_->setTown(town);
-	tile_->setUnit(nullptr);
 	delete this;
 	return town;
 }

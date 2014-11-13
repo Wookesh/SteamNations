@@ -19,6 +19,7 @@ public:
 	virtual void getAttacked(Unit *) override;
 signals:
 	void cityCreated();
+	void capitalCreated();
 };
 
 #endif
