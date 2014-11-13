@@ -18,21 +18,21 @@ const QPolygonF &TileGraphics::hexagon()
 	return hexagon_;
 }
 
-QColor TileGraphics::highlightColor(Action::Type type)
+QColor TileGraphics::highlightColor(ActionType type)
 {
-	static const QMap<Action::Type, QColor> map({
-		{Action::Type::Attack, Qt::red},
-		{Action::Type::Capture, Qt::magenta},
-		{Action::Type::Move, Qt::cyan},
-		{Action::Type::None, Qt::white},
-		{Action::Type::Settle, Qt::yellow},
-		{Action::Type::CreateUnit, Qt::darkYellow}
+	static const QHash<ActionType, QColor> map({
+		{ActionType::Attack, Qt::red},
+		{ActionType::Capture, Qt::magenta},
+		{ActionType::Move, Qt::cyan},
+		{ActionType::None, Qt::white},
+		{ActionType::Settle, Qt::yellow},
+		{ActionType::CreateUnit, Qt::darkYellow}
 	});
 	return map[type];
 }
 
 TileGraphics::TileGraphics(const Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
-tile_(tile), actionType_(Action::Type::None)
+tile_(tile), actionType_(ActionType::None)
 {
 	setPos(coordToPos(tile->position()));
 }
@@ -60,7 +60,7 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setColor(Qt::green);
 	painter->setPen(pen);
 	painter->drawPolygon(polygon(), Qt::OddEvenFill);
-	if (actionType_ != Action::Type::None) {
+	if (actionType_ != ActionType::None) {
 		QPainterPath path;
 		path.addPolygon(polygon());
 		painter->setOpacity(OPACITY);
@@ -68,7 +68,7 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	}
 }
 
-void TileGraphics::highlight(Action::Type actionType)
+void TileGraphics::highlight(ActionType actionType)
 {
 	actionType_ = actionType;
 	update();

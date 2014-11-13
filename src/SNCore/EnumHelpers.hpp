@@ -40,9 +40,10 @@ constexpr typename std::underlying_type <ET>::type & toUnderlyingRef(ET &et)
 #include <QtCore/qglobal.h>
 #include <QtCore/QDataStream>
 #include <QtCore/QVector>
+#include <QtCore/QStringList>
 
 #define EnumClassBase(EnumName, EnumType, ...) \
-		friend Q_DECL_CONSTEXPR uint qHash(EnumName); \
+		friend uint qHash(EnumName); \
 		friend QDataStream & operator << (QDataStream &, const EnumName &); \
 		friend QDataStream & operator >> (QDataStream &, EnumName &); \
 		enum EnumName ## Internal : EnumType { \
@@ -66,8 +67,8 @@ constexpr typename std::underlying_type <ET>::type & toUnderlyingRef(ET &et)
 		EnumName ## Internal value;
 
 #define EnumClassSerialization(EnumName, EnumType) \
-	Q_DECL_CONSTEXPR inline uint qHash(EnumType, uint) noexcept (true); \
-	Q_DECL_CONSTEXPR inline uint qHash(EnumName enumVar) \
+	inline uint qHash(EnumType, uint) noexcept (true); \
+	inline uint qHash(EnumName enumVar) \
 	{ \
 		return qHash(toUnderlying(enumVar.value), 0); \
 	} \

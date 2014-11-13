@@ -145,7 +145,7 @@ void SNScene::select(const Tile *tile)
 	} else {
 		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
-				qDebug() << "Performing Action" << Action::name(action->type());
+				qDebug() << "Performing Action" << (QString)(action->type());
 				qDebug() << "\tWith result :" << action->perform();
 				getActions();
 				return;
@@ -169,7 +169,7 @@ void SNScene::highlightActions()
 void SNScene::clearHighlight()
 {
 	for (Action *action : mapActions_) {
-		tileToItem_[action->tile()]->highlight(Action::Type::None);
+		tileToItem_[action->tile()]->highlight(ActionType::None);
 	}
 }
 

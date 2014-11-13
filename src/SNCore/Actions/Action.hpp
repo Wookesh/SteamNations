@@ -14,7 +14,7 @@ EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateUnit, Move, None
 class Action {
 public:
 	
-// 	enum class Type : quint8 {
+// 	enum class ActionType : quint8 {
 // 		None,
 // 		Move,
 // 		Attack,
@@ -23,18 +23,18 @@ public:
 // 		CreateUnit
 // 	};
 // 	
-// 	static QString name(Type type);
-// 	static const QVector<Action::Type> &types();
+// 	static QString name(ActionType type);
+// 	static const QVector<Action::ActionType> &types();
 	
 	
-	Action(Object *mainObject, Tile *tile, Type type);
+	Action(Object *mainObject, Tile *tile, ActionType type);
 	~Action();
 	
 	virtual bool perform() = 0;
 	const Tile *tile() const;
-	Type type() const;
+	ActionType type() const;
 protected:
-	Type type_;
+	ActionType type_;
 	Object *mainObject_;
 	Tile *tile_;
 };
