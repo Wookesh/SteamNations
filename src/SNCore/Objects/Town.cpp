@@ -13,6 +13,9 @@ Town::~Town()
 {
 	if (tile_ != nullptr)
 		tile_->setTown(nullptr);
+	
+	if (owner_ != nullptr)
+		owner_->destroyTown(this);
 }
 
 void Town::updateBefore() 
