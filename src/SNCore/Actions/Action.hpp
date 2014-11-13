@@ -4,23 +4,28 @@
 #include <QtGlobal>
 #include <QMap>
 
+#include "../EnumHelpers.hpp"
+
 class Object;
 class Tile;
+
+EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateUnit, Move, None, Settle)
 
 class Action {
 public:
 	
-	enum class Type : quint8 {
-		None,
-		Move,
-		Attack,
-		Capture,
-		Settle,
-		CreateUnit
-	};
+// 	enum class Type : quint8 {
+// 		None,
+// 		Move,
+// 		Attack,
+// 		Capture,
+// 		Settle,
+// 		CreateUnit
+// 	};
+// 	
+// 	static QString name(Type type);
+// 	static const QVector<Action::Type> &types();
 	
-	static QString name(Type type);
-	static const QVector<Action::Type> &types();
 	
 	Action(Object *mainObject, Tile *tile, Type type);
 	~Action();
