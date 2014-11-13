@@ -13,11 +13,7 @@ Board::Board(unsigned int width, unsigned int height): height_(height), width_(w
 }
 
 Board::~Board() {
-	while (!tiles_.isEmpty()) {
-		Tile *tile = tiles_.back();
-		tiles_.pop_back();
-		delete tile;
-	}
+	qDeleteAll(tiles_);
 }
 
 /*
@@ -57,20 +53,20 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 }
 
 QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
-	static QPoint neighbours[] = {
+	static const QPoint neighbours[] = {
 		QPoint(1, 0), QPoint(1, -1), QPoint(0, -1), 
 		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)
 	};
 	
 	QVector<Tile *> ret;
 	
-	for (unsigned int i = 0; i < 6; ++i) {
-		QPoint pos = tile->position() + neighbours[i];
+	for (QPoint neighbour : neighbours) {
+		QPoint pos = tile->position() + neighbour;
 		int x = pos.x();
 		int y = pos.y();
 		
 		Tile *tile = getTile(x, y);
-		if (tile != nullptr) 
+		if (tile != nullptr)
 			ret.push_back(tile);
 	}
 	

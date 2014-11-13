@@ -16,7 +16,7 @@ public:
 		Unit
 	};
 	
-    Object(Tile *tile, Type type, Player *owner, QObject *parent = nullptr);
+	Object(Tile *tile, Type type, Player *owner, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner();

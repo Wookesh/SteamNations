@@ -14,7 +14,7 @@ class Unit;
 class Town : public Object {
 Q_OBJECT
 public:
-    Town(Tile *tile, Player *owner, const QString &name = tr("Town"), QObject *parent = nullptr);
+	Town(Tile *tile, Player *owner, const QString &name = tr("Town"), QObject *parent = nullptr);
 	virtual ~Town();
 	
 	virtual void updateBefore() override;

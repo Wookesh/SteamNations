@@ -27,7 +27,7 @@ QString Player::name() const
 	return name_;
 }
 
-void Player::obtainTown (Town *town) 
+void Player::obtainTown(Town *town)
 {
 	town->setOwner(this);
 	towns_.push_back(town);
@@ -71,7 +71,7 @@ void Player::updateAfter()
 }
 
 Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
-    Unit *newUnit = prototypes_[type]->createUnit(tile, this);
+	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
 	tile->setUnit(newUnit);
 	

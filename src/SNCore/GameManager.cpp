@@ -10,7 +10,7 @@
 #include "Objects/Town.hpp"
 #include "Objects/Prototypes/SettlerPrototype.hpp"
 
-GameManager *GameManager::instance = 0;
+GameManager *GameManager::instance = nullptr;
 
 GameManager *GameManager::get() {
 	if (instance == nullptr) {
@@ -123,11 +123,12 @@ QVector<Action *> GameManager::mapActions (const Object *objectC) {
 					possibleActions.push_back (new MoveAction (unit, currTile));
 
 				if (unit->pType() == Prototype::Type::Soldier) {
-					if (dynamic_cast<Soldier *> (unit)->canAttack (currTile))
-						possibleActions.push_back (new AttackAction (dynamic_cast<Soldier *> (unit), currTile->unit()));
+					Soldier *soldier = static_cast<Soldier *>(unit);
+					if (soldier->canAttack (currTile))
+						possibleActions.push_back (new AttackAction (soldier, currTile->unit()));
 
-					if (dynamic_cast<Soldier *> (unit)->canCapture (currTile))
-						possibleActions.push_back (new CaptureAction (dynamic_cast<Soldier *> (unit), currTile->town()));
+					if (soldier->canCapture (currTile))
+						possibleActions.push_back (new CaptureAction (soldier, currTile->town()));
 				}
 			}
 

@@ -9,7 +9,7 @@ class Prototype;
 class Unit : public Object {
 Q_OBJECT
 public:
-    Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
+	Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
 	virtual ~Unit();
 	
 	virtual void updateBefore() override;

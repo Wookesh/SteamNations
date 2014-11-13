@@ -13,7 +13,7 @@ public:
 	
 	void updatePosition();
 protected:
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 private:
 	const Unit *unit_;
 	static const int SIZE = 80;

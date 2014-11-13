@@ -23,9 +23,9 @@ void SNScene::createBoard()
 {
 	Board *b = gameManager_->board();
 	for (Board::const_iterator tile = b->begin(); tile != b->end(); tile++) {
-			createTile(*tile);
-			for (const Object *object : (*tile)->getObjects())
-				createObject(object->id());
+		createTile(*tile);
+		for (const Object *object : (*tile)->getObjects())
+			createObject(object->id());
 	}
 }
 

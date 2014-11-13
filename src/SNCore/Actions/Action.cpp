@@ -5,7 +5,7 @@
 
 QString Action::name(Action::Type type)
 {
-	static QMap<Type, QString> map({
+	static const QMap<Type, QString> map({
 		{Type::Attack, "Attack"},
 		{Type::Capture, "Capture"},
 		{Type::CreateUnit, "Create unit"},
@@ -18,7 +18,7 @@ QString Action::name(Action::Type type)
 
 const QVector<Action::Type> &Action::types()
 {
-	static QVector<Action::Type> types_({
+	static const QVector<Action::Type> types_({
 		Type::Attack, Type::Capture, Type::CreateUnit,
 		Type::Move, Type::None, Type::Settle,
 	});

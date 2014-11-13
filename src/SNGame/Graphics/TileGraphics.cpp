@@ -7,18 +7,20 @@
 #include "../SNHelpers.hpp"
 #include <QMap>
 
-QPolygonF &TileGraphics::hexagon()
+const QPolygonF &TileGraphics::hexagon()
 {
-	static QPolygonF hexagon_;
-	if (hexagon_.size() == 0)
+		static const QPolygonF hexagon_ = []{
+		QPolygonF result;
 		for (int i = 0; i < 6; ++i)
-			hexagon_ << QPointF(RADIUS * cos(2 * 3.14 / 6 * i), RADIUS * sin(2 * 3.14 / 6 * i));
+			result << QPointF(RADIUS * cos(2 * 3.14 / 6 * i), RADIUS * sin(2 * 3.14 / 6 * i));
+		return result;
+		}();
 	return hexagon_;
 }
 
 QColor TileGraphics::highlightColor(Action::Type type)
 {
-	static QMap<Action::Type, QColor> map({
+	static const QMap<Action::Type, QColor> map({
 		{Action::Type::Attack, Qt::red},
 		{Action::Type::Capture, Qt::magenta},
 		{Action::Type::Move, Qt::cyan},

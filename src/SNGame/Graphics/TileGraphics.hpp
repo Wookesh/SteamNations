@@ -14,7 +14,7 @@ public:
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 	
 private:
 	const Tile *tile_;
@@ -22,7 +22,7 @@ private:
 	bool pressed_;
 	Action::Type actionType_;
 	
-	static QPolygonF &hexagon();
+	static const QPolygonF &hexagon();
 	static QColor highlightColor(Action::Type type);
 	static constexpr qreal OPACITY = 0.2;
 };

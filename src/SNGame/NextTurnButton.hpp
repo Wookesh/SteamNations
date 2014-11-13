@@ -5,7 +5,7 @@
 class NextTurnButton : public QPushButton {
 Q_OBJECT
 public:
-	NextTurnButton(QWidget *parent = 0);
+	NextTurnButton(QWidget *parent = nullptr);
 	virtual ~NextTurnButton();
 	
 	virtual QSize sizeHint() const;
