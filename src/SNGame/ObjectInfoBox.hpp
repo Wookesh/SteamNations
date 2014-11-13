@@ -3,9 +3,9 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
-#include "../SNCore/Town.hpp"
-#include "../SNCore/Unit.hpp"
-#include "../SNCore/Action.hpp"
+#include "../SNCore/Objects/Town.hpp"
+#include "../SNCore/Objects/Unit.hpp"
+#include "../SNCore/Actions/Action.hpp"
 
 
 class StatDisplay : public QLabel {

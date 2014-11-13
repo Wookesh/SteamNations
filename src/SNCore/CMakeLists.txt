@@ -1,20 +1,20 @@
 add_library(SNCore 
-	Action.cpp
-	AttackAction.cpp
-	MoveAction.cpp
-	SettleAction.cpp
-	CreateUnitAction.cpp
-	CaptureAction.cpp
-	Player.cpp
-	Prototype.cpp
-	SettlerPrototype.cpp
-	Tile.cpp
-	Object.cpp
-	Unit.cpp
-	Settler.cpp
-	Soldier.cpp
-	Town.cpp
 	Board.cpp
 	GameManager.cpp
+	Tile.cpp
+	Player.cpp
+	Actions/Action.cpp
+	Actions/AttackAction.cpp
+	Actions/MoveAction.cpp
+	Actions/SettleAction.cpp
+	Actions/CreateUnitAction.cpp
+	Actions/CaptureAction.cpp
+	Objects/Object.cpp
+	Objects/Unit.cpp
+	Objects/Settler.cpp
+	Objects/Soldier.cpp
+	Objects/Town.cpp
+	Objects/Prototypes/Prototype.cpp
+	Objects/Prototypes/SettlerPrototype.cpp
 	)
 qt5_use_modules(SNCore Core)

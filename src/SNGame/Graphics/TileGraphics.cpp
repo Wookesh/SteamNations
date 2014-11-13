@@ -3,8 +3,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QDebug>
-#include "SNScene.hpp"
-#include "SNHelpers.hpp"
+#include "../SNScene.hpp"
+#include "../SNHelpers.hpp"
 #include <QMap>
 
 QPolygonF &TileGraphics::hexagon()

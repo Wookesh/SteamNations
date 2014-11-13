@@ -5,7 +5,7 @@
 #include <QString>
 #include <QVector>
 
-#include "Prototype.hpp"
+#include "Objects/Prototypes/Prototype.hpp"
 #include "Tile.hpp"
 
 class Tile;

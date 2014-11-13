@@ -2,8 +2,8 @@
 #define OBJECT_HPP
 
 #include <QObject>
-#include "Serial.hpp"
-#include "Player.hpp"
+#include "../Serial.hpp"
+#include "../Player.hpp"
 
 class Player;
 class Tile;

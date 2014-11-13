@@ -1,5 +1,5 @@
 #include "SettleAction.hpp"
-#include "Settler.hpp"
+#include "../Objects/Settler.hpp"
 
 SettleAction::SettleAction(Settler *mainObject) : Action(mainObject, mainObject->tile(), Type::Settle)
 {

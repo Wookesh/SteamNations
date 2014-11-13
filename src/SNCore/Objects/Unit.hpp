@@ -2,7 +2,7 @@
 #define UNIT_HPP
 
 #include "Object.hpp"
-#include "Prototype.hpp"
+#include "Prototypes/Prototype.hpp"
 
 class Prototype;
 

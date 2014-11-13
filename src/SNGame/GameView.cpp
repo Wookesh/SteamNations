@@ -1,6 +1,6 @@
 #include "GameView.hpp"
-#include "TileGraphics.hpp"
-#include "TownGraphics.hpp"
+#include "Graphics/TileGraphics.hpp"
+#include "Graphics/TownGraphics.hpp"
 #include <QTouchEvent>
 #include <QVBoxLayout>
 #include <QGraphicsProxyWidget>

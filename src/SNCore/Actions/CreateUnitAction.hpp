@@ -1,7 +1,7 @@
 #ifndef CREATEUNITACTION_HPP
 #define CREATEUNITACTION_HPP
 #include "Action.hpp"
-#include "Prototype.hpp"
+#include "../Objects/Prototypes/Prototype.hpp"
 
 class Town;
 

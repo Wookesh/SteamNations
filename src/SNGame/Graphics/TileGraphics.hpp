@@ -2,8 +2,8 @@
 #define TILEGRAPHICS_H
 
 #include <QGraphicsPolygonItem>
-#include "../SNCore/Tile.hpp"
-#include "../SNCore/Action.hpp"
+#include "../../SNCore/Tile.hpp"
+#include "../../SNCore/Actions/Action.hpp"
 
 class TileGraphics : public QGraphicsPolygonItem {
 public:

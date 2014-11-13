@@ -1,7 +1,7 @@
 #include "Unit.hpp"
-#include "Tile.hpp"
-#include "Prototype.hpp"
-#include "GameManager.hpp"
+#include "../Tile.hpp"
+#include "Prototypes/Prototype.hpp"
+#include "../GameManager.hpp"
 #include "Object.hpp"
 
 

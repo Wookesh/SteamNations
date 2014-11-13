@@ -1,10 +1,10 @@
 #include "SNScene.hpp"
 #include "SNHelpers.hpp"
-#include "TileGraphics.hpp"
-#include "TownGraphics.hpp"
-#include "UnitGraphics.hpp"
-#include "../SNCore/Settler.hpp"
-#include "../SNCore/Soldier.hpp"
+#include "Graphics/TileGraphics.hpp"
+#include "Graphics/TownGraphics.hpp"
+#include "Graphics/UnitGraphics.hpp"
+#include "../SNCore/Objects/Settler.hpp"
+#include "../SNCore/Objects/Soldier.hpp"
 #include <QDebug>
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),

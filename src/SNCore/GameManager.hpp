@@ -4,8 +4,8 @@
 #include <QObject>
 #include "Player.hpp"
 #include "Board.hpp"
-#include "Object.hpp"
-#include "Action.hpp"
+#include "Objects/Object.hpp"
+#include "Actions/Action.hpp"
 #include "Serial.hpp"
 
 class GameManager : public QObject {

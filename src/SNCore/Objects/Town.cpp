@@ -1,6 +1,6 @@
-#include "Player.hpp"
+#include "../Player.hpp"
 #include "Town.hpp"
-#include "Tile.hpp"
+#include "../Tile.hpp"
 #include "Unit.hpp"
 #include <QDebug>
 

@@ -1,6 +1,6 @@
 #include "Tile.hpp"
-#include "Town.hpp"
-#include "Unit.hpp"
+#include "Objects/Town.hpp"
+#include "Objects/Unit.hpp"
 
 Tile::Tile(unsigned int x_, unsigned int y_) : town_(nullptr), unit_(nullptr), position_(x_, y_) 
 {

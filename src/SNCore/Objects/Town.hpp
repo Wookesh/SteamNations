@@ -4,7 +4,7 @@
 #include <QString>
 
 #include "Object.hpp"
-#include "Prototype.hpp"
+#include "Prototypes/Prototype.hpp"
 
 class Player;
 class Tile;

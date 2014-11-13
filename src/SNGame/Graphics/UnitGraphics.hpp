@@ -3,8 +3,8 @@
 
 
 #include <QGraphicsRectItem>
-#include "../SNCore/Unit.hpp"
-#include "../SNCore/Action.hpp"
+#include "../../SNCore/Objects/Unit.hpp"
+#include "../../SNCore/Actions/Action.hpp"
 
 class UnitGraphics : public QGraphicsRectItem {
 public:

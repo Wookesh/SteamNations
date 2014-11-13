@@ -1,6 +1,6 @@
 #include "CaptureAction.hpp"
-#include "Town.hpp"
-#include "Soldier.hpp"
+#include "../Objects/Town.hpp"
+#include "../Objects/Soldier.hpp"
 
 CaptureAction::CaptureAction(Soldier *mainObject, Town *town): 
 	Action(mainObject, town->tile(), Type::Capture), town_(town)

@@ -1,6 +1,6 @@
 #include "UnitGraphics.hpp"
-#include "../SNCore/Tile.hpp"
-#include "SNHelpers.hpp"
+#include "../../SNCore/Tile.hpp"
+#include "../SNHelpers.hpp"
 #include <QPainter>
 
 UnitGraphics::UnitGraphics(const Unit *unit, QGraphicsItem *parent) :  

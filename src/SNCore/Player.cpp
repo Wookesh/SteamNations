@@ -1,8 +1,8 @@
 #include "Player.hpp"
-#include "SettlerPrototype.hpp"
-#include "Town.hpp"
-#include "Unit.hpp"
-#include "Prototype.hpp"
+#include "Objects/Prototypes/SettlerPrototype.hpp"
+#include "Objects/Town.hpp"
+#include "Objects/Unit.hpp"
+#include "Objects/Prototypes/Prototype.hpp"
 
 #include <QtCore>
 
