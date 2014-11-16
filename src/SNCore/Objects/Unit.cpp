@@ -6,7 +6,7 @@
 
 
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
-    Object(tile, Type::Unit, owner, parent),
+    Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
 	currentMoveRange_(prototype->moveRange())
 {
@@ -33,7 +33,7 @@ QString Unit::name() const
 	return prototype_->name();
 }
 
-Prototype::Type Unit::pType() const
+ProtoType Unit::pType() const
 {
 	return prototype_->type();
 }

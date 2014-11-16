@@ -1,7 +1,7 @@
 #include "SettleAction.hpp"
 #include "../Objects/Settler.hpp"
 
-SettleAction::SettleAction(Settler *mainObject) : Action(mainObject, mainObject->tile(), Type::Settle)
+SettleAction::SettleAction(Settler *mainObject) : Action(mainObject, mainObject->tile(), ActionType::Settle)
 {
 	
 }

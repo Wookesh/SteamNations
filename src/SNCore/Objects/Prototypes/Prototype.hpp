@@ -2,25 +2,23 @@
 #define PROTOTYPE_HPP
 
 #include <QString>
+#include "../../EnumHelpers.hpp"
 
 class Player;
 class Unit;
 class Tile;
 
+EnumClassWithStrings(ProtoType, quint8, Settler, Soldier)
+
 class Prototype {
 public:
 	
-	enum class Type : qint8 {
-		Settler,
-		Soldier,
-	};
-	
-	Prototype(Type type, const QString &name, int moveRange, int cost);
+	Prototype(ProtoType type, const QString &name, int moveRange, int cost);
 	virtual ~Prototype();
 	
-    virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
+	virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
 	
-	Type type() const;
+	ProtoType type() const;
 	
 	QString name() const;
 	void setName(const QString &name);
@@ -31,7 +29,7 @@ public:
 	int cost() const;
 	void setCost(int cost);
 protected:
-	Type type_;
+	ProtoType type_;
 	QString name_;
 	quint8 moveRange_;
 	int cost_;

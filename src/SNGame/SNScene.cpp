@@ -36,26 +36,15 @@ void SNScene::createObject(UID id)
 	if (object == nullptr)
 		return;
 	
-	switch (object->type()) {
-		case Object::Type::Town: {
-			
-			createTown(dynamic_cast<const Town *>(object));
-			break;
-		}
-		case Object::Type::Unit: {
-			const Unit *unit = dynamic_cast<const Unit *>(object);
-			switch (unit->pType()) {
-				case Prototype::Type::Settler : {
-					createSettler(dynamic_cast<const Settler *>(unit));
-					break;
-				}
-				case Prototype::Type::Soldier : {
-					createSoldier(dynamic_cast<const Soldier *>(unit));
-					break;
-				}
-			}
-			break;
-		}
+	if (object->type() ==  ObjectType::Town) {
+		createTown(dynamic_cast<const Town *>(object));
+	} else if (object->type() == ObjectType::Unit) {
+		const Unit *unit = dynamic_cast<const Unit *>(object);
+		
+		if (unit->pType() == ProtoType::Settler)
+			createSettler(dynamic_cast<const Settler *>(unit));
+		else if (unit->pType() == ProtoType::Soldier)
+			createSoldier(dynamic_cast<const Soldier *>(unit));
 	}
 }
 
@@ -145,7 +134,7 @@ void SNScene::select(const Tile *tile)
 	} else {
 		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
-				qDebug() << "Performing Action" << Action::name(action->type());
+				qDebug() << "Performing Action" << (QString)(action->type());
 				qDebug() << "\tWith result :" << action->perform();
 				getActions();
 				return;
@@ -169,7 +158,7 @@ void SNScene::highlightActions()
 void SNScene::clearHighlight()
 {
 	for (Action *action : mapActions_) {
-		tileToItem_[action->tile()]->highlight(Action::Type::None);
+		tileToItem_[action->tile()]->highlight(ActionType::None);
 	}
 }
 

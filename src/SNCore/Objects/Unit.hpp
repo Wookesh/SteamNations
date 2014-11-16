@@ -17,7 +17,7 @@ public:
 	
 	virtual QString name() const override;
 	
-	Prototype::Type pType() const;
+	ProtoType pType() const;
 	
 	quint8 moveRange() const;
 	quint8 currentMoveRange() const;

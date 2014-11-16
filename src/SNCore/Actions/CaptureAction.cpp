@@ -3,7 +3,7 @@
 #include "../Objects/Soldier.hpp"
 
 CaptureAction::CaptureAction(Soldier *mainObject, Town *town): 
-	Action(mainObject, town->tile(), Type::Capture), town_(town)
+	Action(mainObject, town->tile(), ActionType::Capture), town_(town)
 {
 
 }

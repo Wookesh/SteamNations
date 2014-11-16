@@ -3,7 +3,7 @@
 #include "../../GameManager.hpp"
 
 SettlerPrototype::SettlerPrototype(const QString &name, int moveRange, int cost) :
-	Prototype(Type::Settler, name, moveRange, cost)
+	Prototype(ProtoType::Settler, name, moveRange, cost)
 {
 
 }

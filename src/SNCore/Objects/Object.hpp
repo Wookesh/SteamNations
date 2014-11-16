@@ -4,19 +4,19 @@
 #include <QObject>
 #include "../Serial.hpp"
 #include "../Player.hpp"
+#include "../EnumHelpers.hpp"
 
 class Player;
 class Tile;
 
+EnumClassWithStrings(ObjectType, quint8, Unit, Town)
+
+
 class Object : public QObject {
 Q_OBJECT
 public:
-	enum class Type {
-		Town,
-		Unit
-	};
 	
-	Object(Tile *tile, Type type, Player *owner, QObject *parent = nullptr);
+	Object(Tile *tile, ObjectType type, Player *owner, QObject *parent = nullptr);
 	virtual ~Object();
 	
 	Player *owner();
@@ -27,8 +27,8 @@ public:
 	const Tile *tile() const;
 	void setTile(Tile *tile);
 	
-	Type type() const;
-	void setType(Type type);
+	ObjectType type() const;
+	void setType(ObjectType type);
 	
 	virtual QString name() const = 0;
 	
@@ -39,7 +39,7 @@ public:
 protected:
 	Player *owner_;
 	Tile *tile_;
-	Type type_;
+	ObjectType type_;
 	UID id_;
 	
 signals:

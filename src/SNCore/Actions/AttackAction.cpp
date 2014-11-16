@@ -2,7 +2,7 @@
 #include "../Objects/Soldier.hpp"
 
 AttackAction::AttackAction(Soldier *mainObject, Unit *target) : 
-	Action(mainObject, target->tile(), Type::Attack),
+	Action(mainObject, target->tile(), ActionType::Attack),
 	target_(target)
 {
 	

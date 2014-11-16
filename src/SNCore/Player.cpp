@@ -10,7 +10,7 @@ Player::Player(const QString &name) : capital_(nullptr), name_(name)
 {
 	SettlerPrototype *settlerPrototype = new SettlerPrototype(
 		BASE_SETTLER_NAME, BASE_SETTLER_MOVERANGE, BASE_SETTLER_COST);
-	prototypes_[Prototype::Type::Settler] = settlerPrototype;
+	prototypes_[ProtoType::Settler] = settlerPrototype;
 	
 }
 
@@ -101,7 +101,7 @@ void Player::setCapital (Town *town)
 }
 
 
-Unit *Player::createUnit(Prototype::Type type, Tile *tile) {
+Unit *Player::createUnit(ProtoType type, Tile *tile) {
 	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
 	tile->setUnit(newUnit);
@@ -120,7 +120,7 @@ void Player::destroyUnit(Unit *toKill)
 }
 
 
-Prototype *Player::prototype(Prototype::Type type)
+Prototype *Player::prototype(ProtoType type)
 {
 	return prototypes_[type];
 }

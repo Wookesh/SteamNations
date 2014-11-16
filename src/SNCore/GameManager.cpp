@@ -81,64 +81,46 @@ QVector<Action *> GameManager::objectActions (const Object *objectC) {
 	Object *objectN = objectP (objectC->id());
 	QVector<Action *> possibleActions;
 
-	switch (objectN->type()) {
-		case Object::Type::Town: {
-			Town *town = dynamic_cast<Town *> (objectN);
+	if (objectN->type() == ObjectType::Town) {
+		Town *town = dynamic_cast<Town *> (objectN);
 
-			//przydałaby się jakaś lista typów żeby fora zrobić jak będzie więcej jednostek
-			if (town->canRecruit (Prototype::Type::Settler))
-				possibleActions.push_back (new CreateUnitAction (town, Prototype::Type::Settler));
+		for (ProtoType type : ProtoType::labels())
+			if (town->canRecruit(type))
+				possibleActions.push_back(new CreateUnitAction(town, type));
 
-			if (town->canRecruit (Prototype::Type::Soldier))
-				possibleActions.push_back (new CreateUnitAction (town, Prototype::Type::Soldier));
+	} else if (objectN->type() == ObjectType::Unit) {
+		Unit *unit = dynamic_cast<Unit *> (objectN);
 
-			return possibleActions;
-		}
-
-		case Object::Type::Unit: {
-			Unit *unit = dynamic_cast<Unit *> (objectN);
-
-			if (unit->pType() == Prototype::Type::Settler)
-				if (dynamic_cast<Settler *> (unit)->canSettle (unit->tile()))
-					possibleActions.push_back (new SettleAction (dynamic_cast<Settler *> (unit)));
-		}
-
-		default: {
-			return possibleActions;
-		}
+		if (unit->pType() == ProtoType::Settler)
+			if (dynamic_cast<Settler *> (unit)->canSettle(unit->tile()))
+				possibleActions.push_back(new SettleAction(dynamic_cast<Settler *> (unit)));
 	}
+	return possibleActions;
 }
 
 QVector<Action *> GameManager::mapActions (const Object *objectC) {
 	Object *objectN = objectP (objectC->id());
 	QVector<Action *> possibleActions;
 
-	switch (objectN->type()) {
-		case Object::Type::Unit: {
-			Unit *unit = dynamic_cast<Unit *> (objectN);
-			QVector<Tile *> tiles = board_->getInRange (unit->tile(), unit->currentMoveRange());
+	if (objectN->type() == ObjectType::Unit) {
+		Unit *unit = dynamic_cast<Unit *> (objectN);
+		QVector<Tile *> tiles = board_->getInRange (unit->tile(), unit->currentMoveRange());
 
-			for (Tile * currTile : tiles) {
-				if (unit->canMove (currTile))
-					possibleActions.push_back (new MoveAction (unit, currTile));
+		for (Tile * currTile : tiles) {
+			if (unit->canMove (currTile))
+				possibleActions.push_back (new MoveAction (unit, currTile));
 
-				if (unit->pType() == Prototype::Type::Soldier) {
-					Soldier *soldier = static_cast<Soldier *>(unit);
-					if (soldier->canAttack (currTile))
-						possibleActions.push_back (new AttackAction (soldier, currTile->unit()));
+			if (unit->pType() == ProtoType::Soldier) {
+				Soldier *soldier = static_cast<Soldier *>(unit);
+				if (soldier->canAttack (currTile))
+					possibleActions.push_back (new AttackAction (soldier, currTile->unit()));
 
-					if (soldier->canCapture (currTile))
-						possibleActions.push_back (new CaptureAction (soldier, currTile->town()));
-				}
+				if (soldier->canCapture (currTile))
+					possibleActions.push_back (new CaptureAction (soldier, currTile->town()));
 			}
-
-			return possibleActions;
-		}
-
-		default: {
-			return possibleActions;
 		}
 	}
+	return possibleActions;
 }
 
 
@@ -160,8 +142,8 @@ void GameManager::initGame() {
 	
 	Board *board = GameManager::get()->board();
 	
-	andrzej->createUnit(Prototype::Type::Settler, board->getTile(25, 25));
-	zbyszek->createUnit(Prototype::Type::Settler, board->getTile(24, 26));
+	andrzej->createUnit(ProtoType::Settler, board->getTile(25, 25));
+	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
 }
 
 void GameManager::startGame() {

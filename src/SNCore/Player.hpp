@@ -28,16 +28,16 @@ public:
 	Town *capital();
 	void setCapital(Town *town);
 	
-	Unit *createUnit(Prototype::Type type, Tile *tile);
+	Unit *createUnit(ProtoType type, Tile *tile);
 	void destroyUnit(Unit *unit);
 	
-	Prototype *prototype(Prototype::Type type);
+	Prototype *prototype(ProtoType type);
 private:
 	Town *capital_;
 	QString name_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
-	QMap<Prototype::Type, Prototype *> prototypes_;
+	QHash<ProtoType, Prototype *> prototypes_;
 };
 
 #endif

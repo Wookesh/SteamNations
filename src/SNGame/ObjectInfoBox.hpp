@@ -23,12 +23,12 @@ private:
 class ActionButton : public QPushButton {
 Q_OBJECT
 public:
-	ActionButton(Action::Type type, QWidget *parent = nullptr);
+	ActionButton(ActionType type, QWidget *parent = nullptr);
 	void addAction(Action *action);
 	void clear();
 private:
 	QVector<Action *> actions_;
-	Action::Type type_;
+	ActionType type_;
 private slots:
 	void perform();
 signals:
@@ -55,7 +55,7 @@ private:
 	StatDisplay *unitRange_;
 	StatDisplay *unitDamage_;
 	StatDisplay *unitMoveRange_;
-	QMap<Action::Type, ActionButton *> actionButtons_;
+	QHash<ActionType, ActionButton *> actionButtons_;
 	
 	int displayed_;
 	void displayStat(StatDisplay *stat);

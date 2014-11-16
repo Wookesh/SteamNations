@@ -1,7 +1,7 @@
 #include "MoveAction.hpp"
 #include "../Objects/Unit.hpp"
 
-MoveAction::MoveAction(Unit *mainObject, Tile *tile): Action(mainObject, tile, Type::Move)
+MoveAction::MoveAction(Unit *mainObject, Tile *tile): Action(mainObject, tile, ActionType::Move)
 {
 	
 }

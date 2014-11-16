@@ -3,30 +3,30 @@
 #include <QVector>
 #include <QString>
 
-QString Action::name(Action::Type type)
-{
-	static const QMap<Type, QString> map({
-		{Type::Attack, "Attack"},
-		{Type::Capture, "Capture"},
-		{Type::CreateUnit, "Create unit"},
-		{Type::Move, "Move"},
-		{Type::None, "None"},
-		{Type::Settle, "Settle"},
-	});
-	return map[type];
-}
+// QString Action::name(Action::ActionType type)
+// {
+// 	static const QMap<ActionType, QString> map({
+// 		{ActionType::Attack, "Attack"},
+// 		{ActionType::Capture, "Capture"},
+// 		{ActionType::CreateUnit, "Create unit"},
+// 		{ActionType::Move, "Move"},
+// 		{ActionType::None, "None"},
+// 		{ActionType::Settle, "Settle"},
+// 	});
+// 	return map[type];
+// }
+// 
+// const QVector<Action::ActionType> &Action::types()
+// {
+// 	static const QVector<Action::ActionType> types_({
+// 		ActionType::Attack, ActionType::Capture, ActionType::CreateUnit,
+// 		ActionType::Move, ActionType::None, ActionType::Settle,
+// 	});
+// 	return types_;
+// }
 
-const QVector<Action::Type> &Action::types()
-{
-	static const QVector<Action::Type> types_({
-		Type::Attack, Type::Capture, Type::CreateUnit,
-		Type::Move, Type::None, Type::Settle,
-	});
-	return types_;
-}
 
-
-Action::Action(Object *mainObject, Tile *tile, Type type) : type_(type), mainObject_(mainObject), tile_(tile)
+Action::Action(Object *mainObject, Tile *tile, ActionType type) : type_(type), mainObject_(mainObject), tile_(tile)
 {
 
 }
@@ -42,7 +42,7 @@ const Tile *Action::tile() const
 	return tile_;
 }
 
-Action::Type Action::type() const
+ActionType Action::type() const
 {
 	return type_;
 }

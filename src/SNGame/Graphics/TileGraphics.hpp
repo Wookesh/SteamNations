@@ -10,7 +10,7 @@ public:
 	TileGraphics(const Tile *tile, QGraphicsItem *parent = nullptr);
 	~TileGraphics();
 	
-	void highlight(Action::Type actionType);
+	void highlight(ActionType actionType);
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -20,10 +20,10 @@ private:
 	const Tile *tile_;
 	static const int RADIUS = 80;
 	bool pressed_;
-	Action::Type actionType_;
+	ActionType actionType_;
 	
 	static const QPolygonF &hexagon();
-	static QColor highlightColor(Action::Type type);
+	static QColor highlightColor(ActionType type);
 	static constexpr qreal OPACITY = 0.2;
 };
 

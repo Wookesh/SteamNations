@@ -13,7 +13,7 @@ ObjectInfoBox::ObjectInfoBox(QWidget *parent) : QWidget(parent), displayed_(0)
 	unitRange_ = new StatDisplay(tr("Range"), this);
 	unitMoveRange_ = new StatDisplay(tr("Move"), this);
 	
-	for (Action::Type type : Action::types()) {
+	for (ActionType type : ActionType::labels()) {
 		ActionButton *button =  new ActionButton(type, this);
 		actionButtons_.insert(type, button);
 		connect(button, &ActionButton::clicked, this, &ObjectInfoBox::hideAll);
@@ -33,25 +33,16 @@ void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &act
 	displayStat(objectName_);
 	playerName_->setValue(object->owner()->name());
 	displayStat(playerName_);
-	switch (object->type()) {
-		case Unit::Type::Town: {
-			displayButton(actionButtons_[Action::Type::CreateUnit]);
-			break;
-		}
-		case Unit::Type::Unit: {
-			const Unit *unit = dynamic_cast<const Unit *>(object);
-			unitMoveRange_->setValue(unit->currentMoveRange());
-			displayStat(unitMoveRange_);
-			switch (unit->pType()) {
-				case Prototype::Type::Settler : {
-					displayButton(actionButtons_[Action::Type::Settle]);
-					break;
-				}
-				case Prototype::Type::Soldier : {
-					break;
-				}
-			}
-			break;
+	if (object->type() == ObjectType::Town) {
+		displayButton(actionButtons_[ActionType::CreateUnit]);
+	} else if (object->type() == ObjectType::Unit) {
+		const Unit *unit = dynamic_cast<const Unit *>(object);
+		unitMoveRange_->setValue(unit->currentMoveRange());
+		displayStat(unitMoveRange_);
+		
+		if (unit->pType() ==  ProtoType::Settler) {
+			displayButton(actionButtons_[ActionType::Settle]);
+		} else if (unit->pType() == ProtoType::Soldier) {
 		}
 	}
 	for (Action *action : actions) {
@@ -132,8 +123,8 @@ void StatDisplay::setValue(const QString &text)
 
 /*--------------ActionButton------------------*/
 
-ActionButton::ActionButton(Action::Type type, QWidget *parent): 
-	QPushButton(Action::name(type) ,parent), type_(type)
+ActionButton::ActionButton(ActionType type, QWidget *parent): 
+	QPushButton((QString)(type) ,parent), type_(type)
 {
 	clear();
 	connect(this, &ActionButton::clicked, this, &ActionButton::perform);
@@ -161,13 +152,13 @@ void ActionButton::addAction(Action *action)
 		return;
 	
 	if (menu() == nullptr) {
-		setMenu(new QMenu(Action::name(type_), this));
-		QAction *menuAction = menu()->addAction(Action::name(type_));
+		setMenu(new QMenu((QString)(type_), this));
+		QAction *menuAction = menu()->addAction((QString)(type_));
 		connect(menuAction, &QAction::triggered, [this](){actions_.first()->perform();});
 		connect(menuAction, &QAction::triggered, this, &ActionButton::performed);
 	}
 	
-	QAction *menuAction = menu()->addAction(Action::name(type_));
+	QAction *menuAction = menu()->addAction((QString)(type_));
 	connect(menuAction, &QAction::triggered, [action](){action->perform();});
 	connect(menuAction, &QAction::triggered, this, &ActionButton::performed);
 }
