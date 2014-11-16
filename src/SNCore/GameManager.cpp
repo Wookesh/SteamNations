@@ -83,10 +83,12 @@ QVector<Action *> GameManager::objectActions (const Object *objectC) {
 
 	if (objectN->type() == ObjectType::Town) {
 		Town *town = dynamic_cast<Town *> (objectN);
-
-		for (ProtoType type : ProtoType::labels())
-			if (town->canRecruit(type))
-				possibleActions.push_back(new CreateUnitAction(town, type));
+		
+		if (town->owner() == currentPlayer()) {
+			for (ProtoType type : ProtoType::labels())
+				if (town->canRecruit(type))
+					possibleActions.push_back(new CreateUnitAction(town, type));
+		}
 
 	} else if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *> (objectN);
