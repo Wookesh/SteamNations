@@ -22,9 +22,9 @@ public:
 	
 	virtual QString name() const override;
 	
-	bool canRecruit(Prototype::Type type);
+	bool canRecruit(ProtoType type);
 	
-	Unit *createUnit(Prototype::Type type);
+	Unit *createUnit(ProtoType type);
 	void getCaptured(Player *player);
 private:
 	QString name_;

@@ -39,14 +39,10 @@ void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &act
 		const Unit *unit = dynamic_cast<const Unit *>(object);
 		unitMoveRange_->setValue(unit->currentMoveRange());
 		displayStat(unitMoveRange_);
-		switch (unit->pType()) {
-			case Prototype::Type::Settler : {
-				displayButton(actionButtons_[ActionType::Settle]);
-				break;
-			}
-			case Prototype::Type::Soldier : {
-				break;
-			}
+		
+		if (unit->pType() ==  ProtoType::Settler) {
+			displayButton(actionButtons_[ActionType::Settle]);
+		} else if (unit->pType() == ProtoType::Soldier) {
 		}
 	}
 	for (Action *action : actions) {

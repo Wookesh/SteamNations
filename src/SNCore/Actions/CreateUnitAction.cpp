@@ -4,7 +4,7 @@
 #include "../Objects/Unit.hpp"
 #include <QDebug>
 
-CreateUnitAction::CreateUnitAction(Town *town, Prototype::Type type): Action(town, town->tile(), ActionType::CreateUnit), type_(type)
+CreateUnitAction::CreateUnitAction(Town *town, ProtoType type): Action(town, town->tile(), ActionType::CreateUnit), type_(type)
 {
 
 }
@@ -16,7 +16,7 @@ bool CreateUnitAction::perform()
 	return unit != nullptr;
 }
 
-Prototype::Type CreateUnitAction::pType()
+ProtoType CreateUnitAction::pType()
 {
 	return type_;
 }

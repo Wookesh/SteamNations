@@ -33,7 +33,7 @@ QString Unit::name() const
 	return prototype_->name();
 }
 
-Prototype::Type Unit::pType() const
+ProtoType Unit::pType() const
 {
 	return prototype_->type();
 }

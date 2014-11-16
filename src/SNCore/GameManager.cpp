@@ -84,19 +84,16 @@ QVector<Action *> GameManager::objectActions (const Object *objectC) {
 	if (objectN->type() == ObjectType::Town) {
 		Town *town = dynamic_cast<Town *> (objectN);
 
-		//przydałaby się jakaś lista typów żeby fora zrobić jak będzie więcej jednostek
-		if (town->canRecruit (Prototype::Type::Settler))
-			possibleActions.push_back (new CreateUnitAction (town, Prototype::Type::Settler));
-
-		if (town->canRecruit (Prototype::Type::Soldier))
-			possibleActions.push_back (new CreateUnitAction (town, Prototype::Type::Soldier));
+		for (ProtoType type : ProtoType::labels())
+			if (town->canRecruit(type))
+				possibleActions.push_back(new CreateUnitAction(town, type));
 
 	} else if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *> (objectN);
 
-		if (unit->pType() == Prototype::Type::Settler)
-			if (dynamic_cast<Settler *> (unit)->canSettle (unit->tile()))
-				possibleActions.push_back (new SettleAction (dynamic_cast<Settler *> (unit)));
+		if (unit->pType() == ProtoType::Settler)
+			if (dynamic_cast<Settler *> (unit)->canSettle(unit->tile()))
+				possibleActions.push_back(new SettleAction(dynamic_cast<Settler *> (unit)));
 	}
 	return possibleActions;
 }
@@ -113,7 +110,7 @@ QVector<Action *> GameManager::mapActions (const Object *objectC) {
 			if (unit->canMove (currTile))
 				possibleActions.push_back (new MoveAction (unit, currTile));
 
-			if (unit->pType() == Prototype::Type::Soldier) {
+			if (unit->pType() == ProtoType::Soldier) {
 				Soldier *soldier = static_cast<Soldier *>(unit);
 				if (soldier->canAttack (currTile))
 					possibleActions.push_back (new AttackAction (soldier, currTile->unit()));
@@ -145,8 +142,8 @@ void GameManager::initGame() {
 	
 	Board *board = GameManager::get()->board();
 	
-	andrzej->createUnit(Prototype::Type::Settler, board->getTile(25, 25));
-	zbyszek->createUnit(Prototype::Type::Settler, board->getTile(24, 26));
+	andrzej->createUnit(ProtoType::Settler, board->getTile(25, 25));
+	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
 }
 
 void GameManager::startGame() {
