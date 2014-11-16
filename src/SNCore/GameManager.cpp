@@ -83,12 +83,10 @@ QVector<Action *> GameManager::objectActions (const Object *objectC) {
 
 	if (objectN->type() == ObjectType::Town) {
 		Town *town = dynamic_cast<Town *> (objectN);
-		
-		if (town->owner() == currentPlayer()) {
-			for (ProtoType type : ProtoType::labels())
-				if (town->canRecruit(type))
-					possibleActions.push_back(new CreateUnitAction(town, type));
-		}
+
+		for (ProtoType type : ProtoType::labels())
+			if (town->canRecruit(type))
+				possibleActions.push_back(new CreateUnitAction(town, type));
 
 	} else if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *> (objectN);
@@ -145,7 +143,9 @@ void GameManager::initGame() {
 	Board *board = GameManager::get()->board();
 	
 	andrzej->createUnit(ProtoType::Settler, board->getTile(25, 25));
+	andrzej->updateAfter(); //aby jednostka mogła się poruszać
 	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
+	zbyszek->updateAfter();
 }
 
 void GameManager::startGame() {

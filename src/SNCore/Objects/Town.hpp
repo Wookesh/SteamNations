@@ -10,6 +10,7 @@ class Player;
 class Tile;
 class Prototype;
 class Unit;
+class GameManager;
 
 class Town : public Object {
 Q_OBJECT

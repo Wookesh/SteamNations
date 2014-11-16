@@ -2,6 +2,7 @@
 #include "Town.hpp"
 #include "../Tile.hpp"
 #include "Unit.hpp"
+#include "../GameManager.hpp"
 #include <QDebug>
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
@@ -48,5 +49,5 @@ void Town::getCaptured(Player *player)
 
 bool Town::canRecruit(ProtoType type)
 {
-	return tile_->unit() == nullptr;
+	return tile_->unit() == nullptr && GameManager::get()->currentPlayer() == owner();
 }
