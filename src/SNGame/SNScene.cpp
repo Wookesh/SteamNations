@@ -36,25 +36,19 @@ void SNScene::createObject(UID id)
 	if (object == nullptr)
 		return;
 	
-	switch (object->type()) {
-		case Object::Type::Town: {
-			
-			createTown(dynamic_cast<const Town *>(object));
-			break;
-		}
-		case Object::Type::Unit: {
-			const Unit *unit = dynamic_cast<const Unit *>(object);
-			switch (unit->pType()) {
-				case Prototype::Type::Settler : {
-					createSettler(dynamic_cast<const Settler *>(unit));
-					break;
-				}
-				case Prototype::Type::Soldier : {
-					createSoldier(dynamic_cast<const Soldier *>(unit));
-					break;
-				}
+	if (object->type() ==  ObjectType::Town) {
+		createTown(dynamic_cast<const Town *>(object));
+	} else if (object->type() == ObjectType::Unit) {
+		const Unit *unit = dynamic_cast<const Unit *>(object);
+		switch (unit->pType()) {
+			case Prototype::Type::Settler : {
+				createSettler(dynamic_cast<const Settler *>(unit));
+				break;
 			}
-			break;
+			case Prototype::Type::Soldier : {
+				createSoldier(dynamic_cast<const Soldier *>(unit));
+				break;
+			}
 		}
 	}
 }

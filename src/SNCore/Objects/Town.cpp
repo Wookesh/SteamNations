@@ -4,7 +4,8 @@
 #include "Unit.hpp"
 #include <QDebug>
 
-Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent): Object(tile, Type::Town, owner, parent), name_(name)
+Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
+	Object(tile, ObjectType::Town, owner, parent), name_(name)
 {
 	
 }

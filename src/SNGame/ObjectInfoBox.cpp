@@ -33,25 +33,20 @@ void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &act
 	displayStat(objectName_);
 	playerName_->setValue(object->owner()->name());
 	displayStat(playerName_);
-	switch (object->type()) {
-		case Unit::Type::Town: {
-			displayButton(actionButtons_[ActionType::CreateUnit]);
-			break;
-		}
-		case Unit::Type::Unit: {
-			const Unit *unit = dynamic_cast<const Unit *>(object);
-			unitMoveRange_->setValue(unit->currentMoveRange());
-			displayStat(unitMoveRange_);
-			switch (unit->pType()) {
-				case Prototype::Type::Settler : {
-					displayButton(actionButtons_[ActionType::Settle]);
-					break;
-				}
-				case Prototype::Type::Soldier : {
-					break;
-				}
+	if (object->type() == ObjectType::Town) {
+		displayButton(actionButtons_[ActionType::CreateUnit]);
+	} else if (object->type() == ObjectType::Unit) {
+		const Unit *unit = dynamic_cast<const Unit *>(object);
+		unitMoveRange_->setValue(unit->currentMoveRange());
+		displayStat(unitMoveRange_);
+		switch (unit->pType()) {
+			case Prototype::Type::Settler : {
+				displayButton(actionButtons_[ActionType::Settle]);
+				break;
 			}
-			break;
+			case Prototype::Type::Soldier : {
+				break;
+			}
 		}
 	}
 	for (Action *action : actions) {
