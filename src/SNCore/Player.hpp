@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVector>
 
+
 #include "Objects/Prototypes/Prototype.hpp"
 #include "Tile.hpp"
 
@@ -14,7 +15,7 @@ class Unit;
 
 class Player {
 public:
-	Player(const QString &name);
+	Player(const QString &name, Qt::GlobalColor color);
 	virtual ~Player();
 	
 	QString name() const;
@@ -32,12 +33,15 @@ public:
 	void destroyUnit(Unit *unit);
 	
 	Prototype *prototype(ProtoType type);
+
+	Qt::GlobalColor color() const;
 private:
 	Town *capital_;
 	QString name_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
 	QHash<ProtoType, Prototype *> prototypes_;
+	Qt::GlobalColor color_;
 };
 
 #endif

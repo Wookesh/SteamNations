@@ -130,8 +130,8 @@ void GameManager::setPlayers (QList< Player * > &players) {
 
 void GameManager::initGame() {
 	// Test players
-	Player *andrzej = new Player ("Andrzej");
-	Player *zbyszek = new Player ("Zbyszek");
+	Player *andrzej = new Player ("Andrzej", Qt::black);
+	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
 	
 	QList<Player *> lista;
 	lista.push_back (andrzej);

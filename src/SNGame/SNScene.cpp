@@ -140,6 +140,7 @@ void SNScene::select(const Tile *tile)
 				return;
 			}
 		clearSelect();
+		select(tile);
 	}
 }
 

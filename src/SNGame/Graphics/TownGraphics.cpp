@@ -23,6 +23,10 @@ void TownGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setWidth(5);
 	painter->setPen(pen);
 	painter->drawRoundedRect(boundingRect(), 20.0, 20.0);
+	pen.setBrush(town_->owner()->color());
+	pen.setWidth(3);
+	painter->setPen(pen);
+	painter->drawRoundedRect(QRectF(boundingRect().topLeft()-QPointF(3,3), boundingRect().bottomRight()+QPointF(3,3)), 20.0, 20.0);
 	pen.setWidth(30);
 	pen.setColor(Qt::black);
 	painter->setPen(pen);
