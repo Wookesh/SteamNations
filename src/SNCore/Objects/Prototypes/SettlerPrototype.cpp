@@ -2,6 +2,8 @@
 #include "../Settler.hpp"
 #include "../../GameManager.hpp"
 
+const QString SettlerPrototype::BASE_NAME = QString("Settler");
+
 SettlerPrototype::SettlerPrototype(const QString &name, int moveRange, int cost) :
 	Prototype(ProtoType::Settler, name, moveRange, cost)
 {

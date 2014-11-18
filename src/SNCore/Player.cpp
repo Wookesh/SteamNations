@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "Objects/Prototypes/SettlerPrototype.hpp"
+#include "Objects/Prototypes/SoldierPrototype.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 #include "Objects/Prototypes/Prototype.hpp"
@@ -8,9 +9,8 @@
 
 Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
 {
-	SettlerPrototype *settlerPrototype = new SettlerPrototype(
-		BASE_SETTLER_NAME, BASE_SETTLER_MOVERANGE, BASE_SETTLER_COST);
-	prototypes_[ProtoType::Settler] = settlerPrototype;
+	prototypes_[ProtoType::Settler] = new SettlerPrototype();
+	prototypes_[ProtoType::Soldier] = new SoldierPrototype();
 	
 }
 

@@ -9,13 +9,15 @@ class Town;
 class Soldier : public Unit {
 Q_OBJECT
 public:
-    Soldier(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
+	Soldier(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
 	
 	bool canCapture(Tile *currTile);
 	bool capture(Town *town);
 	
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
+	
+	virtual void getAttacked(Unit *) override;
 };
 
 

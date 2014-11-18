@@ -16,5 +16,6 @@ add_library(SNCore
 	Objects/Town.cpp
 	Objects/Prototypes/Prototype.cpp
 	Objects/Prototypes/SettlerPrototype.cpp
+	Objects/Prototypes/SoldierPrototype.cpp
 	)
 qt5_use_modules(SNCore Core)

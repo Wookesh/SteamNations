@@ -28,6 +28,7 @@ public:
 	
 	int cost() const;
 	void setCost(int cost);
+	
 protected:
 	ProtoType type_;
 	QString name_;

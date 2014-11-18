@@ -3,6 +3,7 @@
 #include "Prototypes/Prototype.hpp"
 #include "../GameManager.hpp"
 #include "Object.hpp"
+#include "Town.hpp"
 
 
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
@@ -53,7 +54,8 @@ bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
 		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange() &&
-		GameManager::get()->currentPlayer() == owner())
+		GameManager::get()->currentPlayer() == owner() &&
+		(tile->town() == nullptr ? true : tile->town()->owner() == owner()))
 		return true;
 	return false;
 }
