@@ -54,12 +54,13 @@ private:
 public slots:
 	void removeObject(UID uid);
 	void startGame();
-	void checkIfWin();
+	void checkIfWin(Player *player);
 	void endTurn();
+	void check(Player *player);
 	
 signals:
 	void gameInitialized();
-	void gameEnded();
+	void gameEnded(Player *winner);
 	void turnReady();
 	void objectCreated(UID uid);
 };

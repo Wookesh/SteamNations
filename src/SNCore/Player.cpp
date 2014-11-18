@@ -39,7 +39,6 @@ QString Player::name() const
 
 void Player::obtainTown(Town *town)
 {
-	town->setOwner(this);
 	towns_.push_back(town);
 }
 
@@ -55,6 +54,10 @@ void Player::destroyTown (Town *town) {
 Qt::GlobalColor Player::color() const
 {
 	return color_;
+}
+
+unsigned int Player::getTownCount() {
+	return towns_.count();
 }
 
 

@@ -9,5 +9,10 @@ SettleAction::SettleAction(Settler *mainObject) : Action(mainObject, mainObject-
 
 bool SettleAction::perform()
 {
-	return dynamic_cast<Settler *>(mainObject_)->settle();
+	bool result = dynamic_cast<Settler *>(mainObject_)->settle();
+	
+	if (result)
+		delete mainObject_;
+		
+	return result;
 }

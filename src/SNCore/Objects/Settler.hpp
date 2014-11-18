@@ -18,8 +18,8 @@ public:
 	
 	virtual void getAttacked(Unit *) override;
 signals:
-	void cityCreated();
-	void capitalCreated();
+	void townCreated(Player *player);
+	void capitalCreated(Player *player);
 };
 
 #endif

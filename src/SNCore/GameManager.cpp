@@ -10,6 +10,8 @@
 #include "Objects/Town.hpp"
 #include "Objects/Prototypes/SettlerPrototype.hpp"
 
+#include <QDebug>
+
 GameManager *GameManager::instance = nullptr;
 
 GameManager *GameManager::get() {
@@ -146,6 +148,13 @@ void GameManager::initGame() {
 	andrzej->updateAfter(); //aby jednostka mogła się poruszać
 	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
 	zbyszek->updateAfter();
+	
+	QObject::connect(this, SIGNAL(gameEnded(Player*)),
+					 this, SLOT(check(Player*)));
+}
+
+void GameManager::check (Player *player) {
+	qDebug() << "Game won by " << player->color() << "\n";
 }
 
 void GameManager::startGame() {
@@ -187,8 +196,11 @@ void GameManager::setNextPlayer() {
 	currentPlayer_ = *it;
 }
 
-void GameManager::checkIfWin() {
-
+void GameManager::checkIfWin(Player *player) {
+	qDebug() << "Checking if " << player->color() << " has won the game";
+	if (player->getTownCount() >= 3) {
+		emit gameEnded(player);
+	}
 }
 
 void GameManager::setWinConditions() {

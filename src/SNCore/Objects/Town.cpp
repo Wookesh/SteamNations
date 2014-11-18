@@ -8,7 +8,7 @@
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name)
 {
-	
+	owner->obtainTown(this);
 }
 
 Town::~Town()
@@ -44,6 +44,7 @@ Unit *Town::createUnit(ProtoType type)
 
 void Town::getCaptured(Player *player)
 {
+	setOwner(player);
 	player->obtainTown(this);
 }
 

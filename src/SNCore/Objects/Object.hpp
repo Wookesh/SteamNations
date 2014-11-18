@@ -43,7 +43,7 @@ protected:
 	UID id_;
 	
 signals:
-	void ownerChanged();
+	void ownerChanged(Player *player);
 	void positionChanged();
 	void objectDestroyed(UID id);
 };

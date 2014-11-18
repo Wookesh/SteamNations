@@ -39,7 +39,7 @@ const Player *Object::owner() const
 void Object::setOwner(Player *owner)
 {
 	owner_ = owner;
-	emit ownerChanged();
+	emit ownerChanged(owner);
 }
 void Object::setType(ObjectType type)
 {

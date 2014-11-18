@@ -25,6 +25,7 @@ public:
 	
 	void obtainTown(Town *town);
 	void destroyTown(Town *town);
+	unsigned int getTownCount();
 	
 	Town *capital();
 	void setCapital(Town *town);
