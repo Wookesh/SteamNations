@@ -25,6 +25,8 @@ private:
 	void createInterface();
 	void createConnections();
 	void displayInfo();
+private slots:
+	void displayEndMessage(const Player *player);
 };
 
 #endif

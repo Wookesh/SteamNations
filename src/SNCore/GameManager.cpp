@@ -149,12 +149,11 @@ void GameManager::initGame() {
 	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
 	zbyszek->updateAfter();
 	
-	QObject::connect(this, SIGNAL(gameEnded(Player*)),
-					 this, SLOT(check(Player*)));
+	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
 }
 
-void GameManager::check (Player *player) {
-	qDebug() << "Game won by " << player->color() << "\n";
+void GameManager::check (const Player *player) {
+	qDebug() << "Game won by" << player->name();
 }
 
 void GameManager::startGame() {
@@ -197,7 +196,7 @@ void GameManager::setNextPlayer() {
 }
 
 void GameManager::checkIfWin(Player *player) {
-	qDebug() << "Checking if " << player->color() << " has won the game";
+	qDebug() << "Checking if" << player->name() << "has won the game";
 	if (player->getTownCount() >= 3) {
 		emit gameEnded(player);
 	}

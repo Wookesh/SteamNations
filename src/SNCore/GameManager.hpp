@@ -56,11 +56,11 @@ public slots:
 	void startGame();
 	void checkIfWin(Player *player);
 	void endTurn();
-	void check(Player *player);
+	void check(const Player *player);
 	
 signals:
 	void gameInitialized();
-	void gameEnded(Player *winner);
+	void gameEnded(const Player *winner);
 	void turnReady();
 	void objectCreated(UID uid);
 };

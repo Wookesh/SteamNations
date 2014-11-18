@@ -2,6 +2,7 @@
 #include "../SNCore/GameManager.hpp"
 #include <QVBoxLayout>
 #include <QApplication>
+#include <QMessageBox>
 
 GraphicInterface::GraphicInterface(QWidget *parent) : QWidget(parent)
 {
@@ -22,6 +23,8 @@ GraphicInterface::~GraphicInterface()
 
 void GraphicInterface::createInterface()
 {
+	connect(GameManager::get(), &GameManager::gameEnded, this, &GraphicInterface::displayEndMessage);
+	
 	exitButton_ = new QPushButton("Exit", gameView_);
 	connect(exitButton_, &QPushButton::clicked, qApp, &QApplication::exit);
 	nextTurn_ = new NextTurnButton(gameView_);
@@ -33,6 +36,14 @@ void GraphicInterface::createInterface()
 	connect(scene_, &SNScene::selectionUpdate, this, &GraphicInterface::displayInfo);
 	connect(scene_, &SNScene::noSelection, infobox_, &ObjectInfoBox::hide);
 	connect(infobox_, &ObjectInfoBox::actionPerformed, scene_, &SNScene::clearSelect);
+}
+
+void GraphicInterface::displayEndMessage(const Player *player)
+{
+	QMessageBox *end = new QMessageBox();
+	end->addButton("Ok", QMessageBox::AcceptRole);
+	end->setText(player == GameManager::get()->currentPlayer() ? "You Won! :D" : "You Lost! :(");
+	end->exec();
 }
 
 void GraphicInterface::displayInfo()
