@@ -7,7 +7,7 @@
 
 
 #include "Objects/Prototypes/Prototype.hpp"
-#include "Tile.hpp"
+#include "Resources.hpp"
 
 class Tile;
 class Town;
@@ -33,6 +33,10 @@ public:
 	Unit *createUnit(ProtoType type, Tile *tile);
 	void destroyUnit(Unit *unit);
 	
+	unsigned int resource(Resource resource) const;
+	void addResource(Resource resource, unsigned int val);
+	bool removeResource(Resource resource, unsigned int val);
+	
 	Prototype *prototype(ProtoType type);
 
 	Qt::GlobalColor color() const;
@@ -43,6 +47,7 @@ private:
 	QVector<Unit *> units_;
 	QHash<ProtoType, Prototype *> prototypes_;
 	Qt::GlobalColor color_;
+	QHash<Resource, unsigned int> resources_;
 };
 
 #endif

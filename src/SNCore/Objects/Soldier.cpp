@@ -31,7 +31,8 @@ bool Soldier::canCapture(Tile* currTile)
 {	
 	if((GameManager::get()->currentPlayer() == owner()) &&
 		(currTile->town() != nullptr) &&
-		(currTile->town()->owner() != owner()))
+		(currTile->town()->owner() != owner()) &&
+		(currTile->unit() == nullptr))
 		return true;
 	
 	return false;

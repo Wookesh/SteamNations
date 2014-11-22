@@ -3,6 +3,7 @@
 #include "Objects/Prototypes/SoldierPrototype.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
+#include "Tile.hpp"
 #include "Objects/Prototypes/Prototype.hpp"
 
 #include <QtCore>
@@ -12,6 +13,8 @@ Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), 
 	prototypes_[ProtoType::Settler] = new SettlerPrototype();
 	prototypes_[ProtoType::Soldier] = new SoldierPrototype();
 	
+	for (Resource r : Resource::labels())
+		resources_[r] = 0;
 }
 
 Player::~Player()
@@ -60,6 +63,24 @@ unsigned int Player::getTownCount() {
 	return towns_.count();
 }
 
+int Player::resource(Resource resource) const
+{
+	return resources_[resource];
+}
+
+void Player::addResource(Resource resource, unsigned int val)
+{
+	resources_[resource] += val;
+}
+
+bool Player::removeResource(Resource resource, unsigned int val)
+{
+	if (resources_[resource] >= val) {
+		resources_[resource] -= val;
+		return true;
+	}
+	return false;
+}
 
 void Player::updateBefore() {
 	// internal stuff

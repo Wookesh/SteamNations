@@ -2,7 +2,8 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 
-Tile::Tile(unsigned int x_, unsigned int y_) : town_(nullptr), unit_(nullptr), position_(x_, y_) 
+Tile::Tile(unsigned int x_, unsigned int y_, Resource resource) :
+	town_(nullptr), unit_(nullptr), position_(x_, y_), resource_(resource)
 {
 
 }
@@ -69,4 +70,14 @@ const Unit *Tile::unit() const
 void Tile::setUnit(Unit *unit)
 {
 	unit_ = unit;
+}
+
+Resource Tile::resource() const
+{
+	return resource_;
+}
+
+int Tile::resourceProduction() const
+{
+	return resourceProduction_;
 }

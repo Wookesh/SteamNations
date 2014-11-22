@@ -4,13 +4,15 @@
 #include <QPoint>
 #include <QList>
 
+#include "Resources.hpp"
+
 class Object;
 class Town;
 class Unit;
 
 class Tile {
 public:
-	Tile(unsigned int x, unsigned int y);
+	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None);
 	~Tile();
 	
 	Town *town();
@@ -21,6 +23,10 @@ public:
 	const Unit *unit() const;
 	void setUnit(Unit *unit);
 	
+	Resource resource() const;
+	
+	int resourceProduction() const;
+	
 	QPoint position() const;
 	QPoint axial() const;
 	
@@ -29,6 +35,8 @@ private:
 	Town *town_;
 	Unit *unit_;
 	QPoint position_;
+	Resource resource_;
+	int resourceProduction_;
 };
 
 #endif
