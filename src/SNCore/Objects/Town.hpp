@@ -29,6 +29,7 @@ public:
 	void getCaptured(Player *player);
 private:
 	QString name_;
+	QVector<Tile *> townTiles_;
 };
 
 #endif

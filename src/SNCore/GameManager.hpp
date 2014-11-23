@@ -48,6 +48,7 @@ private:
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
 	void setNextPlayer();
+	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
 	

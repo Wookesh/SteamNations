@@ -12,7 +12,7 @@ class Unit;
 
 class Tile {
 public:
-	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None);
+	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None, int resourceProduction = 5);
 	~Tile();
 	
 	Town *town();
@@ -26,6 +26,9 @@ public:
 	Resource resource() const;
 	
 	int resourceProduction() const;
+	int takeResources();
+	
+	void updateBefore();
 	
 	QPoint position() const;
 	QPoint axial() const;
@@ -37,6 +40,7 @@ private:
 	QPoint position_;
 	Resource resource_;
 	int resourceProduction_;
+	int produced_;
 };
 
 #endif

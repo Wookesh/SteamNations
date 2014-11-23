@@ -20,7 +20,7 @@ ProtoType Prototype::type() const
 }
 
 
-int Prototype::cost() const
+unsigned int Prototype::cost() const
 {
 	return cost_;
 }

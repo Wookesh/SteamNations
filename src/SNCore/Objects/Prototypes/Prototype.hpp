@@ -26,14 +26,14 @@ public:
 	quint8 moveRange() const;
 	void setMoveRange(quint8 moveRange);
 	
-	int cost() const;
+	unsigned int cost() const;
 	void setCost(int cost);
 	
 protected:
 	ProtoType type_;
 	QString name_;
 	quint8 moveRange_;
-	int cost_;
+	unsigned int cost_;
 };
 
 #endif

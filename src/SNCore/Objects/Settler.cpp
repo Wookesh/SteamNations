@@ -36,10 +36,8 @@ bool Settler::settle()
 	if (owner()->capital() == nullptr) {
 		owner()->setCapital(town);
 		emit capitalCreated(owner_);
-		emit townCreated(owner_);
-	} else {
-		emit townCreated(owner_);
 	}
+	emit townCreated(owner_);
 	
 	return true;
 }
@@ -53,7 +51,8 @@ Town *Settler::createTown()
 	return town;
 }
 
-void Settler::getAttacked (Unit *) {
+void Settler::getAttacked(Unit *) 
+{
 	
 }
 

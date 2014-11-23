@@ -22,7 +22,8 @@ Town::~Town()
 
 void Town::updateBefore() 
 {
-
+	for (Tile *tile : townTiles_)
+		owner_->addResource(tile->resource(), tile->takeResources());
 }
 
 
@@ -38,6 +39,9 @@ void Town::updateAfter()
 
 Unit *Town::createUnit(ProtoType type)
 {
+	if (!canRecruit(type))
+		return nullptr;
+	
 	Unit *newUnit = owner_->createUnit(type, tile_);
 	return newUnit;
 }
@@ -50,5 +54,9 @@ void Town::getCaptured(Player *player)
 
 bool Town::canRecruit(ProtoType type)
 {
-	return tile_->unit() == nullptr && GameManager::get()->currentPlayer() == owner();
+	if (tile_->unit() == nullptr &&
+		GameManager::get()->currentPlayer() == owner() &&
+		owner()->resource(Resource::Gold) >= owner()->prototype(type)->cost())
+		return true;
+	return false;
 }

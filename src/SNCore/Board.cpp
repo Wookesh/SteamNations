@@ -92,3 +92,10 @@ QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const {
 	
 	return inRange;
 }
+
+void Board::updateBefore()
+{
+	for (Tile *tile : tiles_)
+		tile->updateBefore();
+}
+

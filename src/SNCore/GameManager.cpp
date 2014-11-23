@@ -167,7 +167,6 @@ void GameManager::endGame() {
 void GameManager::endTurn() {
 	currentPlayer_->updateAfter();
 	setNextPlayer();
-	currentTurn_++;
 	currentPlayer_->updateBefore();
 	turnReady();
 }
@@ -182,18 +181,20 @@ Player *GameManager::currentPlayer() const {
 }
 
 void GameManager::setNextPlayer() {
-	QList<Player *>::iterator it = players_.begin();
-
-	while ( (*it) != currentPlayer())
-		it++;
-
-	it++;
-
-	if (it == players_.end())
+	static QList<Player *>::iterator it = players_.begin();
+	if (++it == players_.end()) {
 		it = players_.begin();
-
+		prepareNewTurn();
+	}
 	currentPlayer_ = *it;
 }
+
+void GameManager::prepareNewTurn()
+{
+	++currentTurn_;
+	board_->updateBefore();
+}
+
 
 void GameManager::checkIfWin(Player *player) {
 	qDebug() << "Checking if" << player->name() << "has won the game";

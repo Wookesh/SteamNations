@@ -2,8 +2,9 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 
-Tile::Tile(unsigned int x_, unsigned int y_, Resource resource) :
-	town_(nullptr), unit_(nullptr), position_(x_, y_), resource_(resource)
+Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction) :
+	town_(nullptr), unit_(nullptr), position_(x_, y_),
+	resource_(resource), resourceProduction_(resourceProduction)
 {
 
 }
@@ -23,6 +24,11 @@ QList<const Object *> Tile::getObjects() const
 	if (town_ != nullptr) 
 		l.push_back (town_);
 	return l;
+}
+
+void Tile::updateBefore()
+{
+	produced_ = resourceProduction();
 }
 
 QPoint Tile::position() const 
@@ -81,3 +87,11 @@ int Tile::resourceProduction() const
 {
 	return resourceProduction_;
 }
+
+int Tile::takeResources()
+{
+	int ret = produced_;
+	produced_ = 0;
+	return ret;
+}
+

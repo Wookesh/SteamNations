@@ -63,7 +63,7 @@ unsigned int Player::getTownCount() {
 	return towns_.count();
 }
 
-int Player::resource(Resource resource) const
+unsigned int Player::resource(Resource resource) const
 {
 	return resources_[resource];
 }

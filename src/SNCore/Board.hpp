@@ -21,6 +21,8 @@ public:
 	
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
+	
+	void updateBefore();
 private:
 	unsigned int height_;
 	unsigned int width_;
