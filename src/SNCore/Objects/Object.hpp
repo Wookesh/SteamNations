@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include "../Serial.hpp"
-#include "../Player.hpp"
 #include "../EnumHelpers.hpp"
 
 class Player;

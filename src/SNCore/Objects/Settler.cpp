@@ -3,6 +3,8 @@
 #include "Town.hpp"
 #include "../Tile.hpp"
 #include "../GameManager.hpp"
+#include "../Board.hpp"
+#include "../Player.hpp"
 #include <QDebug>
 
 Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent) : Unit(tile, prototype, owner, parent)

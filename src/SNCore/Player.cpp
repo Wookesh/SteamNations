@@ -1,10 +1,8 @@
 #include "Player.hpp"
-#include "Objects/Prototypes/SettlerPrototype.hpp"
-#include "Objects/Prototypes/SoldierPrototype.hpp"
+#include "Objects/Prototypes/Prototypes.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 #include "Tile.hpp"
-#include "Objects/Prototypes/Prototype.hpp"
 
 #include <QtCore>
 

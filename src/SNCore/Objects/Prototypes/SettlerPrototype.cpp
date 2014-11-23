@@ -1,6 +1,7 @@
 #include "SettlerPrototype.hpp"
 #include "../Settler.hpp"
 #include "../../GameManager.hpp"
+#include "../../Player.hpp"
 
 const QString SettlerPrototype::BASE_NAME = QString("Settler");
 
@@ -18,8 +19,6 @@ Unit *SettlerPrototype::createUnit(Tile *tile, Player *owner)
 {
 	Settler *settler = new Settler(tile, this, owner);
 	GameManager::get()->addObject(settler->id(), settler);
-	QObject::connect(settler, SIGNAL(townCreated(Player *)),
-					 GameManager::get(), SLOT(checkIfWin(Player*))
-	);
+	QObject::connect(settler, &Settler::townCreated, GameManager::get(), &GameManager::checkIfWin);
 	return settler;
 }

@@ -1,5 +1,6 @@
 #include "GraphicInterface.hpp"
 #include "../SNCore/GameManager.hpp"
+#include "../SNCore/Player.hpp"
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QMessageBox>

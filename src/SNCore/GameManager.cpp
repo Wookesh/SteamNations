@@ -1,14 +1,9 @@
 #include "GameManager.hpp"
-#include "Objects/Object.hpp"
-#include "Objects/Soldier.hpp"
-#include "Objects/Settler.hpp"
-#include "Actions/AttackAction.hpp"
-#include "Actions/MoveAction.hpp"
-#include "Actions/CaptureAction.hpp"
-#include "Actions/SettleAction.hpp"
-#include "Actions/CreateUnitAction.hpp"
-#include "Objects/Town.hpp"
-#include "Objects/Prototypes/SettlerPrototype.hpp"
+#include "Board.hpp"
+#include "Player.hpp"
+#include "Tile.hpp"
+#include "Objects/Objects.hpp"
+#include "Actions/Actions.hpp"
 
 #include <QDebug>
 

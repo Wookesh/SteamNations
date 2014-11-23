@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include "../Player.hpp"
 #include "../Tile.hpp"
 #include "../GameManager.hpp"
 

@@ -1,6 +1,8 @@
 #ifndef MOVEACTION_HPP
 #define MOVEACTION_HPP
+
 #include "Action.hpp"
+
 class Unit;
 
 class MoveAction : public Action {

@@ -5,6 +5,7 @@
 #include "Graphics/UnitGraphics.hpp"
 #include "../SNCore/Objects/Settler.hpp"
 #include "../SNCore/Objects/Soldier.hpp"
+#include "../SNCore/Objects/Town.hpp"
 #include <QDebug>
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),

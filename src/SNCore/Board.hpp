@@ -2,7 +2,8 @@
 #define BOARD_HPP
 
 #include <QVector>
-#include "Tile.hpp"
+
+class Tile;
 
 class Board {
 public:

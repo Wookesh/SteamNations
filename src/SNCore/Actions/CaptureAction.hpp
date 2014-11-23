@@ -1,5 +1,6 @@
 #ifndef CAPTUREACTION_HPP
 #define CAPTUREACTION_HPP
+
 #include "Action.hpp"
 
 class Town;

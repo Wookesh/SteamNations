@@ -1,9 +1,10 @@
 #include "Soldier.hpp"
 #include "../Tile.hpp"
 #include "Town.hpp"
+#include "Prototypes/SoldierPrototype.hpp"
 #include "../GameManager.hpp"
 
-Soldier::Soldier(Tile* tile, const Prototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
+Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
 {
 
 }

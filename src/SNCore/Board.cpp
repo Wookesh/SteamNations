@@ -1,8 +1,7 @@
 #include <algorithm>
 
 #include "Board.hpp"
-#include "Objects/Settler.hpp"
-#include "Objects/Prototypes/SettlerPrototype.hpp"
+#include "Tile.hpp"
 
 Board::Board(unsigned int width, unsigned int height): height_(height), width_(width) {
     for (unsigned int i = 0; i < height_; ++i)

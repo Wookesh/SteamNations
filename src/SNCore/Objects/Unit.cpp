@@ -2,6 +2,7 @@
 #include "../Tile.hpp"
 #include "Prototypes/Prototype.hpp"
 #include "../GameManager.hpp"
+#include "../Board.hpp"
 #include "Object.hpp"
 #include "Town.hpp"
 

@@ -1,5 +1,6 @@
 #include "TownGraphics.hpp"
 #include "../../SNCore/Tile.hpp"
+#include "../../SNCore/Player.hpp"
 #include "../SNHelpers.hpp"
 #include <QPainter>
 #include <QDebug>

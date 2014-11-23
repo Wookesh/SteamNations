@@ -1,4 +1,5 @@
 #include "ObjectInfoBox.hpp"
+#include "../SNCore/Player.hpp"
 #include <qlocale.h>
 #include <QPaintEvent>
 #include <QPainter>

@@ -1,5 +1,6 @@
 #ifndef SETTLEACTION_HPP
 #define SETTLEACTION_HPP
+
 #include "Action.hpp"
 
 class Settler;
