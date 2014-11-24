@@ -30,8 +30,10 @@ void GameManager::clean() {
 	}
 }
 
-GameManager::GameManager (QObject *parent) : QObject (parent), serial_ (new Serial()) {
-
+GameManager::GameManager(QObject *parent) : QObject(parent),
+	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0)
+{
+	
 }
 
 GameManager::~GameManager() {
@@ -135,7 +137,7 @@ void GameManager::initGame() {
 	lista.push_back (zbyszek);
 	setPlayers (lista);
 	
-	currentPlayer_ = andrzej;
+	setNextPlayer();
 	
 	Board *board = GameManager::get()->board();
 	
@@ -176,26 +178,31 @@ Player *GameManager::currentPlayer() const {
 }
 
 void GameManager::setNextPlayer() {
-	static QList<Player *>::iterator it = players_.begin();
+	static QList<Player *>::iterator it = --players_.end();
 	if (++it == players_.end()) {
 		it = players_.begin();
 		prepareNewTurn();
 	}
 	currentPlayer_ = *it;
+	qDebug() << "----------------------------------------";
+	qDebug() << "Player's" << currentPlayer()->name() << "turn.";
 }
 
 void GameManager::prepareNewTurn()
 {
+	qDebug() << "----------------------------------------";
+	qDebug() << "Turn :" << currentTurn_;
 	++currentTurn_;
 	board_->updateBefore();
 }
 
-
 void GameManager::checkIfWin(Player *player) {
 	qDebug() << "Checking if" << player->name() << "has won the game";
 	if (player->getTownCount() >= 3) {
+		qDebug() << "\tWith result :" << true;
 		emit gameEnded(player);
 	}
+	qDebug() << "\tWith result :" << false;
 }
 
 void GameManager::setWinConditions() {

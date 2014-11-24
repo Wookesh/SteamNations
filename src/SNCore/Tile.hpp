@@ -19,6 +19,10 @@ public:
 	const Town *town() const;
 	void setTown(Town *town);
 	
+	Town *localTown();
+	const Town *localTown() const;
+	void setLocalTown(Town *town);
+	
 	Unit *unit();
 	const Unit *unit() const;
 	void setUnit(Unit *unit);
@@ -36,6 +40,7 @@ public:
 	QList<const Object *> getObjects() const;
 private:
 	Town *town_;
+	Town *localTown_;
 	Unit *unit_;
 	QPoint position_;
 	Resource resource_;

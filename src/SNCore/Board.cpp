@@ -6,7 +6,7 @@
 Board::Board(unsigned int width, unsigned int height): height_(height), width_(width) {
     for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j) {
-			Tile *tile = new Tile(j, i);
+			Tile *tile = new Tile(j, i, Resource::labels()[qrand() % Resource::labels().size()], qrand() % 5 + 3);
 			tiles_.push_back(tile);
 		}
 }

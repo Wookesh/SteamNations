@@ -3,8 +3,8 @@
 #include "Objects/Unit.hpp"
 
 Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction) :
-	town_(nullptr), unit_(nullptr), position_(x_, y_),
-	resource_(resource), resourceProduction_(resourceProduction)
+	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
+	resource_(resource), resourceProduction_(resourceProduction), produced_(0)
 {
 
 }
@@ -61,6 +61,21 @@ const Town *Tile::town() const
 void Tile::setTown(Town *town)
 {
 	town_ = town;
+}
+
+Town *Tile::localTown()
+{
+	return localTown_;
+}
+
+const Town *Tile::localTown() const
+{
+	return localTown_;
+}
+
+void Tile::setLocalTown(Town *town)
+{
+	localTown_ = town;
 }
 
 Unit *Tile::unit()

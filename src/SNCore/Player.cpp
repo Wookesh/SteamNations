@@ -68,6 +68,7 @@ unsigned int Player::resource(Resource resource) const
 
 void Player::addResource(Resource resource, unsigned int val)
 {
+	qDebug() << "Player" << name() << "received" << val << "of" << QString(resource);
 	resources_[resource] += val;
 }
 
@@ -127,8 +128,9 @@ void Player::setCapital (Town *town)
 	capital_ = town;
 }
 
-
-Unit *Player::createUnit(ProtoType type, Tile *tile) {
+Unit *Player::createUnit(ProtoType type, Tile *tile) 
+{
+	removeResource(Resource::Gold, prototypes_[type]->cost());
 	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
 	tile->setUnit(newUnit);

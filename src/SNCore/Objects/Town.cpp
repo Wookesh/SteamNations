@@ -1,14 +1,20 @@
-#include "../Player.hpp"
 #include "Town.hpp"
-#include "../Tile.hpp"
 #include "Unit.hpp"
+#include "../Tile.hpp"
+#include "../Player.hpp"
 #include "../GameManager.hpp"
+#include <Board.hpp>
 #include <QDebug>
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name)
 {
 	owner->obtainTown(this);
+	for (Tile *nTile : GameManager::get()->board()->getInRange(tile_, 1))
+		if (nTile->localTown() == nullptr) {
+			nTile->setLocalTown(this);
+			townTiles_.push_back(nTile);
+		}
 }
 
 Town::~Town()
@@ -22,8 +28,10 @@ Town::~Town()
 
 void Town::updateBefore() 
 {
+	qDebug() << name() << __FUNCTION__;
 	for (Tile *tile : townTiles_)
-		owner_->addResource(tile->resource(), tile->takeResources());
+		if (tile->resource() != Resource::None)
+			owner_->addResource(tile->resource(), tile->takeResources());
 }
 
 
