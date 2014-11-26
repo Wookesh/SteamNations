@@ -6,7 +6,6 @@ Rectangle {
 	width: 640;
 	height: 480;
 
-
 	GameBoard {
 		id: gameBoard
 		visible: false
@@ -23,37 +22,4 @@ Rectangle {
 			mainMenu.visible = false
 		}
 	}
-
-//	ColumnLayout {
-
-//		visible: true
-//		id: mainLayout
-
-//		anchors.centerIn: parent
-//		spacing: 10
-
-//		MenuButton {
-//			id: newGame
-//			text: "New game"
-//			onClicked:
-//				gameBoard.visible = true,
-//				mainLayout.visible = false
-//		}
-
-//		MenuButton {
-//			id: loadGame
-//			text: "Load game"
-//		}
-
-//		MenuButton {
-//			id: options
-//			text: "Options"
-//		}
-
-//		MenuButton {
-//			id: exit
-//			text: "Exit"
-//			onClicked: Qt.quit();
-//		}
-//	}
 }
