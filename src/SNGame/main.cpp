@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QQmlContext>
+#include <QScreen>
 #include <QDebug>
 
 int main(int argc, char *argv[])
@@ -8,8 +10,12 @@ int main(int argc, char *argv[])
 
 	QQuickView view;
 	view.setResizeMode(QQuickView::SizeRootObjectToView);
+
+	QSize initialSize = view.screen()->size();
+	view.rootContext()->setContextProperty("initialSize", initialSize);
+	
 	view.setSource(QUrl("qrc:qml/MainWindow.qml"));
-	view.show();
+	view.showFullScreen();
 
 	return app.exec();
 }
