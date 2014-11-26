@@ -1,12 +1,15 @@
-#include <QApplication>
-#include "SteamNations.hpp"
+#include <QGuiApplication>
+#include <QQuickView>
+#include <QDebug>
 
-
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	SteamNations *steamNations = new SteamNations();
-	steamNations->showFullScreen();
+	QGuiApplication app(argc, argv);
+
+	QQuickView view;
+	view.setResizeMode(QQuickView::SizeRootObjectToView);
+	view.setSource(QUrl("qrc:qml/MainWindow.qml"));
+	view.show();
+
 	return app.exec();
 }
-
