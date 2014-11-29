@@ -6,6 +6,8 @@ Rectangle {
 	width: 640;
 	height: 480;
 
+
+
 	GameBoard {
 		id: gameBoard
 		visible: false
@@ -17,9 +19,12 @@ Rectangle {
 
 	MainMenu {
 		id: mainMenu
+		visible:true
 		onNewGameClicked: {
 			gameBoard.visible = true
 			mainMenu.visible = false
 		}
 	}
+
+
 }
