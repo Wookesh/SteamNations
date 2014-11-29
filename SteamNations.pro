@@ -2,7 +2,9 @@ TEMPLATE = app
 
 QT += qml quick
 
-SOURCES += src/SNGame/main.cpp
+CONFIG += c++11
+
+SOURCES += src/SNGame/main.cpp 
 
 RESOURCES += src/SNGame/qml.qrc
 

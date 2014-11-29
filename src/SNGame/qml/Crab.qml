@@ -1,0 +1,24 @@
+import QtQuick 2.3
+
+Rectangle {
+	id: krab
+	width: 100
+	height: 100
+	color: "red"
+
+	antialiasing: true
+	SpriteSequence {
+		id: sprite
+		width: 64
+		height: 64
+		interpolate: false
+		goalSprite: ""
+
+		Sprite {
+			name: "idle"
+			source: "qrc:../melee-idle.png"
+			frameCount: 8
+			frameDuration: 64
+		}
+	}
+}

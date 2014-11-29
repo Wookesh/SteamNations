@@ -7,48 +7,54 @@ Rectangle {
 	height: parent.height
 	color: "green"
 	antialiasing: true
+	
+	Component.onCompleted: {
+		var component = Qt.createComponent("Crab.qml");
+		var sprite;
+		for (var i = 0; i < 50; ++i) {
+			for (var j = 0; j < 50; ++j) {
+				sprite = component.createObject(scene, {"x": 100 * [i], "y": 100 * [j]});
+				if (sprite == null) {
+					console.log("Error creating object");
+				}
+			}
+		}
+		console.log("All Crabs created\n");
+	}
 
-
-
-Rectangle {
-	height: parent.height
-	width: parent.width
-	id:scene
-		 MouseArea {
-			 anchors.fill: parent
-			 drag.target: parent;
-			 drag.minimumX: 0
-			 drag.maximumX: parent.width
-			 drag.minimumY: 0
-			 drag.maximumY: parent.height
-			 drag.filterChildren: true
-			 acceptedButtons: Qt.AllButtons
-			 onWheel:
-				scene.scale += wheel.angleDelta.y / 1000
-
-
-				 Rectangle {
-					 id: krab
-					 width: 100; height: 100
-					 color: "red"
-
-					 antialiasing: true
-					 SpriteSequence {
-						 id: sprite
-						 width: 64
-						 height: 64
-						 interpolate: false
-						 goalSprite: ""
-
-						 Sprite {
-							 name: "idle"
-							 source: "../melee-idle.png"
-							 frameCount: 8
-							 frameDuration: 64
-						 }
-					 }
-
-				 }
+	Rectangle {
+		height: 5000
+		width: 5000
+		x: -2500
+		y: -2500
+		id:scene
+			MouseArea {
+				anchors.fill: parent
+				drag.target: parent;
+				drag.minimumX: scene.parent.width - scene.width
+				drag.maximumX: 0
+				drag.minimumY: scene.parent.height - scene.height
+				drag.maximumY: 0
+				drag.filterChildren: true
+				acceptedButtons: Qt.AllButtons
+				onWheel: {
+					if (wheel.angleDelta.y > 0) {
+						if (scene.scale < 1)
+							scene.scale += 0.05
+					} else {
+						if (scene.scale > 0.1) 
+							scene.scale -= 0.05
+					}
+				}
+				
+				onClicked: {
+					console.log(mouseX + " " + mouseY + " " + scene.childAt(mouseX, mouseY).width + "\n")
+				}
+				
+				onPositionChanged: {
+					console.log("SceneX = " + scene.childAt(mouseX, mouseY).x / 100)
+					console.log("SceneY = " + scene.childAt(mouseX, mouseY).y / 100 + "\n")
+				}
 
 		 }
 	 }
@@ -59,29 +65,5 @@ Rectangle {
 		text: "Quit"
 		onClicked:
 			gameBoard.exit()
-	}
-	
-	MouseArea {
-		anchors.fill: parent
-		
-		property int initialX: 0
-		property int initialY: 0
-		
-		onClicked:
-			console.log("currnetPos = " + gameBoard.currentX + ", " + gameBoard.currentY  + "\n")
-		
-		onPressed: {
-			initialX = mouseX
-			initialY = mouseY
-		}
-		
-		onReleased: {
-			gameBoard.currentX += initialX - mouseX
-			gameBoard.currentY += initialY - mouseY
-		}
-		
-		onPositionChanged: {
-			console.log("\n\tx = " + mouseX + "\n\ty = " + mouseY)
-		}
 	}
 }

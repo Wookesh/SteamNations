@@ -4,6 +4,7 @@
         <file>qml/MenuButton.qml</file>
         <file>qml/GameBoard.qml</file>
         <file>qml/MainMenu.qml</file>
+		  <file>qml/Crab.qml</file>
         <file>melee-idle.png</file>
     </qresource>
 </RCC>
