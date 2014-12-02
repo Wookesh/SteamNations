@@ -3,7 +3,8 @@
 #include "../Tile.hpp"
 #include "../GameManager.hpp"
 
-Object::Object(Tile *tile, ObjectType type, Player *owner, QObject *parent) : QObject(parent), owner_(owner), tile_(tile), type_(type), id_(GameManager::get()->serial()->next())
+Object::Object(Tile *tile, ObjectType type, Player *owner, QObject *parent) :
+	QObject(parent), owner_(owner), tile_(tile), type_(type), id_(Serial::EmptyUid)
 {
 }
 
@@ -55,5 +56,11 @@ ObjectType Object::type() const
 UID Object::id() const
 {
 	return id_;
+}
+
+void Object::setId(const UID id)
+{
+	if (id_ == Serial::EmptyUid)
+		id_ = id;
 }
 

@@ -18,7 +18,7 @@ SettlerPrototype::~SettlerPrototype()
 Unit *SettlerPrototype::createUnit(Tile *tile, Player *owner)
 {
 	Settler *settler = new Settler(tile, this, owner);
-	GameManager::get()->addObject(settler->id(), settler);
+	GameManager::get()->addObject(settler);
 	QObject::connect(settler, &Settler::townCreated, GameManager::get(), &GameManager::checkIfWin);
 	return settler;
 }

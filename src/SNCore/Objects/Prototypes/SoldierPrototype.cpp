@@ -17,6 +17,6 @@ SoldierPrototype::~SoldierPrototype()
 Unit *SoldierPrototype::createUnit(Tile *tile, Player *owner)
 {
 	Soldier *soldier = new Soldier(tile, this, owner);
-	GameManager::get()->addObject(soldier->id(), soldier);
+	GameManager::get()->addObject(soldier);
 	return soldier;
 }

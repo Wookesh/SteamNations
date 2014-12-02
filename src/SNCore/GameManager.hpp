@@ -28,9 +28,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
-	Serial *serial();
-	
-	void addObject(UID uid, Object *object);
+	void addObject(Object *object);
 	const Object *object(UID uid) const;
 	
 	QVector<Action *> mapActions(const Object *object);
