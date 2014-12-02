@@ -50,6 +50,7 @@ Unit *Town::createUnit(ProtoType type)
 	if (!canRecruit(type))
 		return nullptr;
 	
+	owner_->removeResource(Resource::Gold, owner_->prototype(type)->cost());
 	Unit *newUnit = owner_->createUnit(type, tile_);
 	return newUnit;
 }

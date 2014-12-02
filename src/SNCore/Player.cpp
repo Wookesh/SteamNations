@@ -130,7 +130,6 @@ void Player::setCapital (Town *town)
 
 Unit *Player::createUnit(ProtoType type, Tile *tile) 
 {
-	removeResource(Resource::Gold, prototypes_[type]->cost());
 	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
 	tile->setUnit(newUnit);
