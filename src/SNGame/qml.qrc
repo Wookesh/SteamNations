@@ -1,10 +1,14 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/main.qml</file>
-        <file>qml/MenuButton.qml</file>
-        <file>qml/GameBoard.qml</file>
-        <file>qml/MainMenu.qml</file>
-		  <file>qml/Crab.qml</file>
-        <file>melee-idle.png</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>qml/main.qml</file>
+		<file>qml/MenuButton.qml</file>
+		<file>qml/GameBoard.qml</file>
+		<file>qml/MainMenu.qml</file>
+		<file>qml/Crab.qml</file>
+		<file>melee-idle.png</file>
+		<file>images/menu_button.png</file>
+		<file>images/start_button.png</file>
+		<file>images/exit_button.png</file>
+		<file>images/logo_steam_nations.png</file>
+	</qresource>
 </RCC>

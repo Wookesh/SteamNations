@@ -9,33 +9,29 @@ Rectangle {
 	signal newGameClicked()
 
 
-	ColumnLayout {
+	RowLayout {
 		anchors.centerIn: parent
-		spacing: 10
-
-		MenuButton {
-			id: newGame
-			text: "New game"
-			onClicked:
-				mainMenu.newGameClicked();
+		
+		Image {
+			Layout.preferredWidth: sourceSize.width
+			source: "qrc:../images/logo_steam_nations.png"
 		}
+		
+		ColumnLayout {
+			Layout.preferredWidth: newGame.Layout.preferredWidth
+			
+			MenuButton {
+				id: newGame
+				onClicked:
+					mainMenu.newGameClicked();
+				source: "qrc:../images/start_button.png"
+			}
 
-		MenuButton {
-			id: loadGame
-			text: "Load game"
+			MenuButton {
+				id: exit
+				onClicked: Qt.quit();
+				source: "qrc:../images/exit_button.png"
+			}
 		}
-
-		MenuButton {
-			id: options
-			text: "Options"
-		}
-
-		MenuButton {
-			id: exit
-			text: "Exit"
-			onClicked: Qt.quit();
-		}
-
-
 	}
 }
