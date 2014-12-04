@@ -9,6 +9,7 @@ Rectangle {
 	signal newGameClicked()
 
 
+
 	ColumnLayout {
 		anchors.centerIn: parent
 		spacing: 10

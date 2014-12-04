@@ -1,11 +1,15 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import SN 1.0
 
 Rectangle {
 	width: 640;
 	height: 480;
-
+	Timer {
+			 interval: 100; running: true; repeat: true
+			 onTriggered: gameBoard.update()
+		 }
 
 
 	GameBoard {
