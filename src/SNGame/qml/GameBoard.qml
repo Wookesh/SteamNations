@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import "../gameBoard.js" as Logic
+import "./gui"
 
 Rectangle {
 	id: gameBoard
@@ -8,9 +9,28 @@ Rectangle {
 	height: parent.height
 	antialiasing: true
 
+
 	function update() {
 		Logic.update();
 	}
+
+
+	
+	StaticLeftForeground {
+		id: staticLeftForeground
+		z: 1
+		
+		MenuButton {
+			onClicked:
+				gameBoard.exit()
+			source: "qrc:../images/menu_button.png"
+			height: sourceSize.height * 2 / 3
+			width: sourceSize.width * 2 / 3
+			x: 0;
+			y: 0;
+		}
+	}
+	
 
 	Component.onCompleted: {
 
@@ -56,11 +76,4 @@ Rectangle {
  }
 
 	signal exit()
-
-	Button {
-		z: 1
-		text: "Quit"
-		onClicked:
-			gameBoard.exit()
-	}
 }

@@ -4,12 +4,14 @@ import QtQuick.Layouts 1.1
 import SN 1.0
 
 Rectangle {
-	width: 640;
-	height: 480;
 	Timer {
 			 interval: 100; running: true; repeat: true
 			 onTriggered: gameBoard.update()
 		 }
+
+
+	width: 1280;
+	height: 720;
 
 
 	GameBoard {
