@@ -6,13 +6,14 @@
 
 #include "Resources.hpp"
 
+class Player;
 class Object;
 class Town;
 class Unit;
 
 class Tile {
 public:
-	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None, int resourceProduction = 5);
+	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None, int resourceProduction = 5, unsigned int weight = 1);
 	~Tile();
 	
 	Town *town();
@@ -32,6 +33,9 @@ public:
 	int resourceProduction() const;
 	int takeResources();
 	
+	bool passable(const Player *player) const;
+	int weight() const;
+	
 	void updateBefore();
 	
 	QPoint position() const;
@@ -46,6 +50,7 @@ private:
 	Resource resource_;
 	int resourceProduction_;
 	int produced_;
+	int weight_;
 };
 
 #endif

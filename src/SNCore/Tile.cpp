@@ -2,9 +2,9 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 
-Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction) :
+Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
-	resource_(resource), resourceProduction_(resourceProduction), produced_(0)
+	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight)
 {
 
 }
@@ -110,3 +110,22 @@ int Tile::takeResources()
 	return ret;
 }
 
+/*
+ * 	Returns movement cost of the tile. If it's not passable, weight should be less than 0.
+ */
+int Tile::weight() const {
+	return weight_;
+}
+
+bool Tile::passable (const Player *player) const {
+	if (weight_ < 0)
+		return false;
+	
+	if (unit_ != nullptr && unit_->owner() != player)
+		return false;
+	
+	if (town_ != nullptr && town_->owner() != player)
+		return false;
+		
+	return true;
+}

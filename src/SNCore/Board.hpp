@@ -3,6 +3,7 @@
 
 #include <QVector>
 
+class Player;
 class Tile;
 
 class Board {
@@ -22,6 +23,7 @@ public:
 	
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
+	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
 	
 	void updateBefore();
 private:

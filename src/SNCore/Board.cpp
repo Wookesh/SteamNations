@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <QSet>
 
 #include "Board.hpp"
 #include "Tile.hpp"
@@ -92,9 +93,44 @@ QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const {
 	return inRange;
 }
 
+/*
+ * Returns a vector of vectors of Tile* pointers. Each index contains vector with tiles
+ * that are in range equal to the index.
+ * 
+ * auto result = getReable(tile_, max_range)
+ * result[i] - tiles in range i from tile_
+ */
+QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, const Player* player) const {
+	QSet<Tile *> visited;
+	visited.insert(tile);
+	QVector<QVector<Tile *> > reachable(range + 1);
+	reachable[0].push_back(tile);
+	
+	for (int i = 1; i <= range; ++i) {
+		for (auto hex : reachable[i-1]) {
+			QVector<Tile *> neighbours = getNeighbours(hex);
+			
+			for (Tile *neighbour : neighbours) {
+				if (!visited.contains(neighbour)) {
+					visited.insert(neighbour);
+					
+					if (!neighbour->passable(player))
+						continue;
+					
+					int distance = i + neighbour->weight() - 1;
+					if (distance <= range) {
+						reachable[distance].push_back(neighbour);
+					}
+				}
+			}
+		}
+	}
+	
+	return reachable;
+}
+
 void Board::updateBefore()
 {
 	for (Tile *tile : tiles_)
 		tile->updateBefore();
 }
-
