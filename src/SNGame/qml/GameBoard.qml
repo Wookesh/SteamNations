@@ -43,7 +43,7 @@ Rectangle {
 		drag.maximumX: 0
 		drag.minimumY: parent.height - scene.height
 		drag.maximumY: 0
-		drag.filterChildren: true
+		//drag.filterChildren: true
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {

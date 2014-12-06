@@ -4,8 +4,8 @@ function createBoard()
 {
 	var component = Qt.createComponent(blockSrc);
 	var sprite;
-	for (var i = 0; i < 50; ++i) {
-		for (var j = 0; j < 50; ++j) {
+	for (var i = 0; i < 30; ++i) {
+		for (var j = 0; j < 30; ++j) {
 			if( component.status != Component.Ready )
 			{
 				if( component.status == Component.Error )
