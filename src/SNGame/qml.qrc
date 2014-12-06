@@ -7,7 +7,7 @@
 		<file>qml/Crab.qml</file>
 		<file>qml/gui/StaticLeftForeground.qml</file>
 		<file>melee-idle.png</file>
-        <file>gameBoard.js</file>
+		<file>gameBoard.js</file>
 		<file>images/menu_button.png</file>
 		<file>images/start_button.png</file>
 		<file>images/exit_button.png</file>

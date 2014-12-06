@@ -27,14 +27,13 @@ import SN 1.0
 
 Crab {
 	id: crab
-	width: 64; height: 64
-	name: "A simple pie chart"
-	color: "red"
-	frame:0
+	width: 64; 
+	height: 64;
+	frame: 0
 	antialiasing: true
 
-	function update()
-	{
-		crab.frame = crab.frame + 1;
-	}
+// 	function update()
+// 	{
+// 		crab.frame = crab.frame + 1;
+// 	}
 }

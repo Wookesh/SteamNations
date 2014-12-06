@@ -1,16 +1,14 @@
 #ifndef CRAB_HPP
 #define CRAB_HPP
 
-#include <QtQuick/QQuickPaintedItem>
+#include <QtQuick/QQuickItem>
 #include <QColor>
+#include <QImage>
 
 
-class Crab : public QQuickPaintedItem
+class Crab : public QQuickItem
 {
 	Q_OBJECT
-	Q_PROPERTY(QString name READ name WRITE setName)
-	Q_PROPERTY(QColor color READ color WRITE setColor)
-	Q_PROPERTY(int degree READ degree WRITE setDegree)
 	Q_PROPERTY(int frame READ frame WRITE setFrame)
 
 public:
@@ -29,13 +27,18 @@ public:
 	void setFrame(const int frame);
 
 	void paint(QPainter *painter);
+protected:
+	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
 
 private:
-	QString m_name;
-	QColor m_color;
-	int degree_;
 	int frame_;
 
+	static QTimer *timer_;
+
+	static const QPixmap &images(int i);
+	void initTimer();
+private slots:
+	void nextFrame();
 };
 
 #endif // CRAB_HPP

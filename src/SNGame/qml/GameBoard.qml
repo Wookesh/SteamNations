@@ -10,9 +10,9 @@ Rectangle {
 	antialiasing: true
 
 
-	function update() {
-		Logic.update();
-	}
+// 	function update() {
+// 		Logic.update();
+// 	}
 
 
 	
@@ -33,9 +33,9 @@ Rectangle {
 	
 
 	Component.onCompleted: {
-
 		Logic.createBoard()
 	}
+	
 	MouseArea {
 		anchors.fill: parent
 		drag.target: scene;
@@ -66,10 +66,9 @@ Rectangle {
 		Rectangle {
 			height: 5000
 			width: 5000
-			x: 0
-			y: 0
+			x: -1000
+			y: -1000
 			id:scene
-
 		 }
 
 
