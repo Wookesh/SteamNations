@@ -3,16 +3,20 @@
 
 #include "Prototype.hpp"
 
+#include <QMap>
+
 class SoldierPrototype : public Prototype {
 public:
-	SoldierPrototype(const QString &name = BASE_NAME, int moveRange = BASE_MOVERANGE, int cost = BASE_COST);
+	static const QHash<PrototypeType, unsigned int> ACTION_POINTS;
+	static const QHash<PrototypeType, unsigned int> BASE_COST;
+	static const QHash<PrototypeType, QString> BASE_NAME;
+
+	SoldierPrototype(PrototypeType type, const QString &name, int moveRange, int cost);
+	SoldierPrototype(PrototypeType type);
 	~SoldierPrototype();
 	
 	virtual Unit *createUnit(Tile *tile, Player *owner) override;
 	
-	static const QString BASE_NAME;
-	static const int BASE_MOVERANGE = 2;
-	static const int BASE_COST = 0;
 };
 
 #endif

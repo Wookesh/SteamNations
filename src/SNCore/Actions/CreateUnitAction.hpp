@@ -8,12 +8,12 @@ class Town;
 
 class CreateUnitAction : public Action {
 public:
-	CreateUnitAction(Town *town, ProtoType type);
+	CreateUnitAction(Town *town, PrototypeType type);
 	
 	virtual bool perform();
-	ProtoType pType();
+	PrototypeType pType();
 protected:
-	ProtoType type_;
+	PrototypeType type_;
 };
 
 

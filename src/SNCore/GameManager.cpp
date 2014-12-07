@@ -90,14 +90,14 @@ QVector<Action *> GameManager::objectActions(const Object *objectC)
 	if (objectN->type() == ObjectType::Town) {
 		Town *town = dynamic_cast<Town *>(objectN);
 
-		for (ProtoType type : ProtoType::labels())
+		for (PrototypeType type : PrototypeType::labels())
 			if (town->canRecruit(type))
 				possibleActions.push_back(new CreateUnitAction(town, type));
 
 	} else if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *>(objectN);
 
-		if (unit->pType() == ProtoType::Settler)
+		if (unit->pType() == PrototypeType::Settler)
 			if (dynamic_cast<Settler *>(unit)->canSettle(unit->tile()))
 				possibleActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 	}
@@ -117,7 +117,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 			if (unit->canMove(currTile))
 				possibleActions.push_back(new MoveAction (unit, currTile));
 
-			if (unit->pType() == ProtoType::Soldier) {
+			if (unit->pType() == PrototypeType::Infantry) {
 				Soldier *soldier = static_cast<Soldier *>(unit);
 				if (soldier->canAttack(currTile))
 					possibleActions.push_back (new AttackAction(soldier, currTile->unit()));
@@ -151,9 +151,9 @@ void GameManager::initGame()
 	
 	Board *board = GameManager::get()->board();
 	
-	andrzej->createUnit(ProtoType::Settler, board->getTile(25, 25));
+	andrzej->createUnit(PrototypeType::Settler, board->getTile(25, 25));
 	andrzej->updateAfter(); //aby jednostka mogła się poruszać
-	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
+	zbyszek->createUnit(PrototypeType::Settler, board->getTile(24, 26));
 	zbyszek->updateAfter();
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);

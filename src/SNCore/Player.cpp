@@ -8,8 +8,10 @@
 
 Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
 {
-	prototypes_[ProtoType::Settler] = new SettlerPrototype();
-	prototypes_[ProtoType::Soldier] = new SoldierPrototype();
+	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
+	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
+	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
+	prototypes_[PrototypeType::Artillery] = new SoldierPrototype(PrototypeType::Artillery);
 	
 	for (Resource r : Resource::labels())
 		resources_[r] = 0;
@@ -128,7 +130,7 @@ void Player::setCapital (Town *town)
 	capital_ = town;
 }
 
-Unit *Player::createUnit(ProtoType type, Tile *tile) 
+Unit *Player::createUnit(PrototypeType type, Tile *tile) 
 {
 	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
@@ -148,7 +150,7 @@ void Player::destroyUnit(Unit *toKill)
 }
 
 
-Prototype *Player::prototype(ProtoType type)
+Prototype *Player::prototype(PrototypeType type)
 {
 	return prototypes_[type];
 }

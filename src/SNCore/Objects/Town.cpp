@@ -45,7 +45,7 @@ void Town::updateAfter()
 	
 }
 
-Unit *Town::createUnit(ProtoType type)
+Unit *Town::createUnit(PrototypeType type)
 {
 	if (!canRecruit(type))
 		return nullptr;
@@ -61,7 +61,7 @@ void Town::getCaptured(Player *player)
 	player->obtainTown(this);
 }
 
-bool Town::canRecruit(ProtoType type)
+bool Town::canRecruit(PrototypeType type)
 {
 	if (tile_->unit() == nullptr &&
 		GameManager::get()->currentPlayer() == owner() &&

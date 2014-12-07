@@ -6,7 +6,7 @@
 const QString SettlerPrototype::BASE_NAME = QString("Settler");
 
 SettlerPrototype::SettlerPrototype(const QString &name, int moveRange, int cost) :
-	Prototype(ProtoType::Settler, name, moveRange, cost)
+	Prototype(PrototypeType::Settler, name, moveRange, cost)
 {
 }
 
