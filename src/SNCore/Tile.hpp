@@ -29,6 +29,7 @@ public:
 	void setUnit(Unit *unit);
 	
 	Resource resource() const;
+	void setResource(Resource resource);
 	
 	int resourceProduction() const;
 	int takeResources();

@@ -34,9 +34,10 @@ QColor TileGraphics::highlightColor(ActionType type)
 QColor TileGraphics::tileColor(Resource resource)
 {
 	static const QHash<Resource, QColor> map({
-		{Resource::Food, Qt::darkGray},
+		{Resource::Food, Qt::darkGreen},
 		{Resource::Research, Qt::darkBlue},
-		{Resource::Gold, Qt::darkYellow}
+		{Resource::Gold, Qt::yellow},
+		{Resource::None, Qt::darkRed}
 	});
 	return map[resource];
 }

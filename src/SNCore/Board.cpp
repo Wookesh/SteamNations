@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <QSet>
 #include <QDebug>
+#include <qqueue.h>
 
 #include "Board.hpp"
 #include "Tile.hpp"
@@ -8,9 +9,75 @@
 Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) {
     for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j) {
-			Tile *tile = new Tile(j, i, Resource::labels()[qrand() % Resource::labels().size()], qrand() % 5 + 3);
+			Tile *tile = new Tile(j, i, Resource::None, qrand() % 5 + 3);
 			tiles_.push_back(tile);
 		}
+		
+	qsrand(seed);
+	QSet<Tile *> visited;
+	QQueue<Tile *> toVisit;
+	for (unsigned int i = 0; i < (height_ * width_ / 100); ++i) {
+		Tile *rnd = getTile(qrand() % width_, qrand() % height_);
+		switch(i % 3) {
+			case 0:
+				rnd->setResource(Resource::Gold);
+				break;
+				
+			case 1:
+				rnd->setResource(Resource::Research);
+				break;
+				
+			case 2:
+				rnd->setResource(Resource::Food);
+				break;
+				
+			default:
+				rnd->setResource(Resource::None);
+		}
+		toVisit.enqueue(rnd);
+	}
+	
+	while (!toVisit.isEmpty()) {
+		Tile *tile = toVisit.dequeue();
+		
+		if (visited.contains(tile))
+			continue;
+		
+		visited.insert(tile);
+		unsigned int n = 3;
+		QVector<Tile *> neighbours = getNeighbours(tile);
+		for (Tile *neighbour : neighbours) {
+			if (!visited.contains(neighbour))
+				toVisit.enqueue(neighbour);
+		}
+		
+		/* 10% chance that tile is gonna stay empty */
+		if (qrand() % 10 == 0 || tile->resource() != Resource::None)
+			continue;
+		
+		unsigned int gold = nOfTilesWith(neighbours, Resource::Gold);
+		unsigned int research = nOfTilesWith(neighbours, Resource::Research);
+		unsigned int food = nOfTilesWith(neighbours, Resource::Food);
+		n = n + gold + research + food;
+		unsigned int randomNumber = qrand() % n;
+		if (randomNumber < gold + 1)
+			tile->setResource(Resource::Gold);
+		else if (randomNumber < gold + food + 2)
+			tile->setResource(Resource::Food);
+		else if (randomNumber < gold + food + research + 3)
+			tile->setResource(Resource::Research);
+		else 
+			qDebug() << "Case not covered";
+	}
+}
+
+unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const {
+	unsigned int amount = 0;
+	for (int i = 0; i < tiles.size(); ++i) {
+		if (tiles[i]->resource() == resource)
+			++amount;
+	}
+	return amount;
 }
 
 Board::~Board() {
@@ -53,7 +120,7 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 	return (abs(q1 - q2) + abs(r1 - r2) + abs(q1 + r1 - q2 - r2)) / 2;
 }
 
-QVector<Tile *> Board::getAxialNeighbours(const Tile *tile) const {
+QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
 	static const QPoint neighbours[] = {
 		QPoint(1, 0), QPoint(1, -1), QPoint(0, -1), 
 		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)
@@ -109,7 +176,7 @@ QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, cons
 	
 	for (int i = 1; i <= range; ++i) {
 		for (auto hex : reachable[i-1]) {
-			QVector<Tile *> neighbours = getAxialNeighbours(hex);
+			QVector<Tile *> neighbours = getNeighbours(hex);
 			
 			for (Tile *neighbour : neighbours) {
 				if (!visited.contains(neighbour)) {

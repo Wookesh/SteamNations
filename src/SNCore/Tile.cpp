@@ -98,6 +98,11 @@ Resource Tile::resource() const
 	return resource_;
 }
 
+void Tile::setResource (Resource resource) {
+	resource_ = resource;
+}
+
+
 int Tile::resourceProduction() const
 {
 	return resourceProduction_;
