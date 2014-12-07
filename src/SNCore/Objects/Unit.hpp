@@ -23,7 +23,7 @@ public:
 	quint8 currentMoveRange() const;
 	
 	bool canMove(const Tile *tile) const;
-	bool move(Tile *tile);
+	bool move(Tile *tile, unsigned int moveCost);
 	virtual void getAttacked(Unit *) = 0;
 protected:
 	const Prototype *prototype_;

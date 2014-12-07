@@ -111,19 +111,22 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 
 	if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *>(objectN);
-		QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
+		//QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
+		QVector<QVector<Tile *> > tiles = board_->getReachable(unit->tile(), unit->currentMoveRange(), unit->owner());
 
-		for (Tile * currTile : tiles) {
-			if (unit->canMove(currTile))
-				possibleActions.push_back(new MoveAction (unit, currTile));
+		for (int range = 0; range < tiles.size(); ++range) {
+			for (Tile * currTile : tiles[range]) {
+				if (unit->canMove(currTile))
+					possibleActions.push_back(new MoveAction (unit, currTile, range));
 
-			if (unit->pType() == PrototypeType::Infantry) {
-				Soldier *soldier = static_cast<Soldier *>(unit);
-				if (soldier->canAttack(currTile))
-					possibleActions.push_back (new AttackAction(soldier, currTile->unit()));
+				if (unit->pType() == PrototypeType::Infantry) {
+					Soldier *soldier = static_cast<Soldier *>(unit);
+					if (soldier->canAttack(currTile))
+						possibleActions.push_back (new AttackAction(soldier, currTile->unit()));
 
-				if (soldier->canCapture(currTile))
-					possibleActions.push_back (new CaptureAction(soldier, currTile->town()));
+					if (soldier->canCapture(currTile))
+						possibleActions.push_back (new CaptureAction(soldier, currTile->town()));
+				}
 			}
 		}
 	}

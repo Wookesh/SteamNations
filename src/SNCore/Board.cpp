@@ -1,10 +1,11 @@
 #include <algorithm>
 #include <QSet>
+#include <QDebug>
 
 #include "Board.hpp"
 #include "Tile.hpp"
 
-Board::Board(unsigned int width, unsigned int height): height_(height), width_(width) {
+Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) {
     for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j) {
 			Tile *tile = new Tile(j, i, Resource::labels()[qrand() % Resource::labels().size()], qrand() % 5 + 3);
@@ -52,7 +53,7 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 	return (abs(q1 - q2) + abs(r1 - r2) + abs(q1 + r1 - q2 - r2)) / 2;
 }
 
-QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
+QVector<Tile *> Board::getAxialNeighbours(const Tile *tile) const {
 	static const QPoint neighbours[] = {
 		QPoint(1, 0), QPoint(1, -1), QPoint(0, -1), 
 		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)
@@ -61,11 +62,11 @@ QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
 	QVector<Tile *> ret;
 	
 	for (QPoint neighbour : neighbours) {
-		QPoint pos = tile->position() + neighbour;
+		QPoint pos = tile->axial() + neighbour;
 		int x = pos.x();
 		int y = pos.y();
 		
-		Tile *tile = getTile(x, y);
+		Tile *tile = getTileAxial(x, y);
 		if (tile != nullptr)
 			ret.push_back(tile);
 	}
@@ -108,14 +109,15 @@ QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, cons
 	
 	for (int i = 1; i <= range; ++i) {
 		for (auto hex : reachable[i-1]) {
-			QVector<Tile *> neighbours = getNeighbours(hex);
+			QVector<Tile *> neighbours = getAxialNeighbours(hex);
 			
 			for (Tile *neighbour : neighbours) {
 				if (!visited.contains(neighbour)) {
 					visited.insert(neighbour);
 					
-					if (!neighbour->passable(player))
+					if (!neighbour->passable(player)) {
 						continue;
+					}
 					
 					int distance = i + neighbour->weight() - 1;
 					if (distance <= range) {
@@ -126,6 +128,7 @@ QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, cons
 		}
 	}
 	
+
 	return reachable;
 }
 

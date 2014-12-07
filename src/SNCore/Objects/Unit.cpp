@@ -61,10 +61,10 @@ bool Unit::canMove(const Tile *tile) const
 	return false;
 }
 
-bool Unit::move(Tile *tile)
+bool Unit::move(Tile *tile, unsigned int moveCost)
 {
 	if (canMove(tile)) {
-		currentMoveRange_ -= GameManager::get()->board()->getAbsoluteDistance(tile, tile_);
+		currentMoveRange_ -= moveCost;
 		tile_->setUnit(nullptr);
 		tile->setUnit(this);
 		setTile(tile);
