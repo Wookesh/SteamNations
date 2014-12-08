@@ -4,8 +4,8 @@ QT += qml quick
 
 CONFIG += c++11
 
-SOURCES += src/SNGame/main.cpp \ 
-    src/SNGame/crab.cpp
+SOURCES += src/SNGame/main.cpp \  
+    src/SNGame/Board.cpp
 
 RESOURCES += src/SNGame/qml.qrc
 
@@ -16,4 +16,4 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    src/SNGame/crab.hpp
+    src/SNGame/Board.hpp

@@ -7,7 +7,7 @@
 #include <QSGNode>
 #include <QTimer>
 #include <QDebug>
-#include "board.hpp"
+#include "Board.hpp"
 
 QTimer *Board::timer_ = nullptr;
 
@@ -43,8 +43,6 @@ int Board::index(int x, int y)
 
 QSGNode *Board::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
-
-
 
 	QSGNode *node = mainNode;
 	if (!node) {
