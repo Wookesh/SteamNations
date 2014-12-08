@@ -12,7 +12,10 @@ function createBoard()
 					console.debug("Error:"+ component.errorString() );
 				return; // or maybe throw
 			}
-			sprite = component.createObject(scene, {"x": 64 * i, "y": 64 * j});
+			if(i%2 == 0)
+				sprite = component.createObject(scene, {"x": 48 * i, "y": 56 * j + 28});
+			else
+				sprite = component.createObject(scene, {"x": 48 * i, "y": 56 * j});
 			if (sprite == null) {
 				console.log("Error creating object");
 			}

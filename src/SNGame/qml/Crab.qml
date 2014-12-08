@@ -28,7 +28,7 @@ import SN 1.0
 Crab {
 	id: crab
 	width: 64; 
-	height: 64;
+	height: 56;
 	frame: 0
 	antialiasing: true
 
