@@ -2,6 +2,7 @@
 #include "../Tile.hpp"
 #include "Prototypes/Prototype.hpp"
 #include "../GameManager.hpp"
+#include "../Board.hpp"
 #include "Object.hpp"
 #include "Town.hpp"
 
@@ -34,7 +35,7 @@ QString Unit::name() const
 	return prototype_->name();
 }
 
-ProtoType Unit::pType() const
+PrototypeType Unit::pType() const
 {
 	return prototype_->type();
 }
@@ -60,10 +61,10 @@ bool Unit::canMove(const Tile *tile) const
 	return false;
 }
 
-bool Unit::move(Tile *tile)
+bool Unit::move(Tile *tile, unsigned int moveCost)
 {
 	if (canMove(tile)) {
-		currentMoveRange_ -= GameManager::get()->board()->getAbsoluteDistance(tile, tile_);
+		currentMoveRange_ -= moveCost;
 		tile_->setUnit(nullptr);
 		tile->setUnit(this);
 		setTile(tile);

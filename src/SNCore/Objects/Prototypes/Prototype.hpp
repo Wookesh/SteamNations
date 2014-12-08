@@ -8,17 +8,17 @@ class Player;
 class Unit;
 class Tile;
 
-EnumClassWithStrings(ProtoType, quint8, Settler, Soldier)
+EnumClassWithStrings(PrototypeType, quint8, Settler, Infantry, Heavy, Artillery)
 
 class Prototype {
 public:
 	
-	Prototype(ProtoType type, const QString &name, int moveRange, int cost);
+	Prototype(PrototypeType type, const QString &name, int moveRange, int cost);
 	virtual ~Prototype();
 	
 	virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
 	
-	ProtoType type() const;
+	PrototypeType type() const;
 	
 	QString name() const;
 	void setName(const QString &name);
@@ -26,14 +26,14 @@ public:
 	quint8 moveRange() const;
 	void setMoveRange(quint8 moveRange);
 	
-	int cost() const;
+	unsigned int cost() const;
 	void setCost(int cost);
 	
 protected:
-	ProtoType type_;
+	PrototypeType type_;
 	QString name_;
 	quint8 moveRange_;
-	int cost_;
+	unsigned int cost_;
 };
 
 #endif

@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include "../Serial.hpp"
-#include "../Player.hpp"
 #include "../EnumHelpers.hpp"
 
 class Player;
@@ -33,6 +32,7 @@ public:
 	virtual QString name() const = 0;
 	
 	UID id() const;
+	void setId(const UID); 
 	
 	virtual void updateBefore() = 0;
 	virtual void updateAfter() = 0;

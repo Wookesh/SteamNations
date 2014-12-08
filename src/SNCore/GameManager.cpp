@@ -1,20 +1,16 @@
 #include "GameManager.hpp"
-#include "Objects/Object.hpp"
-#include "Objects/Soldier.hpp"
-#include "Objects/Settler.hpp"
-#include "Actions/AttackAction.hpp"
-#include "Actions/MoveAction.hpp"
-#include "Actions/CaptureAction.hpp"
-#include "Actions/SettleAction.hpp"
-#include "Actions/CreateUnitAction.hpp"
-#include "Objects/Town.hpp"
-#include "Objects/Prototypes/SettlerPrototype.hpp"
+#include "Board.hpp"
+#include "Player.hpp"
+#include "Tile.hpp"
+#include "Objects/Objects.hpp"
+#include "Actions/Actions.hpp"
 
 #include <QDebug>
 
 GameManager *GameManager::instance = nullptr;
 
-GameManager *GameManager::get() {
+GameManager *GameManager::get() 
+{
 	if (instance == nullptr) {
 		// TODO: Add a proper exception
 		throw;
@@ -23,102 +19,114 @@ GameManager *GameManager::get() {
 	return instance;
 }
 
-void GameManager::init() {
+void GameManager::init() 
+{
 	clean();
 	instance = new GameManager();
 }
 
-void GameManager::clean() {
+void GameManager::clean() 
+{
 	if (instance != nullptr) {
 		delete instance;
 		instance = nullptr;
 	}
 }
 
-GameManager::GameManager (QObject *parent) : QObject (parent), serial_ (new Serial()) {
+GameManager::GameManager(QObject *parent) : QObject(parent),
+	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0)
+{
+	
+}
+
+GameManager::~GameManager() 
+{
 
 }
 
-GameManager::~GameManager() {
-
+void GameManager::addObject(Object *object) 
+{
+	object->setId(serial_->next());
+	objects_[object->id()] = object;
+	emit objectCreated(object->id());
+	connect(object, &Object::objectDestroyed, this, &GameManager::removeObject);
 }
 
-Serial *GameManager::serial() {
-	return serial_;
+void GameManager::removeObject(UID uid) 
+{
+	objects_.remove(uid);
 }
 
-void GameManager::addObject (UID uid, Object *object) {
-	objects_[uid] = object;
-	emit objectCreated (uid);
-	connect (object, &Object::objectDestroyed, this, &GameManager::removeObject);
-}
-
-void GameManager::removeObject (UID uid) {
-	objects_.remove (uid);
-}
-
-
-Object *GameManager::objectP (UID uid) {
+Object *GameManager::objectP(UID uid) 
+{
 	return objects_[uid];
 }
 
-const Object *GameManager::object (UID uid) const {
+const Object *GameManager::object(UID uid) const 
+{
 	return objects_[uid];
 }
 
-
-Board *GameManager::board() const {
+Board *GameManager::board() const 
+{
 	return board_;
 }
 
-void GameManager::setBoard (Board *board) {
+void GameManager::setBoard(Board *board) 
+{
 	board_ = board;
 }
 
-QList< Player * > GameManager::players() const {
+QList< Player * > GameManager::players() const 
+{
 	return players_;
 }
 
-QVector<Action *> GameManager::objectActions (const Object *objectC) {
+QVector<Action *> GameManager::objectActions(const Object *objectC) 
+{
 	Object *objectN = objectP (objectC->id());
 	QVector<Action *> possibleActions;
 
 	if (objectN->type() == ObjectType::Town) {
-		Town *town = dynamic_cast<Town *> (objectN);
+		Town *town = dynamic_cast<Town *>(objectN);
 
-		for (ProtoType type : ProtoType::labels())
+		for (PrototypeType type : PrototypeType::labels())
 			if (town->canRecruit(type))
 				possibleActions.push_back(new CreateUnitAction(town, type));
 
 	} else if (objectN->type() == ObjectType::Unit) {
-		Unit *unit = dynamic_cast<Unit *> (objectN);
+		Unit *unit = dynamic_cast<Unit *>(objectN);
 
-		if (unit->pType() == ProtoType::Settler)
-			if (dynamic_cast<Settler *> (unit)->canSettle(unit->tile()))
-				possibleActions.push_back(new SettleAction(dynamic_cast<Settler *> (unit)));
+		if (unit->pType() == PrototypeType::Settler)
+			if (dynamic_cast<Settler *>(unit)->canSettle(unit->tile()))
+				possibleActions.push_back(new SettleAction(dynamic_cast<Settler *>(unit)));
 	}
 	return possibleActions;
 }
 
-QVector<Action *> GameManager::mapActions (const Object *objectC) {
-	Object *objectN = objectP (objectC->id());
+QVector<Action *> GameManager::mapActions(const Object *objectC) 
+{
+	Object *objectN = objectP(objectC->id());
 	QVector<Action *> possibleActions;
 
 	if (objectN->type() == ObjectType::Unit) {
-		Unit *unit = dynamic_cast<Unit *> (objectN);
-		QVector<Tile *> tiles = board_->getInRange (unit->tile(), unit->currentMoveRange());
+		Unit *unit = dynamic_cast<Unit *>(objectN);
+		//QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
+		QVector<QVector<Tile *> > tiles = board_->getReachable(unit->tile(), unit->currentMoveRange(), unit->owner());
 
-		for (Tile * currTile : tiles) {
-			if (unit->canMove (currTile))
-				possibleActions.push_back (new MoveAction (unit, currTile));
+		for (int range = 0; range < tiles.size(); ++range) {
+			for (Tile * currTile : tiles[range]) {
+				if (unit->canMove(currTile))
+					possibleActions.push_back(new MoveAction (unit, currTile, range));
 
-			if (unit->pType() == ProtoType::Soldier) {
-				Soldier *soldier = static_cast<Soldier *>(unit);
-				if (soldier->canAttack (currTile))
-					possibleActions.push_back (new AttackAction (soldier, currTile->unit()));
+				if (unit->pType() == PrototypeType::Infantry) {
+					Soldier *soldier = static_cast<Soldier *>(unit);
+					if (soldier->canAttack(currTile))
+						possibleActions.push_back (new AttackAction(soldier, currTile->unit()));
 
-				if (soldier->canCapture (currTile))
-					possibleActions.push_back (new CaptureAction (soldier, currTile->town()));
+					if (soldier->canCapture(currTile))
+						possibleActions.push_back (new CaptureAction(soldier, currTile->town()));
+				}
 			}
 		}
 	}
@@ -126,11 +134,13 @@ QVector<Action *> GameManager::mapActions (const Object *objectC) {
 }
 
 
-void GameManager::setPlayers (QList< Player * > &players) {
+void GameManager::setPlayers(QList< Player * > &players) 
+{
 	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
 }
 
-void GameManager::initGame() {
+void GameManager::initGame() 
+{
 	// Test players
 	Player *andrzej = new Player ("Andrzej", Qt::black);
 	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
@@ -140,68 +150,83 @@ void GameManager::initGame() {
 	lista.push_back (zbyszek);
 	setPlayers (lista);
 	
-	currentPlayer_ = andrzej;
+	setNextPlayer();
 	
 	Board *board = GameManager::get()->board();
 	
-	andrzej->createUnit(ProtoType::Settler, board->getTile(25, 25));
+	andrzej->createUnit(PrototypeType::Settler, board->getTile(25, 25));
 	andrzej->updateAfter(); //aby jednostka mogła się poruszać
-	zbyszek->createUnit(ProtoType::Settler, board->getTile(24, 26));
+	zbyszek->createUnit(PrototypeType::Settler, board->getTile(24, 26));
 	zbyszek->updateAfter();
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
 }
 
-void GameManager::check (const Player *player) {
+void GameManager::check(const Player *player) 
+{
 	qDebug() << "Game won by" << player->name();
 }
 
-void GameManager::startGame() {
+void GameManager::startGame() 
+{
 
 }
 
-void GameManager::endGame() {
+void GameManager::endGame() 
+{
 
 }
 
-void GameManager::endTurn() {
+void GameManager::endTurn() 
+{
 	currentPlayer_->updateAfter();
 	setNextPlayer();
-	currentTurn_++;
 	currentPlayer_->updateBefore();
 	turnReady();
 }
 
 
-int GameManager::currentTurn() const {
+int GameManager::currentTurn() const 
+{
 	return currentTurn_;
 }
 
-Player *GameManager::currentPlayer() const {
+Player *GameManager::currentPlayer() const
+{
 	return currentPlayer_;
 }
 
-void GameManager::setNextPlayer() {
-	QList<Player *>::iterator it = players_.begin();
-
-	while ( (*it) != currentPlayer())
-		it++;
-
-	it++;
-
-	if (it == players_.end())
+void GameManager::setNextPlayer() 
+{
+	static QList<Player *>::iterator it = --players_.end();
+	if (++it == players_.end()) {
 		it = players_.begin();
-
+		prepareNewTurn();
+	}
 	currentPlayer_ = *it;
+	qDebug() << "----------------------------------------";
+	qDebug() << "Player's" << currentPlayer()->name() << "turn.";
 }
 
-void GameManager::checkIfWin(Player *player) {
+void GameManager::prepareNewTurn()
+{
+	qDebug() << "----------------------------------------";
+	qDebug() << "Turn :" << currentTurn_;
+	++currentTurn_;
+	board_->updateBefore();
+}
+
+void GameManager::checkIfWin(Player *player) 
+{
 	qDebug() << "Checking if" << player->name() << "has won the game";
 	if (player->getTownCount() >= 3) {
+		qDebug() << "\tWith result :" << true;
 		emit gameEnded(player);
 	}
+	qDebug() << "\tWith result :" << false;
 }
 
-void GameManager::setWinConditions() {
+void GameManager::setWinConditions() 
+{
 
 }

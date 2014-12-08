@@ -2,11 +2,12 @@
 #define GAME_MANAGER_HPP
 
 #include <QObject>
-#include "Player.hpp"
-#include "Board.hpp"
-#include "Objects/Object.hpp"
-#include "Actions/Action.hpp"
 #include "Serial.hpp"
+
+class Action;
+class Board;
+class Object;
+class Player;
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -27,9 +28,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
-	Serial *serial();
-	
-	void addObject(UID uid, Object *object);
+	void addObject(Object *object);
 	const Object *object(UID uid) const;
 	
 	QVector<Action *> mapActions(const Object *object);
@@ -47,7 +46,9 @@ private:
 	Serial *serial_;
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
+	
 	void setNextPlayer();
+	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
 	

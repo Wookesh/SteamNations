@@ -7,7 +7,7 @@
 
 
 #include "Objects/Prototypes/Prototype.hpp"
-#include "Tile.hpp"
+#include "Resources.hpp"
 
 class Tile;
 class Town;
@@ -30,10 +30,14 @@ public:
 	Town *capital();
 	void setCapital(Town *town);
 	
-	Unit *createUnit(ProtoType type, Tile *tile);
+	Unit *createUnit(PrototypeType type, Tile *tile);
 	void destroyUnit(Unit *unit);
 	
-	Prototype *prototype(ProtoType type);
+	unsigned int resource(Resource resource) const;
+	void addResource(Resource resource, unsigned int val);
+	bool removeResource(Resource resource, unsigned int val);
+	
+	Prototype *prototype(PrototypeType type);
 
 	Qt::GlobalColor color() const;
 private:
@@ -41,8 +45,9 @@ private:
 	QString name_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
-	QHash<ProtoType, Prototype *> prototypes_;
+	QHash<PrototypeType, Prototype *> prototypes_;
 	Qt::GlobalColor color_;
+	QHash<Resource, unsigned int> resources_;
 };
 
 #endif

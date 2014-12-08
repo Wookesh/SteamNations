@@ -1,14 +1,20 @@
-#include "../Player.hpp"
 #include "Town.hpp"
-#include "../Tile.hpp"
 #include "Unit.hpp"
+#include "../Tile.hpp"
+#include "../Player.hpp"
 #include "../GameManager.hpp"
+#include <Board.hpp>
 #include <QDebug>
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name)
 {
 	owner->obtainTown(this);
+	for (Tile *nTile : GameManager::get()->board()->getInRange(tile_, 1))
+		if (nTile->localTown() == nullptr) {
+			nTile->setLocalTown(this);
+			townTiles_.push_back(nTile);
+		}
 }
 
 Town::~Town()
@@ -22,7 +28,10 @@ Town::~Town()
 
 void Town::updateBefore() 
 {
-
+	qDebug() << name() << __FUNCTION__;
+	for (Tile *tile : townTiles_)
+		if (tile->resource() != Resource::None)
+			owner_->addResource(tile->resource(), tile->takeResources());
 }
 
 
@@ -36,8 +45,12 @@ void Town::updateAfter()
 	
 }
 
-Unit *Town::createUnit(ProtoType type)
+Unit *Town::createUnit(PrototypeType type)
 {
+	if (!canRecruit(type))
+		return nullptr;
+	
+	owner_->removeResource(Resource::Gold, owner_->prototype(type)->cost());
 	Unit *newUnit = owner_->createUnit(type, tile_);
 	return newUnit;
 }
@@ -48,7 +61,11 @@ void Town::getCaptured(Player *player)
 	player->obtainTown(this);
 }
 
-bool Town::canRecruit(ProtoType type)
+bool Town::canRecruit(PrototypeType type)
 {
-	return tile_->unit() == nullptr && GameManager::get()->currentPlayer() == owner();
+	if (tile_->unit() == nullptr &&
+		GameManager::get()->currentPlayer() == owner() &&
+		owner()->resource(Resource::Gold) >= owner()->prototype(type)->cost())
+		return true;
+	return false;
 }

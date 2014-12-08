@@ -5,6 +5,7 @@
 #include "Graphics/UnitGraphics.hpp"
 #include "../SNCore/Objects/Settler.hpp"
 #include "../SNCore/Objects/Soldier.hpp"
+#include "../SNCore/Objects/Town.hpp"
 #include <QDebug>
 
 SNScene::SNScene(GameManager *gameManager, QObject *parent) : QGraphicsScene(parent),
@@ -41,9 +42,9 @@ void SNScene::createObject(UID id)
 	} else if (object->type() == ObjectType::Unit) {
 		const Unit *unit = dynamic_cast<const Unit *>(object);
 		
-		if (unit->pType() == ProtoType::Settler)
+		if (unit->pType() == PrototypeType::Settler)
 			createSettler(dynamic_cast<const Settler *>(unit));
-		else if (unit->pType() == ProtoType::Soldier)
+		else
 			createSoldier(dynamic_cast<const Soldier *>(unit));
 	}
 }

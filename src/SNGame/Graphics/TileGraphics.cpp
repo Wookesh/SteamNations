@@ -31,6 +31,17 @@ QColor TileGraphics::highlightColor(ActionType type)
 	return map[type];
 }
 
+QColor TileGraphics::tileColor(Resource resource)
+{
+	static const QHash<Resource, QColor> map({
+		{Resource::Food, Qt::darkGreen},
+		{Resource::Research, Qt::darkBlue},
+		{Resource::Gold, Qt::yellow},
+		{Resource::None, Qt::darkRed}
+	});
+	return map[resource];
+}
+
 TileGraphics::TileGraphics(const Tile *tile, QGraphicsItem *parent) : QGraphicsPolygonItem(hexagon(), parent),
 tile_(tile), actionType_(ActionType::None)
 {
@@ -60,9 +71,12 @@ void TileGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	pen.setColor(Qt::green);
 	painter->setPen(pen);
 	painter->drawPolygon(polygon(), Qt::OddEvenFill);
+	
+	QPainterPath path;
+	path.addPolygon(polygon());
+	painter->fillPath(path, tileColor(tile_->resource()));
+	
 	if (actionType_ != ActionType::None) {
-		QPainterPath path;
-		path.addPolygon(polygon());
 		painter->setOpacity(OPACITY);
 		painter->fillPath(path, highlightColor(actionType_));
 	}

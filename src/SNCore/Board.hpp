@@ -2,7 +2,10 @@
 #define BOARD_HPP
 
 #include <QVector>
-#include "Tile.hpp"
+#include "Resources.hpp"
+
+class Player;
+class Tile;
 
 class Board {
 public:
@@ -10,17 +13,21 @@ public:
 	const_iterator begin() const { return tiles_.constBegin(); };
 	const_iterator end() const { return tiles_.constEnd(); };
 	
-	Board(unsigned int width, unsigned int height);
+	Board(unsigned int width, unsigned int height, unsigned int seed = qrand());
 	~Board();
 	
 	Tile *getTile(int x, int y) const;
 	Tile *getTileAxial(int x, int y) const;
 	Tile *getTileCube(int x, int y, int z) const;
 	
+	unsigned int nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const;
 	unsigned int getAbsoluteDistance(const Tile *tile1, const Tile *tile2) const;
 	
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
+	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
+	
+	void updateBefore();
 private:
 	unsigned int height_;
 	unsigned int width_;

@@ -24,7 +24,8 @@ private:
 	
 	static const QPolygonF &hexagon();
 	static QColor highlightColor(ActionType type);
-	static constexpr qreal OPACITY = 0.2;
+	static QColor tileColor(Resource resource);
+	static constexpr qreal OPACITY = 0.5;
 };
 
 #endif // TILEGRAPHICS _H

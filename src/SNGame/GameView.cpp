@@ -13,7 +13,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setDragMode(QGraphicsView::ScrollHandDrag);
-	//setRenderHint(QPainter::Antialiasing);
+	setRenderHint(QPainter::Antialiasing);
 	setOptimizationFlag(QGraphicsView::DontSavePainterState);
 	setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);

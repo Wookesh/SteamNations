@@ -1,9 +1,10 @@
 #include "Soldier.hpp"
 #include "../Tile.hpp"
 #include "Town.hpp"
+#include "Prototypes/SoldierPrototype.hpp"
 #include "../GameManager.hpp"
 
-Soldier::Soldier(Tile* tile, const Prototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
+Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
 {
 
 }
@@ -31,7 +32,8 @@ bool Soldier::canCapture(Tile* currTile)
 {	
 	if((GameManager::get()->currentPlayer() == owner()) &&
 		(currTile->town() != nullptr) &&
-		(currTile->town()->owner() != owner()))
+		(currTile->town()->owner() != owner()) &&
+		(currTile->unit() == nullptr))
 		return true;
 	
 	return false;

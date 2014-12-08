@@ -23,12 +23,13 @@ public:
 	
 	virtual QString name() const override;
 	
-	bool canRecruit(ProtoType type);
+	bool canRecruit(PrototypeType type);
 	
-	Unit *createUnit(ProtoType type);
+	Unit *createUnit(PrototypeType type);
 	void getCaptured(Player *player);
 private:
 	QString name_;
+	QVector<Tile *> townTiles_;
 };
 
 #endif

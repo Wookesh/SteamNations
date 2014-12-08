@@ -1,6 +1,6 @@
 #include "Prototype.hpp"
 
-Prototype::Prototype(ProtoType type, const QString &name, int moveRange, int cost) :
+Prototype::Prototype(PrototypeType type, const QString &name, int moveRange, int cost) :
 	type_(type),
 	name_(name), 
 	moveRange_(moveRange), 
@@ -14,13 +14,13 @@ Prototype::~Prototype()
 
 }
 
-ProtoType Prototype::type() const
+PrototypeType Prototype::type() const
 {
 	return type_;
 }
 
 
-int Prototype::cost() const
+unsigned int Prototype::cost() const
 {
 	return cost_;
 }

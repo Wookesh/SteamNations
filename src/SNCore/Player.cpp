@@ -1,17 +1,20 @@
 #include "Player.hpp"
-#include "Objects/Prototypes/SettlerPrototype.hpp"
-#include "Objects/Prototypes/SoldierPrototype.hpp"
+#include "Objects/Prototypes/Prototypes.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
-#include "Objects/Prototypes/Prototype.hpp"
+#include "Tile.hpp"
 
 #include <QtCore>
 
 Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
 {
-	prototypes_[ProtoType::Settler] = new SettlerPrototype();
-	prototypes_[ProtoType::Soldier] = new SoldierPrototype();
+	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
+	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
+	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
+	prototypes_[PrototypeType::Artillery] = new SoldierPrototype(PrototypeType::Artillery);
 	
+	for (Resource r : Resource::labels())
+		resources_[r] = 0;
 }
 
 Player::~Player()
@@ -60,6 +63,25 @@ unsigned int Player::getTownCount() {
 	return towns_.count();
 }
 
+unsigned int Player::resource(Resource resource) const
+{
+	return resources_[resource];
+}
+
+void Player::addResource(Resource resource, unsigned int val)
+{
+	qDebug() << "Player" << name() << "received" << val << "of" << QString(resource);
+	resources_[resource] += val;
+}
+
+bool Player::removeResource(Resource resource, unsigned int val)
+{
+	if (resources_[resource] >= val) {
+		resources_[resource] -= val;
+		return true;
+	}
+	return false;
+}
 
 void Player::updateBefore() {
 	// internal stuff
@@ -108,8 +130,8 @@ void Player::setCapital (Town *town)
 	capital_ = town;
 }
 
-
-Unit *Player::createUnit(ProtoType type, Tile *tile) {
+Unit *Player::createUnit(PrototypeType type, Tile *tile) 
+{
 	Unit *newUnit = prototypes_[type]->createUnit(tile, this);
 	units_.push_back(newUnit);
 	tile->setUnit(newUnit);
@@ -128,7 +150,7 @@ void Player::destroyUnit(Unit *toKill)
 }
 
 
-Prototype *Player::prototype(ProtoType type)
+Prototype *Player::prototype(PrototypeType type)
 {
 	return prototypes_[type];
 }

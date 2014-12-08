@@ -3,6 +3,8 @@
 #include "Town.hpp"
 #include "../Tile.hpp"
 #include "../GameManager.hpp"
+#include "../Board.hpp"
+#include "../Player.hpp"
 #include <QDebug>
 
 Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent) : Unit(tile, prototype, owner, parent)
@@ -36,10 +38,8 @@ bool Settler::settle()
 	if (owner()->capital() == nullptr) {
 		owner()->setCapital(town);
 		emit capitalCreated(owner_);
-		emit townCreated(owner_);
-	} else {
-		emit townCreated(owner_);
 	}
+	emit townCreated(owner_);
 	
 	return true;
 }
@@ -48,12 +48,13 @@ bool Settler::settle()
 Town *Settler::createTown()
 {
 	Town * town = new Town(tile_, owner_);
-	GameManager::get()->addObject(town->id(), town);
+	GameManager::get()->addObject(town);
 	tile_->setTown(town);
 	return town;
 }
 
-void Settler::getAttacked (Unit *) {
+void Settler::getAttacked(Unit *) 
+{
 	
 }
 

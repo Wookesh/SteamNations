@@ -9,6 +9,7 @@
 class Settler;
 class Soldier;
 class Unit;
+class Town;
 class TileGraphics;
 class UnitGraphics;
 

@@ -13,20 +13,6 @@ EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateUnit, Move, None
 
 class Action {
 public:
-	
-// 	enum class ActionType : quint8 {
-// 		None,
-// 		Move,
-// 		Attack,
-// 		Capture,
-// 		Settle,
-// 		CreateUnit
-// 	};
-// 	
-// 	static QString name(ActionType type);
-// 	static const QVector<Action::ActionType> &types();
-	
-	
 	Action(Object *mainObject, Tile *tile, ActionType type);
 	~Action();
 	

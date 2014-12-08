@@ -1,6 +1,8 @@
 #ifndef ATTACKACTION_HPP
 #define ATTACKACTION_HPP
+
 #include "Action.hpp"
+
 class Unit;
 class Soldier;
 
