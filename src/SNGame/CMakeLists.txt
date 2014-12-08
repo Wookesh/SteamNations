@@ -1,7 +1,8 @@
-qt5_add_resources(SNResources resources.qrc)
+qt5_add_resources(SNResources qml.qrc)
 
 add_executable(SteamNations
 	main.cpp
+	Board.cpp
 	${SNResources}
 	)
 qt5_use_modules(SteamNations Widgets Gui Quick)

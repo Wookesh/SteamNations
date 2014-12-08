@@ -7,10 +7,8 @@
 #include<QHash>
 
 
-class Board : public QQuickItem
-{
-	Q_OBJECT
-
+class Board : public QQuickItem {
+Q_OBJECT
 public:
 	Board(QQuickItem *parent = 0);
 

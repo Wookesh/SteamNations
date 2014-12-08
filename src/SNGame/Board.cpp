@@ -43,12 +43,11 @@ int Board::index(int x, int y)
 
 QSGNode *Board::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
-
 	QSGNode *node = mainNode;
 	if (!node) {
 		node = new QSGNode();
-		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j < 30; j++) {
+		for(int i = 0; i < 50; i++) {
+			for(int j = 0; j < 50; j++) {
 				QSGGeometryNode *child = new QSGGeometryNode();
 				QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
 				geometry->setDrawingMode(GL_LINE_LOOP);
@@ -75,10 +74,5 @@ QSGNode *Board::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 			}
 		}
 	}
-
-
-
-
-
 	return node;
 }
