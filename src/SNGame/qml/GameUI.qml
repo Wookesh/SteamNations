@@ -1,40 +1,49 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
-import "../gameBoard.js" as Logic
 import "./gui"
 import SN 1.0
 
 Rectangle {
-	id: gameBoard
+	id: gameUI
 	width: parent.width
 	height: parent.height
 	antialiasing: true
 
-
-// 	function update() {
-// 		Logic.update();
-// 	}
-
-
-	
 	StaticLeftForeground {
 		id: staticLeftForeground
 		z: 1
 		
 		MenuButton {
-			onClicked:
-				gameBoard.exit()
+			id: menuButton
 			source: "qrc:../images/menu_button.png"
-			height: sourceSize.height * 2 / 3
-			width: sourceSize.width * 2 / 3
-			x: 0;
-			y: 0;
+			
+			onClicked:
+				gameUI.exit()
 		}
-	}
-	
-
-	Component.onCompleted: {
-		//Logic.createBoard()
+		
+		MenuButton {
+			id: techButton
+			source: "qrc:../images/tech_button.png"
+			y: menuButton.height
+			
+			onClicked:
+				console.log("TechButton clicked\n")
+		}
+		
+		MenuButton {
+			id: playerButton
+			source: "qrc:../images/players_info.png"
+			y: techButton.height + techButton.y
+			
+			onClicked:
+				console.log("PlayersInfoButton clicked\n")
+		}
+		
+		NextTurnButton {
+			id: nextTurnButton
+			x: -nextTurnButton.width / 3
+			y: staticLeftForeground.height - (nextTurnButton.width * 2 / 3)
+		}
 	}
 	
 	MouseArea {
@@ -44,7 +53,6 @@ Rectangle {
 		drag.maximumX: 0
 		drag.minimumY: parent.height - scene.height
 		drag.maximumY: 0
-		//drag.filterChildren: true
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {
@@ -57,23 +65,18 @@ Rectangle {
 		}
 
 		onClicked: {
-			console.log(mouseX + " " + mouseY + " " + scene.childAt(mouseX, mouseY).width + "\n")
+			console.log(mouseX + " " + mouseY + "\n")
 		}
 
-		onPositionChanged: {
-			console.log("SceneX = " + scene.childAt(mouseX, mouseY).x / 100)
-			console.log("SceneY = " + scene.childAt(mouseX, mouseY).y / 100 + "\n")
-		}
+		
 		Board {
 			height: 5000
 			width: 5000
 			x: -1000
 			y: -1000
-			id:scene
-		 }
-
-
- }
+			id: scene
+		}
+	}
 
 	signal exit()
 }

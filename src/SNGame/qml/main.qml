@@ -4,30 +4,27 @@ import QtQuick.Layouts 1.1
 import SN 1.0
 
 Rectangle {
-	Timer {
-			 interval: 100; running: true; repeat: true
-			 onTriggered: gameBoard.update()
-		 }
-
-
+	id: root
+	
 	width: 1280;
 	height: 720;
 
+	property var globalScale: width / 1920;
 
-	GameBoard {
-		id: gameBoard
+	GameUI {
+		id: gameUI
 		visible: false
 		onExit: {
-			gameBoard.visible = false
+			gameUI.visible = false
 			mainMenu.visible = true
 		}
 	}
 
 	MainMenu {
 		id: mainMenu
-		visible:true
+		visible: true
 		onNewGameClicked: {
-			gameBoard.visible = true
+			gameUI.visible = true
 			mainMenu.visible = false
 		}
 	}
