@@ -3,11 +3,13 @@
 #include <QQmlEngine>
 #include <QTimer>
 #include "crab.hpp"
+#include "board.hpp"
 
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
 	qmlRegisterType<Crab>("SN", 1, 0, "Crab");
+	qmlRegisterType<Board>("SN", 1, 0, "Board");
 	QQuickView view;
 	QTimer timer;
 	view.setResizeMode(QQuickView::SizeRootObjectToView);

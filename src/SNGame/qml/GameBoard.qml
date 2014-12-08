@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import "../gameBoard.js" as Logic
 import "./gui"
+import SN 1.0
 
 Rectangle {
 	id: gameBoard
@@ -33,7 +34,7 @@ Rectangle {
 	
 
 	Component.onCompleted: {
-		Logic.createBoard()
+		//Logic.createBoard()
 	}
 	
 	MouseArea {
@@ -63,7 +64,7 @@ Rectangle {
 			console.log("SceneX = " + scene.childAt(mouseX, mouseY).x / 100)
 			console.log("SceneY = " + scene.childAt(mouseX, mouseY).y / 100 + "\n")
 		}
-		Rectangle {
+		Board {
 			height: 5000
 			width: 5000
 			x: -1000
