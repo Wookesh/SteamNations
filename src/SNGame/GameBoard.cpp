@@ -7,21 +7,27 @@
 #include <QSGNode>
 #include <QTimer>
 #include <QDebug>
-#include "Board.hpp"
+#include "../SNCore/GameManager.hpp"
+#include "../SNCore/Board.hpp"
+#include "../SNCore/Tile.hpp"
+#include "../SNCore/Objects/Town.hpp"
+#include "../SNCore/Objects/Unit.hpp"
+#include "GameBoard.hpp"
+#include "BoardField.hpp"
 
-QTimer *Board::timer_ = nullptr;
+QTimer *GameBoard::timer_ = nullptr;
 
-void Board::initTimer()
+void GameBoard::initTimer()
 {
 	if (timer_ == nullptr) {
 		timer_ = new QTimer();
 		timer_->setInterval(250);
 		timer_->start();
 	}
-	connect(timer_, &QTimer::timeout, this, &Board::nextFrame);
+	connect(timer_, &QTimer::timeout, this, &GameBoard::nextFrame);
 }
 
-void Board::nextFrame()
+void GameBoard::nextFrame()
 {
 	qDebug() << "update";
 
@@ -29,28 +35,34 @@ void Board::nextFrame()
 
 }
 
-Board::Board(QQuickItem *parent)
+GameBoard::GameBoard(QQuickItem *parent)
 	: QQuickItem(parent)
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	initTimer();
+	GameManager::init();
+	GameManager::get()->setBoard(new Board(30, 30));
+	GameManager::get()->initGame();
 }
 
-int Board::index(int x, int y)
+int GameBoard::index(int x, int y)
 {
 	return x + y * 30;
 }
 
-QSGNode *Board::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
+QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
 	QSGNode *node = mainNode;
 	if (!node) {
 		node = new QSGNode();
-		for(int i = 0; i < 50; i++) {
-			for(int j = 0; j < 50; j++) {
+		for(int i = 0; i < 30; i++) {
+			for(int j = 0; j < 30; j++) {
 				QSGGeometryNode *child = new QSGGeometryNode();
+				
+				nodeMap[index(i, j)] = new BoardField(child, GameManager::get()->board()->getTile(i,j));
+				
 				QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
-				geometry->setDrawingMode(GL_LINE_LOOP);
+				geometry->setDrawingMode(GL_POLYGON);
 				geometry->setLineWidth(3);
 				int addX, addY;
 				addX = 48 * i;
@@ -63,13 +75,14 @@ QSGNode *Board::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				geometry->vertexDataAsPoint2D()[4].set(16 + addX, 56 + addY);
 				geometry->vertexDataAsPoint2D()[5].set(0 + addX, 28 + addY);
 				QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
-				material->setColor(QColor(0, 255, 0));
+				BoardField *bf = nodeMap[index(i,j)];
+				
+				material->setColor(bf->tileColor());
 
 				child->setGeometry(geometry);
 				child->setFlag(QSGNode::OwnsGeometry);
 				child->setMaterial(material);
 				child->setFlag(QSGNode::OwnsMaterial);
-				nodeMap[index(i, j)] = child;
 				node->appendChildNode(child);
 			}
 		}

@@ -1,22 +1,23 @@
-#ifndef BOARD_HPP
-#define BOARD_HPP
+#ifndef GAMEBOARD_HPP
+#define GAMEBOARD_HPP
 
 #include <QtQuick/QQuickItem>
 #include <QColor>
 #include <QImage>
 #include<QHash>
 
+class BoardField;
 
-class Board : public QQuickItem {
+class GameBoard : public QQuickItem {
 Q_OBJECT
 public:
-	Board(QQuickItem *parent = 0);
+	GameBoard(QQuickItem *parent = 0);
 
 protected:
 	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
 private:
 	static QTimer *timer_;
-	QHash<int,QSGNode *> nodeMap;
+	QHash<int,BoardField *> nodeMap;
 
 	int index(int x, int y);
 	void initTimer();
@@ -24,7 +25,7 @@ private:
 private slots:
 	void nextFrame();
 };
-#endif // BOARD_HPP
+#endif // GAMEBOARD_HPP
 
 
 

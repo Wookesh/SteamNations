@@ -2,12 +2,12 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include <QTimer>
-#include "Board.hpp"
+#include "GameBoard.hpp"
 
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
-	qmlRegisterType<Board>("SN", 1, 0, "Board");
+	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
 	QQuickView view;
 	QTimer timer;
 	view.setResizeMode(QQuickView::SizeRootObjectToView);
