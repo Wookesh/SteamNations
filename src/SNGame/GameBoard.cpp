@@ -6,12 +6,12 @@
 #include <QSGFlatColorMaterial>
 #include <QSGNode>
 #include <QTimer>
-#include <QDebug>
-#include "../SNCore/GameManager.hpp"
-#include "../SNCore/Board.hpp"
-#include "../SNCore/Tile.hpp"
-#include "../SNCore/Objects/Town.hpp"
-#include "../SNCore/Objects/Unit.hpp"
+
+#include "SNCore/GameManager.hpp"
+#include "SNCore/Board.hpp"
+#include "SNCore/Tile.hpp"
+#include "SNCore/Objects/Town.hpp"
+#include "SNCore/Objects/Unit.hpp"
 #include "GameBoard.hpp"
 #include "BoardField.hpp"
 
@@ -29,10 +29,7 @@ void GameBoard::initTimer()
 
 void GameBoard::nextFrame()
 {
-	qDebug() << "update";
-
 	update();
-
 }
 
 GameBoard::GameBoard(QQuickItem *parent)

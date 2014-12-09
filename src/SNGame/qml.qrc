@@ -6,18 +6,5 @@
 		<file>qml/gui/StaticLeftForeground.qml</file>
 		<file>qml/gui/MenuButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>
-		
-		<file>images/menu_button.png</file>
-		<file>images/tech_button.png</file>
-		<file>images/players_info.png</file>
-		<file>images/start_button.png</file>
-		<file>images/exit_button.png</file>
-		<file>images/trybik.png</file>
-		<file>images/play_button.png</file>
-		<file>images/play_button_red.png</file>
-		<file>images/play_button_blue.png</file>
-		
-		<file>images/logo_steam_nations.png</file>
-		<file>images/ozdoba_bok_lewy.png</file>
 	</qresource>
 </RCC>

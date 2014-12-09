@@ -1,4 +1,4 @@
-qt5_add_resources(SNResources qml.qrc)
+qt5_add_resources(SNResources qml.qrc images.qrc)
 
 add_executable(SteamNations
 	main.cpp

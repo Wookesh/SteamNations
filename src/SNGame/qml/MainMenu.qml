@@ -15,7 +15,7 @@ Rectangle {
 		
 		Image {
 			Layout.preferredWidth: sourceSize.width
-			source: "qrc:../images/logo_steam_nations.png"
+			source: "qrc:///logo"
 		}
 		
 		ColumnLayout {
@@ -25,13 +25,13 @@ Rectangle {
 				id: newGame
 				onClicked:
 					mainMenu.newGameClicked();
-				source: "qrc:../images/start_button.png"
+				source: "qrc:///startButton"
 			}
 
 			MenuButton {
 				id: exit
 				onClicked: Qt.quit();
-				source: "qrc:../images/exit_button.png"
+				source: "qrc:///exitButton"
 			}
 		}
 	}

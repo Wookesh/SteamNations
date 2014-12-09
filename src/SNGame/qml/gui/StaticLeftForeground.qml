@@ -1,7 +1,7 @@
 import QtQuick 2.3
 
 Image {
-	source: "qrc:../../images/ozdoba_bok_lewy.png"
+	source: "qrc:///leftForeground"
 	height: sourceSize.height * root.globalScale
 	width: sourceSize.width * root.globalScale
 	x: 0

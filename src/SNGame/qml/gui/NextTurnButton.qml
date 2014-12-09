@@ -11,7 +11,7 @@ Item {
 	
 	Image {
 		id: trybik
-		source: "qrc:../../images/trybik.png"
+		source: "qrc:///trybik"
 		width: sourceSize.width * root.globalScale
 		height: sourceSize.height * root.globalScale
 		x: 0
@@ -31,7 +31,7 @@ Item {
 	
 	MenuButton {
 		id: nextTurn
-		source: "qrc:../../images/play_button_blue.png"
+		source: "qrc:///playButtonBlue"
 		anchors.centerIn: parent
 		
 		onClicked: {

@@ -4,7 +4,7 @@
 #include <QtQuick/QQuickItem>
 #include <QColor>
 #include <QImage>
-#include<QHash>
+#include <QHash>
 
 class BoardField;
 
@@ -17,7 +17,7 @@ protected:
 	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
 private:
 	static QTimer *timer_;
-	QHash<int,BoardField *> nodeMap;
+	QHash<int, BoardField *> nodeMap;
 
 	int index(int x, int y);
 	void initTimer();

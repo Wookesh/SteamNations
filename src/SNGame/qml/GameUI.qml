@@ -15,7 +15,7 @@ Rectangle {
 		
 		MenuButton {
 			id: menuButton
-			source: "qrc:../images/menu_button.png"
+			source: "qrc:///menuButton"
 			
 			onClicked:
 				gameUI.exit()
@@ -23,7 +23,7 @@ Rectangle {
 		
 		MenuButton {
 			id: techButton
-			source: "qrc:../images/tech_button.png"
+			source: "qrc:///techButton"
 			y: menuButton.height
 			
 			onClicked:
@@ -32,7 +32,7 @@ Rectangle {
 		
 		MenuButton {
 			id: playerButton
-			source: "qrc:../images/players_info.png"
+			source: "qrc:///playersInfo"
 			y: techButton.height + techButton.y
 			
 			onClicked:
