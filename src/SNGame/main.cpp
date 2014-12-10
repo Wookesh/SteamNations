@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
 	QQuickView view;
 	view.setResizeMode(QQuickView::SizeRootObjectToView);
+
 	QObject::connect(view.engine(), &QQmlEngine::quit, qApp, &QCoreApplication::quit);
 
 	view.setSource(QUrl("qrc:/qml/main.qml"));

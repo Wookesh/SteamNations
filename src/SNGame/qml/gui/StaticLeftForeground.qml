@@ -6,5 +6,4 @@ Image {
 	width: sourceSize.width * root.globalScale
 	x: 0
 	y: 0
-	Component.onCompleted: console.log(root.globalScale)
 }

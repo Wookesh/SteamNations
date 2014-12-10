@@ -12,6 +12,7 @@
 #include "SNCore/Tile.hpp"
 #include "SNCore/Objects/Town.hpp"
 #include "SNCore/Objects/Unit.hpp"
+#include "SNHelpers.hpp"
 #include "GameBoard.hpp"
 #include "BoardField.hpp"
 
@@ -36,15 +37,16 @@ GameBoard::GameBoard(QQuickItem *parent)
 	: QQuickItem(parent)
 {
 	setFlag(QQuickItem::ItemHasContents, true);
-	initTimer();
+	setAntialiasing(true);
+	//initTimer();
 	GameManager::init();
-	GameManager::get()->setBoard(new Board(30, 30));
+	GameManager::get()->setBoard(new Board(50, 50));
 	GameManager::get()->initGame();
 }
 
 int GameBoard::index(int x, int y)
 {
-	return x + y * 30;
+	return x + y * 50;
 }
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
@@ -52,8 +54,8 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	QSGNode *node = mainNode;
 	if (!node) {
 		node = new QSGNode();
-		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j < 30; j++) {
+		for(int i = 0; i < 50; i++) {
+			for(int j = 0; j < 50; j++) {
 				QSGGeometryNode *child = new QSGGeometryNode();
 				
 				nodeMap[index(i, j)] = new BoardField(child, GameManager::get()->board()->getTile(i,j));
@@ -61,16 +63,13 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
 				geometry->setDrawingMode(GL_POLYGON);
 				geometry->setLineWidth(3);
-				int addX, addY;
-				addX = 48 * i;
-				addY = i%2 ? 56 * j : 56 * j + 28;
-
-				geometry->vertexDataAsPoint2D()[0].set(16 + addX, 0 + addY);
-				geometry->vertexDataAsPoint2D()[1].set(48 + addX, 0 + addY);
-				geometry->vertexDataAsPoint2D()[2].set(64 + addX, 28 + addY);
-				geometry->vertexDataAsPoint2D()[3].set(48 + addX, 56 + addY);
-				geometry->vertexDataAsPoint2D()[4].set(16 + addX, 56 + addY);
-				geometry->vertexDataAsPoint2D()[5].set(0 + addX, 28 + addY);
+				QPointF pos = coordToPos(i, j);
+				
+				for (int i = 0; i < 6; ++i)
+					geometry->vertexDataAsPoint2D()[i].set(
+						BoardField::SIZE * qCos(2 * M_PI / 6 * i) + pos.x(),
+						BoardField::SIZE * qSin(2 * M_PI / 6 * i) + pos.y());
+				
 				QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
 				BoardField *bf = nodeMap[index(i,j)];
 				

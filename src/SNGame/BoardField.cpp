@@ -1,17 +1,18 @@
 #include "BoardField.hpp"
-#include "../SNCore/Objects/Town.hpp"
-#include "../SNCore/Objects/Unit.hpp"
-#include "../SNCore/Actions/Actions.hpp"
-#include "../SNCore/Resources.hpp"
-#include "../SNCore/Tile.hpp"
+#include "SNCore/Objects/Town.hpp"
+#include "SNCore/Objects/Unit.hpp"
+#include "SNCore/Actions/Actions.hpp"
+#include "SNCore/Resources.hpp"
+#include "SNCore/Tile.hpp"
 
 
-BoardField::BoardField(QSGNode* node,Tile *tile) : node_(node), unit_(tile->unit()), town_(tile->town()), tile_(tile), highlighted_(false)
+BoardField::BoardField(QSGNode* node,Tile *tile) :
+	node_(node), unit_(tile->unit()), town_(tile->town()), tile_(tile), highlighted_(false)
 {
 	//qDebug() << "bf";
 }
 
-QSGNode* BoardField::node()
+QSGNode *BoardField::node()
 {
 	return node_;
 }
@@ -21,7 +22,7 @@ void BoardField::setTown( Town* town)
 	town_ = town;
 }
 
-const Town* BoardField::town()
+const Town *BoardField::town()
 {
 	return town_;
 }
@@ -31,7 +32,7 @@ void BoardField::setUnit( Unit* unit)
 	unit_ = unit;
 }
 
-const Unit* BoardField::unit()
+const Unit *BoardField::unit()
 {
 	return unit_;
 }

@@ -10,7 +10,6 @@ class ActionType;
 class Tile;
 
 class BoardField {
-
 public:
 	BoardField(QSGNode *node, Tile *tile);
 	
@@ -25,19 +24,16 @@ public:
 	void highlight(ActionType actionType);
 	void unhighlight();
 	
-	QColor highlightColor(ActionType type);
+	static QColor highlightColor(ActionType type);
 	QColor tileColor();
-		
+	
+	static const int SIZE = 80;
 private:
 	QSGNode *node_;
 	Unit *unit_;
 	Town *town_;
 	Tile *tile_;
 	bool highlighted_;
-	
-	
-	
-	
 };
 
 
