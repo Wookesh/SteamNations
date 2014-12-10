@@ -16,7 +16,7 @@ public:
 	bool settle();
 	Town *createTown();
 	
-	virtual void getAttacked(Unit *) override;
+	virtual void getAttacked(Soldier *) override;
 signals:
 	void townCreated(Player *player);
 	void capitalCreated(Player *player);

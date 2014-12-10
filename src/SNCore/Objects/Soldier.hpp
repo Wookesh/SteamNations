@@ -6,7 +6,6 @@ class SoldierPrototype;
 class Tile;
 class Town;
 
-
 class Soldier : public Unit {
 Q_OBJECT
 public:
@@ -18,7 +17,7 @@ public:
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
 	
-	virtual void getAttacked(Unit *) override;
+	virtual void getAttacked(Soldier *) override;
 };
 
 

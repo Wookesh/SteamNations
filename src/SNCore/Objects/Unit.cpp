@@ -10,7 +10,7 @@
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
-	currentMoveRange_(0)
+	actionPointsLeft_(0)
 {
 }
 
@@ -27,7 +27,7 @@ void Unit::updateBefore()
 
 void Unit::updateAfter()
 {
-	currentMoveRange_ = moveRange();
+	actionPointsLeft_ = actionPoints();
 }
 
 QString Unit::name() const
@@ -40,31 +40,45 @@ PrototypeType Unit::pType() const
 	return prototype_->type();
 }
 
-
-quint8 Unit::moveRange() const
+SNTypes::ap Unit::actionPoints() const
 {
-	return prototype_->moveRange();
+	return prototype_->actionPoints();
 }
 
-quint8 Unit::currentMoveRange() const
+SNTypes::ap Unit::actionPointsLeft() const
 {
-	return currentMoveRange_;
+	return actionPointsLeft_;
+}
+
+void Unit::spentActionPoints(SNTypes::ap actionPoints)
+{
+	actionPointsLeft_ -= actionPoints;
+}
+
+SNTypes::hp Unit::health() const
+{
+	return prototype_->health();
+}
+
+SNTypes::hp Unit::healthLeft() const
+{
+	return healthLeft_;
 }
 
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= currentMoveRange() &&
+		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft() &&
 		GameManager::get()->currentPlayer() == owner() &&
 		(tile->town() == nullptr ? true : tile->town()->owner() == owner()))
 		return true;
 	return false;
 }
 
-bool Unit::move(Tile *tile, unsigned int moveCost)
+bool Unit::move(Tile *tile, SNTypes::ap moveCost)
 {
 	if (canMove(tile)) {
-		currentMoveRange_ -= moveCost;
+		spentActionPoints(moveCost);
 		tile_->setUnit(nullptr);
 		tile->setUnit(this);
 		setTile(tile);

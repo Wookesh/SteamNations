@@ -3,6 +3,8 @@
 
 #include <QString>
 #include "../../EnumHelpers.hpp"
+#include "../../SNTypes.hpp"
+
 
 class Player;
 class Unit;
@@ -13,27 +15,31 @@ EnumClassWithStrings(PrototypeType, quint8, Settler, Infantry, Heavy, Artillery)
 class Prototype {
 public:
 	
-	Prototype(PrototypeType type, const QString &name, int moveRange, int cost);
+	Prototype(PrototypeType type, const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health);
 	virtual ~Prototype();
 	
 	virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
 	
 	PrototypeType type() const;
 	
-	QString name() const;
+	const QString &name() const;
 	void setName(const QString &name);
 	
-	quint8 moveRange() const;
-	void setMoveRange(quint8 moveRange);
+	SNTypes::ap actionPoints() const;
+	void setActionPoints(SNTypes::ap actionPoints);
 	
-	unsigned int cost() const;
-	void setCost(int cost);
+	SNTypes::amount cost() const;
+	void setCost(SNTypes::amount cost);
+	
+	SNTypes::hp health() const;
+	void setHealth(SNTypes::hp health);
 	
 protected:
 	PrototypeType type_;
 	QString name_;
-	quint8 moveRange_;
-	unsigned int cost_;
+	SNTypes::ap actionPoints_;
+	SNTypes::amount cost_;
+	SNTypes::hp health_;
 };
 
 #endif

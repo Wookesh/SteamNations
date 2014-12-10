@@ -1,10 +1,8 @@
 #include "Prototype.hpp"
 
-Prototype::Prototype(PrototypeType type, const QString &name, int moveRange, int cost) :
-	type_(type),
-	name_(name), 
-	moveRange_(moveRange), 
-	cost_(cost)
+Prototype::Prototype(PrototypeType type, 
+	const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health) :
+	type_(type), name_(name), actionPoints_(actionPoints), cost_(cost), health_(health)
 {
 
 }
@@ -20,17 +18,17 @@ PrototypeType Prototype::type() const
 }
 
 
-unsigned int Prototype::cost() const
+SNTypes::amount Prototype::cost() const
 {
 	return cost_;
 }
 
-void Prototype::setCost(int cost)
+void Prototype::setCost(SNTypes::amount cost)
 {
 	cost_ = cost;
 }
 
-QString Prototype::name() const
+const QString &Prototype::name() const
 {
 	return name_;
 }
@@ -40,12 +38,22 @@ void Prototype::setName(const QString &name)
 	name_ = name;
 }
 
-quint8 Prototype::moveRange() const
+SNTypes::ap Prototype::actionPoints() const
 {
-	return moveRange_;
+	return actionPoints_;
 }
 
-void Prototype::setMoveRange(quint8 moveRange)
+void Prototype::setActionPoints(SNTypes::ap actionPoints)
 {
-	moveRange_ = moveRange;
+	actionPoints_ = actionPoints;
+}
+
+SNTypes::hp Prototype::health() const
+{
+	return health_;
+}
+
+void Prototype::setHealth(SNTypes::hp health)
+{
+	health_ = health;
 }

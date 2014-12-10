@@ -38,7 +38,7 @@ void ObjectInfoBox::setObject(const Object *object, const QVector<Action *> &act
 		displayButton(actionButtons_[ActionType::CreateUnit]);
 	} else if (object->type() == ObjectType::Unit) {
 		const Unit *unit = dynamic_cast<const Unit *>(object);
-		unitMoveRange_->setValue(unit->currentMoveRange());
+		unitMoveRange_->setValue(unit->actionPointsLeft());
 		displayStat(unitMoveRange_);
 		
 		if (unit->pType() ==  PrototypeType::Settler) {

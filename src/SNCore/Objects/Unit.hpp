@@ -5,6 +5,7 @@
 #include "Prototypes/Prototype.hpp"
 
 class Prototype;
+class Soldier;
 
 class Unit : public Object {
 Q_OBJECT
@@ -19,15 +20,21 @@ public:
 	
 	PrototypeType pType() const;
 	
-	quint8 moveRange() const;
-	quint8 currentMoveRange() const;
+	SNTypes::ap actionPoints() const;
+	SNTypes::ap actionPointsLeft() const;
+	
+	SNTypes::hp health() const;
+	SNTypes::hp healthLeft() const;
 	
 	bool canMove(const Tile *tile) const;
-	bool move(Tile *tile, unsigned int moveCost);
-	virtual void getAttacked(Unit *) = 0;
+	bool move(Tile *tile, SNTypes::ap moveCost);
+	virtual void getAttacked(Soldier *) = 0;
 protected:
 	const Prototype *prototype_;
-	quint8 currentMoveRange_;
+	SNTypes::ap actionPointsLeft_;
+	SNTypes::hp healthLeft_;
+	
+	void spentActionPoints(SNTypes::ap actionPoints);
 };
 
 #endif

@@ -53,7 +53,7 @@ Town *Settler::createTown()
 	return town;
 }
 
-void Settler::getAttacked(Unit *) 
+void Settler::getAttacked(Soldier *) 
 {
 	
 }

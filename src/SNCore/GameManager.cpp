@@ -112,7 +112,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 	if (objectN->type() == ObjectType::Unit) {
 		Unit *unit = dynamic_cast<Unit *>(objectN);
 		//QVector<Tile *> tiles = board_->getInRange(unit->tile(), unit->currentMoveRange());
-		QVector<QVector<Tile *> > tiles = board_->getReachable(unit->tile(), unit->currentMoveRange(), unit->owner());
+		QVector<QVector<Tile *> > tiles = board_->getReachable(unit->tile(), unit->actionPointsLeft(), unit->owner());
 
 		for (int range = 0; range < tiles.size(); ++range) {
 			for (Tile * currTile : tiles[range]) {
