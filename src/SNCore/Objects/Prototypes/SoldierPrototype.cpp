@@ -27,14 +27,27 @@ const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_HEALTH = {
 	{PrototypeType::Artillery, 30}
 };
 
-SoldierPrototype::SoldierPrototype(PrototypeType type,
-	const QString &name, SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health) :
-	Prototype(type, name, actionPoints, cost, health)
+const QHash<PrototypeType, SNTypes::distance> SoldierPrototype::BASE_ATTACK_RANGE = {
+	{PrototypeType::Infantry, 1},
+	{PrototypeType::Heavy, 2},
+	{PrototypeType::Artillery, 3}
+};
+
+const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_DAMAGE = {
+	{PrototypeType::Infantry, 8},
+	{PrototypeType::Heavy, 13},
+	{PrototypeType::Artillery, 8}
+};
+
+SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
+	SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health, SNTypes::distance attackRange, SNTypes::dmg damage) :
+	Prototype(type, name, actionPoints, cost, health), attackRange_(attackRange), damage_(damage)
 {
 }
 
 SoldierPrototype::SoldierPrototype(PrototypeType type) :
-	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type])
+	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type]),
+	attackRange_(BASE_ATTACK_RANGE[type]), damage_(BASE_DAMAGE[type])
 {
 }
 
@@ -49,3 +62,26 @@ Unit *SoldierPrototype::createUnit(Tile *tile, Player *owner)
 	GameManager::get()->addObject(soldier);
 	return soldier;
 }
+
+SNTypes::distance SoldierPrototype::attackRange() const
+{
+	return attackRange_;
+}
+
+void SoldierPrototype::setAttackRange(SNTypes::distance attackRange)
+{
+	attackRange_ = attackRange;
+}
+
+
+SNTypes::dmg SoldierPrototype::damage() const
+{
+	return damage_;
+}
+
+void SoldierPrototype::setDamage(SNTypes::dmg damage)
+{
+	damage_ = damage;
+}
+
+

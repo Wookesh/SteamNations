@@ -3,6 +3,7 @@
 #include "Town.hpp"
 #include "Prototypes/SoldierPrototype.hpp"
 #include "../GameManager.hpp"
+#include <Board.hpp>
 
 Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
 {
@@ -12,6 +13,7 @@ Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, Q
 bool Soldier::canAttack(Tile* currTile)
 {
 	if ((GameManager::get()->currentPlayer() == owner()) &&
+		(GameManager::get()->board()->getAbsoluteDistance(tile(), currTile) <= attackRange()) &&
 		(currTile->unit() != nullptr) &&
 		(currTile->unit()->owner() != owner()))
 		return true;
@@ -25,6 +27,16 @@ bool Soldier::attack(Unit* unit)
 		return true;
 	}
 	return false;
+}
+
+SNTypes::distance Soldier::attackRange() const
+{
+	return static_cast<const SoldierPrototype *>(prototype_)->attackRange();
+}
+
+SNTypes::dmg Soldier::damage() const
+{
+	return static_cast<const SoldierPrototype *>(prototype_)->damage();
 }
 
 bool Soldier::canCapture(Tile* currTile)

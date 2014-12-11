@@ -23,13 +23,12 @@ namespace SNTypes {
 	/**
 	 * ActionPoinst
 	 */
-	typedef quint8 ap;
+	typedef quint16 ap;
 	
 	/**
-	 * MovePoinst
+	 * Distance
 	 */
-	//typedef quint8 mp;
-	
+	typedef ap distance;
 	
 	/**
 	 * Amount of Resource

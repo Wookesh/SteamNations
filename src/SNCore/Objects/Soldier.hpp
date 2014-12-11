@@ -17,6 +17,9 @@ public:
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
 	
+	SNTypes::distance attackRange() const;
+	SNTypes::dmg damage() const;
+	
 	virtual void getAttacked(Soldier *) override;
 };
 
