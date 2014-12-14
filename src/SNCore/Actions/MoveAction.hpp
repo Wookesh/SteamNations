@@ -1,5 +1,5 @@
-#ifndef MOVEACTION_HPP
-#define MOVEACTION_HPP
+#ifndef MOVE_ACTION_HPP
+#define MOVE_ACTION_HPP
 
 #include "Action.hpp"
 

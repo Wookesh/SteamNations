@@ -1,5 +1,5 @@
-#ifndef CREATEUNITACTION_HPP
-#define CREATEUNITACTION_HPP
+#ifndef CREATE_UNIT_ACTION_HPP
+#define CREATE_UNIT_ACTION_HPP
 
 #include "Action.hpp"
 #include "../Objects/Prototypes/Prototype.hpp"

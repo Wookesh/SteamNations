@@ -7,5 +7,6 @@
 #include "CreateUnitAction.hpp"
 #include "MoveAction.hpp"
 #include "SettleAction.hpp"
+#include "SpawnUnitAction.hpp"
 
 #endif

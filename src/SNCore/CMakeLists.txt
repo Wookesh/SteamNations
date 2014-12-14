@@ -1,4 +1,4 @@
-add_library(SNCore 
+add_library(SNCore
 	Board.cpp
 	GameManager.cpp
 	Tile.cpp
@@ -7,8 +7,10 @@ add_library(SNCore
 	Actions/AttackAction.cpp
 	Actions/MoveAction.cpp
 	Actions/SettleAction.cpp
+	Actions/CreateTownAction.cpp 
 	Actions/CreateUnitAction.cpp
 	Actions/CaptureAction.cpp
+	Actions/SpawnUnitAction.cpp
 	Objects/Object.cpp
 	Objects/Unit.cpp
 	Objects/Settler.cpp
