@@ -2,8 +2,6 @@ import QtQuick 2.3
 
 Image {
 	source: "qrc:///leftForeground"
-	height: sourceSize.height * root.globalScale
-	width: sourceSize.width * root.globalScale
-	x: 0
-	y: 0
+	width: sourceSize.width * root.globalScale.width
+	height: sourceSize.height * root.globalScale.height
 }

@@ -6,8 +6,8 @@ Image {
 	Layout.alignment: Qt.AlignCenter
 	
 	antialiasing: true
-	height: sourceSize.height * root.globalScale
-	width: sourceSize.width * root.globalScale
+	width: sourceSize.width * root.globalScale.width * root.globalScale.width
+	height: sourceSize.height * root.globalScale.height * root.globalScale.height
 	x: 0
 	y: 0
 	

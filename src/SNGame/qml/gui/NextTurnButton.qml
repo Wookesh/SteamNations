@@ -12,8 +12,8 @@ Item {
 	Image {
 		id: trybik
 		source: "qrc:///trybik"
-		width: sourceSize.width * root.globalScale
-		height: sourceSize.height * root.globalScale
+		width: sourceSize.width * root.globalScale.width
+		height: sourceSize.height * root.globalScale.height
 		x: 0
 		y: 0
 	}

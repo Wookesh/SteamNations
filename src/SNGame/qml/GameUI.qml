@@ -24,7 +24,7 @@ Rectangle {
 		MenuButton {
 			id: techButton
 			source: "qrc:///techButton"
-			y: menuButton.height
+			anchors.top: menuButton.bottom
 			
 			onClicked:
 				console.log("TechButton clicked\n")
@@ -33,17 +33,48 @@ Rectangle {
 		MenuButton {
 			id: playerButton
 			source: "qrc:///playersInfo"
-			y: techButton.height + techButton.y
+			anchors.top: techButton.bottom
 			
 			onClicked:
 				console.log("PlayersInfoButton clicked\n")
 		}
 		
+		
+		ParamDisplay {
+			id: goldDisplay
+			iconSource: "qrc:///gold"
+			paramValue: 10
+			anchors.top: playerButton.bottom
+			anchors.horizontalCenter: playerButton.horizontalCenter
+		}
+		
+		ParamDisplay {
+			id: researchDisplay
+			iconSource: "qrc:///research"
+			paramValue: 10
+			anchors.top: goldDisplay.bottom
+			anchors.horizontalCenter: goldDisplay.horizontalCenter
+		}
+		
+		ParamDisplay {
+			id: foodDisplay
+			iconSource: "qrc:///food"
+			paramValue: 10
+			anchors.top: researchDisplay.bottom
+			anchors.horizontalCenter: researchDisplay.horizontalCenter
+		}
+		
 		NextTurnButton {
 			id: nextTurnButton
 			x: -nextTurnButton.width / 3
-			y: staticLeftForeground.height - (nextTurnButton.width * 2 / 3)
+			y: staticLeftForeground.height - (nextTurnButton.width * 1 / 2)
 		}
+	}
+	
+	ObjectInfoBox {
+		id: objectInfoBox
+		x: gameUI.width - objectInfoBox.width 
+		z: 1
 	}
 	
 	MouseArea {

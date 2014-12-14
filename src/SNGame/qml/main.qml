@@ -5,12 +5,16 @@ import SN 1.0
 
 Rectangle {
 	id: root
+
+	property variant globalScale: Qt.size(initialSize.height / 1080, initialSize.width / 1920)
+
+	Component.onCompleted: console.log(snFont.status == FontLoader.Ready)
 	
-	width: 1280;
-	height: 720;
-
-	property var globalScale: width / 1920;
-
+	FontLoader {
+		id: snFont
+		source: "qrc:///TrashBarusa.ttf"
+	}
+	
 	GameUI {
 		id: gameUI
 		visible: false
