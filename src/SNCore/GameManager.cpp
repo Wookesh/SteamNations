@@ -157,9 +157,9 @@ void GameManager::initGame()
 	
 	Board *board = GameManager::get()->board();
 	
-	andrzej->createUnit(PrototypeType::Settler, board->getTile(25, 25));
+	SpawnUnitAction(andrzej, board->getTile(25, 25), PrototypeType::Settler).perform();
 	andrzej->updateAfter(); //aby jednostka mogła się poruszać
-	zbyszek->createUnit(PrototypeType::Settler, board->getTile(24, 26));
+	SpawnUnitAction(zbyszek, board->getTile(24, 26), PrototypeType::Settler).perform();
 	zbyszek->updateAfter();
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);

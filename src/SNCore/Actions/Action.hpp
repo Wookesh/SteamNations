@@ -2,14 +2,13 @@
 #define ACTION_HPP
 
 #include <QtGlobal>
-#include <QMap>
 
 #include "../EnumHelpers.hpp"
 
 class Object;
 class Tile;
 
-EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateUnit, Move, None, Settle)
+EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateTown, CreateUnit, Move, None, Settle, SpawnUnit)
 
 class Action {
 public:
