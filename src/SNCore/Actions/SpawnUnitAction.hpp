@@ -2,7 +2,7 @@
 #define SPAWN_UNIT_ACTION_HPP
 
 #include "Action.hpp"
-#include <Objects/Prototypes/Prototype.hpp>
+#include "SNCore/Objects/Prototypes/Prototype.hpp"
 
 class GameManager;
 class Player;
