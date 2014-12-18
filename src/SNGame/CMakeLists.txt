@@ -1,16 +1,10 @@
+qt5_add_resources(SNResources qml.qrc images.qrc)
+
 add_executable(SteamNations
 	main.cpp
-	Menus.cpp
-	MenuController.cpp
-	SNScene.cpp
-	SteamNations.cpp
-	GameView.cpp
-	NextTurnButton.cpp
-	ObjectInfoBox.cpp
-	GraphicInterface.cpp
-	Graphics/TileGraphics.cpp
-	Graphics/UnitGraphics.cpp
-	Graphics/TownGraphics.cpp
+	GameBoard.cpp
+	BoardField.cpp
+	${SNResources}
 	)
-qt5_use_modules(SteamNations Widgets Gui)
+qt5_use_modules(SteamNations Widgets Gui Quick)
 target_link_libraries(SteamNations SNCore)

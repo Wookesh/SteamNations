@@ -1,0 +1,25 @@
+<RCC>
+	<qresource>
+		<file alias="menuButton">images/menu_button.png</file>
+		<file alias="techButton">images/tech_button.png</file>
+		<file alias="playersInfo">images/players_info.png</file>
+		<file alias="startButton">images/start_button.png</file>
+		<file alias="exitButton">images/exit_button.png</file>
+		<file alias="trybik">images/trybik.png</file>
+		<file alias="playButton">images/play_button.png</file>
+		<file alias="playButtonRed">images/play_button_red.png</file>
+		<file alias="playButtonBlue">images/play_button_blue.png</file>
+		<file alias="produceButton">images/build.png</file>
+		
+		<file alias="logo">images/logo_steam_nations.png</file>
+		<file alias="leftForeground">images/ozdoba_bok_lewy.png</file>
+		<file alias="infoBoxBackground">images/prawy_panel.png</file>
+		<file alias="frameSmall">images/frame_small.png</file>
+		
+		<file alias="research">images/research.png</file>
+		<file alias="food">images/food.png</file>
+		<file alias="gold">images/gold.png</file>
+		
+		<file alias="TrashBarusa.ttf">images/TrashBarusa.ttf</file>
+	</qresource>
+</RCC>
