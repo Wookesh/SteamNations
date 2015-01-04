@@ -7,8 +7,6 @@ Rectangle {
 	id: root
 
 	property variant globalScale: Qt.size(initialSize.height / 1080, initialSize.width / 1920)
-
-	Component.onCompleted: console.log(snFont.status == FontLoader.Ready)
 	
 	FontLoader {
 		id: snFont

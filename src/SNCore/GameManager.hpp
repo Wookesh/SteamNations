@@ -5,6 +5,7 @@
 #include "Serial.hpp"
 
 class Action;
+class Console;
 class Board;
 class Object;
 class Player;
@@ -12,6 +13,9 @@ class Player;
 class GameManager : public QObject {
 Q_OBJECT
 public:
+	Q_PROPERTY(GameManager * gameManagerInstance READ get)
+	Q_PROPERTY(int turn READ currentTurn)
+	Q_PROPERTY(Console *console READ console)
 	static GameManager *get();
 	static void init();
 	static void clean();
@@ -24,6 +28,8 @@ public:
 	
 	Board *board() const;
 	void setBoard(Board *board);
+	
+	Console *console() const;
 
 	Player *currentPlayer() const;
 	int currentTurn() const;
@@ -46,6 +52,7 @@ private:
 	Serial *serial_;
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
+	Console *console_;
 	
 	void setNextPlayer();
 	void prepareNewTurn();
@@ -64,6 +71,15 @@ signals:
 	void gameEnded(const Player *winner);
 	void turnReady();
 	void objectCreated(UID uid);
+	
+friend class Console;
+};
+
+class GameManagerInstanceBox : public QObject {
+Q_OBJECT
+public:
+	Q_PROPERTY(GameManager *gameManager READ gm)
+	GameManager *gm();
 };
 
 #endif

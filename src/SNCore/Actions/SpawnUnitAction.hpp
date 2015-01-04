@@ -5,6 +5,7 @@
 #include "SNCore/Objects/Prototypes/Prototype.hpp"
 
 class GameManager;
+class Console;
 class Player;
 
 class SpawnUnitAction : public Action {
@@ -17,6 +18,7 @@ protected:
 	PrototypeType type_;
 	
 friend class GameManager;
+friend class Console;
 };
 
 #endif
