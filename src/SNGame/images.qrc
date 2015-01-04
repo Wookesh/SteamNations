@@ -20,6 +20,12 @@
 		<file alias="food">images/food.png</file>
 		<file alias="gold">images/gold.png</file>
 		
+		<file alias="settler">images/units/settler.png</file>
+		<file alias="artillery">images/units/artilery.png</file>
+		<file alias="infantry">images/units/infantry.png</file>
+		<file alias="tank">images/units/tank.png</file>
+		<file alias="town">images/town.png</file>
+		
 		<file alias="TrashBarusa.ttf">images/TrashBarusa.ttf</file>
 	</qresource>
 </RCC>
