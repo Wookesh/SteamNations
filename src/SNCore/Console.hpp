@@ -47,6 +47,7 @@ private:
 	
 	void printUnits();
 	void printTowns();
+	static const int FLUSHTIME = 100;
 public slots:
 	void read();
 	bool parse(const QString &input);

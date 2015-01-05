@@ -13,7 +13,7 @@
 Console::Console(QObject *parent): QObject(parent), io_(&stringBuf_)
 {
 	flushingTimer_ = new QTimer(this);
-	flushingTimer_->setInterval(100);
+	flushingTimer_->setInterval(FLUSHTIME);
 	flushingTimer_->setSingleShot(false);
 	connect(flushingTimer_, &QTimer::timeout, this, &Console::read);
 	flushingTimer_->start();
