@@ -5,8 +5,10 @@
 #include <QScreen>
 #include <QQmlContext>
 #include <QDebug>
-#include "GameBoard.hpp"
 
+#include "GameBoard.hpp"
+#include "SNCore/Console.hpp"
+#include "SNCore/GameManager.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +19,9 @@ int main(int argc, char *argv[])
 	QSize initialSize = view.screen()->size();
 	
 	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
+	qmlRegisterType<Console>("SN", 1, 0, "SNConsole");
+	qmlRegisterType<GameManagerInstanceBox>("SN", 1, 0, "GameManagerInstanceBox");
+	qmlRegisterType<GameManager>("SN", 1, 0, "GameManager");
 	view.rootContext()->setContextProperty("initialSize", initialSize);
 	
 	QObject::connect(view.engine(), &QQmlEngine::quit, qApp, &QCoreApplication::quit);
@@ -26,3 +31,4 @@ int main(int argc, char *argv[])
 	view.showFullScreen();
 	return app.exec();
 }
+

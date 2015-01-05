@@ -12,7 +12,7 @@ protected:
 	CreateTownAction(Player * player, Tile *tile, const QString &name = "BaseName");
 	Player *player_;
 	QString name_;
-	
+friend class Console;
 };
 
 #endif

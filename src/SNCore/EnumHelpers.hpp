@@ -118,6 +118,16 @@ constexpr typename std::underlying_type <ET>::type & toUnderlyingRef(ET &et)
 				}(); \
 				return enumToString.value(this->value); \
 			} \
+			static bool isStringCorrect(const QString &s) { \
+				static const QSet <QString> stringToEnum = []{ \
+					QSet <QString> result; \
+					const QStringList strings = QString(#__VA_ARGS__).split(','); \
+					for (QString s: strings) \
+						result.insert(s.trimmed()); \
+					return result; \
+				}(); \
+				return stringToEnum.contains(s); \
+			}\
 	}; \
 	EnumClassSerialization(EnumName, EnumType);
 
@@ -136,3 +146,4 @@ constexpr typename std::underlying_type <ET>::type & toUnderlyingRef(ET &et)
 	}
 
 #include <QtCore/QHash>
+#include <QtCore/QSet>

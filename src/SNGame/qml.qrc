@@ -2,6 +2,7 @@
 	<qresource prefix="/">
 		<file>qml/main.qml</file>
 		<file>qml/GameUI.qml</file>
+		<file>qml/GameConsole.qml</file>
 		<file>qml/MainMenu.qml</file>
 		<file>qml/gui/ObjectInfoBox.qml</file>
 		<file>qml/gui/ParamDisplay.qml</file>

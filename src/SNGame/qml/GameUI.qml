@@ -5,6 +5,7 @@ import SN 1.0
 
 Rectangle {
 	id: gameUI
+	focus: true
 	width: parent.width
 	height: parent.height
 	antialiasing: true
@@ -99,13 +100,29 @@ Rectangle {
 			console.log(mouseX + " " + mouseY + "\n")
 		}
 
-		
 		Board {
 			width: 5000
 			height: 5000
 			x: -2500
 			y: -2500
 			id: scene
+			
+			Component.onCompleted: {
+				gameConsole.activate();
+			}
+		}
+	}
+	
+	GameConsole {
+		id: gameConsole
+		visible: false
+	}
+	
+	Keys.onPressed: {
+		if (event.key == Qt.Key_QuoteLeft) {
+			gameConsole.visible = !gameConsole.visible;
+			event.accepted = true;
+			gameConsole.getFocus();
 		}
 	}
 

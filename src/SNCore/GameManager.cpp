@@ -1,5 +1,6 @@
 #include "GameManager.hpp"
 #include "Board.hpp"
+#include "Console.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
 #include "Objects/Objects.hpp"
@@ -34,7 +35,7 @@ void GameManager::clean()
 }
 
 GameManager::GameManager(QObject *parent) : QObject(parent),
-	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0)
+	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0), console_(new Console())
 {
 	
 }
@@ -75,6 +76,11 @@ Board *GameManager::board() const
 void GameManager::setBoard(Board *board) 
 {
 	board_ = board;
+}
+
+Console *GameManager::console() const
+{
+	return console_;
 }
 
 QList< Player * > GameManager::players() const 
@@ -167,7 +173,7 @@ void GameManager::initGame()
 
 void GameManager::check(const Player *player) 
 {
-	qDebug() << "Game won by" << player->name();
+	console_->in() << "Game won by" << player->name();
 }
 
 void GameManager::startGame() 
@@ -207,29 +213,35 @@ void GameManager::setNextPlayer()
 		prepareNewTurn();
 	}
 	currentPlayer_ = *it;
-	qDebug() << "----------------------------------------";
-	qDebug() << "Player's" << currentPlayer()->name() << "turn.";
+	console_->in() << "----------------------------------------\n";
+	console_->in() << "Player's " << currentPlayer()->name() << " turn.\n";
 }
 
 void GameManager::prepareNewTurn()
 {
-	qDebug() << "----------------------------------------";
-	qDebug() << "Turn :" << currentTurn_;
+	console_->in() << "----------------------------------------\n";
+	console_->in() << "Turn : " << currentTurn_ << "\n";
 	++currentTurn_;
 	board_->updateBefore();
 }
 
 void GameManager::checkIfWin(Player *player) 
 {
-	qDebug() << "Checking if" << player->name() << "has won the game";
+	console_->in() << "Checking if " << player->name() << " has won the game\n";
 	if (player->getTownCount() >= 3) {
-		qDebug() << "\tWith result :" << true;
+		console_->in() << "\tWith result : " << true << "\n";
 		emit gameEnded(player);
 	}
-	qDebug() << "\tWith result :" << false;
+	console_->in() << "\tWith result : " << false << "\n";
 }
 
 void GameManager::setWinConditions() 
 {
 
+}
+
+
+GameManager *GameManagerInstanceBox::gm()
+{
+	return GameManager::get();
 }

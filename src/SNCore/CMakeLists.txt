@@ -1,5 +1,6 @@
 add_library(SNCore
 	Board.cpp
+	Console.cpp
 	GameManager.cpp
 	Tile.cpp
 	Player.cpp
