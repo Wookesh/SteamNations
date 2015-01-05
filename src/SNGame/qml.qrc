@@ -9,5 +9,6 @@
 		<file>qml/gui/StaticLeftForeground.qml</file>
 		<file>qml/gui/MenuButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>
+		<file>qml/gui/SNImage.qml</file>
 	</qresource>
 </RCC>

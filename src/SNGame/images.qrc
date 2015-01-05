@@ -10,6 +10,7 @@
 		<file alias="playButtonRed">images/play_button_red.png</file>
 		<file alias="playButtonBlue">images/play_button_blue.png</file>
 		<file alias="produceButton">images/build.png</file>
+		<file alias="menuBackground">images/ekran_startowy_czysty.png</file>
 		
 		<file alias="logo">images/logo_steam_nations.png</file>
 		<file alias="leftForeground">images/ozdoba_bok_lewy.png</file>
