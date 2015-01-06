@@ -6,7 +6,10 @@
 #include <QImage>
 #include <QHash>
 
+
 class BoardField;
+class QQuickWindow;
+class TextureManager;
 
 class GameBoard : public QQuickItem {
 Q_OBJECT
@@ -22,6 +25,7 @@ private:
 	int index(int x, int y);
 	void initTimer();
 
+	TextureManager *textureManager_;
 private slots:
 	void nextFrame();
 };

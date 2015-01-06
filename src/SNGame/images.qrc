@@ -21,17 +21,25 @@
 		<file alias="food">images/food.png</file>
 		<file alias="gold">images/gold.png</file>
 		
-		<file>images/units/settler.png</file>
-		<file>images/units/artilery.png</file>
-		<file>images/units/infantry.png</file>
-		<file>images/units/tank.png</file>
-		<file>images/town.png</file>
+		<file alias="unit/Settler">images/units/settler.png</file>
+		<file alias="unit/Artillery">images/units/artilery.png</file>
+		<file alias="unit/Infantry">images/units/infantry.png</file>
+		<file alias="unit/Tank">images/units/tank.png</file>
+		<file alias="unit/Town">images/town.png</file>
 		
-		<file>images/hexes/pustynia.png</file>
-		<file>images/hexes/field.png</file>
-		<file>images/hexes/snow1.png</file>
-		<file>images/hexes/ruiny1.png</file>
-		
+		<file alias="hex/Desert">images/hexes/pustynia.png</file>
+		<file alias="hex/Fog">images/hexes/fog.png</file>
+		<file alias="hex/Forest">images/hexes/forest.png</file>
+		<file alias="hex/Field">images/hexes/field.png</file>
+		<file alias="hex/Hill">images/hexes/pagorek.png</file>
+		<file alias="hex/Jungle">images/hexes/jungle.png</file>
+		<file alias="hex/Mountain">images/hexes/gora.png</file>
+		<file alias="hex/Ruins1">images/hexes/ruiny1.png</file>
+		<file alias="hex/Ruins2">images/hexes/ruiny2.png</file>
+		<file alias="hex/Snow1">images/hexes/snow1.png</file>
+		<file alias="hex/Snow2">images/hexes/snow2.png</file>
+		<file alias="hex/Tundra">images/hexes/tundra.png</file>
+
 		<file alias="TrashBarusa.ttf">images/TrashBarusa.ttf</file>
 	</qresource>
 </RCC>

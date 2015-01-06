@@ -16,6 +16,7 @@
 #include "SNHelpers.hpp"
 #include "GameBoard.hpp"
 #include "BoardField.hpp"
+#include "TextureManager.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -36,7 +37,7 @@ void GameBoard::nextFrame()
 }
 
 GameBoard::GameBoard(QQuickItem *parent)
-	: QQuickItem(parent)
+	: QQuickItem(parent), textureManager_(new TextureManager(this))
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
@@ -44,6 +45,7 @@ GameBoard::GameBoard(QQuickItem *parent)
 	GameManager::init();
 	GameManager::get()->setBoard(new Board(50, 50));
 	GameManager::get()->initGame();
+	//connect(this, &GameBoard::windowChanged, imageManager_, &ImageManager::loadTextures);
 }
 
 int GameBoard::index(int x, int y)
@@ -53,25 +55,9 @@ int GameBoard::index(int x, int y)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
-	//TODO trzeba to potem przerobić na imageManagera
-	static QPixmap *pustynia = new QPixmap(":images/hexes/pustynia.png");
-	static QSGTexture *pustyniaTexture_ = window()->createTextureFromImage(pustynia->toImage());
-	static QPixmap *snow = new QPixmap(":images/hexes/snow1.png");
-	static QSGTexture *snowTexture_ = window()->createTextureFromImage(snow->toImage());
-	static QPixmap *field = new QPixmap(":images/hexes/field.png");
-	static QSGTexture *fieldTexture_ = window()->createTextureFromImage(field->toImage());
-	static QPixmap *ruins = new QPixmap(":images/hexes/ruiny1.png");
-	static QSGTexture *ruinsTexture_ = window()->createTextureFromImage(ruins->toImage());
-	static QPixmap *artillery = new QPixmap(":images/units/artilery.png");
-	static QSGTexture *artilleryTexture_ = window()->createTextureFromImage(artillery->toImage());
-	static QPixmap *heavy = new QPixmap(":images/units/tank.png");
-	static QSGTexture *heavyTexture_ = window()->createTextureFromImage(heavy->toImage());
-	static QPixmap *infantry = new QPixmap(":images/units/infantry.png");
-	static QSGTexture *infantryTexture_ = window()->createTextureFromImage(infantry->toImage());
-	static QPixmap *settler = new QPixmap(":images/units/settler.png");
-	static QSGTexture *settlerTexture_ = window()->createTextureFromImage(settler->toImage());
-	static QPixmap *town = new QPixmap(":images/town.png");
-	static QSGTexture *townTexture_ = window()->createTextureFromImage(town->toImage());
+	if (!textureManager_->isLoaded())
+		textureManager_->loadTextures(window());
+
 	QSGNode *node = mainNode;
 	if (!node) {
 		
@@ -83,17 +69,16 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				nodeMap[index(i, j)] = new BoardField(child, tile);
 				
  				QPointF pos = coordToPos(i, j);
-				QPixmap *hexPixMap = pustynia;
-				child->setRect(pos.x()-hexPixMap->width() / 2, pos.y() - hexPixMap->height() / 2, hexPixMap->width(), hexPixMap->height());
-				QSGTexture *hexTexture_ = ruinsTexture_;
+				QSGTexture *hexTexture_ = textureManager_->texture("Tundra");
 				//TODO tymczasowe, póki nie ma typu tile-a
-				if(tile->resource() == Resource::Gold)
-					hexTexture_ = pustyniaTexture_;
-				if(tile->resource() == Resource::Research)
-					hexTexture_ = snowTexture_;
-				if(tile->resource() == Resource::Food)
-					hexTexture_ = fieldTexture_;
+				if (tile->resource() == Resource::Gold)
+					hexTexture_ = textureManager_->texture("Hill");
+				if (tile->resource() == Resource::Research)
+					hexTexture_ = textureManager_->texture("Ruins2");
+				if (tile->resource() == Resource::Food)
+					hexTexture_ = textureManager_->texture("Field");
 				child->setTexture(hexTexture_);
+				child->setRect(pos.x()-hexTexture_->textureSize().width() / 2, pos.y() - hexTexture_->textureSize().height() / 2, hexTexture_->textureSize().width(), hexTexture_->textureSize().height());
 				node->appendChildNode(child);
 			}
 		}
@@ -105,37 +90,22 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				QSGNode *child = nodeMap[index(i, j)]->node();
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
 				child->removeAllChildNodes();
-				if(tile->town()) {
+				if (tile->town()) {
 					QSGSimpleTextureNode *townNode = new QSGSimpleTextureNode();
-					QPixmap *townPM = town;
-					townNode->setRect(pos.x()-townPM->width() / 2, pos.y() - townPM->height() / 2, townPM->width(), townPM->height());
-					
-					QSGTexture *texture_ = townTexture_;
+					QSGTexture *texture_ = textureManager_->texture("Town");
 					townNode->setTexture(texture_);
+					townNode->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
 					child->appendChildNode(townNode);
 				}
-				if(tile->unit()) {
+				if (tile->unit()) {
 					
 					QSGSimpleTextureNode *unit = new QSGSimpleTextureNode();
 					QPixmap *unitPixMap;
-					QSGTexture *texture_;
-					if(tile->unit()->pType() == PrototypeType::Infantry) {
-						unitPixMap = infantry;
-						texture_ = infantryTexture_;
-					}
-					if(tile->unit()->pType() == PrototypeType::Artillery) {
-						unitPixMap = artillery;
-						texture_ = artilleryTexture_;
-					}
-					if(tile->unit()->pType() == PrototypeType::Heavy) {
-						unitPixMap = heavy;
-						texture_ = heavyTexture_;
-					}
-					if(tile->unit()->pType() == PrototypeType::Settler) {
-						unitPixMap = settler;
-						texture_ = settlerTexture_;
-					}
-					unit->setRect(pos.x()-unitPixMap->width() / 2, pos.y() - unitPixMap->height() / 2, unitPixMap->width(), unitPixMap->height());
+					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType()));
+					
+					if (texture_ == nullptr)
+						qDebug() << "[ERROR] texture is null";
+					unit->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
 					unit->setTexture(texture_);
 					child->appendChildNode(unit);
 				}
