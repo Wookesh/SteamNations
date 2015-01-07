@@ -15,6 +15,7 @@ class GameBoard : public QQuickItem {
 Q_OBJECT
 public:
 	GameBoard(QQuickItem *parent = 0);
+	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 
 protected:
 	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
