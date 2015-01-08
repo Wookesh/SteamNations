@@ -173,7 +173,7 @@ void GameManager::initGame()
 
 void GameManager::check(const Player *player) 
 {
-	console_->in() << "Game won by" << player->name();
+	GMlog() << "Game won by" << player->name();
 }
 
 void GameManager::startGame() 
@@ -213,26 +213,26 @@ void GameManager::setNextPlayer()
 		prepareNewTurn();
 	}
 	currentPlayer_ = *it;
-	console_->in() << "----------------------------------------\n";
-	console_->in() << "Player's " << currentPlayer()->name() << " turn.\n";
+	GMlog() << "----------------------------------------\n";
+	GMlog() << "Player's " << currentPlayer()->name() << " turn.\n";
 }
 
 void GameManager::prepareNewTurn()
 {
-	console_->in() << "----------------------------------------\n";
-	console_->in() << "Turn : " << currentTurn_ << "\n";
+	GMlog() << "----------------------------------------\n";
+	GMlog() << "Turn : " << currentTurn_ << "\n";
 	++currentTurn_;
 	board_->updateBefore();
 }
 
 void GameManager::checkIfWin(Player *player) 
 {
-	console_->in() << "Checking if " << player->name() << " has won the game\n";
+	GMlog() << "Checking if " << player->name() << " has won the game\n";
 	if (player->getTownCount() >= 3) {
-		console_->in() << "\tWith result : " << true << "\n";
+		GMlog() << "\tWith result : " << true << "\n";
 		emit gameEnded(player);
 	}
-	console_->in() << "\tWith result : " << false << "\n";
+	GMlog() << "\tWith result : " << false << "\n";
 }
 
 void GameManager::setWinConditions() 
