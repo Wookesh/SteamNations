@@ -100,7 +100,6 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				if (tile->unit()) {
 					
 					QSGSimpleTextureNode *unit = new QSGSimpleTextureNode();
-					QPixmap *unitPixMap;
 					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType()));
 					
 					if (texture_ == nullptr)
@@ -114,4 +113,10 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	}
 	
 	return node;
+}
+
+
+void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
+{
+	//qDebug() << "mouse: " << mouseX << " " << mouseY << " scene: " << x << " " << y << " scale: " << scale;
 }
