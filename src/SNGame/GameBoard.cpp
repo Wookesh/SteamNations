@@ -77,8 +77,8 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	if (!node) {
 		
 		node = new QSGNode();
-		for(int i = 0; i < 50; i++) {
-			for(int j = 0; j < 50; j++) {
+		for (int i = 0; i < 50; i++) {
+			for (int j = 0; j < 50; j++) {
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
 				QSGSimpleTextureNode *child = new QSGSimpleTextureNode();
 				nodeMap[index(i, j)] = new BoardField(child, tile);
@@ -99,8 +99,8 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 		}
 	} else {
 		
-		for(int i = 0; i < 50; i++) {
-			for(int j = 0; j < 50; j++) {
+		for (int i = 0; i < 50; i++) {
+			for (int j = 0; j < 50; j++) {
  				QPointF pos = coordToPos(i, j);
 				QSGNode *child = nodeMap[index(i, j)]->node();
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
