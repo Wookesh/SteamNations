@@ -4,6 +4,8 @@
 #include <QObject>
 #include "Serial.hpp"
 
+#define GMlog() GameManager::get()->console()->in()
+
 class Action;
 class Console;
 class Board;
