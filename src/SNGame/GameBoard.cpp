@@ -118,7 +118,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType()));
 					
 					if (texture_ == nullptr)
-						qDebug() << "[ERROR] texture is null";
+						GMlog() << "[ERROR] texture is null";
 					unit->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
 					unit->setTexture(texture_);
 					child->appendChildNode(unit);
@@ -196,7 +196,7 @@ void GameBoard::clearSelect()
 void GameBoard::getActions()
 {
 	
-	qDebug() << "Selected Object :" << selectedObject_->name();
+	GMlog() << "Selected Object :" << selectedObject_->name() << "\n";
 	clearActions();
 	mapActions_ = GameManager::get()->mapActions(selectedObject_);
 	objectActions_ = GameManager::get()->objectActions(selectedObject_);
@@ -224,8 +224,8 @@ void GameBoard::select(Tile *tile)
 	} else {
 		for (Action *action : mapActions_)
 			if (action->tile() == tile) {
-				qDebug() << "Performing Action" << (QString)(action->type());
-				qDebug() << "\tWith result :" << action->perform();
+				GMlog() << "Performing Action" << (QString)(action->type()) << "\n";
+				GMlog() << "\tWith result :" << action->perform() << "\n";
 				getActions();
 				return;
 			}
