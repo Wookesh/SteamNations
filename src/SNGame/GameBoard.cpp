@@ -17,6 +17,8 @@
 #include "GameBoard.hpp"
 #include "BoardField.hpp"
 #include "TextureManager.hpp"
+#include "SNCore/Console.hpp"
+#include "SNCore/Objects/Object.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -37,7 +39,7 @@ void GameBoard::nextFrame()
 }
 
 GameBoard::GameBoard(QQuickItem *parent)
-	: QQuickItem(parent), textureManager_(new TextureManager(this))
+	: QQuickItem(parent), textureManager_(new TextureManager(this)), selectedObject_(nullptr)
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
@@ -115,37 +117,93 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	return node;
 }
 
-
-void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
+QPoint GameBoard::pixelToHex(int x, int y)
 {
-	//qDebug() << "mouse: " << mouseX << " " << mouseY << " scene: " << x << " " << y << " scale: " << scale;
-	int x2 = (mouseX - x - (1-scale)*5960/2)/scale;
-	int y2 = (mouseY - y -(1-scale)*6920/2)/scale;
-	
-	double q = 2./3 * (x2+80) / 80;
-	double r = (-1./3 * (x2+80) + 1./3*sqrt(3) * (y2+70)) / 80;
-	QPointF prob(x2,y2);
+	double q = 2./3 * (x+80) / 80;
+	double r = (-1./3 * (x+80) + 1./3*sqrt(3) * (y+70)) / 80;
+	QPointF prob(x,y);
 	QPoint p[4];
-	//qDebug() << "q: " << q << " r: " << r;
 	p[0] = QPoint(floor(q), floor(r));
 	p[1] = QPoint(ceil(q), ceil(r));
 	p[2] = QPoint(floor(q), ceil(r));
-	p[3] = QPoint(ceil(q), floor(r));double missmatch = 1000;
-	int whichONe = -1;
+	p[3] = QPoint(ceil(q), floor(r));
+	double missmatch = 1000;
+	int whichONe;
 	for (int i = 0; i < 4; i++) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
 		if(tile) {
 			QPointF tmp =coordToPos(tile->position());
-			//qDebug() << "tmp: " << tmp << " prob: " << prob;
 			tmp -= prob;
-			//qDebug() << "= "<< tmp;
 			if(sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y()) < missmatch) {
 				missmatch = sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y());
 				whichONe = i;
 			}
 		}
 	}
+	return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+}
+
+void GameBoard::clearActions()
+{
+	//clearHighlight();
+	mapActions_.clear();
+	update();
+}
+
+void GameBoard::clearSelect()
+{
+	selectedObject_ = nullptr;
+	clearActions();
+	emit noSelection();
+}
+
+void GameBoard::getActions()
+{
 	
-	//qDebug() << "not good " <<whichONe ;
-	qDebug() << "good point: "<< GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+	qDebug() << "Selected Object :" << selectedObject_->name();
+	clearActions();
+	mapActions_ = GameManager::get()->mapActions(selectedObject_);
+	objectActions_ = GameManager::get()->objectActions(selectedObject_);
+	//highlightActions();
+	//emit selectionUpdate();
+}
+
+
+
+
+void GameBoard::select(Tile *tile)
+{
+	if (selectedObject_ == nullptr) {
+		QList<const Object *> objects = tile->getObjects();
+		if (objects.size() == 0) {
+			emit noSelection();
+		} else {
+			selectedObject_ = objects.first();
+			getActions();
+		}
+	} else if (selectedObject_->tile() == tile) {
+		QList<const Object *> objects = tile->getObjects();
+		selectedObject_ =  selectedObject_ == objects.first() ? objects.last() : objects.first();
+		getActions();
+	} else {
+		for (Action *action : mapActions_)
+			if (action->tile() == tile) {
+				qDebug() << "Performing Action" << (QString)(action->type());
+				qDebug() << "\tWith result :" << action->perform();
+				getActions();
+				return;
+			}
+		clearSelect();
+		select(tile);
+	}
+}
+
+
+void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
+{
+	int x2 = (mouseX - x - (1-scale)*5960/2)/scale;
+	int y2 = (mouseY - y -(1-scale)*6920/2)/scale;
+	QPoint clicked = pixelToHex(x2,y2);
+	select(GameManager::get()->board()->getTile(clicked.x(), clicked.y()));
+	
 }
