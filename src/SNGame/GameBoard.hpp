@@ -13,6 +13,7 @@ class TextureManager;
 class Object;
 class Action;
 class Tile;
+class ActionType;
 
 class GameBoard : public QQuickItem {
 Q_OBJECT
@@ -37,7 +38,7 @@ private:
 	void initTimer();
 
 	QPoint pixelToHex(int x, int y);
-	
+	QColor highlightColor(ActionType actionType);
 	
 	void getActions();
 	void clearActions();

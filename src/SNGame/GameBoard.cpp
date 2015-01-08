@@ -55,6 +55,19 @@ int GameBoard::index(int x, int y)
 	return x + y * 50;
 }
 
+QColor GameBoard::highlightColor(ActionType actionType)
+{
+	static const QHash<ActionType, QColor> map({
+		{ActionType::Attack, Qt::red},
+		{ActionType::Capture, Qt::magenta},
+		{ActionType::Move, Qt::cyan},
+		{ActionType::None, Qt::white},
+		{ActionType::Settle, Qt::yellow},
+		{ActionType::CreateUnit, Qt::darkYellow}
+	});
+	return map[actionType];
+}
+
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
 	if (!textureManager_->isLoaded())
@@ -111,6 +124,30 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 					child->appendChildNode(unit);
 				}
 			}
+		}
+		for (Action *action : mapActions_) {
+			QSGNode *child = nodeMap[index(action->tile()->position().x(), action->tile()->position().y())]->node();
+			QSGOpacityNode *opacity = new QSGOpacityNode();
+			opacity->setOpacity(0.2);
+			QSGGeometryNode *shadow = new QSGGeometryNode();
+			QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
+			geometry->setDrawingMode(GL_POLYGON);
+			geometry->setLineWidth(3);
+			QPointF pos = coordToPos(action->tile()->position().x(), action->tile()->position().y());
+			
+			for (int i = 0; i < 6; ++i)
+				geometry->vertexDataAsPoint2D()[i].set(
+					BoardField::SIZE * qCos(2 * M_PI / 6 * i) + pos.x(),
+					BoardField::SIZE * qSin(2 * M_PI / 6 * i) + pos.y());
+			
+			QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
+			material->setColor(highlightColor(action->type()));
+			shadow->setGeometry(geometry);
+			shadow->setFlag(QSGNode::OwnsGeometry);
+			shadow->setMaterial(material);
+			shadow->setFlag(QSGNode::OwnsMaterial);
+			child->appendChildNode(opacity);
+			opacity->appendChildNode(shadow);
 		}
 	}
 	
