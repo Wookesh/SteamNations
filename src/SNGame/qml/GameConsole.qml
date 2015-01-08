@@ -13,11 +13,7 @@ Rectangle {
 	
 	property SNConsole snConsole;
 	
-	GameManagerInstanceBox {
-		id: gmib
-	}
-	
-	function activate() {
+	function createConnections() {
 		snConsole = gmib.gameManager.console;
 		snConsole.logChanged.connect(display.updateText)
 		snConsole.historyChanged.connect(gameConsole.resetHistoryPos)
