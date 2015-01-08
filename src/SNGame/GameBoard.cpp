@@ -47,7 +47,7 @@ GameBoard::GameBoard(QQuickItem *parent)
 	GameManager::init();
 	GameManager::get()->setBoard(new Board(50, 50));
 	GameManager::get()->initGame();
-	//connect(this, &GameBoard::windowChanged, imageManager_, &ImageManager::loadTextures);
+	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
 }
 
 int GameBoard::index(int x, int y)
@@ -55,7 +55,7 @@ int GameBoard::index(int x, int y)
 	return x + y * 50;
 }
 
-QColor GameBoard::highlightColor(ActionType actionType)
+const QColor GameBoard::highlightColor(ActionType actionType)
 {
 	static const QHash<ActionType, QColor> map({
 		{ActionType::Attack, Qt::red},
@@ -132,7 +132,6 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 			QSGGeometryNode *shadow = new QSGGeometryNode();
 			QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
 			geometry->setDrawingMode(GL_POLYGON);
-			geometry->setLineWidth(3);
 			QPointF pos = coordToPos(action->tile()->position().x(), action->tile()->position().y());
 			
 			for (int i = 0; i < 6; ++i)

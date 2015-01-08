@@ -67,6 +67,7 @@ public slots:
 	void check(const Player *player);
 	
 signals:
+	void turnEnded();
 	void gameInitialized();
 	void gameEnded(const Player *winner);
 	void turnReady();

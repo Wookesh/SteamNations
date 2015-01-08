@@ -38,7 +38,7 @@ private:
 	void initTimer();
 
 	QPoint pixelToHex(int x, int y);
-	QColor highlightColor(ActionType actionType);
+	static const QColor highlightColor(ActionType actionType);
 	
 	void getActions();
 	void clearActions();
