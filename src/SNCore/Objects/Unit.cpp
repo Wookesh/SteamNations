@@ -22,12 +22,12 @@ Unit::~Unit()
 
 void Unit::updateBefore() 
 {
-
+	actionPointsLeft_ = actionPoints();
 }
 
 void Unit::updateAfter()
 {
-	actionPointsLeft_ = actionPoints();
+	
 }
 
 QString Unit::name() const

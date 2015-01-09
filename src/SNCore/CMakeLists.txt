@@ -22,3 +22,11 @@ add_library(SNCore
 	Objects/Prototypes/SoldierPrototype.cpp
 	)
 qt5_use_modules(SNCore Core)
+
+set(test_sources
+    UnitTests/test_project1.cpp
+)
+add_executable(sample_tests ${test_sources})
+
+qt5_use_modules(sample_tests Core)
+target_link_libraries(sample_tests gtest gtest_main SNCore)

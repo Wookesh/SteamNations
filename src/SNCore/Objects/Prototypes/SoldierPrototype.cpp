@@ -1,10 +1,11 @@
 #include "SoldierPrototype.hpp"
 #include "../Soldier.hpp"
 #include "../../GameManager.hpp"
+#include "SoldierStats.hpp"
 
 
 const QHash<PrototypeType, SNTypes::ap> SoldierPrototype::ACTION_POINTS = {
-	{PrototypeType::Infantry, 2},
+	{PrototypeType::Infantry, INFANTRY_AP},
 	{PrototypeType::Heavy, 3},
 	{PrototypeType::Artillery, 4}
 };
@@ -36,7 +37,7 @@ const QHash<PrototypeType, SNTypes::distance> SoldierPrototype::BASE_ATTACK_RANG
 const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_DAMAGE = {
 	{PrototypeType::Infantry, 8},
 	{PrototypeType::Heavy, 13},
-	{PrototypeType::Artillery, 8}
+	{PrototypeType::Artillery, 21}
 };
 
 SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
