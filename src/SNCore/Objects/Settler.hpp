@@ -17,7 +17,6 @@ public:
 	Town *createTown();
 	
 	virtual void getAttacked(Soldier *) override;
-	virtual void removeHealth(SNTypes::dmg) override;
 signals:
 	void townCreated(Player *player);
 	void capitalCreated(Player *player);

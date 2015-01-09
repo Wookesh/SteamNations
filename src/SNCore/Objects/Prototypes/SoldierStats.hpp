@@ -12,6 +12,9 @@
 #define INFANTRY_ATKRANGE 2
 #define INFANTRY_DMG 8
 #define INFANTRY_ATKCOST 1
+#define INF_VS_INF_MULTI 1.0
+#define INF_VS_HEA_MULTI 1.0
+#define INF_VS_ART_MULTI 1.5
 
 /* 
  * Heavy
@@ -24,6 +27,9 @@
 #define HEAVY_ATKRANGE 3
 #define HEAVY_DMG 13
 #define HEAVY_ATKCOST 2
+#define HEA_VS_INF_MULTI 1.5
+#define HEA_VS_HEA_MULTI 1.0
+#define HEA_VS_ART_MULTI 1.0
 
 /*
  * Artillery
@@ -36,5 +42,8 @@
 #define ARTILLERY_ATKRANGE 4
 #define ARTILLERY_DMG 21
 #define ARTILLERY_ATKCOST 2
+#define ART_VS_INF_MULTI 1.0
+#define ART_VS_HEA_MULTI 1.5
+#define ART_VS_ART_MULTI 1.0
 
 #endif

@@ -17,12 +17,13 @@ public:
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
 	
+	float multiplier(Soldier *soldier);
+	
 	SNTypes::ap attackCost() const;
 	SNTypes::distance attackRange() const;
 	SNTypes::dmg damage() const;
 	
 	virtual void getAttacked(Soldier *) override;
-	virtual void removeHealth(SNTypes::dmg) override;
 };
 
 

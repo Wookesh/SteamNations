@@ -3,6 +3,7 @@
 #include "Prototypes/Prototype.hpp"
 #include "../GameManager.hpp"
 #include "../Board.hpp"
+#include "Player.hpp"
 #include "Object.hpp"
 #include "Town.hpp"
 
@@ -86,5 +87,13 @@ bool Unit::move(Tile *tile, SNTypes::ap moveCost)
 		return true;
 	}
 	return false;
+}
+
+void Unit::removeHealth (SNTypes::dmg damage) 
+{
+	healthLeft_ = damage >= healthLeft_ ? 0 : healthLeft_ - damage;
+	if (!healthLeft_) {
+		owner_->destroyUnit(this);
+	}
 }
 

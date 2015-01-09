@@ -46,6 +46,24 @@ const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_DAMAGE = {
 	{PrototypeType::Artillery, ARTILLERY_DMG}
 };
 
+const QHash<PrototypeType, QHash<PrototypeType, float> > SoldierPrototype::DAMAGE_MULTIPLIERS = {
+	{PrototypeType::Infantry, {
+		{PrototypeType::Infantry, 1.0},
+		{PrototypeType::Heavy, 1.0},
+		{PrototypeType::Artillery, 1.5}
+	}},
+	{PrototypeType::Heavy, {
+		{PrototypeType::Infantry, 1.5},
+		{PrototypeType::Heavy, 1.0},
+		{PrototypeType::Artillery, 1.0}
+	}},
+	{PrototypeType::Artillery, {
+		{PrototypeType::Infantry, 1.0},
+		{PrototypeType::Heavy, 1.5},
+		{PrototypeType::Artillery, 1.0}
+	}}
+};
+
 SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 	SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health, 
 	SNTypes::ap attackCost, SNTypes::distance attackRange, SNTypes::dmg damage) :
@@ -93,6 +111,10 @@ SNTypes::distance SoldierPrototype::attackRange() const
 void SoldierPrototype::setAttackRange(SNTypes::distance attackRange)
 {
 	attackRange_ = attackRange;
+}
+
+float SoldierPrototype::multiplier (PrototypeType enemyType) const {
+	return DAMAGE_MULTIPLIERS[type_][enemyType];
 }
 
 

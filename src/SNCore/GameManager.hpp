@@ -22,7 +22,7 @@ public:
 	static void init();
 	static void clean();
 	
-	void initGame();
+	void initGame(int width, int height, int seed = qrand());
 	void endGame();
 	
 	QList<Player *> players() const;

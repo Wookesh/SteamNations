@@ -24,7 +24,7 @@ add_library(SNCore
 qt5_use_modules(SNCore Core)
 
 set(test_sources
-    UnitTests/test_project1.cpp
+    UnitTests/unit_tests.cpp
 )
 add_executable(sample_tests ${test_sources})
 

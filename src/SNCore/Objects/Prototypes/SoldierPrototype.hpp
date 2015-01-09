@@ -12,6 +12,7 @@ public:
 	static const QHash<PrototypeType, SNTypes::distance> BASE_ATTACK_RANGE;
 	static const QHash<PrototypeType, SNTypes::ap> BASE_ATTACK_COST;
 	static const QHash<PrototypeType, SNTypes::dmg> BASE_DAMAGE;
+	static const QHash<PrototypeType, QHash<PrototypeType, float> > DAMAGE_MULTIPLIERS;
 
 	SoldierPrototype(PrototypeType type, const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost,
 		SNTypes::hp health, SNTypes::ap attackCost, SNTypes::distance attackRange, SNTypes::dmg damage);
@@ -28,11 +29,14 @@ public:
 	
 	SNTypes::dmg damage() const;
 	void setDamage(SNTypes::dmg damage);
+	
+	float multiplier(PrototypeType) const;
 
 private:
 	SNTypes::ap attackCost_;
 	SNTypes::distance attackRange_;
 	SNTypes::dmg damage_;
+	QHash<PrototypeType, float> attackBonus;
 };
 
 #endif

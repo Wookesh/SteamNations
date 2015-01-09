@@ -47,8 +47,8 @@ SNTypes::distance Soldier::attackRange() const
 SNTypes::dmg Soldier::damage() const
 {
 	SNTypes::dmg baseDmg = dynamic_cast<const SoldierPrototype *>(prototype_)->damage();
-	double hpModifier = (health() - healthLeft()) / health();
-	double dmg = baseDmg * (1 - hpModifier * hpModifier);
+	float hpModifier = (health() - healthLeft()) / health();
+	float dmg = baseDmg * (1 - hpModifier * hpModifier);
 	return qRound(dmg);
 }
 
@@ -62,6 +62,7 @@ bool Soldier::canCapture(Tile* currTile)
 	
 	return false;
 }
+
 bool Soldier::capture(Town* town)
 {
 	if (canCapture(town->tile())) {
@@ -71,19 +72,18 @@ bool Soldier::capture(Town* town)
 	return false;
 }
 
-void Soldier::removeHealth (SNTypes::dmg damage) 
-{
-	healthLeft_ = damage >= healthLeft_ ? 0 : healthLeft_ - damage;
-	if (!healthLeft_) {
-		owner_->destroyUnit(this);
-	}
+
+float Soldier::multiplier (Soldier *soldier) {
+	return dynamic_cast<const SoldierPrototype *>(prototype_)->multiplier(soldier->pType());
 }
+
 
 void Soldier::getAttacked(Soldier *soldier)
 {
 	SNTypes::dmg initialDmg = soldier->damage();
-	double attackBonus = 0.2; // TODO: double GameManager::getAttackBonus(Player *, Player *) 
-	SNTypes::dmg finalDmg = qRound(attackBonus * initialDmg);
+	float attackMultiplier = 0.2 // TODO: float GameManager::getAttackBonus(Player *, Player *) 
+		+ soldier->multiplier(this); 
+	SNTypes::dmg finalDmg = qRound(attackMultiplier * initialDmg);
 	removeHealth(finalDmg);
 	
 	bool counterAttak = GameManager::get()->board()->getAbsoluteDistance(tile_, soldier->tile_) <= attackRange();
