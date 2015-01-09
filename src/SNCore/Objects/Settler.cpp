@@ -58,3 +58,8 @@ void Settler::getAttacked(Soldier *)
 	
 }
 
+void Settler::removeHealth (SNTypes::dmg) {
+
+}
+
+

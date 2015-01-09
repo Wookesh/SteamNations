@@ -29,6 +29,7 @@ public:
 	bool canMove(const Tile *tile) const;
 	bool move(Tile *tile, SNTypes::ap moveCost);
 	virtual void getAttacked(Soldier *) = 0;
+	virtual void removeHealth(SNTypes::dmg) = 0;
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;

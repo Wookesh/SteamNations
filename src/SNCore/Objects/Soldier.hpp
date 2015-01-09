@@ -21,6 +21,7 @@ public:
 	SNTypes::dmg damage() const;
 	
 	virtual void getAttacked(Soldier *) override;
+	virtual void removeHealth(SNTypes::dmg) override;
 };
 
 

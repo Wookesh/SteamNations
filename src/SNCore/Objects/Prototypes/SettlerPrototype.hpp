@@ -14,7 +14,7 @@ public:
 	static const QString BASE_NAME;
 	static const SNTypes::ap BASE_MOVERANGE = 2;
 	static const SNTypes::amount BASE_COST = 0;
-	static const SNTypes::hp BASE_HEALTH = 20;
+	static const SNTypes::hp BASE_HEALTH = 1;
 };
 
 #endif
