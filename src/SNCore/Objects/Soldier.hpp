@@ -17,6 +17,7 @@ public:
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
 	
+	SNTypes::ap attackCost() const;
 	SNTypes::distance attackRange() const;
 	SNTypes::dmg damage() const;
 	

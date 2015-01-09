@@ -16,7 +16,9 @@ bool Soldier::canAttack(Tile* currTile)
 	if ((GameManager::get()->currentPlayer() == owner()) &&
 		(GameManager::get()->board()->getAbsoluteDistance(tile(), currTile) <= attackRange()) &&
 		(currTile->unit() != nullptr) &&
-		(currTile->unit()->owner() != owner()))
+		(currTile->unit()->owner() != owner()) &&
+		(actionPointsLeft() >= attackCost())
+		)
 		return true;
 	
 	return false;
@@ -25,10 +27,16 @@ bool Soldier::canAttack(Tile* currTile)
 bool Soldier::attack(Unit* unit)
 {
 	if (canAttack(unit->tile())) {
+		actionPointsLeft_ -= attackCost();
 		unit->getAttacked(this);
 		return true;
 	}
 	return false;
+}
+
+SNTypes::ap Soldier::attackCost() const
+{
+	return dynamic_cast<const SoldierPrototype *>(prototype_)->attackCost();
 }
 
 SNTypes::distance Soldier::attackRange() const
