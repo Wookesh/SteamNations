@@ -18,6 +18,8 @@ class ActionType;
 class GameBoard : public QQuickItem {
 Q_OBJECT
 public:
+	static const int INTERVAL = 250;
+	qreal SHADOW_OPACITY = 0.2;
 	GameBoard(QQuickItem *parent = 0);
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 
@@ -37,6 +39,9 @@ private:
 	int index(int x, int y);
 	void initTimer();
 
+	const qreal GBcos(int i);
+	const qreal GBsin(int i);
+	
 	QPoint pixelToHex(int x, int y);
 	static const QColor highlightColor(ActionType actionType);
 	

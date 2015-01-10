@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include "Resources.hpp"
+#include <QPoint>
 
 class Player;
 class Tile;
@@ -13,6 +14,8 @@ public:
 	const_iterator begin() const { return tiles_.constBegin(); };
 	const_iterator end() const { return tiles_.constEnd(); };
 	
+	static const int MAXHEIGHT = 50;
+	static const int MAXWIDTH = 50;
 	Board(unsigned int width, unsigned int height, unsigned int seed = qrand());
 	~Board();
 	
@@ -26,6 +29,9 @@ public:
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
 	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
+	
+	unsigned int width();
+	unsigned int height();
 	
 	void updateBefore();
 private:
