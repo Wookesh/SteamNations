@@ -14,6 +14,7 @@ class Object;
 class Action;
 class Tile;
 class ActionType;
+class InfoBox;
 
 class GameBoard : public QQuickItem {
 Q_OBJECT
@@ -29,6 +30,7 @@ private:
 	static QTimer *timer_;
 	TextureManager *textureManager_;
 	const Object *selectedObject_;
+	InfoBox *infobox_;
 	
 	QVector<Action *> mapActions_;
 	QVector<Action *> objectActions_;

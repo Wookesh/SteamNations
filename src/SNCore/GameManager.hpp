@@ -11,6 +11,7 @@ class Console;
 class Board;
 class Object;
 class Player;
+class InfoBox;
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -18,6 +19,7 @@ public:
 	Q_PROPERTY(GameManager * gameManagerInstance READ get)
 	Q_PROPERTY(int turn READ currentTurn)
 	Q_PROPERTY(Console *console READ console)
+	Q_PROPERTY(InfoBox *infobox READ infobox)
 	static GameManager *get();
 	static void init();
 	static void clean();
@@ -32,7 +34,8 @@ public:
 	void setBoard(Board *board);
 	
 	Console *console() const;
-
+	InfoBox *infobox();
+	
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	
@@ -55,6 +58,7 @@ private:
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
 	Console *console_;
+	InfoBox *infobox_;
 	
 	void setNextPlayer();
 	void prepareNewTurn();

@@ -116,7 +116,6 @@ Rectangle {
 			y: -3000
 			id: scene
 			
-			
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();

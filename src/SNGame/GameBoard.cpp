@@ -19,6 +19,8 @@
 #include "TextureManager.hpp"
 #include "SNCore/Console.hpp"
 #include "SNCore/Objects/Object.hpp"
+#include "InfoBox.hpp"
+#include "SNCore/Player.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -48,6 +50,8 @@ GameBoard::GameBoard(QQuickItem *parent)
 	GameManager::get()->setBoard(new Board(Board::MAXWIDTH, Board::MAXWIDTH));
 	GameManager::get()->initGame();
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
+	infobox_ = GameManager::get()->infobox();
+	
 }
 
 int GameBoard::index(int x, int y)
@@ -219,7 +223,7 @@ void GameBoard::clearSelect()
 {
 	selectedObject_ = nullptr;
 	clearActions();
-	//pamiętać żeby usunąć infobox
+	infobox_->setVisible(false);
 }
 
 void GameBoard::getActions()
@@ -230,6 +234,12 @@ void GameBoard::getActions()
 	mapActions_ = GameManager::get()->mapActions(selectedObject_);
 	objectActions_ = GameManager::get()->objectActions(selectedObject_);
 	//zupdateować infobox
+	infobox_->setName(selectedObject_->name());
+	infobox_->setOwner(selectedObject_->owner()->name());
+	infobox_->setVisible(true);
+	infobox_->setProperty("visible", true);
+	GMlog() << infobox_->name() << " " << infobox_->owner();
+	
 }
 
 
