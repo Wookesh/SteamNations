@@ -17,7 +17,7 @@ public:
 	bool canAttack(Tile *currTile);
 	bool attack(Unit *unit);
 	
-	float multiplier(Soldier *soldier);
+	float attackBonus(Soldier *soldier);
 	
 	SNTypes::ap attackCost() const;
 	SNTypes::distance attackRange() const;

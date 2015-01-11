@@ -20,20 +20,18 @@ static const QHash<SNTypes::tier, SNTypes::amount> bonusCost = {
 
 class Bonus {
 public:
-	Bonus(Player *player, SNTypes::tier tier, BonusType type);
+	Bonus(SNTypes::tier tier, BonusType type);
 	~Bonus();
 	
-	virtual bool apply() = 0;
+	virtual bool apply(Player *player) = 0;
 	SNTypes::amount cost() const;
 	SNTypes::tier tier() const;
 	BonusType type() const;
-	Player *player() const;
 protected:
 	SNTypes::tier tier_;
 	BonusType type_;
-	Player *player_;
 	
-	bool canApply() const;
+	bool canApply(Player *player) const;
 };
 
 

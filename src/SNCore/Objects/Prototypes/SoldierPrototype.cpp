@@ -70,8 +70,10 @@ SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 	Prototype(type, name, actionPoints, cost, health), 
 	attackCost_(attackCost), 
 	attackRange_(attackRange), 
-	damage_(damage)
+	damage_(damage),
+	attackMultiplier_(1.0f)
 {
+	
 }
 
 SoldierPrototype::SoldierPrototype(PrototypeType type) :
@@ -113,7 +115,7 @@ void SoldierPrototype::setAttackRange(SNTypes::distance attackRange)
 	attackRange_ = attackRange;
 }
 
-float SoldierPrototype::multiplier (PrototypeType enemyType) const {
+float SoldierPrototype::attackBonus(PrototypeType enemyType) const {
 	return DAMAGE_MULTIPLIERS[type_][enemyType];
 }
 
@@ -128,4 +130,8 @@ void SoldierPrototype::setDamage(SNTypes::dmg damage)
 	damage_ = damage;
 }
 
+void SoldierPrototype::addMultiplier (float multi) 
+{
+	attackMultiplier_ += multi;
+}
 

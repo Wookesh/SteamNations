@@ -73,8 +73,8 @@ bool Soldier::capture(Town* town)
 }
 
 
-float Soldier::multiplier (Soldier *soldier) {
-	return dynamic_cast<const SoldierPrototype *>(prototype_)->multiplier(soldier->pType());
+float Soldier::attackBonus (Soldier *soldier) {
+	return dynamic_cast<const SoldierPrototype *>(prototype_)->attackBonus(soldier->pType());
 }
 
 
@@ -82,7 +82,7 @@ void Soldier::getAttacked(Soldier *soldier)
 {
 	SNTypes::dmg initialDmg = soldier->damage();
 	float attackMultiplier = 0.2 // TODO: float GameManager::getAttackBonus(Player *, Player *) 
-		+ soldier->multiplier(this); 
+		+ soldier->attackBonus(this); 
 	SNTypes::dmg finalDmg = qRound(attackMultiplier * initialDmg);
 	removeHealth(finalDmg);
 	

@@ -1,7 +1,7 @@
 #include "Bonus.hpp"
 #include <Player.hpp>
 
-Bonus::Bonus (Player *player, SNTypes::tier tier, BonusType type) : tier_(tier), type_(type), player_(player)
+Bonus::Bonus (SNTypes::tier tier, BonusType type) : tier_(tier), type_(type)
 {
 
 }
@@ -26,15 +26,10 @@ BonusType Bonus::type() const
 	return type_;
 }
 
-Player *Bonus::player() const 
+bool Bonus::canApply(Player *player) const 
 {
-	return player_;
-}
-
-bool Bonus::canApply() const 
-{
-	return (player_->hasBonus(type_, tier_ - 1) &&
-		!player_->hasBonus(type_, tier_) &&
-		player_->resource(Resource::Research) >= cost());
+	return (player->hasBonus(type_, tier_ - 1) &&
+		!player->hasBonus(type_, tier_) &&
+		player->resource(Resource::Research) >= cost());
 	
 }

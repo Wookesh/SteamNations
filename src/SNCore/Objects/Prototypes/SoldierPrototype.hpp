@@ -30,13 +30,15 @@ public:
 	SNTypes::dmg damage() const;
 	void setDamage(SNTypes::dmg damage);
 	
-	float multiplier(PrototypeType) const;
+	float attackBonus(PrototypeType) const;
+	void addMultiplier(float multi);
 
 private:
 	SNTypes::ap attackCost_;
 	SNTypes::distance attackRange_;
 	SNTypes::dmg damage_;
-	QHash<PrototypeType, float> attackBonus;
+	float attackMultiplier_;
+	QHash<PrototypeType, float> attackBonus_;
 };
 
 #endif

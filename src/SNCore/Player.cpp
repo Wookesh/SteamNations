@@ -8,10 +8,11 @@
 
 Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
 {
-	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
 	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
 	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
 	prototypes_[PrototypeType::Artillery] = new SoldierPrototype(PrototypeType::Artillery);
+	soldierPrototypes_ = prototypes_;
+	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
 	
 	for (Resource r : Resource::labels())
 		resources_[r] = 0;
@@ -160,6 +161,27 @@ Prototype *Player::prototype(PrototypeType type)
 	return prototypes_[type];
 }
 
-bool Player::hasBonus (BonusType type, SNTypes::tier tier) const {
+QList< Prototype * > Player::prototypes() 
+{
+	return prototypes_.values();
+}
+
+QList< Prototype * > Player::soldierPrototypes() 
+{
+	return soldierPrototypes_.values();
+}
+
+bool Player::applyBonus(Bonus *bonus) 
+{
+	if (bonus->apply(this)) {
+		bonuses[bonus->type()][bonus->tier()] = true;
+		removeResource(Resource::Research, bonus->cost());
+		return true;
+	} else
+		return false;
+}
+
+bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
+{
 	return bonuses[type][tier];
 }
