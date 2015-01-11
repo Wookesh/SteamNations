@@ -8,6 +8,7 @@
 
 #include "Objects/Prototypes/Prototype.hpp"
 #include "Resources.hpp"
+#include "Bonuses/Bonus.hpp"
 
 class Tile;
 class Town;
@@ -40,6 +41,9 @@ public:
 	Prototype *prototype(PrototypeType type);
 
 	Qt::GlobalColor color() const;
+	
+	bool hasBonus(BonusType type, SNTypes::tier tier) const;
+	
 private:
 	Town *capital_;
 	QString name_;
@@ -48,6 +52,7 @@ private:
 	QHash<PrototypeType, Prototype *> prototypes_;
 	Qt::GlobalColor color_;
 	QHash<Resource, unsigned int> resources_;
+	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses;
 };
 
 #endif

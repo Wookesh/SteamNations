@@ -12,6 +12,8 @@ add_library(SNCore
 	Actions/CreateUnitAction.cpp
 	Actions/CaptureAction.cpp
 	Actions/SpawnUnitAction.cpp
+    Bonuses/Bonus.cpp
+    Bonuses/WarfareBonuses.cpp
 	Objects/Object.cpp
 	Objects/Unit.cpp
 	Objects/Settler.cpp
@@ -23,10 +25,11 @@ add_library(SNCore
 	)
 qt5_use_modules(SNCore Core)
 
-set(test_sources
-    UnitTests/unit_tests.cpp
-)
-add_executable(sample_tests ${test_sources})
 
-qt5_use_modules(sample_tests Core)
-target_link_libraries(sample_tests gtest gtest_main SNCore)
+#set(test_sources
+#    UnitTests/unit_tests.cpp
+#)
+#add_executable(sample_tests ${test_sources})
+
+#qt5_use_modules(sample_tests Core)
+#target_link_libraries(sample_tests gtest gtest_main SNCore)

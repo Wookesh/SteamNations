@@ -7,8 +7,8 @@ set(EXECUTABLE_OUTPUT_PATH "${SteamNations_SOURCE_DIR}/build/bin/")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-add_subdirectory(lib/gtest-1.7.0)
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+#add_subdirectory(lib/gtest-1.7.0)
+#include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 find_package(Qt5Widgets)
 find_package(Qt5Gui)

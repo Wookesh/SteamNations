@@ -15,6 +15,12 @@ Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), 
 	
 	for (Resource r : Resource::labels())
 		resources_[r] = 0;
+	
+	bonuses = {
+		{BonusType::War, {{1, false}, {2, false}, {3, false}}},
+		{BonusType::Def, {{1, false}, {2, false}, {3, false}}},
+		{BonusType::Eco, {{1, false}, {2, false}, {3, false}}}
+	};
 }
 
 Player::~Player()
@@ -149,8 +155,11 @@ void Player::destroyUnit(Unit *toKill)
 	}
 }
 
-
 Prototype *Player::prototype(PrototypeType type)
 {
 	return prototypes_[type];
+}
+
+bool Player::hasBonus (BonusType type, SNTypes::tier tier) const {
+	return bonuses[type][tier];
 }
