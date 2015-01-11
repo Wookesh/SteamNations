@@ -74,27 +74,23 @@ const QColor GameBoard::highlightColor(ActionType actionType)
 
 const qreal GameBoard::GBcos(int i)
 {
-	static const QHash<int, qreal> map({
-		{0, qCos(2 * M_PI / 6 * 0)},
-		{1, qCos(2 * M_PI / 6 * 1)},
-		{2, qCos(2 * M_PI / 6 * 2)},
-		{3, qCos(2 * M_PI / 6 * 3)},
-		{4, qCos(2 * M_PI / 6 * 4)},
-		{5, qCos(2 * M_PI / 6 * 5)}
-	});
+	static const QVector<qreal> map = []{
+		QVector<qreal> result;
+		for (int i = 0; i < 6; ++i)
+			result.push_back(qCos(2 * M_PI / 6 * i));
+		return result;
+	}();
 	return map[i];
 }
 
 const qreal GameBoard::GBsin(int i)
 {
-	static const QHash<int, qreal> map({
-		{0, qSin(2 * M_PI / 6 * 0)},
-		{1, qSin(2 * M_PI / 6 * 1)},
-		{2, qSin(2 * M_PI / 6 * 2)},
-		{3, qSin(2 * M_PI / 6 * 3)},
-		{4, qSin(2 * M_PI / 6 * 4)},
-		{5, qSin(2 * M_PI / 6 * 5)}
-	});
+	static const QVector<qreal> map = []{
+		QVector<qreal> result;
+		for (int i = 0; i < 6; ++i)
+			result.push_back(qSin(2 * M_PI / 6 * i));
+		return result;
+	}();
 	return map[i];
 }
 
