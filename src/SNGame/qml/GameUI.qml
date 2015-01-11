@@ -119,6 +119,7 @@ Rectangle {
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
+				objectInfoBox.createConnections();
 			}
 		}
 	}

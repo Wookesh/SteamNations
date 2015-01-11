@@ -41,7 +41,8 @@ void GameBoard::nextFrame()
 }
 
 GameBoard::GameBoard(QQuickItem *parent)
-	: QQuickItem(parent), textureManager_(new TextureManager(this)), selectedObject_(nullptr)
+	: QQuickItem(parent), textureManager_(new TextureManager(this)), selectedObject_(nullptr),
+	infobox_(new InfoBox())
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
@@ -50,9 +51,14 @@ GameBoard::GameBoard(QQuickItem *parent)
 	GameManager::get()->setBoard(new Board(Board::MAXWIDTH, Board::MAXWIDTH));
 	GameManager::get()->initGame();
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
-	infobox_ = GameManager::get()->infobox();
 	
 }
+
+InfoBox* GameBoard::infobox()
+{
+	return infobox_;
+}
+
 
 int GameBoard::index(int x, int y)
 {
@@ -230,11 +236,8 @@ void GameBoard::getActions()
 	mapActions_ = GameManager::get()->mapActions(selectedObject_);
 	objectActions_ = GameManager::get()->objectActions(selectedObject_);
 	//zupdateować infobox
-	infobox_->setName(selectedObject_->name());
-	infobox_->setOwner(selectedObject_->owner()->name());
+	infobox_->setObject(selectedObject_);
 	infobox_->setVisible(true);
-	infobox_->setProperty("visible", true);
-	GMlog() << infobox_->name() << " " << infobox_->owner();
 	
 }
 
@@ -271,10 +274,10 @@ void GameBoard::select(Tile *tile)
 
 void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 {
-	
-	int x2 = (mouseX - x - (1-scale)*(BoardField::SIZE*GameManager::get()->board()->width()*3/2 - BoardField::SIZE/2)/2)/scale;
-	int y2 = (mouseY - y -(1-scale)*BoardField::SIZE*sqrt(3)*GameManager::get()->board()->height()/2)/scale;
+	static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
+	static const int BOARD_HEIGHT = BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height();
+	int x2 = (mouseX - x - (1 - scale) * BOARD_WIDTH / 2) / scale;
+	int y2 = (mouseY - y - ( 1 - scale) * BOARD_HEIGHT / 2) / scale;
 	QPoint clicked = pixelToHex(x2,y2);
 	select(GameManager::get()->board()->getTile(clicked.x(), clicked.y()));
-	
 }

@@ -12,11 +12,8 @@ Image {
 	property var owner : "undefined"
 	property var name  : "undefined"
 	
-	function ownerChanged2() {
+	function objectChanged2() {
 		objectInfoBox.owner = snInfoBox.owner
-	}
-	
-	function nameChanged2() {
 		objectInfoBox.name = snInfoBox.name
 	}
 	
@@ -24,12 +21,11 @@ Image {
 		objectInfoBox.visible = snInfoBox.visible
 	}
 	function createConnections() {
-		snInfoBox = gmib.gameManager.infobox;
-		snInfoBox.ownerChanged.connect(objectInfoBox.ownerChanged2);
-		snInfoBox.nameChanged.connect(objectInfoBox.nameChanged2);
+		snInfoBox = scene.infobox;
+		snInfoBox.objectChanged.connect(objectInfoBox.objectChanged2);
 		snInfoBox.visibleChanged.connect(objectInfoBox.visibleChanged2);
 	}
-	visible: true
+	visible: false
 	source: "qrc:///infoBoxBackground"
 	width: sourceSize.width * root.globalScale.width * root.globalScale.width
 	height: sourceSize.height * root.globalScale.height * root.globalScale.height

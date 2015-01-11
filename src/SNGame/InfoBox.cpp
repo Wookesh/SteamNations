@@ -1,6 +1,10 @@
 #include "InfoBox.hpp"
+#include "SNCore/Objects/Object.hpp"
+#include "SNCore/Player.hpp"
+#include "SNCore/GameManager.hpp"
+#include "SNCore/Console.hpp"
 
-InfoBox::InfoBox(QObject* parent) : visible_(false)
+InfoBox::InfoBox(QObject* parent) : visible_(false), selectedObject_(nullptr)
 {
 
 }
@@ -18,22 +22,18 @@ bool InfoBox::visible()
 
 QString InfoBox::name()
 {
-	return name_;
+	return selectedObject_ ? selectedObject_->name() : "undefined";
 }
 
 QString InfoBox::owner()
 {
-	return owner_;
+	return selectedObject_ ? selectedObject_->owner()->name() : "undefined";
 }
 
-void InfoBox::setName(QString name)
+
+void InfoBox::setObject(const Object* object)
 {
-	name_ = name;
-	emit nameChanged();
+	selectedObject_ = object;
+	emit objectChanged();
 }
 
-void InfoBox::setOwner(QString owner)
-{
-	owner_ = owner;
-	emit ownerChanged();
-}

@@ -5,7 +5,6 @@
 #include "Tile.hpp"
 #include "Objects/Objects.hpp"
 #include "Actions/Actions.hpp"
-#include "SNGame/InfoBox.hpp"
 
 #include <QDebug>
 
@@ -36,8 +35,7 @@ void GameManager::clean()
 }
 
 GameManager::GameManager(QObject *parent) : QObject(parent),
-	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0), console_(new Console()), 
-	infobox_(new InfoBox())
+	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0), console_(new Console())
 {
 	
 }
@@ -84,12 +82,6 @@ Console *GameManager::console() const
 {
 	return console_;
 }
-
-InfoBox* GameManager::infobox()
-{
-	return infobox_;
-}
-
 
 QList< Player * > GameManager::players() const 
 {

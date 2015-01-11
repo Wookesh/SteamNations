@@ -24,7 +24,7 @@
 		<file alias="unit/Settler">images/units/settler.png</file>
 		<file alias="unit/Artillery">images/units/artilery.png</file>
 		<file alias="unit/Infantry">images/units/infantry.png</file>
-		<file alias="unit/Tank">images/units/tank.png</file>
+		<file alias="unit/Heavy">images/units/heavy.png</file>
 		<file alias="unit/Town">images/town.png</file>
 		
 		<file alias="hex/Desert">images/hexes/pustynia.png</file>
@@ -40,6 +40,15 @@
 		<file alias="hex/Snow2">images/hexes/snow2.png</file>
 		<file alias="hex/Tundra">images/hexes/tundra.png</file>
 
+		
+		<file alias="icon/Attack">images/icons/attack.png</file>
+		<file alias="icon/Damage">images/icons/damage.png</file>
+		<file alias="icon/Deploy">images/icons/deploy.png</file>
+		<file alias="icon/MoveRange">images/icons/move_range.png</file>
+		<file alias="icon/Population">images/icons/population.png</file>
+		<file alias="icon/RangeAttack">images/icons/range_attack.png</file>
+		<file alias="icon/Wait">images/icons/wait.png</file>
+		
 		<file alias="TrashBarusa.ttf">images/TrashBarusa.ttf</file>
 	</qresource>
 </RCC>

@@ -4,32 +4,30 @@
 #include <QObject>
 #include <QString>
 
+class Object;
+
 class InfoBox : public QObject {
 Q_OBJECT
 
 	
 public:
 	Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
-	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-	Q_PROPERTY(QString owner READ owner WRITE setOwner NOTIFY ownerChanged)
+	Q_PROPERTY(QString name READ name )
+	Q_PROPERTY(QString owner READ owner)
+	Q_PROPERTY(Object *object NOTIFY objectChanged)
 	InfoBox(QObject *parent = 0);
 	
 	void setVisible(bool visible);
+	void setObject(const Object *object);
 	bool visible();
-	
-	void setOwner(QString owner);
 	QString owner();
-	
-	void setName(QString name);
 	QString name();
 signals:
+	void objectChanged();
 	void visibleChanged();
-	void nameChanged();
-	void ownerChanged();
 private:
 	bool visible_;
-	QString name_;
-	QString owner_;
+	const Object *selectedObject_;
 
 };
 
