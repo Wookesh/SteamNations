@@ -1,5 +1,5 @@
-#ifndef WARFAREBONUSES_HPP
-#define WARFAREBONUSES_HPP
+#ifndef DEFENSEBONUSES_HPP
+#define DEFENSEBONUSES_HPP
 
 #include "Bonus.hpp"
 
@@ -8,9 +8,9 @@
  * Tier1
  */
 
-class WarfareT1Bonus : public Bonus {
+class DefenseT1Bonus : public Bonus {
 public :
-	WarfareT1Bonus();
+	DefenseT1Bonus();
 	
 	virtual bool apply(Player *player);
 };
@@ -19,9 +19,9 @@ public :
  * Tier2
  */
 
-class WarfareT2Bonus : public Bonus {
+class DefenseT2Bonus : public Bonus {
 public :
-	WarfareT2Bonus();
+	DefenseT2Bonus();
 	
 	virtual bool apply(Player *player);
 };
@@ -30,9 +30,9 @@ public :
  * Tier3
  */
 
-class WarfareT3Bonus : public Bonus {
+class DefenseT3Bonus : public Bonus {
 public :
-	WarfareT3Bonus();
+	DefenseT3Bonus();
 	
 	virtual bool apply(Player *player);
 };

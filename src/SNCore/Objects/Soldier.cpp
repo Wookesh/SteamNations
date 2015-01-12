@@ -44,6 +44,11 @@ SNTypes::distance Soldier::attackRange() const
 	return dynamic_cast<const SoldierPrototype *>(prototype_)->attackRange();
 }
 
+SNTypes::distance Soldier::ctrAtkRange() const
+{
+	return dynamic_cast<const SoldierPrototype *>(prototype_)->ctrAtkRange();
+}
+
 SNTypes::dmg Soldier::damage() const
 {
 	SNTypes::dmg baseDmg = dynamic_cast<const SoldierPrototype *>(prototype_)->damage();
@@ -86,7 +91,7 @@ void Soldier::getAttacked(Soldier *soldier)
 	SNTypes::dmg finalDmg = qRound(attackMultiplier * initialDmg);
 	removeHealth(finalDmg);
 	
-	bool counterAttak = GameManager::get()->board()->getAbsoluteDistance(tile_, soldier->tile_) <= attackRange();
+	bool counterAttak = GameManager::get()->board()->getAbsoluteDistance(tile_, soldier->tile_) <= ctrAtkRange();
 	if (counterAttak) {
 		SNTypes::dmg counterAttackDmg = damage();
 		soldier->removeHealth(counterAttackDmg);

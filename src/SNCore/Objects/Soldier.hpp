@@ -21,6 +21,7 @@ public:
 	
 	SNTypes::ap attackCost() const;
 	SNTypes::distance attackRange() const;
+	SNTypes::distance ctrAtkRange() const;
 	SNTypes::dmg damage() const;
 	
 	virtual void getAttacked(Soldier *) override;

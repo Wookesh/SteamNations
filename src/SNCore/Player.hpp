@@ -8,7 +8,7 @@
 
 #include "Objects/Prototypes/Prototype.hpp"
 #include "Resources.hpp"
-#include "Bonuses/Bonus.hpp"
+#include "Bonuses/Bonuses.hpp"
 
 class Tile;
 class Town;

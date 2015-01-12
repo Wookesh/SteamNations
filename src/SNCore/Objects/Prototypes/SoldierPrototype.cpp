@@ -40,6 +40,12 @@ const QHash<PrototypeType, SNTypes::distance> SoldierPrototype::BASE_ATTACK_RANG
 	{PrototypeType::Artillery, ARTILLERY_ATKRANGE}
 };
 
+const QHash<PrototypeType, SNTypes::distance> SoldierPrototype::BASE_CTRATK_RANGE = {
+	{PrototypeType::Infantry, INFANTRY_CTRATKRANGE},
+	{PrototypeType::Heavy, HEAVY_CTRATKRANGE},
+	{PrototypeType::Artillery, ARTILLERY_CTRATKRANGE}
+};
+
 const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_DAMAGE = {
 	{PrototypeType::Infantry, INFANTRY_DMG},
 	{PrototypeType::Heavy, HEAVY_DMG},
@@ -66,10 +72,12 @@ const QHash<PrototypeType, QHash<PrototypeType, float> > SoldierPrototype::DAMAG
 
 SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 	SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health, 
-	SNTypes::ap attackCost, SNTypes::distance attackRange, SNTypes::dmg damage) :
+	SNTypes::ap attackCost, SNTypes::distance attackRange, SNTypes::distance ctrAtkRange, 
+	SNTypes::dmg damage) :
 	Prototype(type, name, actionPoints, cost, health), 
 	attackCost_(attackCost), 
-	attackRange_(attackRange), 
+	attackRange_(attackRange),
+	ctrAtkRange_(ctrAtkRange),
 	damage_(damage),
 	attackMultiplier_(1.0f)
 {
@@ -78,7 +86,8 @@ SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 
 SoldierPrototype::SoldierPrototype(PrototypeType type) :
 	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type]),
-	attackCost_(BASE_ATTACK_COST[type]), attackRange_(BASE_ATTACK_RANGE[type]), damage_(BASE_DAMAGE[type])
+	attackCost_(BASE_ATTACK_COST[type]), attackRange_(BASE_ATTACK_RANGE[type]), 
+	ctrAtkRange_(BASE_CTRATK_RANGE[type]), damage_(BASE_DAMAGE[type])
 {
 }
 
@@ -114,6 +123,17 @@ void SoldierPrototype::setAttackRange(SNTypes::distance attackRange)
 {
 	attackRange_ = attackRange;
 }
+
+SNTypes::distance SoldierPrototype::ctrAtkRange() const 
+{
+	return ctrAtkRange_;
+}
+
+void SoldierPrototype::setCtrAtkRange(SNTypes::distance range) 
+{
+	ctrAtkRange_ = range;
+}
+
 
 float SoldierPrototype::attackBonus(PrototypeType enemyType) const {
 	return DAMAGE_MULTIPLIERS[type_][enemyType];

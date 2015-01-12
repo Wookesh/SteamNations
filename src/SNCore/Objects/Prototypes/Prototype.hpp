@@ -34,12 +34,16 @@ public:
 	SNTypes::hp health() const;
 	void setHealth(SNTypes::hp health);
 	
+	void addHealthBonus(float bonus);
+	void setHealthBonus(float bonus);
+	
 protected:
 	PrototypeType type_;
 	QString name_;
 	SNTypes::ap actionPoints_;
 	SNTypes::amount cost_;
 	SNTypes::hp health_;
+	float healthBonus_;
 };
 
 #endif

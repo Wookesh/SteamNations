@@ -14,6 +14,8 @@ add_library(SNCore
 	Actions/SpawnUnitAction.cpp
     Bonuses/Bonus.cpp
     Bonuses/WarfareBonuses.cpp
+    Bonuses/DefenseBonuses.cpp
+    Bonuses/EconomyBonuses.cpp
 	Objects/Object.cpp
 	Objects/Unit.cpp
 	Objects/Settler.cpp
