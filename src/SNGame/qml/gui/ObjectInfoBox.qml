@@ -15,6 +15,25 @@ Image {
 	function objectChanged2() {
 		objectInfoBox.owner = snInfoBox.owner
 		objectInfoBox.name = snInfoBox.name
+		settle.visible = false;
+		settler.visible = false;
+		infantry.visible = false;
+		heavy.visible = false;
+		artillery.visible = false;
+		if (snInfoBox.actions.length) {
+			for (var i = 0; i < snInfoBox.actions.length; i++) {
+				if (snInfoBox.actions[i] == "Settle") 
+					settle.visible = true;
+				if (snInfoBox.actions[i] == "Settler") 
+					settler.visible = true;
+				if (snInfoBox.actions[i] == "Infantry") 
+					infantry.visible = true;
+				if (snInfoBox.actions[i] == "Heavy") 
+					heavy.visible = true;
+				if (snInfoBox.actions[i] == "Artillery") 
+					artillery.visible = true;
+			}
+		}
 	}
 	
 	function visibleChanged2() {
@@ -45,6 +64,72 @@ Image {
 		font.family: snFont.name
 		font.pixelSize: 32
 		color: "white"
+	}
+	
+	Image {
+		visible:false;
+		id:settle
+		source:"qrc:///unit/Town";
+		width: 100 ;
+		height: 100;
+		x:440;
+		y:200;
+		MouseArea {
+			anchors.fill: parent;
+			onClicked:scene.makeAction(0);
+		}
+	}
+	Image {
+		visible:false;
+		id:settler
+		source:"qrc:///unit/Settler";
+		width: 100 ;
+		height: 100;
+		x:440;
+		y:200;
+		MouseArea {
+			anchors.fill: parent;
+			onClicked:scene.makeAction(0);
+		}
+	}
+	Image {
+		visible:false;
+		id:infantry
+		source:"qrc:///unit/Infantry";
+		width: 100 ;
+		height: 100;
+		x:440;
+		y:300;
+		MouseArea {
+			anchors.fill: parent;
+			onClicked:scene.makeAction(1);
+		}
+	}
+	Image {
+		visible:false;
+		id:heavy
+		source:"qrc:///unit/Heavy";
+		width: 100 ;
+		height: 100;
+		x:440;
+		y:400;
+		MouseArea {
+			anchors.fill: parent;
+			onClicked:scene.makeAction(2);
+		}
+	}
+	Image {
+		visible:false;
+		id:artillery
+		source:"qrc:///unit/Artillery";
+		width: 100 ;
+		height: 100;
+		x:440;
+		y:500;
+		MouseArea {
+			anchors.fill: parent;
+			onClicked:scene.makeAction(3);
+		}
 	}
 }
 

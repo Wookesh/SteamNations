@@ -23,6 +23,7 @@ public:
 	qreal SHADOW_OPACITY = 0.2;
 	GameBoard(QQuickItem *parent = 0);
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
+	Q_INVOKABLE void makeAction(int action);
 	Q_PROPERTY(InfoBox *infobox READ infobox)
 	
 protected:
@@ -36,7 +37,7 @@ private:
 	QVector<Action *> mapActions_;
 	QVector<Action *> objectActions_;
 	InfoBox *infobox();
-	void select(Tile *tile);
+	void select(const Tile *tile);
 	QHash<int,BoardField *> nodeMap;
 
 	int index(int x, int y);

@@ -21,6 +21,8 @@
 #include "SNCore/Objects/Object.hpp"
 #include "InfoBox.hpp"
 #include "SNCore/Player.hpp"
+#include "SNCore/Actions/Action.hpp"
+#include "SNCore/Actions/Actions.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -218,6 +220,9 @@ QPoint GameBoard::pixelToHex(int x, int y)
 void GameBoard::clearActions()
 {
 	mapActions_.clear();
+	objectActions_.clear();
+	QStringList actionList;
+	infobox_->setActions(actionList);
 	update();
 }
 
@@ -235,16 +240,25 @@ void GameBoard::getActions()
 	clearActions();
 	mapActions_ = GameManager::get()->mapActions(selectedObject_);
 	objectActions_ = GameManager::get()->objectActions(selectedObject_);
+	GMlog() << "possible object actions: ";
+	QStringList actions;
+	for (Action *a: objectActions_) {
+	GMlog() << (QString)(a->type());
+		if(a->type() == ActionType::CreateUnit)
+			actions.push_back((QString)(static_cast<CreateUnitAction *>(a)->pType()));
+		else
+			actions.push_back((QString)(a->type()));
+	}
+	infobox_->setActions(actions);
 	//zupdateować infobox
 	infobox_->setObject(selectedObject_);
 	infobox_->setVisible(true);
-	
 }
 
 
 
 
-void GameBoard::select(Tile *tile)
+void GameBoard::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
 		QList<const Object *> objects = tile->getObjects();
@@ -281,3 +295,10 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 	QPoint clicked = pixelToHex(x2,y2);
 	select(GameManager::get()->board()->getTile(clicked.x(), clicked.y()));
 }
+
+void GameBoard::makeAction(int action)
+{
+	objectActions_[action]->perform();
+	select(selectedObject_->tile());
+}
+ 

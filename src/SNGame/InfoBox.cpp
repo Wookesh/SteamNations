@@ -37,3 +37,13 @@ void InfoBox::setObject(const Object* object)
 	emit objectChanged();
 }
 
+QStringList &InfoBox::actions()
+{
+	return objectActions_;
+}
+
+void InfoBox::setActions(QStringList &actions)
+{
+	objectActions_ = actions;
+}
+
