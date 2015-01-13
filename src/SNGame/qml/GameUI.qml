@@ -46,7 +46,7 @@ Rectangle {
 			iconSource: "qrc:///gold"
 			paramValue: 10
 			anchors.top: playerButton.bottom
-			anchors.horizontalCenter: playerButton.horizontalCenter
+			anchors.right: playerButton.right
 		}
 		
 		ParamDisplay {
@@ -54,7 +54,7 @@ Rectangle {
 			iconSource: "qrc:///research"
 			paramValue: 10
 			anchors.top: goldDisplay.bottom
-			anchors.horizontalCenter: goldDisplay.horizontalCenter
+			anchors.right: goldDisplay.right
 		}
 		
 		ParamDisplay {
@@ -62,7 +62,7 @@ Rectangle {
 			iconSource: "qrc:///food"
 			paramValue: 10
 			anchors.top: researchDisplay.bottom
-			anchors.horizontalCenter: researchDisplay.horizontalCenter
+			anchors.right: researchDisplay.right
 		}
 		
 		NextTurnButton {
@@ -81,10 +81,10 @@ Rectangle {
 	MouseArea {
 		anchors.fill: parent
 		drag.target: scene;
-		drag.minimumX: parent.width - scene.width*(1+scene.scale)/2
-		drag.maximumX: 440 + 80*scene.scale - scene.width*(1-scene.scale)/2
-		drag.minimumY: parent.height - scene.height*(1+scene.scale)/2
-		drag.maximumY: 70*scene.scale - scene.height*(1-scene.scale)/2
+		drag.minimumX: parent.width - scene.width * (1 + scene.scale) / 2
+		drag.maximumX: menuButton.width + 80 * scene.scale - scene.width * (1 - scene.scale) / 2
+		drag.minimumY: parent.height - scene.height * (1 + scene.scale) / 2
+		drag.maximumY: 70 * scene.scale - scene.height * (1 - scene.scale) / 2
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {
