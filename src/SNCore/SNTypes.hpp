@@ -34,6 +34,11 @@ namespace SNTypes {
 	 * Amount of Resource
 	 */
 	typedef quint16 amount;
+	
+	/**
+	 * Technology tier
+	 */
+	typedef quint16 tier;
 }
 
 #endif

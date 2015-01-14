@@ -2,7 +2,7 @@
 
 Prototype::Prototype(PrototypeType type, 
 	const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health) :
-	type_(type), name_(name), actionPoints_(actionPoints), cost_(cost), health_(health)
+	type_(type), name_(name), actionPoints_(actionPoints), cost_(cost), health_(health), healthBonus_(0.0f)
 {
 
 }
@@ -50,10 +50,20 @@ void Prototype::setActionPoints(SNTypes::ap actionPoints)
 
 SNTypes::hp Prototype::health() const
 {
-	return health_;
+	return qRound((1.0f + healthBonus_) * health_);
 }
 
 void Prototype::setHealth(SNTypes::hp health)
 {
 	health_ = health;
+}
+
+void Prototype::addHealthBonus(float bonus) 
+{
+	healthBonus_ += bonus;
+}
+
+void Prototype::setHealthBonus(float bonus) 
+{
+	healthBonus_ = bonus;
 }

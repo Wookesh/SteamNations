@@ -41,8 +41,7 @@ GameBoard::GameBoard(QQuickItem *parent)
 	setAntialiasing(true);
 	//initTimer();
 	GameManager::init();
-	GameManager::get()->setBoard(new Board(50, 50));
-	GameManager::get()->initGame();
+	GameManager::get()->initGame(50, 50);
 }
 
 int GameBoard::index(int x, int y)

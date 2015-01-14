@@ -1,7 +1,4 @@
 #include "Action.hpp"
-#include <QMap>
-#include <QVector>
-#include <QString>
 
 Action::Action(Object *mainObject, Tile *tile, ActionType type) : type_(type), mainObject_(mainObject), tile_(tile)
 {
