@@ -30,6 +30,10 @@ Rectangle {
 			mainMenu.visible = false
 		}
 	}
+	
+	GameManagerInstanceBox {
+		id: gmib
+	}
 
 
 }

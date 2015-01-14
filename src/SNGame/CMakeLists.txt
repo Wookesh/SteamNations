@@ -4,6 +4,8 @@ add_executable(SteamNations
 	main.cpp
 	GameBoard.cpp
 	BoardField.cpp
+	TextureManager.cpp
+	InfoBox.cpp
 	${SNResources}
 	)
 qt5_use_modules(SteamNations Widgets Gui Quick)

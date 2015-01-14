@@ -6,7 +6,7 @@
 
 #include "../EnumHelpers.hpp"
 #include "../Resources.hpp"
-#include "SNTypes.hpp"
+#include "../SNTypes.hpp"
 
 class Player;
 

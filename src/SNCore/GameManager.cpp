@@ -192,9 +192,10 @@ void GameManager::endGame()
 void GameManager::endTurn() 
 {
 	currentPlayer_->updateAfter();
+	emit turnEnded();
 	setNextPlayer();
 	currentPlayer_->updateBefore();
-	turnReady();
+	emit turnReady();
 }
 
 

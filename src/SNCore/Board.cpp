@@ -71,6 +71,17 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 	}
 }
 
+unsigned int Board::height()
+{
+	return height_;
+}
+
+unsigned int Board::width()
+{
+	return width_;
+}
+
+
 unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const {
 	unsigned int amount = 0;
 	for (int i = 0; i < tiles.size(); ++i) {

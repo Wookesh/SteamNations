@@ -46,7 +46,7 @@ Rectangle {
 			iconSource: "qrc:///gold"
 			paramValue: 10
 			anchors.top: playerButton.bottom
-			anchors.horizontalCenter: playerButton.horizontalCenter
+			anchors.right: playerButton.right
 		}
 		
 		ParamDisplay {
@@ -54,7 +54,7 @@ Rectangle {
 			iconSource: "qrc:///research"
 			paramValue: 10
 			anchors.top: goldDisplay.bottom
-			anchors.horizontalCenter: goldDisplay.horizontalCenter
+			anchors.right: goldDisplay.right
 		}
 		
 		ParamDisplay {
@@ -62,7 +62,7 @@ Rectangle {
 			iconSource: "qrc:///food"
 			paramValue: 10
 			anchors.top: researchDisplay.bottom
-			anchors.horizontalCenter: researchDisplay.horizontalCenter
+			anchors.right: researchDisplay.right
 		}
 		
 		NextTurnButton {
@@ -81,34 +81,45 @@ Rectangle {
 	MouseArea {
 		anchors.fill: parent
 		drag.target: scene;
-		drag.minimumX: parent.width - scene.width
-		drag.maximumX: 0
-		drag.minimumY: parent.height - scene.height
-		drag.maximumY: 0
+		drag.minimumX: parent.width - scene.width * (1 + scene.scale) / 2
+		drag.maximumX: menuButton.width + 80 * scene.scale - scene.width * (1 - scene.scale) / 2
+		drag.minimumY: parent.height - scene.height * (1 + scene.scale) / 2
+		drag.maximumY: 70 * scene.scale - scene.height * (1 - scene.scale) / 2
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {
-				if (scene.scale < 1)
+				if (scene.scale < 2)
 					scene.scale += 0.05
 			} else {
-				if (scene.scale > 0.1)
+				if (scene.scale > 0.5)
 					scene.scale -= 0.05
 			}
+			if (scene.x < drag.minimumX)
+				scene.x = drag.minimumX
+			if (scene.x > drag.maximumX)
+				scene.x = drag.maximumX
+			if (scene.y < drag.minimumY)
+				scene.y = drag.minimumY
+			if (scene.y > drag.maximumY)
+				scene.y = drag.maximumY
+			
 		}
 
 		onClicked: {
-			console.log(mouseX + " " + mouseY + "\n")
+			scene.click(mouseX, mouseY, scene.x, scene.y, scene.scale)
 		}
 
 		Board {
-			width: 5000
-			height: 5000
-			x: -2500
-			y: -2500
+			width: 5960
+			height: 6920
+			x: -2000
+			y: -3000
 			id: scene
 			
 			Component.onCompleted: {
-				gameConsole.activate();
+				gameConsole.createConnections();
+				nextTurnButton.createConnections();
+				objectInfoBox.createConnections();
 			}
 		}
 	}

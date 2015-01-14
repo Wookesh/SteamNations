@@ -89,7 +89,7 @@ bool Unit::move(Tile *tile, SNTypes::ap moveCost)
 	return false;
 }
 
-void Unit::removeHealth (SNTypes::dmg damage) 
+void Unit::removeHealth(SNTypes::dmg damage) 
 {
 	healthLeft_ = damage >= healthLeft_ ? 0 : healthLeft_ - damage;
 	if (!healthLeft_) {

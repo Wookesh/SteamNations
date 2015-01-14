@@ -15,6 +15,7 @@ Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 			nTile->setLocalTown(this);
 			townTiles_.push_back(nTile);
 		}
+	tile->setTown(this);
 }
 
 Town::~Town()

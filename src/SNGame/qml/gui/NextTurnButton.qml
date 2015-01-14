@@ -9,6 +9,12 @@ Item {
 	
 	signal nextTurn()
 	
+	function createConnections() {
+		nextTurn.clicked.connect(rotationTimer.start);
+		nextTurn.clicked.connect(gmib.gameManager.endTurn);
+		gmib.gameManager.turnReady.connect(rotationTimer.stop);
+	}
+	
 	Image {
 		id: trybik
 		source: "qrc:///trybik"
@@ -22,7 +28,7 @@ Item {
 		id: rotationTimer
 		interval: 1000
 		repeat: true
-		running: true
+		running: false
 		
 		onTriggered: {
 			trybik.rotation = trybik.rotation + 9
@@ -33,11 +39,6 @@ Item {
 		id: nextTurn
 		source: "qrc:///playButtonBlue"
 		anchors.centerIn: parent
-		
-		onClicked: {
-			console.log("Next turn clicked\n")
-			nextTurnButton.nextTurn()
-		}
 	}
 	
 	onRotatingChanged: {
