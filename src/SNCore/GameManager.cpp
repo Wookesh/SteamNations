@@ -148,8 +148,10 @@ void GameManager::setPlayers(QList< Player * > &players)
 	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
 }
 
-void GameManager::initGame() 
+void GameManager::initGame(int width, int height, int seed) 
 {
+	board_ = new Board(width, height, seed);
+	
 	// Test players
 	Player *andrzej = new Player ("Andrzej", Qt::black);
 	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
@@ -161,12 +163,13 @@ void GameManager::initGame()
 	
 	setNextPlayer();
 	
-	Board *board = GameManager::get()->board();
+	SpawnUnitAction(andrzej, board_->getTile(25, 25), PrototypeType::Settler).perform();
+	SpawnUnitAction(andrzej, board_->getTile(25, 24), PrototypeType::Infantry).perform();
+	SpawnUnitAction(zbyszek, board_->getTile(24, 26), PrototypeType::Settler).perform();
+	SpawnUnitAction(zbyszek, board_->getTile(24, 25), PrototypeType::Infantry).perform();
 	
-	SpawnUnitAction(andrzej, board->getTile(25, 25), PrototypeType::Settler).perform();
-	andrzej->updateAfter(); //aby jednostka mogła się poruszać
-	SpawnUnitAction(zbyszek, board->getTile(24, 26), PrototypeType::Settler).perform();
-	zbyszek->updateAfter();
+	andrzej->updateBefore();
+	zbyszek->updateBefore();
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
 }

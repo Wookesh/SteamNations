@@ -8,6 +8,7 @@
 
 #include "Objects/Prototypes/Prototype.hpp"
 #include "Resources.hpp"
+#include "Bonuses/Bonuses.hpp"
 
 class Tile;
 class Town;
@@ -38,16 +39,24 @@ public:
 	bool removeResource(Resource resource, unsigned int val);
 	
 	Prototype *prototype(PrototypeType type);
-
+	QList<Prototype *> prototypes();
+	QList<Prototype *> soldierPrototypes();
+	
 	Qt::GlobalColor color() const;
+	
+	bool applyBonus(Bonus *bonus);
+	bool hasBonus(BonusType type, SNTypes::tier tier) const;
+	
 private:
 	Town *capital_;
 	QString name_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
 	QHash<PrototypeType, Prototype *> prototypes_;
+	QHash<PrototypeType, Prototype *> soldierPrototypes_;
 	Qt::GlobalColor color_;
 	QHash<Resource, unsigned int> resources_;
+	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses;
 };
 
 #endif

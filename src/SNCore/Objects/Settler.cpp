@@ -55,6 +55,5 @@ Town *Settler::createTown()
 
 void Settler::getAttacked(Soldier *) 
 {
-	
+	removeHealth(healthLeft());
 }
-
