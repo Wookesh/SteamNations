@@ -2,17 +2,16 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import SN 1.0
 
-
-
-
 Image {
-	
+
 	id:objectInfoBox
 	property InfoBox snInfoBox;
 	property var owner : "undefined"
 	property var name  : "undefined"
+	property var nameBoxHeight : 180 * root.globalScale.height
+	property var boxWidth: 220 * root.globalScale.width
 	
-	function objectChanged2() {
+	function objectChanged() {
 		objectInfoBox.owner = snInfoBox.owner
 		objectInfoBox.name = snInfoBox.name
 		settle.visible = false;
@@ -36,100 +35,81 @@ Image {
 		}
 	}
 	
-	function visibleChanged2() {
+	function visibleChanged() {
 		objectInfoBox.visible = snInfoBox.visible
 	}
+	
 	function createConnections() {
 		snInfoBox = scene.infobox;
-		snInfoBox.objectChanged.connect(objectInfoBox.objectChanged2);
-		snInfoBox.visibleChanged.connect(objectInfoBox.visibleChanged2);
+		snInfoBox.objectChanged.connect(objectInfoBox.objectChanged);
+		snInfoBox.visibleChanged.connect(objectInfoBox.visibleChanged);
 	}
+	
 	visible: false
 	source: "qrc:///infoBoxBackground"
-	width: sourceSize.width * root.globalScale.width * root.globalScale.width
-	height: sourceSize.height * root.globalScale.height * root.globalScale.height
-	Label{
-		text:"Player: " + objectInfoBox.owner
-		x:100
-		y:30
-		font.family: snFont.name
-		font.pixelSize: 32
-		color: "white"
-	}
+	width: sourceSize.width * root.globalScale.width
+	height: sourceSize.height * root.globalScale.height
 	
-	Label{
-		text: objectInfoBox.name
-		x:100
-		y:70
-		font.family: snFont.name
-		font.pixelSize: 32
-		color: "white"
-	}
+	Column {
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.top: objectInfoBox.top
+		anchors.topMargin: (objectInfoBox.nameBoxHeight - objectName.height - playerName.height) / 2
+		Label {
+			id: objectName
+			text: objectInfoBox.name
+			anchors.horizontalCenter: parent.horizontalCenter
+			font.family: snFont.name
+			font.pixelSize: 32
+			color: "white"
+		}
 	
-	Image {
-		visible:false;
-		id:settle
-		source:"qrc:///unit/Town";
-		width: 100 ;
-		height: 100;
-		x:440;
-		y:200;
-		MouseArea {
-			anchors.fill: parent;
-			onClicked:scene.makeAction(0);
+		Label {
+			id: playerName
+			text:"Player: " + objectInfoBox.owner
+			anchors.horizontalCenter: parent.horizontalCenter
+			font.family: snFont.name
+			font.pixelSize: 32
+			color: "white"
 		}
 	}
-	Image {
-		visible:false;
-		id:settler
-		source:"qrc:///unit/Settler";
-		width: 100 ;
-		height: 100;
-		x:440;
-		y:200;
-		MouseArea {
-			anchors.fill: parent;
+	
+	Column {
+		id: iconColumn
+		anchors.top: objectInfoBox.top
+		anchors.topMargin: objectInfoBox.nameBoxHeight
+		anchors.right: objectInfoBox.right
+		anchors.rightMargin: objectInfoBox.boxWidth / 2
+		
+		MenuButton {
+			id:settle
+			source:"qrc:///unit/Town";
+			onClicked: scene.makeAction(0)
+		}
+		
+		MenuButton {
+			id:settler
+			source:"qrc:///unit/Settler";
 			onClicked:scene.makeAction(0);
 		}
-	}
-	Image {
-		visible:false;
-		id:infantry
-		source:"qrc:///unit/Infantry";
-		width: 100 ;
-		height: 100;
-		x:440;
-		y:300;
-		MouseArea {
-			anchors.fill: parent;
+		
+		MenuButton {
+			id:infantry
+			source:"qrc:///unit/Infantry";
 			onClicked:scene.makeAction(1);
 		}
-	}
-	Image {
-		visible:false;
-		id:heavy
-		source:"qrc:///unit/Heavy";
-		width: 100 ;
-		height: 100;
-		x:440;
-		y:400;
-		MouseArea {
-			anchors.fill: parent;
+		
+		MenuButton {
+			id:heavy
+			source:"qrc:///unit/Heavy";
 			onClicked:scene.makeAction(2);
 		}
-	}
-	Image {
-		visible:false;
-		id:artillery
-		source:"qrc:///unit/Artillery";
-		width: 100 ;
-		height: 100;
-		x:440;
-		y:500;
-		MouseArea {
-			anchors.fill: parent;
+		
+		MenuButton {
+			id:artillery
+			source:"qrc:///unit/Artillery";
 			onClicked:scene.makeAction(3);
 		}
+	
 	}
 }
 
