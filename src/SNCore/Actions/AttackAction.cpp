@@ -1,6 +1,7 @@
 #include "AttackAction.hpp"
 #include "../Objects/Soldier.hpp"
 
+
 AttackAction::AttackAction(Soldier *mainObject, Unit *target) : 
 	Action(mainObject, target->tile(), ActionType::Attack),
 	target_(target)
@@ -10,5 +11,15 @@ AttackAction::AttackAction(Soldier *mainObject, Unit *target) :
 
 bool AttackAction::perform()
 {
-	return dynamic_cast<Soldier *>(mainObject_)->attack(target_);
+	Soldier *soldier = dynamic_cast<Soldier *>(mainObject_);
+	
+	bool result = soldier->attack(target_);
+
+	if (soldier->checkForDeath())
+		delete soldier;
+	
+	if (target_->checkForDeath())
+		delete target_;
+	
+	return result;
 }

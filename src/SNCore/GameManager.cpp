@@ -126,7 +126,10 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 			}
 		}
 		
-		if (unit->pType() == PrototypeType::Infantry) {
+		if (unit->pType() == PrototypeType::Infantry || 
+			unit->pType() == PrototypeType::Heavy ||
+			unit->pType() == PrototypeType::Artillery) 
+		{
 			Soldier *soldier = static_cast<Soldier *>(unit);
 			
 			QVector<Tile *> tiles = board_->getInRange(soldier->tile(), soldier->attackRange());

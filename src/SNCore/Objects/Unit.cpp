@@ -8,10 +8,12 @@
 #include "Town.hpp"
 
 
+
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
-	actionPointsLeft_(0)
+	actionPointsLeft_(0),
+	healthLeft_(prototype->health())
 {
 }
 
@@ -97,3 +99,7 @@ void Unit::removeHealth(SNTypes::dmg damage)
 	}
 }
 
+bool Unit::checkForDeath() 
+{
+	return healthLeft_ <= 0;
+}

@@ -30,6 +30,7 @@ public:
 	bool move(Tile *tile, SNTypes::ap moveCost);
 	virtual void getAttacked(Soldier *) = 0;
 	void removeHealth(SNTypes::dmg);
+	bool checkForDeath();
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;
