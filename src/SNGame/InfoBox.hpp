@@ -16,7 +16,6 @@ public:
 	Q_PROPERTY(QString name READ name )
 	Q_PROPERTY(QString owner READ owner)
 	Q_PROPERTY(QStringList actions READ actions)
-	Q_PROPERTY(Object *object NOTIFY objectChanged)
 	InfoBox(QObject *parent = 0);
 	
 	void setVisible(bool visible);

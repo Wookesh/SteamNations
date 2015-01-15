@@ -264,6 +264,7 @@ void GameBoard::select(const Tile *tile)
 			emit noSelection();
 		} else {
 			selectedObject_ = objects.first();
+			selectedObjectID_ = selectedObject_->id();
 			getActions();
 		}
 	} else if (selectedObject_->tile() == tile) {
@@ -275,8 +276,10 @@ void GameBoard::select(const Tile *tile)
 			if (action->tile() == tile) {
 				GMlog() << "Performing Action" << (QString)(action->type()) << "\n";
 				GMlog() << "\tWith result :" << action->perform() << "\n";
-				getActions();
-				return;
+				if (GameManager::get()->exists(selectedObjectID_)) {
+					getActions();
+					return;
+				}
 			}
 		clearSelect();
 		select(tile);

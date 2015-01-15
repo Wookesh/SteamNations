@@ -5,6 +5,7 @@
 #include <QColor>
 #include <QImage>
 #include <QHash>
+#include "SNCore/Serial.hpp"
 
 
 class BoardField;
@@ -32,6 +33,7 @@ private:
 	static QTimer *timer_;
 	TextureManager *textureManager_;
 	const Object *selectedObject_;
+	UID selectedObjectID_;
 	InfoBox *infobox_;
 	
 	QVector<Action *> mapActions_;

@@ -68,6 +68,11 @@ const Object *GameManager::object(UID uid) const
 	return objects_[uid];
 }
 
+bool GameManager::exists(UID uid) const
+{
+	return objects_.contains(uid);
+}
+
 Board *GameManager::board() const 
 {
 	return board_;

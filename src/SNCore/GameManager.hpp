@@ -38,6 +38,7 @@ public:
 	
 	void addObject(Object *object);
 	const Object *object(UID uid) const;
+	bool exists(UID uid) const;
 	
 	QVector<Action *> mapActions(const Object *object);
 	QVector<Action *> objectActions(const Object *object);
