@@ -165,14 +165,21 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 			QSGOpacityNode *opacity = new QSGOpacityNode();
 			opacity->setOpacity(SHADOW_OPACITY);
 			QSGGeometryNode *shadow = new QSGGeometryNode();
-			QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 6);
-			geometry->setDrawingMode(GL_POLYGON);
+			QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 18);
+			geometry->setDrawingMode(GL_TRIANGLES);
 			QPointF pos = coordToPos(action->tile()->position().x(), action->tile()->position().y());
 			
-			for (int i = 0; i < 6; ++i)
-				geometry->vertexDataAsPoint2D()[i].set(
+			for (int i = 0; i < 6; ++i) {
+				geometry->vertexDataAsPoint2D()[3 * i].set(
 					BoardField::SIZE * GBcos(i) + pos.x(),
 					BoardField::SIZE * GBsin(i) + pos.y());
+				geometry->vertexDataAsPoint2D()[3 * i + 1].set(
+					BoardField::SIZE * GBcos((i + 1) % 6) + pos.x(),
+					BoardField::SIZE * GBsin((i + 1) % 6) + pos.y());
+				geometry->vertexDataAsPoint2D()[3 * i + 2].set(
+					pos.x(),
+					pos.y());
+			}
 			
 			QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
 			material->setColor(highlightColor(action->type()));
