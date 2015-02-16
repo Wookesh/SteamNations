@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 	view.setResizeMode(QQuickView::SizeRootObjectToView);
 	
 	QSize initialSize = view.screen()->size();
+	if (initialSize.width() < initialSize.height())
+		initialSize.transpose();
 	
 	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
 	qmlRegisterType<Console>("SN", 1, 0, "SNConsole");

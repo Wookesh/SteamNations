@@ -86,3 +86,6 @@ HEADERS += src/SNCore/Board.hpp \
            src/SNGame/InfoBox.hpp \
            src/SNGame/SNHelpers.hpp \
            src/SNGame/TextureManager.hpp
+
+OTHER_FILES += \
+	 android/AndroidManifest.xml
