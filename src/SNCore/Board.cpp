@@ -105,6 +105,12 @@ Tile* Board::getTile(int x, int y) const {
 	return tiles_[x + y * width_];
 }
 
+Tile *Board::getTile(QPair<int, int> pos) const
+{
+	return getTile(pos.first, pos.second);
+}
+
+
 Tile* Board::getTileAxial(int x, int y) const {
 	int q = x;
 	int r = y + (x - (x&1)) / 2;
@@ -209,6 +215,17 @@ QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, cons
 
 	return reachable;
 }
+
+QPair<int, int> Board::getUnitSpawnCenter(int number, int total) const
+{
+	switch (total) {
+		case 2: return qMakePair(width_ / 4 * ((number % 2) * 2 + 1), height_ / 2);
+		case 3: return qMakePair(width_ / 4 * ((2 * number) % 3 + 1), height_ / 4 * ((number / 2) * 2 + 1));
+		case 4: return qMakePair(width_ / 4 * ((number % 2) * 2 + 1), height_ / 4 * ((number / 2) * 2 + 1));
+		default: return qMakePair(0, 0);
+	}
+}
+
 
 void Board::updateBefore()
 {

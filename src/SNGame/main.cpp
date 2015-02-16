@@ -9,6 +9,7 @@
 #include "GameBoard.hpp"
 #include "SNCore/Console.hpp"
 #include "SNCore/GameManager.hpp"
+#include <SNCore/GameSettings.hpp>
 #include "InfoBox.hpp"
 
 int main(int argc, char *argv[])
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
 	qmlRegisterType<GameManagerInstanceBox>("SN", 1, 0, "GameManagerInstanceBox");
 	qmlRegisterType<GameManager>("SN", 1, 0, "GameManager");
 	qmlRegisterType<InfoBox>("SN", 1, 0, "InfoBox");
+	qmlRegisterType<GameSettings>("SN", 1, 0, "GameSettings");
 	view.rootContext()->setContextProperty("initialSize", initialSize);
 	
 	QObject::connect(view.engine(), &QQmlEngine::quit, qApp, &QCoreApplication::quit);

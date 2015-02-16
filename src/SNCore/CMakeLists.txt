@@ -2,6 +2,7 @@ add_library(SNCore
 	Board.cpp
 	Console.cpp
 	GameManager.cpp
+	GameSettings.cpp
 	Tile.cpp
 	Player.cpp
 	Actions/Action.cpp

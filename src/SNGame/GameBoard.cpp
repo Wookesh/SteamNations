@@ -50,7 +50,7 @@ GameBoard::GameBoard(QQuickItem *parent)
 	setAntialiasing(true);
 	initTimer();
 	GameManager::init();
-	GameManager::get()->initGame(Board::MAXWIDTH, Board::MAXWIDTH);
+	GameManager::get()->initBoard(Board::MAXWIDTH, Board::MAXWIDTH);
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
 }
 

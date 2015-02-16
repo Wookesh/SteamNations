@@ -4,6 +4,7 @@
 #include <QVector>
 #include "Resources.hpp"
 #include <QPoint>
+#include "Objects/Prototypes/Prototype.hpp"
 
 class Player;
 class Tile;
@@ -20,6 +21,7 @@ public:
 	~Board();
 	
 	Tile *getTile(int x, int y) const;
+	Tile *getTile(QPair<int, int > pos) const;
 	Tile *getTileAxial(int x, int y) const;
 	Tile *getTileCube(int x, int y, int z) const;
 	
@@ -29,6 +31,8 @@ public:
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
 	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
+	
+	QPair<int, int> getUnitSpawnCenter(int number, int total) const;
 	
 	unsigned int width();
 	unsigned int height();

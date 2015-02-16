@@ -11,6 +11,7 @@ class Console;
 class Board;
 class Object;
 class Player;
+class GameSettings;
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -22,7 +23,8 @@ public:
 	static void init();
 	static void clean();
 	
-	void initGame(int width, int height, int seed = qrand());
+	bool useSettings(const GameSettings &settings);
+	void initBoard(int width, int height, int seed = qrand());
 	void endGame();
 	
 	QList<Player *> players() const;
@@ -87,3 +89,4 @@ public:
 };
 
 #endif
+

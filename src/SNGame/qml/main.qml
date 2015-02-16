@@ -13,6 +13,15 @@ Rectangle {
 		source: "qrc:///TrashBarusa.ttf"
 	}
 	
+	CreateGame {
+		id: createGame
+		visible: false
+		onBack: {
+			createGame.visible = false
+			mainMenu.visible = true
+		}
+	}
+	
 	GameUI {
 		id: gameUI
 		visible: false
@@ -26,7 +35,7 @@ Rectangle {
 		id: mainMenu
 		visible: true
 		onNewGameClicked: {
-			gameUI.visible = true
+			createGame.visible = true
 			mainMenu.visible = false
 		}
 	}

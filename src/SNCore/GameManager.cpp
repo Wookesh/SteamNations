@@ -1,6 +1,7 @@
 #include "GameManager.hpp"
 #include "Board.hpp"
 #include "Console.hpp"
+#include "GameSettings.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
 #include "Objects/Objects.hpp"
@@ -43,6 +44,47 @@ GameManager::GameManager(QObject *parent) : QObject(parent),
 GameManager::~GameManager() 
 {
 
+}
+
+bool GameManager::useSettings(const GameSettings &settings)
+{
+	if (!settings.validate())
+		return false;
+	
+	//Create Board
+	
+	initBoard(settings.boardSize.width(), settings.boardSize.height());
+	
+	//CreatePlayers
+	
+	QList<Player *> playersList;
+	
+	for (QPair<QString, Qt::GlobalColor> data : settings.playerData()) {
+		static int no = 0;
+		Player *player = new Player(data.first, data.second);
+		playersList.push_back(player);
+		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, settings.playersCount);
+		
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
+		spawnCenter.second += 1;
+		
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Infantry).perform();
+		player->updateBefore();
+		++no;
+	}
+	return true;
+}
+
+void GameManager::initBoard(int width, int height, int seed) 
+{
+	board_ = new Board(width, height, seed);
+	
+	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
+}
+
+void GameManager::setPlayers(QList< Player * > &players) 
+{
+	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
 }
 
 void GameManager::addObject(Object *object) 
@@ -148,38 +190,6 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 		}
 	}
 	return possibleActions;
-}
-
-
-void GameManager::setPlayers(QList< Player * > &players) 
-{
-	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
-}
-
-void GameManager::initGame(int width, int height, int seed) 
-{
-	board_ = new Board(width, height, seed);
-	
-	// Test players
-	Player *andrzej = new Player ("Andrzej", Qt::black);
-	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
-	
-	QList<Player *> lista;
-	lista.push_back (andrzej);
-	lista.push_back (zbyszek);
-	setPlayers (lista);
-	
-	setNextPlayer();
-	
-	SpawnUnitAction(andrzej, board_->getTile(25, 25), PrototypeType::Settler).perform();
-	SpawnUnitAction(andrzej, board_->getTile(25, 24), PrototypeType::Infantry).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 26), PrototypeType::Settler).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 25), PrototypeType::Infantry).perform();
-	
-	andrzej->updateBefore();
-	zbyszek->updateBefore();
-	
-	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
 }
 
 void GameManager::check(const Player *player) 
