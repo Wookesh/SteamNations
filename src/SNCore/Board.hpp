@@ -29,6 +29,7 @@ public:
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
 	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
+	QVector<Tile *> pathToTile(Tile *start, Tile *dest) const;
 	
 	unsigned int width();
 	unsigned int height();
