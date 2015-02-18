@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <QSet>
 #include <QDebug>
+#include <queue>
+#include <utility>
 #include <qqueue.h>
 
 #include "Board.hpp"
@@ -179,7 +181,7 @@ QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const {
  * auto result = getReable(tile_, max_range)
  * result[i] - tiles in range i from tile_
  */
-QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, const Player* player) const {
+QVector<QVector<Tile *> > Board::getReachable(Tile *tile, const int range, const Player* player) const {
 	QSet<Tile *> visited;
 	visited.insert(tile);
 	QVector<QVector<Tile *> > reachable(range + 1);
@@ -209,6 +211,69 @@ QVector<QVector<Tile *> > Board::getReachable (Tile *tile, const int range, cons
 
 	return reachable;
 }
+
+
+/*
+ * Priority Queue for path searching. tilePriority are its elements - pairs of 
+ * (tile, distance).
+ */
+typedef std::pair<Tile *, int> tilePriority;
+
+class tileComparison {
+	bool reverse;
+public:
+	tileComparison(const bool& revparam=false) {reverse=revparam;}
+	bool operator() (const tilePriority& lhs, const tilePriority& rhs) const {
+		if (reverse) return (lhs.second < rhs.second);
+		else return (lhs.second > rhs.second);
+	}
+};
+
+typedef std::priority_queue<tilePriority,std::vector<tilePriority>,tileComparison> tilePQ;
+
+/*
+ * Returns path from start to dest. Uses A* with getAbsoluteDistance() function as 
+ * its heuristic.
+ */
+QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const 
+{
+	tilePQ frontier;
+	frontier.push(std::make_pair(start, 0));
+	
+	QMap<Tile *, Tile *> cameFrom;
+	QMap<Tile *, int> costSoFar;
+	cameFrom[start] = nullptr;
+	costSoFar[start] = 0;
+	
+	while (!frontier.empty()) {
+		tilePriority current = frontier.top();
+		frontier.pop();
+		
+		if (current.first == dest)
+			break;
+		
+		for (Tile *next : getNeighbours(current.first)) {
+			int newCost = costSoFar[current.first] + next->weight();
+			if (!costSoFar.contains(next) || newCost < costSoFar[next]) {
+				costSoFar[next] = newCost;
+				int priority = newCost + getAbsoluteDistance(next, dest);
+				frontier.push(std::make_pair(next, priority));
+				cameFrom[next] = current.first;
+			}
+		}
+	}
+	
+	Tile *current = dest;
+	QVector<Tile *> path;
+	path.push_back(current);
+	while (current != start) {
+		current = cameFrom[current];
+		path.push_front(current);
+	}
+	
+	return path;
+}
+
 
 void Board::updateBefore()
 {
