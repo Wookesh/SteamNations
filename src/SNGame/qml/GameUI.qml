@@ -109,6 +109,8 @@ Rectangle {
 			scene.click(mouseX, mouseY, scene.x, scene.y, scene.scale)
 		}
 
+		property Board scene;
+
 		Board {
 			width: 5960
 			height: 6920

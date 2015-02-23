@@ -21,7 +21,6 @@
 #include "SNCore/Objects/Object.hpp"
 #include "InfoBox.hpp"
 #include "SNCore/Player.hpp"
-#include "SNCore/Actions/Action.hpp"
 #include "SNCore/Actions/Actions.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
@@ -49,7 +48,6 @@ GameBoard::GameBoard(QQuickItem *parent)
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
 	initTimer();
-	GameManager::init();
 	GameManager::get()->initBoard(Board::MAXWIDTH, Board::MAXWIDTH);
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
 }

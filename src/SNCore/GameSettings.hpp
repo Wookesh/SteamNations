@@ -5,8 +5,8 @@
 #include <QSize>
 #include <QVector>
 #include <QString>
-#include <QSet>
 #include <QObject>
+#include <QPair>
 
 class GameSettings : public QObject {
 Q_OBJECT

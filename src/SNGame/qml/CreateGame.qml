@@ -1,10 +1,13 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
+import SN 1.0
 import "./gui"
 
 Rectangle {
 	id: createGame
 	anchors.fill: parent
+	
+	property GameSettings settings;
 	
 	signal back()
 	signal start()
@@ -21,6 +24,15 @@ Rectangle {
 			--gameData.playersCount;
 			gameData.entries[gameData.playersCount].disabled = true;
 		}
+	}
+	
+	Component.onCompleted: {
+		createGame.settings.playersCount = 2;
+		console.log(createGame.settings.playersCount)
+	}
+	
+	onStart: {
+		gmib.gameManager.useSettings(settings);
 	}
 	
 	Image {
