@@ -7,6 +7,7 @@
 
 class Player;
 class Tile;
+class Town;
 
 class Board {
 public:
@@ -30,6 +31,7 @@ public:
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
 	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
 	QVector<Tile *> pathToTile(Tile *start, Tile *dest) const;
+	QVector<Tile *> getSurroundings(Town *town, bool onlyFree=0) const;
 	
 	unsigned int width();
 	unsigned int height();
