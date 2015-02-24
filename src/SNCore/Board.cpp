@@ -7,6 +7,7 @@
 
 #include "Board.hpp"
 #include "Tile.hpp"
+#include "Objects/Town.hpp"
 
 Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) {
     for (unsigned int i = 0; i < height_; ++i)
@@ -272,6 +273,41 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
 	}
 	
 	return path;
+}
+
+/* 
+ * Returns tiles that surround the town. If [onlyFree] is true, then only tiles
+ * that do not belong to any other town are returned.
+ */
+QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const {
+	QVector<Tile *> ret;
+	
+	Tile *start = town->tile();
+	QQueue<Tile *> queue;
+	queue.enqueue(start);
+	QSet<Tile *> discovered;
+	discovered.insert(start);
+	
+	while (!queue.empty()) {
+		Tile *current = queue.dequeue();
+		for (Tile *tile : getNeighbours(current)) {
+			
+			if (!discovered.contains(tile)) {
+				
+				discovered.insert(tile);
+				
+				if (tile->town() != town) {
+					if (tile->town() == nullptr || !onlyFree) {
+						ret.push_back(tile);
+					}
+				} else {
+					queue.enqueue(tile);
+				}
+			}
+		}
+	}
+	
+	return ret;
 }
 
 

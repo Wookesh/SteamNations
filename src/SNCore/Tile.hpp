@@ -33,6 +33,7 @@ public:
 	
 	int resourceProduction() const;
 	int takeResources();
+	void gatherResource(Town *town);
 	
 	bool passable(const Player *player) const;
 	int weight() const;

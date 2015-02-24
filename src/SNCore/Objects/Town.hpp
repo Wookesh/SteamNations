@@ -25,11 +25,20 @@ public:
 	
 	bool canRecruit(PrototypeType type);
 	
+	void addFood(SNTypes::amount food);
+	
 	Unit *createUnit(PrototypeType type);
 	void getCaptured(Player *player);
+	
+	void setFoodGoal();
+	void addNewTile();
+	Tile *chooseBestTile(QVector<Tile *> tiles);
 private:
 	QString name_;
 	QVector<Tile *> townTiles_;
+	SNTypes::population population_;
+	SNTypes::amount food_;
+	SNTypes::amount foodGoal_;
 };
 
 #endif

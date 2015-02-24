@@ -1,6 +1,9 @@
 #include "Tile.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
+#include "GameManager.hpp"
+#include "Board.hpp"
+#include "Player.hpp"
 
 Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
@@ -110,10 +113,25 @@ int Tile::resourceProduction() const
 
 int Tile::takeResources()
 {
-	int ret = produced_;
+	QVector<Tile *> neighbours = GameManager::get()->board()->getNeighbours(this);
+	int bonus = 0;
+	for (Tile *tile : neighbours) {
+		if (tile->resource() == resource_ && tile->town() == town_)
+			++bonus;
+	}
+	int ret = produced_ + bonus;
 	produced_ = 0;
 	return ret;
 }
+
+void Tile::gatherResource(Town *town) {
+	if (resource_ == Resource::Food) {
+		town->addFood(takeResources());
+	} else {
+		town->owner()->addResource(resource_, takeResources());	
+	}
+}
+
 
 /*
  * 	Returns movement cost of the tile. If it's not passable, weight should be less than 0.

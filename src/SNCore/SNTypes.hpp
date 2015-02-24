@@ -34,6 +34,11 @@ namespace SNTypes {
 	 * Amount of Resource
 	 */
 	typedef quint16 amount;
+		
+	/**
+	 * Number of population in town
+	 */
+	typedef quint16 population;
 	
 	/**
 	 * Technology tier
