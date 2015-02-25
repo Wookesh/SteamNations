@@ -8,6 +8,7 @@ add_library(SNCore
 	Actions/AttackAction.cpp
 	Actions/MoveAction.cpp
 	Actions/SettleAction.cpp
+    Actions/CreateBuildingAction.cpp
 	Actions/CreateTownAction.cpp 
 	Actions/CreateUnitAction.cpp
 	Actions/CaptureAction.cpp

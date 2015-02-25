@@ -7,7 +7,7 @@
 
 Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
-	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight)
+	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight), building_(Resource::None)
 {
 
 }
@@ -116,7 +116,7 @@ int Tile::takeResources()
 	QVector<Tile *> neighbours = GameManager::get()->board()->getNeighbours(this);
 	int bonus = 0;
 	for (Tile *tile : neighbours) {
-		if (tile->resource() == resource_ && tile->town() == town_)
+		if (tile->resource() == resource_ && tile->town() == town_ && tile->building() == building_)
 			++bonus;
 	}
 	int ret = produced_ + bonus;
@@ -151,4 +151,12 @@ bool Tile::passable (const Player *player) const {
 		return false;
 		
 	return true;
+}
+
+Resource Tile::building() const {
+	return building_;
+}
+
+void Tile::setBuilding(Resource type) {
+	building_ = type;
 }

@@ -3,8 +3,15 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 #include "Tile.hpp"
+#include "Config.hpp"
 
 #include <QtCore>
+
+const QHash<Resource, SNTypes::amount> Player::BASE_BUILDING_COST = {
+	{Resource::Gold, SNCfg::BUILDING_GOLD_COST},
+	{Resource::Research, SNCfg::BUILDING_RESEARCH_COST},
+	{Resource::Food, SNCfg::BUILDING_FOOD_COST}
+};
 
 Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
 {
@@ -17,11 +24,13 @@ Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), 
 	for (Resource r : Resource::labels())
 		resources_[r] = 0;
 	
-	bonuses = {
+	bonuses_ = {
 		{BonusType::War, {{1, false}, {2, false}, {3, false}}},
 		{BonusType::Def, {{1, false}, {2, false}, {3, false}}},
 		{BonusType::Eco, {{1, false}, {2, false}, {3, false}}}
 	};
+	
+	buildingCost_ = BASE_BUILDING_COST;
 }
 
 Player::~Player()
@@ -174,7 +183,7 @@ QList< Prototype * > Player::soldierPrototypes()
 bool Player::applyBonus(Bonus *bonus) 
 {
 	if (bonus->apply(this)) {
-		bonuses[bonus->type()][bonus->tier()] = true;
+		bonuses_[bonus->type()][bonus->tier()] = true;
 		removeResource(Resource::Research, bonus->cost());
 		return true;
 	} else
@@ -183,5 +192,14 @@ bool Player::applyBonus(Bonus *bonus)
 
 bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
 {
-	return bonuses[type][tier];
+	return bonuses_[type][tier];
+}
+
+bool Player::canAffordBuilding(Resource type) {
+	return buildingCost_[type] <= resources_[Resource::Gold];
+		
+}
+
+void Player::payForBuilding(Resource type) {
+	resources_[Resource::Gold] -= buildingCost_[type];
 }

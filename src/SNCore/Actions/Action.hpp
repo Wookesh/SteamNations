@@ -8,7 +8,7 @@
 class Object;
 class Tile;
 
-EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateTown, CreateUnit, Move, None, Settle, SpawnUnit)
+EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateTown, CreateUnit, Move, None, Settle, SpawnUnit, CreateBuilding)
 
 class Action {
 public:
