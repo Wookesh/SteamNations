@@ -43,6 +43,9 @@ public:
 	QPoint position() const;
 	QPoint axial() const;
 	
+	Resource building() const;
+	void setBuilding(Resource);
+	
 	QList<const Object *> getObjects() const;
 private:
 	Town *town_;
@@ -53,6 +56,7 @@ private:
 	int resourceProduction_;
 	int produced_;
 	int weight_;
+	Resource building_;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include "Action.hpp"
 #include "AttackAction.hpp"
 #include "CaptureAction.hpp"
+#include "CreateBuildingAction.hpp"
 #include "CreateTownAction.hpp"
 #include "CreateUnitAction.hpp"
 #include "MoveAction.hpp"

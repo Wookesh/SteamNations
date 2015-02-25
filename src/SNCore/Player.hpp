@@ -16,6 +16,8 @@ class Unit;
 
 class Player {
 public:
+	static const QHash<Resource, SNTypes::amount> BASE_BUILDING_COST;
+	
 	Player(const QString &name, Qt::GlobalColor color);
 	virtual ~Player();
 	
@@ -47,6 +49,8 @@ public:
 	bool applyBonus(Bonus *bonus);
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
 	
+	bool canAffordBuilding(Resource type);
+	void payForBuilding(Resource type);
 private:
 	Town *capital_;
 	QString name_;
@@ -56,7 +60,8 @@ private:
 	QHash<PrototypeType, Prototype *> soldierPrototypes_;
 	Qt::GlobalColor color_;
 	QHash<Resource, unsigned int> resources_;
-	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses;
+	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses_;
+	QHash<Resource, SNTypes::amount> buildingCost_;
 };
 
 #endif

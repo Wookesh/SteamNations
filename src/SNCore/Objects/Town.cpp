@@ -8,7 +8,8 @@
 #include <QtAlgorithms>
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
-	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  food_(0)
+	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
+	food_(0), hasBuiltThisTurn_(0)
 {
 	owner->obtainTown(this);
 	for (Tile *nTile : GameManager::get()->board()->getInRange(tile_, 1))
@@ -27,6 +28,7 @@ Town::~Town()
 	
 	for (Tile *tile : townTiles_)
 		tile->setLocalTown(nullptr);
+	
 	
 	if (owner_ != nullptr)
 		owner_->destroyTown(this);
@@ -99,6 +101,8 @@ void Town::updateBefore()
 		setFoodGoal();
 		addNewTile();
 	}
+	
+	hasBuiltThisTurn_ = false;
 }
 
 
@@ -140,4 +144,25 @@ bool Town::canRecruit(PrototypeType type)
 		owner()->resource(Resource::Gold) >= owner()->prototype(type)->cost())
 		return true;
 	return false;
+}
+
+void Town::createBuilding (Tile *tile, Resource building) {
+	tile->setBuilding(building);
+	owner_->payForBuilding(building);
+}
+
+bool Town::canBuild (Tile *tile, Resource building) {
+	if (tile->localTown() != this)
+		return false;
+	
+	if (tile->building() != Resource::None)
+		return false;
+	
+	if (!owner_->canAffordBuilding(building))
+		return false;
+	
+	if (hasBuiltThisTurn_)
+		return false;
+	
+	return true;
 }
