@@ -4,6 +4,7 @@
 #include <QString>
 
 #include "Object.hpp"
+#include "../Resources.hpp"
 #include "Prototypes/Prototype.hpp"
 
 class Player;
@@ -33,12 +34,16 @@ public:
 	void setFoodGoal();
 	void addNewTile();
 	Tile *chooseBestTile(QVector<Tile *> tiles);
+	
+	bool canBuild(Tile *tile, Resource building);
+	void createBuilding(Tile *tile, Resource building);
 private:
 	QString name_;
 	QVector<Tile *> townTiles_;
 	SNTypes::population population_;
 	SNTypes::amount food_;
 	SNTypes::amount foodGoal_;
+	bool hasBuiltThisTurn_;
 };
 
 #endif
