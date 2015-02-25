@@ -115,10 +115,19 @@ int Tile::takeResources()
 {
 	QVector<Tile *> neighbours = GameManager::get()->board()->getNeighbours(this);
 	int bonus = 0;
+	
+	// Adequate building - 2 bonus resources
+	if (building_ != Resource::None && building_ == resource_)
+		bonus += 2;
+	
+	// Adjacent building of same type - 1 bonus resource
 	for (Tile *tile : neighbours) {
-		if (tile->resource() == resource_ && tile->town() == town_ && tile->building() == building_)
+		if (tile->town() == town_ && 
+			tile->building() == building_ && 
+			tile->building_ != Resource::None)
 			++bonus;
 	}
+	
 	int ret = produced_ + bonus;
 	produced_ = 0;
 	return ret;
