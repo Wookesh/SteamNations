@@ -3,6 +3,8 @@
 #include "SNCore/Player.hpp"
 #include "SNCore/GameManager.hpp"
 #include "SNCore/Console.hpp"
+#include "SNCore/Objects/Unit.hpp"
+#include <QDebug>
 
 InfoBox::InfoBox(QObject* parent) : visible_(false), selectedObject_(nullptr)
 {
@@ -35,6 +37,9 @@ void InfoBox::setObject(const Object* object)
 {
 	selectedObject_ = object;
 	emit objectChanged();
+	
+	if(object->type() == ObjectType::Unit)
+		emit unitChanged();
 }
 
 QStringList &InfoBox::actions()
@@ -47,3 +52,16 @@ void InfoBox::setActions(QStringList &actions)
 	objectActions_ = actions;
 }
 
+qint16 InfoBox::healthLeft()
+{
+	if(selectedObject_->type() == ObjectType::Unit) 
+		return (qint16)static_cast<const Unit*>(selectedObject_)->healthLeft();
+	return 0;
+}
+
+qint16 InfoBox::health()
+{
+	if(selectedObject_->type() == ObjectType::Unit)
+		return (qint16)static_cast<const Unit*>(selectedObject_)->health();
+	return 0;
+}

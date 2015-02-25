@@ -2,7 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import SN 1.0
 
-Image {
+SNImage {
 
 	id:objectInfoBox
 	property InfoBox snInfoBox;
@@ -11,7 +11,15 @@ Image {
 	property var nameBoxHeight : 180 * root.globalScale.height
 	property var boxWidth: 220 * root.globalScale.width
 	
+	function unitChanged() {
+		healthBar.visible = true;
+		healthBarFull.y = healthBarFull.height * (snInfoBox.health-snInfoBox.healthLeft) / snInfoBox.health;
+		healthBarFullText.text = snInfoBox.healthLeft + "/" + snInfoBox.health;
+		
+	}
+	
 	function objectChanged() {
+		healthBar.visible = false;
 		objectInfoBox.owner = snInfoBox.owner
 		objectInfoBox.name = snInfoBox.name
 		settle.visible = false;
@@ -43,12 +51,11 @@ Image {
 		snInfoBox = scene.infobox;
 		snInfoBox.objectChanged.connect(objectInfoBox.objectChanged);
 		snInfoBox.visibleChanged.connect(objectInfoBox.visibleChanged);
+		snInfoBox.unitChanged.connect(objectInfoBox.unitChanged);
 	}
 	
 	visible: false
 	source: "qrc:///infoBoxBackground"
-	width: sourceSize.width * root.globalScale.width
-	height: sourceSize.height * root.globalScale.height
 	
 	Column {
 		anchors.horizontalCenter: parent.horizontalCenter
@@ -110,6 +117,34 @@ Image {
 			onClicked:scene.makeAction(3);
 		}
 	
+	}
+	
+	SNImage{
+		visible:false
+		id:healthBar
+		clip:true
+		scale:0.7;
+		source:"qrc:///healthBar";
+		x:objectInfoBox.width-boxWidth+(boxWidth-width)/2;
+		y:nameBoxHeight*2;
+		
+		SNImage{
+			id:healthBarFull
+			z:-1
+			source:"qrc:///healthBarFull";
+			y:100
+		}
+		
+		Label{
+			id:healthBarFullText
+			text:"10/20";
+			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.verticalCenter: parent.verticalCenter 
+			font.family: snFont.name
+			font.pixelSize: 40
+			rotation:90;
+			
+		}
 	}
 }
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include "SNCore/SNTypes.hpp"
 
 class Object;
 
@@ -16,6 +17,9 @@ public:
 	Q_PROPERTY(QString name READ name )
 	Q_PROPERTY(QString owner READ owner)
 	Q_PROPERTY(QStringList actions READ actions)
+	Q_PROPERTY(qint16 healthLeft READ healthLeft)
+	Q_PROPERTY(qint16 health READ health)
+	
 	InfoBox(QObject *parent = 0);
 	
 	void setVisible(bool visible);
@@ -24,9 +28,13 @@ public:
 	bool visible();
 	QString owner();
 	QString name();
+	qint16 health();
+	qint16 healthLeft();
 	QStringList &actions();
 signals:
 	void objectChanged();
+	void townChanged();
+	void unitChanged();
 	void visibleChanged();
 private:
 	bool visible_;
