@@ -3,12 +3,15 @@ import QtQuick 2.3
 ColorCell {
 	id: colorPicker
 	cellColor: "red"
-	onClicked: 
-		colorColumn.visible = true
+	onClicked: {
+		if (!colorPicker.disabled)
+			colorColumn.visible = true
+	}
 	
+	property bool disabled: false
 	signal selected(color colorSelected)
 	
-	Column {
+	Row {
 		id: colorColumn
 		visible: false
 

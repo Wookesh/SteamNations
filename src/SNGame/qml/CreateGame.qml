@@ -7,8 +7,6 @@ Rectangle {
 	id: createGame
 	anchors.fill: parent
 	
-	property GameSettings settings;
-	
 	signal back()
 	signal start()
 	
@@ -26,13 +24,15 @@ Rectangle {
 		}
 	}
 	
-	Component.onCompleted: {
-		createGame.settings.playersCount = 2;
-		console.log(createGame.settings.playersCount)
-	}
-	
-	onStart: {
-		gmib.gameManager.useSettings(settings);
+	function tryToStart() {
+		var playerNames = [];
+		var playerColors = [];
+		for (var i = 0; i < gameData.playersCount; ++i) {
+			playerNames[i] = gameData.entries[i].name;
+			playerColors[i] = gameData.entries[i].color;
+		}
+		gmib.gameManager.useSettings(gameData.boardWidth, gameData.boardHeight, gameData.playersCount, playerNames, playerColors);
+		createGame.start();
 	}
 	
 	Image {
@@ -45,6 +45,8 @@ Rectangle {
 	Column {
 		id: gameData
 		property var playersCount: 2
+		property var boardHeight: 30
+		property var boardWidth: 30
 		property var entries: [p1, p2, p3, p4]
 		
 		PlayerDataEntry {
@@ -59,11 +61,60 @@ Rectangle {
 		PlayerDataEntry {
 			id: p4
 		}
+		Row {
+			spacing: 20
+			TextButton {
+				id: addButton
+				text: "Add Player"
+				onClicked:
+					createGame.addPlayer()
+			}
+			
+			TextButton {
+				id: removeButton
+				text: "Remove Player"
+				onClicked:
+					createGame.removePlayer()
+			}
+		}
 		anchors.horizontalCenter: parent.horizontalCenter
 		
 		Component.onCompleted: {
 			p3.disabled = true;
 			p4.disabled = true;
+		}
+	}
+	
+	Row {
+		spacing: 20
+		anchors.top: gameData.bottom
+		anchors.horizontalCenter: parent.horizontalCenter
+		
+		TextButton {
+			id: smallMap
+			text: "Small"
+			onClicked: {
+				gameData.boardWidth = 15
+				gameData.boardHeight = 15
+			}
+		}
+		
+		TextButton {
+			id: mediumMap
+			text: "Medium"
+			onClicked: {
+				gameData.boardWidth = 30
+				gameData.boardHeight = 30
+			}
+		}
+		
+		TextButton {
+			id: largeMap
+			text: "Large"
+			onClicked: {
+				gameData.boardWidth = 50
+				gameData.boardHeight = 50
+			}
 		}
 	}
 	
@@ -80,24 +131,10 @@ Rectangle {
 		}
 		
 		TextButton {
-			id: addButton
-			text: "Add Player"
-			onClicked:
-				createGame.addPlayer()
-		}
-		
-		TextButton {
-			id: removeButton
-			text: "Remove Player"
-			onClicked:
-				createGame.removePlayer()
-		}
-		
-		TextButton {
 			id: startButton
 			text: "Start"
 			onClicked:
-				createGame.start();
+				createGame.tryToStart();
 		}
 	}
 	

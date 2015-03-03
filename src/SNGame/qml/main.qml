@@ -20,6 +20,10 @@ Rectangle {
 			createGame.visible = false
 			mainMenu.visible = true
 		}
+		onStart: {
+			createGame.visible = false
+			gameUI.visible = true
+		}
 	}
 	
 	GameUI {
@@ -43,6 +47,4 @@ Rectangle {
 	GameManagerInstanceBox {
 		id: gmib
 	}
-
-
 }

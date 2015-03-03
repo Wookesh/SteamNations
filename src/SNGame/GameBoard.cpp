@@ -48,7 +48,6 @@ GameBoard::GameBoard(QQuickItem *parent)
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
 	initTimer();
-	GameManager::get()->initBoard(Board::MAXWIDTH, Board::MAXWIDTH);
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
 }
 
@@ -100,6 +99,9 @@ const qreal GameBoard::GBsin(int i)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
+	if (GameManager::get()->board() == nullptr)
+		return mainNode;
+	
 	if (!textureManager_->isLoaded())
 		textureManager_->loadTextures(window());
 	
@@ -299,6 +301,7 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 	int x2 = (mouseX - x - (1 - scale) * BOARD_WIDTH / 2) / scale;
 	int y2 = (mouseY - y - ( 1 - scale) * BOARD_HEIGHT / 2) / scale;
 	QPoint clicked = pixelToHex(x2,y2);
+	GMlog() << clicked.x() << " " << clicked.y();
 	select(GameManager::get()->board()->getTile(clicked.x(), clicked.y()));
 }
 

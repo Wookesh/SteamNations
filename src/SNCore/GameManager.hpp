@@ -11,7 +11,6 @@ class Console;
 class Board;
 class Object;
 class Player;
-class GameSettings;
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -23,10 +22,9 @@ public:
 	static void init();
 	static void clean();
 	
-	bool useSettings(GameSettings *settings);
+	Q_INVOKABLE bool useSettings(int width, int height, int playersCount, const QStringList &names, const QVariantList &colors);
 	void initBoard(int width, int height, int seed = qrand());
 	void endGame();
-	void resetSettings();
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);
@@ -38,8 +36,6 @@ public:
 
 	Player *currentPlayer() const;
 	int currentTurn() const;
-	
-	GameSettings *gameSettings() const;
 	
 	void addObject(Object *object);
 	const Object *object(UID uid) const;
@@ -61,7 +57,6 @@ private:
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
 	Console *console_;
-	GameSettings *gameSettings_;
 	
 	void setNextPlayer();
 	void prepareNewTurn();

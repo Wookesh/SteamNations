@@ -2,7 +2,6 @@ add_library(SNCore
 	Board.cpp
 	Console.cpp
 	GameManager.cpp
-	GameSettings.cpp
 	Tile.cpp
 	Player.cpp
 	Actions/Action.cpp
@@ -13,10 +12,10 @@ add_library(SNCore
 	Actions/CreateUnitAction.cpp
 	Actions/CaptureAction.cpp
 	Actions/SpawnUnitAction.cpp
-    Bonuses/Bonus.cpp
-    Bonuses/WarfareBonuses.cpp
-    Bonuses/DefenseBonuses.cpp
-    Bonuses/EconomyBonuses.cpp
+	Bonuses/Bonus.cpp
+	Bonuses/WarfareBonuses.cpp
+	Bonuses/DefenseBonuses.cpp
+	Bonuses/EconomyBonuses.cpp
 	Objects/Object.cpp
 	Objects/Unit.cpp
 	Objects/Settler.cpp

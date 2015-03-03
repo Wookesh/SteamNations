@@ -1,7 +1,6 @@
 #include "GameManager.hpp"
 #include "Board.hpp"
 #include "Console.hpp"
-#include "GameSettings.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
 #include "Objects/Objects.hpp"
@@ -46,51 +45,57 @@ GameManager::~GameManager()
 
 }
 
-bool GameManager::useSettings(GameSettings *settings)
+bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)
 {
-	if (!settings->validate())
+	//Validate
+	if (playerNames.size() != playersCount || playerColors.size() != playersCount)
 		return false;
 	
-	//ClearCurrentSettings
+	if (playersCount < 2 || playersCount > 4)
+		return false;
 	
-	resetSettings();
+	if (width < 10 || width > 50)
+		return false;
 	
-	gameSettings_ = settings;
+	if (height < 10 || height > 50)
+		return false;
+	
+	for (QString name : playerNames)
+		if (name.isEmpty())
+			return false;
 	
 	//Create Board
 	
-	initBoard(settings->boardSize().width(), settings->boardSize().height());
+	initBoard(width, height);
 	
 	//CreatePlayers
-	
-	QList<Player *> playersList;
-	
-	for (QString playerName : settings->playerNames()) {
+
+	for (QString playerName : playerNames) {
 		static int no = 0;
 		Player *player = new Player(playerName);
-		playersList.push_back(player);
-		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, settings->playersCount());
+		players_.push_back(player);
+		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
 		
 		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
-		spawnCenter.second += 1;
 		
+		spawnCenter.second += 1;
 		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Infantry).perform();
+		
 		player->updateBefore();
 		++no;
 	}
+	
+	setNextPlayer();
 	return true;
 }
 
 void GameManager::initBoard(int width, int height, int seed) 
 {
+	if (board_ != nullptr)
+		delete board_;
 	board_ = new Board(width, height, seed);
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
-}
-
-void GameManager::resetSettings()
-{
-	gameSettings_ = nullptr;
 }
 
 void GameManager::setPlayers(QList< Player * > &players) 
@@ -140,12 +145,6 @@ Console *GameManager::console() const
 {
 	return console_;
 }
-
-GameSettings *GameManager::gameSettings() const
-{
-	return gameSettings_;
-}
-
 
 QList< Player * > GameManager::players() const 
 {

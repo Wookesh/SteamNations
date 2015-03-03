@@ -4,14 +4,18 @@ import "./colorPicker"
 
 Row {
 	id: entry
-	height: 4 * colorPicker.height
+	height: 2 * colorPicker.height
 	property bool disabled: false
+	property alias color: colorPicker.cellColor
+	property alias name: nameBox.text
 	
 	TextField {
 		id: nameBox
 		height: frame.height
 		width: frame.width
 		enabled: !entry.disabled
+		text: "Player"
+		textColor: "black"
 		font.pixelSize: nameBox.height / 4
 	}
 	
@@ -27,6 +31,7 @@ Row {
 		source: "qrc:///frameSmall"
 		ColorPicker {
 			id: colorPicker
+			disabled: entry.disabled
 			anchors.right: parent.horizontalCenter
 			anchors.verticalCenter: parent.verticalCenter
 		}
