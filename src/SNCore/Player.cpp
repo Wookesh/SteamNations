@@ -6,7 +6,7 @@
 
 #include <QtCore>
 
-Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
+Player::Player(const QString &name) : capital_(nullptr), name_(name)
 {
 	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
 	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
@@ -59,11 +59,6 @@ void Player::destroyTown (Town *town) {
 			break;
 		}
 	}
-}
-
-Qt::GlobalColor Player::color() const
-{
-	return color_;
 }
 
 unsigned int Player::getTownCount() {

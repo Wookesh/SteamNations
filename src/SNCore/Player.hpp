@@ -16,7 +16,7 @@ class Unit;
 
 class Player {
 public:
-	Player(const QString &name, Qt::GlobalColor color);
+	Player(const QString &name);
 	virtual ~Player();
 	
 	QString name() const;
@@ -42,8 +42,6 @@ public:
 	QList<Prototype *> prototypes();
 	QList<Prototype *> soldierPrototypes();
 	
-	Qt::GlobalColor color() const;
-	
 	bool applyBonus(Bonus *bonus);
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
 	
@@ -54,7 +52,6 @@ private:
 	QVector<Unit *> units_;
 	QHash<PrototypeType, Prototype *> prototypes_;
 	QHash<PrototypeType, Prototype *> soldierPrototypes_;
-	Qt::GlobalColor color_;
 	QHash<Resource, unsigned int> resources_;
 	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses;
 };

@@ -46,24 +46,30 @@ GameManager::~GameManager()
 
 }
 
-bool GameManager::useSettings(const GameSettings &settings)
+bool GameManager::useSettings(GameSettings *settings)
 {
-	if (!settings.validate())
+	if (!settings->validate())
 		return false;
+	
+	//ClearCurrentSettings
+	
+	resetSettings();
+	
+	gameSettings_ = settings;
 	
 	//Create Board
 	
-	initBoard(settings.boardSize.width(), settings.boardSize.height());
+	initBoard(settings->boardSize().width(), settings->boardSize().height());
 	
 	//CreatePlayers
 	
 	QList<Player *> playersList;
 	
-	for (QPair<QString, Qt::GlobalColor> data : settings.playerData()) {
+	for (QString playerName : settings->playerNames()) {
 		static int no = 0;
-		Player *player = new Player(data.first, data.second);
+		Player *player = new Player(playerName);
 		playersList.push_back(player);
-		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, settings.playersCount);
+		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, settings->playersCount());
 		
 		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
 		spawnCenter.second += 1;
@@ -80,6 +86,11 @@ void GameManager::initBoard(int width, int height, int seed)
 	board_ = new Board(width, height, seed);
 	
 	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
+}
+
+void GameManager::resetSettings()
+{
+	gameSettings_ = nullptr;
 }
 
 void GameManager::setPlayers(QList< Player * > &players) 
@@ -129,6 +140,12 @@ Console *GameManager::console() const
 {
 	return console_;
 }
+
+GameSettings *GameManager::gameSettings() const
+{
+	return gameSettings_;
+}
+
 
 QList< Player * > GameManager::players() const 
 {
