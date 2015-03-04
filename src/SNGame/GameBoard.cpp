@@ -141,16 +141,32 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
 				child->removeAllChildNodes();
 				if (tile->town()) {
+					QSGSimpleTextureNode *townShadow = new QSGSimpleTextureNode();
+					QSGTexture *texture_= textureManager_->texture("TownShadow");
+					
+					townShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+					townShadow->setTexture(texture_);
+					child->appendChildNode(townShadow);
+					
 					QSGSimpleTextureNode *townNode = new QSGSimpleTextureNode();
-					QSGTexture *texture_ = textureManager_->texture("Town");
+					texture_ = textureManager_->texture("Town");
 					townNode->setTexture(texture_);
 					townNode->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
 					child->appendChildNode(townNode);
 				}
 				if (tile->unit()) {
 					
+					QSGSimpleTextureNode *unitShadow = new QSGSimpleTextureNode();
+					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType())+"Shadow");
+					
+					if (texture_ == nullptr)
+						GMlog() << "[ERROR] texture is null";
+					unitShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+					unitShadow->setTexture(texture_);
+					child->appendChildNode(unitShadow);
+					
 					QSGSimpleTextureNode *unit = new QSGSimpleTextureNode();
-					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType()));
+					texture_= textureManager_->texture((QString)(tile->unit()->pType()));
 					
 					if (texture_ == nullptr)
 						GMlog() << "[ERROR] texture is null";

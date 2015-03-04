@@ -31,6 +31,12 @@
 		<file alias="unit/Heavy">images/units/heavy.png</file>
 		<file alias="unit/Town">images/town.png</file>
 		
+		<file alias="unit/SettlerShadow">images/units/settlerWhitePlus2px.png</file>
+		<file alias="unit/ArtilleryShadow">images/units/artileryWhitePlus2px.png</file>
+		<file alias="unit/InfantryShadow">images/units/infantryWhitePlus2px.png</file>
+		<file alias="unit/HeavyShadow">images/units/tankWhitePlus2px.png</file>
+		<file alias="unit/TownShadow">images/townWhitePlus2px.png</file>
+		
 		<file alias="hex/Desert">images/hexes/pustynia.png</file>
 		<file alias="hex/Fog">images/hexes/fog.png</file>
 		<file alias="hex/Forest">images/hexes/forest.png</file>
