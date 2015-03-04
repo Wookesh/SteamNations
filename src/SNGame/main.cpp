@@ -9,7 +9,6 @@
 #include "GameBoard.hpp"
 #include "SNCore/Console.hpp"
 #include "SNCore/GameManager.hpp"
-#include <SNCore/GameSettings.hpp>
 #include "InfoBox.hpp"
 
 int main(int argc, char *argv[])
