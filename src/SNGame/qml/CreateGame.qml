@@ -51,15 +51,19 @@ Rectangle {
 		
 		PlayerDataEntry {
 			id: p1
+			name: "Player1"
 		}
 		PlayerDataEntry {
 			id: p2
+			name: "Player2"
 		}
 		PlayerDataEntry {
 			id: p3
+			name: "Player3"
 		}
 		PlayerDataEntry {
 			id: p4
+			name: "Player4"
 		}
 		Row {
 			spacing: 20

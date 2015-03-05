@@ -6,7 +6,7 @@
 
 #include <QtCore>
 
-Player::Player(const QString &name) : capital_(nullptr), name_(name)
+Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(name), color_(color)
 {
 	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
 	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
@@ -46,6 +46,12 @@ QString Player::name() const
 {
 	return name_;
 }
+
+QColor Player::color() const
+{
+	return color_;
+}
+
 
 void Player::obtainTown(Town *town)
 {

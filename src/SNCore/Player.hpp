@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QString>
 #include <QVector>
+#include <QtGui/QColor>
 
 
 #include "Objects/Prototypes/Prototype.hpp"
@@ -16,10 +17,11 @@ class Unit;
 
 class Player {
 public:
-	Player(const QString &name);
+	Player(const QString &name, QColor color);
 	virtual ~Player();
 	
 	QString name() const;
+	QColor color() const;
 	
 	void updateBefore();
 	void updateAfter();
@@ -48,6 +50,7 @@ public:
 private:
 	Town *capital_;
 	QString name_;
+	QColor color_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
 	QHash<PrototypeType, Prototype *> prototypes_;
