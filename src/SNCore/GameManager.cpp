@@ -72,7 +72,7 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 
 	for (QString playerName : playerNames) {
 		static int no = 0;
-		Player *player = new Player(playerName);
+		Player *player = new Player(playerName, playerColors[no].value<QColor>());
 		players_.push_back(player);
 		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
 		
