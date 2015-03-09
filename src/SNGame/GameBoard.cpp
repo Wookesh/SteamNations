@@ -7,6 +7,7 @@
 #include <QSGNode>
 #include <QTimer>
 #include <QPixmap>
+#include <QDebug>
 
 #include "SNCore/GameManager.hpp"
 #include "SNCore/Board.hpp"
@@ -43,7 +44,7 @@ void GameBoard::nextFrame()
 
 GameBoard::GameBoard(QQuickItem *parent)
 	: QQuickItem(parent), textureManager_(new TextureManager(this)), selectedObject_(nullptr),
-	infobox_(new InfoBox())
+	infobox_(new InfoBox()), boardSet_(false)
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
@@ -101,6 +102,11 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
 	if (GameManager::get()->board() == nullptr)
 		return mainNode;
+	
+	if(!boardSet_) {
+		boardSet_  = true;
+		emit boardSet();
+	}
 	
 	if (!textureManager_->isLoaded())
 		textureManager_->loadTextures(window());
@@ -207,9 +213,10 @@ QPoint GameBoard::pixelToHex(int x, int y)
 	p[2] = QPoint(floor(q), ceil(r));
 	p[3] = QPoint(ceil(q), floor(r));
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe;
+	int whichONe = 5;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
 	for (int i = 0; i < 4; i++) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
+		
 		if(tile) {
 			QPointF tmp =coordToPos(tile->position());
 			tmp -= prob;
@@ -219,7 +226,9 @@ QPoint GameBoard::pixelToHex(int x, int y)
 			}
 		}
 	}
-	return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+	if(whichONe != 5)
+		return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+	return GameManager::get()->board()->getTileAxial(0,0)->position();
 }
 
 void GameBoard::clearActions()
@@ -301,7 +310,6 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 	int x2 = (mouseX - x - (1 - scale) * BOARD_WIDTH / 2) / scale;
 	int y2 = (mouseY - y - ( 1 - scale) * BOARD_HEIGHT / 2) / scale;
 	QPoint clicked = pixelToHex(x2,y2);
-	GMlog() << clicked.x() << " " << clicked.y();
 	select(GameManager::get()->board()->getTile(clicked.x(), clicked.y()));
 }
 
@@ -311,3 +319,24 @@ void GameBoard::makeAction(int action)
 	select(selectedObject_->tile());
 }
  
+qint16 GameBoard::boardHeight()
+{
+	
+	if(boardSet_) {
+		static const int BOARD_HEIGHT = BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height();
+		return BOARD_HEIGHT;
+	}
+	return 0;
+	
+}
+
+qint16 GameBoard::boardWidth()
+{
+	if(boardSet_) {
+		static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
+		return BOARD_WIDTH;
+	}
+	return 0;
+}
+
+

@@ -118,10 +118,18 @@ Rectangle {
 			y: -3000
 			id: scene
 			
+			function setBoard() {
+				scene.width = scene.boardWidth;
+				scene.height = scene.boardHeight;
+				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
+				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+			}
+			
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
 				objectInfoBox.createConnections();
+				scene.boardSet.connect(scene.setBoard);
 			}
 		}
 	}
