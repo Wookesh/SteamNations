@@ -208,16 +208,20 @@ QPoint GameBoard::pixelToHex(int x, int y)
 	double r = (-1.0 / 3 * (x + size) + 1.0 / 3 * sqrt(3) * (y + size * sqrt(3) / 2)) / size;
 	GMlog() << "q = " << q << "r = " << r << "\n";
 	QPointF prob(x,y);
+	QPoint c(qFloor(q), qFloor(r));
 	QVector<QPoint> p({
-		{qFloor(q), qFloor(r)}, 
-		{qCeil(q), qCeil(r)},
-		{qFloor(q), qCeil(r)},
-		{qCeil(q), qFloor(r)}
+		{c.x(),c.y()}, 
+		{c.x(),c.y() + 1}, 
+		{c.x(),c.y() - 1}, 
+		{c.x() + 1,c.y()}, 
+		{c.x() - 1,c.y()}, 
+		{c.x() + 1,c.y() - 1}, 
+		{c.x() - 1,c.y() + 1}
 	});
 	double missmatch = std::numeric_limits<double>::max();
 	int whichONe;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
 	int missmatches = 0;
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < p.size(); ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
 		
 		if (tile) {
