@@ -166,3 +166,37 @@ bool Town::canBuild (Tile *tile, Resource building) {
 	
 	return true;
 }
+
+QDataStream &operator<<(QDataStream &out, const Town &town)
+{
+	//out << static_cast<Object>(town);
+	out << town.name_ << town.population_ << town.food_ << town.foodGoal_ << town.hasBuiltThisTurn_;
+	out << town.townTiles_.size();
+	
+	for (Tile *tile : town.townTiles_) {
+		out << tile->axial();
+	}
+	
+	return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Town &town)
+{
+	//in >> static_cast<Object>(town);
+	in >> town.name_ >> town.population_ >> town.food_ >> town.foodGoal_ >> town.hasBuiltThisTurn_;
+	int townTilesCount;
+	in >> townTilesCount;
+	for (int i = 0; i < townTilesCount; ++i) {
+		QPoint pos;
+		in >> pos;
+		Tile *tile = GameManager::get()->board()->getTileAxial(pos.x(), pos.y());
+		if (tile != nullptr) {
+			town.townTiles_.push_back(tile);
+		} else { 
+			GameManager::get()->errorLoading();
+			return in;
+		}
+	}
+	
+	return in;
+}

@@ -45,6 +45,23 @@ GameManager::~GameManager()
 
 }
 
+
+void GameManager::load(const QString &saveFile)
+{
+
+}
+
+void GameManager::save(const QString &saveFile)
+{
+
+}
+
+void GameManager::errorLoading()
+{
+	
+}
+
+
 void GameManager::addObject(Object *object) 
 {
 	object->setId(serial_->next());

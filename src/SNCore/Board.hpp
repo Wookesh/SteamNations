@@ -41,6 +41,9 @@ private:
 	unsigned int height_;
 	unsigned int width_;
 	QVector<Tile *> tiles_;
+friend QDataStream &operator<<(QDataStream &out, const Board &board); 
 };
+
+QDataStream &operator<<(QDataStream &out, const Board &board);
 
 #endif

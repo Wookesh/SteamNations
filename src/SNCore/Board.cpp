@@ -310,9 +310,17 @@ QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const {
 	return ret;
 }
 
-
 void Board::updateBefore()
 {
 	for (Tile *tile : tiles_)
 		tile->updateBefore();
+}
+
+QDataStream &operator<<(QDataStream &out, const Board &board)
+{
+	out << board.width_ << board.height_;
+	for (Tile *tile : board.tiles_) {
+		out << (*tile);
+	}
+	return out;
 }

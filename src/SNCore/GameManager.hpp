@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "Serial.hpp"
+#include <QString>
 
 #define GMlog() GameManager::get()->console()->in()
 
@@ -24,6 +25,10 @@ public:
 	
 	void initGame(int width, int height, int seed = qrand());
 	void endGame();
+	
+	void load(const QString &saveFile);
+	void save(const QString &saveFile);
+	void errorLoading();
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);

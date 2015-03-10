@@ -44,6 +44,12 @@ private:
 	SNTypes::amount food_;
 	SNTypes::amount foodGoal_;
 	bool hasBuiltThisTurn_;
+	
+friend QDataStream &operator<<(QDataStream &out, const Town &town);
+friend QDataStream &operator>>(QDataStream &in, Town &town);
 };
+
+QDataStream &operator<<(QDataStream &out, const Town &town);
+QDataStream &operator>>(QDataStream &in, Town &town);
 
 #endif

@@ -57,6 +57,10 @@ private:
 	int produced_;
 	int weight_;
 	Resource building_;
+	
+friend QDataStream &operator<<(QDataStream &out, const Tile &tile); 
 };
+
+QDataStream &operator<<(QDataStream &out, const Tile &tile); 
 
 #endif

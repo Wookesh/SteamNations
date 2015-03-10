@@ -169,3 +169,8 @@ Resource Tile::building() const {
 void Tile::setBuilding(Resource type) {
 	building_ = type;
 }
+
+QDataStream &operator<<(QDataStream &out, const Tile &tile)
+{
+	return out;
+}
