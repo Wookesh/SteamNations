@@ -204,29 +204,35 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 QPoint GameBoard::pixelToHex(int x, int y)
 {
 	int size = BoardField::SIZE;
-	double q = 2./3 * (x+size) / size;
-	double r = (-1./3 * (x+size) + 1./3*sqrt(3) * (y+size*sqrt(3)/2)) / size;
+	double q = 2.0 / 3 * (x + size) / size;
+	double r = (-1.0 / 3 * (x + size) + 1.0 / 3 * sqrt(3) * (y + size * sqrt(3) / 2)) / size;
+	GMlog() << "q = " << q << "r = " << r << "\n";
 	QPointF prob(x,y);
-	QPoint p[4];
-	p[0] = QPoint(floor(q), floor(r));
-	p[1] = QPoint(ceil(q), ceil(r));
-	p[2] = QPoint(floor(q), ceil(r));
-	p[3] = QPoint(ceil(q), floor(r));
+	QVector<QPoint> p({
+		{qFloor(q), qFloor(r)}, 
+		{qCeil(q), qCeil(r)},
+		{qFloor(q), qCeil(r)},
+		{qCeil(q), qFloor(r)}
+	});
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe = 5;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
-	for (int i = 0; i < 4; i++) {
+	int whichONe;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
+	int missmatches = 0;
+	for (int i = 0; i < 4; ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
 		
-		if(tile) {
-			QPointF tmp =coordToPos(tile->position());
+		if (tile) {
+			QPointF tmp = coordToPos(tile->position());
 			tmp -= prob;
-			if(sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y()) < missmatch) {
-				missmatch = sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y());
+			GMlog() << tile->axial().x() << " " << tile->axial().y() << " " <<  sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) << "\n";
+			if (sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) < missmatch) {
+				missmatch = sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y());
 				whichONe = i;
 			}
+		} else {
+			++missmatches;
 		}
 	}
-	if(whichONe != 5)
+	if (missmatches != p.size())
 		return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
 	return GameManager::get()->board()->getTileAxial(0,0)->position();
 }
@@ -269,9 +275,6 @@ void GameBoard::getActions()
 	infobox_->setVisible(true);
 }
 
-
-
-
 void GameBoard::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
@@ -302,7 +305,6 @@ void GameBoard::select(const Tile *tile)
 	}
 }
 
-
 void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 {
 	static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
@@ -322,7 +324,7 @@ void GameBoard::makeAction(int action)
 qint16 GameBoard::boardHeight()
 {
 	
-	if(boardSet_) {
+	if (boardSet_) {
 		static const int BOARD_HEIGHT = BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height();
 		return BOARD_HEIGHT;
 	}
@@ -332,11 +334,9 @@ qint16 GameBoard::boardHeight()
 
 qint16 GameBoard::boardWidth()
 {
-	if(boardSet_) {
+	if (boardSet_) {
 		static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
 		return BOARD_WIDTH;
 	}
 	return 0;
 }
-
-

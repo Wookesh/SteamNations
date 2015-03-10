@@ -22,6 +22,7 @@ public:
 	
 	Tile *getTile(int x, int y) const;
 	Tile *getTile(QPair<int, int > pos) const;
+	Tile *getTileAxial(QPoint p) const;
 	Tile *getTileAxial(int x, int y) const;
 	Tile *getTileCube(int x, int y, int z) const;
 	

@@ -110,6 +110,11 @@ Tile *Board::getTile(QPair<int, int> pos) const
 	return getTile(pos.first, pos.second);
 }
 
+Tile *Board::getTileAxial(QPoint p) const
+{
+	return getTileAxial(p.x(), p.y());
+}
+
 
 Tile* Board::getTileAxial(int x, int y) const {
 	int q = x;
