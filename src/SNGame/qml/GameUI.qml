@@ -88,10 +88,10 @@ Rectangle {
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {
-				if (scene.scale < 2)
+				if ((scene.scale < 2) && (scene.height*(scene.scale - 0.05) >= 1080*root.globalScale.height))
 					scene.scale += 0.05
 			} else {
-				if (scene.scale > 0.5)
+				if ((scene.scale > 0.5) && (scene.width*(scene.scale - 0.05) >= (1920*root.globalScale.width - menuButton.width)))
 					scene.scale -= 0.05
 			}
 			if (scene.x < drag.minimumX)
