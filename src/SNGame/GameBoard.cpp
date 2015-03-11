@@ -140,39 +140,47 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				QSGNode *child = nodeMap[index(i, j)]->node();
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
 				child->removeAllChildNodes();
-				if (tile->town()) {
-					QSGSimpleTextureNode *townShadow = new QSGSimpleTextureNode();
-					QSGTexture *texture_= textureManager_->texture("TownShadow");
-					
-					townShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
-					townShadow->setTexture(texture_);
-					child->appendChildNode(townShadow);
-					
-					QSGSimpleTextureNode *townNode = new QSGSimpleTextureNode();
-					texture_ = textureManager_->texture("Town");
-					townNode->setTexture(texture_);
-					townNode->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
-					child->appendChildNode(townNode);
-				}
-				if (tile->unit()) {
-					
-					QSGSimpleTextureNode *unitShadow = new QSGSimpleTextureNode();
-					QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType())+"Shadow");
-					
-					if (texture_ == nullptr)
-						GMlog() << "[ERROR] texture is null";
-					unitShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
-					unitShadow->setTexture(texture_);
-					child->appendChildNode(unitShadow);
-					
-					QSGSimpleTextureNode *unit = new QSGSimpleTextureNode();
-					texture_= textureManager_->texture((QString)(tile->unit()->pType()));
-					
-					if (texture_ == nullptr)
-						GMlog() << "[ERROR] texture is null";
-					unit->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
-					unit->setTexture(texture_);
-					child->appendChildNode(unit);
+				if(tile->visionState(GameManager::get()->currentPlayer()) == VisionType::Visible) {
+					if (tile->town()) {
+						QSGSimpleTextureNode *townShadow = new QSGSimpleTextureNode();
+						QSGTexture *texture_= textureManager_->texture("TownShadow");
+						
+						townShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+						townShadow->setTexture(texture_);
+						child->appendChildNode(townShadow);
+						
+						QSGSimpleTextureNode *townNode = new QSGSimpleTextureNode();
+						texture_ = textureManager_->texture("Town");
+						townNode->setTexture(texture_);
+						townNode->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+						child->appendChildNode(townNode);
+					}
+					if (tile->unit()) {
+						
+						QSGSimpleTextureNode *unitShadow = new QSGSimpleTextureNode();
+						QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType())+"Shadow");
+						
+						if (texture_ == nullptr)
+							GMlog() << "[ERROR] texture is null";
+						unitShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+						unitShadow->setTexture(texture_);
+						child->appendChildNode(unitShadow);
+						
+						QSGSimpleTextureNode *unit = new QSGSimpleTextureNode();
+						texture_= textureManager_->texture((QString)(tile->unit()->pType()));
+						
+						if (texture_ == nullptr)
+							GMlog() << "[ERROR] texture is null";
+						unit->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+						unit->setTexture(texture_);
+						child->appendChildNode(unit);
+					}
+				} else if(tile->visionState(GameManager::get()->currentPlayer()) == VisionType::Invisible) {
+					QSGSimpleTextureNode *fogNode = new QSGSimpleTextureNode();
+					QSGTexture *texture_ = textureManager_->texture("Fog");
+					fogNode->setTexture(texture_);
+					fogNode->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
+					child->appendChildNode(fogNode);
 				}
 			}
 		}
@@ -283,7 +291,7 @@ void GameBoard::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
 		QList<const Object *> objects = tile->getObjects();
-		if (objects.size() == 0) {
+		if ((objects.size() == 0) || (tile->visionState(GameManager::get()->currentPlayer()) == VisionType::Invisible)) {
 			emit noSelection();
 		} else {
 			selectedObject_ = objects.first();
