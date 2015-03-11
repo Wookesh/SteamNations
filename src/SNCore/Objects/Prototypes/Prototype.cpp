@@ -1,8 +1,8 @@
 #include "Prototype.hpp"
 
 Prototype::Prototype(PrototypeType type, 
-	const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health) :
-	type_(type), name_(name), actionPoints_(actionPoints), cost_(cost), health_(health), healthBonus_(0.0f)
+	const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health, SNTypes::distance visionRange) :
+	type_(type), name_(name), actionPoints_(actionPoints), cost_(cost), health_(health), healthBonus_(0.0f), visionRange_(visionRange)
 {
 
 }
@@ -66,4 +66,14 @@ void Prototype::addHealthBonus(float bonus)
 void Prototype::setHealthBonus(float bonus) 
 {
 	healthBonus_ = bonus;
+}
+
+SNTypes::distance Prototype::visionRange() const
+{
+	return visionRange_;
+}
+
+void Prototype::setVisionRange(SNTypes::distance visionRange)
+{
+	visionRange_ = visionRange;
 }

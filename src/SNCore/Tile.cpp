@@ -169,3 +169,20 @@ Resource Tile::building() const {
 void Tile::setBuilding(Resource type) {
 	building_ = type;
 }
+
+void Tile::addPlayerToVisionState(const Player *player) {
+	visionState_.insert(player, VisionType::Invisible);
+}
+
+QMap< const Player*, VisionType > Tile::visionState() const {
+	return visionState_;
+}
+
+VisionType Tile::visionState(const Player* player) const {
+	return visionState_.value(player, VisionType::Invisible);
+}
+
+
+void Tile::setVisionState(const Player* player, VisionType visionType) {
+	visionState_.insert(player, visionType);
+}

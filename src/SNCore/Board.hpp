@@ -4,7 +4,7 @@
 #include <QVector>
 #include "Resources.hpp"
 #include <QPoint>
-
+#include "SNTypes.hpp"
 class Player;
 class Tile;
 class Town;
@@ -37,6 +37,8 @@ public:
 	unsigned int height();
 	
 	void updateBefore();
+	
+	void addPlayerVisionToTiles(const Player *player);
 private:
 	unsigned int height_;
 	unsigned int width_;

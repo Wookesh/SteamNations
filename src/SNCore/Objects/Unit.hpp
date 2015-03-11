@@ -31,6 +31,8 @@ public:
 	virtual void getAttacked(Soldier *) = 0;
 	void removeHealth(SNTypes::dmg);
 	bool checkForDeath();
+	
+	void updateVision();
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;

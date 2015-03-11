@@ -15,7 +15,7 @@ EnumClassWithStrings(PrototypeType, quint8, Settler, Infantry, Heavy, Artillery)
 class Prototype {
 public:
 	
-	Prototype(PrototypeType type, const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health);
+	Prototype(PrototypeType type, const QString &name, SNTypes::ap actionPoints, SNTypes::amount cost, SNTypes::hp health, SNTypes::distance visionRange);
 	virtual ~Prototype();
 	
 	virtual Unit *createUnit(Tile *tile, Player *owner) = 0;
@@ -34,6 +34,9 @@ public:
 	SNTypes::hp health() const;
 	void setHealth(SNTypes::hp health);
 	
+	SNTypes::distance visionRange() const;
+	void setVisionRange(SNTypes::distance visionRange);
+	
 	void addHealthBonus(float bonus);
 	void setHealthBonus(float bonus);
 	
@@ -44,6 +47,7 @@ protected:
 	SNTypes::amount cost_;
 	SNTypes::hp health_;
 	float healthBonus_;
+	SNTypes::distance visionRange_;
 };
 
 #endif

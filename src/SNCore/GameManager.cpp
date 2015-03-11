@@ -169,6 +169,9 @@ void GameManager::initGame(int width, int height, int seed)
 	lista.push_back (zbyszek);
 	setPlayers (lista);
 	
+	board_->addPlayerVisionToTiles(andrzej);
+	board_->addPlayerVisionToTiles(zbyszek);
+	
 	setNextPlayer();
 	
 	SpawnUnitAction(andrzej, board_->getTile(25, 25), PrototypeType::Settler).perform();

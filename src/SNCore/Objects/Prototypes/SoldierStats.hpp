@@ -16,6 +16,7 @@
 #define INF_VS_INF_MULTI 1.0
 #define INF_VS_HEA_MULTI 1.0
 #define INF_VS_ART_MULTI 1.5
+#define INFANTRY_VISIONRANGE 3
 
 /* 
  * Heavy
@@ -32,6 +33,7 @@
 #define HEA_VS_INF_MULTI 1.5
 #define HEA_VS_HEA_MULTI 1.0
 #define HEA_VS_ART_MULTI 1.0
+#define HEAVY_VISIONRANGE 1
 
 /*
  * Artillery
@@ -48,5 +50,7 @@
 #define ART_VS_INF_MULTI 1.0
 #define ART_VS_HEA_MULTI 1.5
 #define ART_VS_ART_MULTI 1.0
+#define INFANTRY_CTRATKRANGE 1
+#define ARTILLERY_VISIONRANGE 2
 
 #endif

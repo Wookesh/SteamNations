@@ -3,6 +3,7 @@
 
 #include <QPoint>
 #include <QList>
+#include <QMap>
 
 #include "Resources.hpp"
 
@@ -10,6 +11,8 @@ class Player;
 class Object;
 class Town;
 class Unit;
+
+EnumClassWithStrings(VisionType, quint8, Invisible, Visible)
 
 class Tile {
 public:
@@ -47,6 +50,11 @@ public:
 	void setBuilding(Resource);
 	
 	QList<const Object *> getObjects() const;
+	
+	void addPlayerToVisionState(const Player *player);
+	QMap <const Player *, VisionType> visionState() const;
+	VisionType visionState(const Player *player) const;
+	void setVisionState(const Player *player, VisionType visionType);
 private:
 	Town *town_;
 	Town *localTown_;
@@ -57,6 +65,7 @@ private:
 	int produced_;
 	int weight_;
 	Resource building_;
+	QMap<const Player *, VisionType> visionState_;
 };
 
 #endif

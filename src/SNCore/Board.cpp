@@ -311,8 +311,14 @@ QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const {
 }
 
 
-void Board::updateBefore()
-{
+void Board::updateBefore() {
 	for (Tile *tile : tiles_)
 		tile->updateBefore();
 }
+
+void Board::addPlayerVisionToTiles(const Player *player) {
+	for (Tile *tile : tiles_)
+		tile->addPlayerToVisionState(player);
+}
+
+
