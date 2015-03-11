@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.1
 
 MenuButton {
 	id: textButton
-	property var text
+	property var text: ""
 	
 	source: "qrc:///textButton"
 	

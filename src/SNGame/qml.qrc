@@ -9,6 +9,7 @@
 		<file>qml/gui/ParamDisplay.qml</file>
 		<file>qml/gui/PlayerDataEntry.qml</file>
 		<file>qml/gui/StaticLeftForeground.qml</file>
+		<file>qml/gui/StateButton.qml</file>
 		<file>qml/gui/MenuButton.qml</file>
 		<file>qml/gui/TextButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>

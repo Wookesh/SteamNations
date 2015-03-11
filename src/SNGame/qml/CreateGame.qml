@@ -94,30 +94,45 @@ Rectangle {
 		anchors.top: gameData.bottom
 		anchors.horizontalCenter: parent.horizontalCenter
 		
-		TextButton {
+		Component.onCompleted:
+			mediumMap.check()
+		
+		function uncheckAll() {
+			smallMap.uncheck()
+			mediumMap.uncheck()
+			largeMap.uncheck()
+		}
+		
+		StateButton {
 			id: smallMap
 			text: "Small"
 			onClicked: {
 				gameData.boardWidth = 15
 				gameData.boardHeight = 15
+				parent.uncheckAll()
+				smallMap.check()
 			}
 		}
 		
-		TextButton {
+		StateButton {
 			id: mediumMap
 			text: "Medium"
 			onClicked: {
 				gameData.boardWidth = 30
 				gameData.boardHeight = 30
+				parent.uncheckAll()
+				mediumMap.check()
 			}
 		}
 		
-		TextButton {
+		StateButton {
 			id: largeMap
 			text: "Large"
 			onClicked: {
 				gameData.boardWidth = 50
 				gameData.boardHeight = 50
+				parent.uncheckAll()
+				largeMap.check()
 			}
 		}
 	}
