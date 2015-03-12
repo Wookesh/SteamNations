@@ -72,9 +72,10 @@ SNTypes::hp Unit::healthLeft() const
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft() &&
-		GameManager::get()->currentPlayer() == owner() &&
-		(tile->town() == nullptr ? true : tile->town()->owner() == owner()))
+		(GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft()) &&
+		(GameManager::get()->currentPlayer() == owner()) &&
+		(tile->town() == nullptr ? true : tile->town()->owner() == owner()) &&
+		(tile->visionState(owner()) == VisionType::Visible))
 		return true;
 	return false;
 }

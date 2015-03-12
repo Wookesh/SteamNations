@@ -127,7 +127,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 		for (int range = 0; range < tiles.size(); ++range) {
 			for (Tile * currTile : tiles[range]) {
 				if (unit->canMove(currTile))
-					possibleActions.push_back(new MoveAction (unit, currTile, range));
+					possibleActions.push_back(new MoveAction(unit, currTile, range));
 			}
 		}
 		
