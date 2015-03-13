@@ -196,7 +196,7 @@ QVector<QVector<Tile *> > Board::getReachable(Tile *tile, const int range, const
 				if (!visited.contains(neighbour)) {
 					visited.insert(neighbour);
 					
-					if (!neighbour->passable(player)) {
+					if (!neighbour->passable(player) || !neighbour->visible(player)) {
 						continue;
 					}
 					

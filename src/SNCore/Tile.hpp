@@ -55,6 +55,7 @@ public:
 	QMap <const Player *, VisionType> visionState() const;
 	VisionType visionState(const Player *player) const;
 	void setVisionState(const Player *player, VisionType visionType);
+	bool visible(const Player *player) const;
 private:
 	Town *town_;
 	Town *localTown_;

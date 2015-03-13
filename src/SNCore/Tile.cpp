@@ -186,3 +186,7 @@ VisionType Tile::visionState(const Player* player) const {
 void Tile::setVisionState(const Player* player, VisionType visionType) {
 	visionState_.insert(player, visionType);
 }
+
+bool Tile::visible(const Player *player) const {
+	return visionState(player) == VisionType::Visible;
+}
