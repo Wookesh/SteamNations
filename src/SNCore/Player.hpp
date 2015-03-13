@@ -46,7 +46,7 @@ public:
 	
 	Qt::GlobalColor color() const;
 	
-	bool applyBonus(Bonus *bonus);
+	bool applyBonus(BonusType type, SNTypes::tier tier);
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
 	
 	bool canAffordBuilding(Resource type);

@@ -13,8 +13,7 @@ GameManager *GameManager::instance = nullptr;
 GameManager *GameManager::get() 
 {
 	if (instance == nullptr) {
-		// TODO: Add a proper exception
-		throw;
+		init();
 	}
 
 	return instance;
@@ -29,15 +28,16 @@ void GameManager::init()
 void GameManager::clean() 
 {
 	if (instance != nullptr) {
-		delete instance;
+		GameManager *aux = instance;
 		instance = nullptr;
+		delete aux;
 	}
 }
 
 GameManager::GameManager(QObject *parent) : QObject(parent),
 	currentPlayer_(nullptr), board_(nullptr), serial_(new Serial()), currentTurn_(0), console_(new Console())
 {
-	
+	BonusManager::init();
 }
 
 GameManager::~GameManager() 

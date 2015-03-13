@@ -2,6 +2,7 @@
 #define GAME_MANAGER_HPP
 
 #include <QObject>
+#include "Bonuses/Bonuses.hpp"
 #include "Serial.hpp"
 
 #define GMlog() GameManager::get()->console()->in()

@@ -17,6 +17,7 @@ add_library(SNCore
     Bonuses/WarfareBonuses.cpp
     Bonuses/DefenseBonuses.cpp
     Bonuses/EconomyBonuses.cpp
+    Bonuses/Bonuses.cpp
 	Objects/Object.cpp
 	Objects/Unit.cpp
 	Objects/Settler.cpp
