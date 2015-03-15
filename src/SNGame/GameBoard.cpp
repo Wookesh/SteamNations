@@ -100,25 +100,36 @@ const qreal GameBoard::GBsin(int i)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
+	
 	if (GameManager::get()->board() == nullptr) {
 		boardSet_ = false;
+		//qDeleteAll(nodeMap);
+		nodeMap.clear();
 		return mainNode;
 	}
 	
-	if (!boardSet_) {
-		boardSet_  = true;
-		emit boardSet();
-	}
-	
+	QSGNode *node = mainNode;
 	if (!textureManager_->isLoaded())
 		textureManager_->loadTextures(window());
 	
 	int width = GameManager::get()->board()->width();
 	int height = GameManager::get()->board()->height();
 	
-	QSGNode *node = mainNode;
+	if (!boardSet_) {
+		qDebug() << width << " " << height;
+		boardSet_  = true;
+		qDebug() << "dziaaa";
+		nodeMap.clear();
+		mainNode = nullptr;
+		qDebug() <<"czysto";
+		return nullptr;
+	}
+	
+	
+	
+	
 	if (!node) {
-		
+		qDebug() << "nowe ?";
 		node = new QSGNode();
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -140,6 +151,8 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				node->appendChildNode(child);
 			}
 		}
+		
+		emit boardSet();
 	} else {
 		
 		for (int i = 0; i < width; i++) {
