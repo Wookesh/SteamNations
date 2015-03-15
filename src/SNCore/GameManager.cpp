@@ -222,11 +222,11 @@ void GameManager::startGame()
 
 void GameManager::endGame() 
 {
-	qDeleteAll(players_);
-	players_.clear();
-	
 	qDeleteAll(objects_.values());
 	objects_.clear();
+	
+	qDeleteAll(players_);
+	players_.clear();
 	
 	Board *tmp;
 	tmp = board_;
