@@ -48,7 +48,29 @@ GameManager::~GameManager()
 
 void GameManager::load(const QString &saveFile)
 {
+	QFile gameSave(saveFile);
+	if (gameSave.open(QIODevice::ReadOnly)) {
+		QDataStream in(&gameSave);
+		loadPlayers(in);
+	}
+}
 
+void GameManager::loadPlayers(QDataStream &in)
+{
+	int playersCount;
+	in >> playersCount;
+	if (playersCount < 2 || playersCount > 4) {
+		errorLoading();
+		return;
+	}
+	
+	for (int i = 0; i < playersCount; ++i) {
+		QString playerName;
+		QColor playerColor;
+		
+		in >> playerName >> playerColor;
+		
+	}
 }
 
 void GameManager::save(const QString &saveFile)

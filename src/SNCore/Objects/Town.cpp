@@ -169,7 +169,7 @@ bool Town::canBuild (Tile *tile, Resource building) {
 
 QDataStream &operator<<(QDataStream &out, const Town &town)
 {
-	//out << static_cast<Object>(town);
+	out << static_cast<const Object &>(town);
 	out << town.name_ << town.population_ << town.food_ << town.foodGoal_ << town.hasBuiltThisTurn_;
 	out << town.townTiles_.size();
 	

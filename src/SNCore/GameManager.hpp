@@ -66,6 +66,7 @@ private:
 	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
+	void loadPlayers(QDataStream &in);
 	
 public slots:
 	void removeObject(UID uid);
