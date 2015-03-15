@@ -119,9 +119,9 @@ Rectangle {
 			id: scene
 			
 			function setBoard() {
-				console.log("nowa mapa");
 				scene.width = scene.boardWidth;
 				scene.height = scene.boardHeight;
+				scene.scale = 1;
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
 			}
