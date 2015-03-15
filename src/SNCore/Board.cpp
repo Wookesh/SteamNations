@@ -93,6 +93,7 @@ unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) cons
 
 Board::~Board() {
 	qDeleteAll(tiles_);
+	tiles_.clear();
 }
 
 /*
