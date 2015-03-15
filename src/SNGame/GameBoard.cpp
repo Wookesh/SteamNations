@@ -100,15 +100,12 @@ const qreal GameBoard::GBsin(int i)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
-	
+	QSGNode *node = mainNode;
 	if (GameManager::get()->board() == nullptr) {
 		boardSet_ = false;
-		//qDeleteAll(nodeMap);
-		nodeMap.clear();
 		return mainNode;
 	}
 	
-	QSGNode *node = mainNode;
 	if (!textureManager_->isLoaded())
 		textureManager_->loadTextures(window());
 	
@@ -118,18 +115,16 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	if (!boardSet_) {
 		qDebug() << width << " " << height;
 		boardSet_  = true;
-		qDebug() << "dziaaa";
+		qDeleteAll(nodeMap.values());
 		nodeMap.clear();
-		mainNode = nullptr;
-		qDebug() <<"czysto";
-		return nullptr;
+		if (mainNode) {
+			mainNode->removeAllChildNodes();
+			delete mainNode;
+		} 
+		node = nullptr;
 	}
 	
-	
-	
-	
 	if (!node) {
-		qDebug() << "nowe ?";
 		node = new QSGNode();
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -221,7 +216,6 @@ QPoint GameBoard::pixelToHex(int x, int y)
 	int size = BoardField::SIZE;
 	double q = 2.0 / 3 * (x + size) / size;
 	double r = (-1.0 / 3 * (x + size) + 1.0 / 3 * sqrt(3) * (y + size * sqrt(3) / 2)) / size;
-	GMlog() << "q = " << q << "r = " << r << "\n";
 	QPointF prob(x,y);
 	QPoint c(qFloor(q), qFloor(r));
 	QVector<QPoint> p({
@@ -242,7 +236,6 @@ QPoint GameBoard::pixelToHex(int x, int y)
 		if (tile) {
 			QPointF tmp = coordToPos(tile->position());
 			tmp -= prob;
-			GMlog() << tile->axial().x() << " " << tile->axial().y() << " " <<  sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) << "\n";
 			if (sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) < missmatch) {
 				missmatch = sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y());
 				whichONe = i;
