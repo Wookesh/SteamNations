@@ -100,10 +100,12 @@ const qreal GameBoard::GBsin(int i)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
-	if (GameManager::get()->board() == nullptr)
+	if (GameManager::get()->board() == nullptr) {
+		boardSet_ = false;
 		return mainNode;
+	}
 	
-	if(!boardSet_) {
+	if (!boardSet_) {
 		boardSet_  = true;
 		emit boardSet();
 	}

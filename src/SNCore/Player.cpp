@@ -26,20 +26,11 @@ Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(nam
 
 Player::~Player()
 {
-	for (auto element : prototypes_.keys()) {
-		Prototype *aux = prototypes_.take(element);
-		delete aux;
-	}
+	qDeleteAll(prototypes_);
+	prototypes_.clear();
 	
-	while (!units_.isEmpty()) {
-		Unit *aux = units_.takeLast();
-		delete aux;
-	}
-	
-	while (!towns_.isEmpty()) {
-		Town *aux = towns_.takeLast();
-		delete aux;
-	}
+	units_.clear();
+	towns_.clear();
 }
 
 QString Player::name() const

@@ -32,6 +32,7 @@ Rectangle {
 		onExit: {
 			gameUI.visible = false
 			mainMenu.visible = true
+			gmib.gameManager.endGame()
 		}
 	}
 

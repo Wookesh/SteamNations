@@ -69,9 +69,10 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	initBoard(width, height);
 	
 	//CreatePlayers
-
+	int no = 0;
+	
 	for (QString playerName : playerNames) {
-		static int no = 0;
+		
 		Player *player = new Player(playerName, playerColors[no].value<QColor>());
 		players_.push_back(player);
 		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
@@ -85,6 +86,7 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 		++no;
 	}
 	
+	playerIterator_ = --players_.end();
 	setNextPlayer();
 	return true;
 }
@@ -220,7 +222,16 @@ void GameManager::startGame()
 
 void GameManager::endGame() 
 {
-
+	qDeleteAll(players_);
+	players_.clear();
+	
+	qDeleteAll(objects_);
+	objects_.clear();
+	
+	Board *tmp;
+	tmp = board_;
+	board_ = nullptr;
+	delete tmp;
 }
 
 void GameManager::endTurn() 
@@ -245,12 +256,11 @@ Player *GameManager::currentPlayer() const
 
 void GameManager::setNextPlayer() 
 {
-	static QList<Player *>::iterator it = --players_.end();
-	if (++it == players_.end()) {
-		it = players_.begin();
+	if (++playerIterator_ == players_.end()) {
+		playerIterator_ = players_.begin();
 		prepareNewTurn();
 	}
-	currentPlayer_ = *it;
+	currentPlayer_ = *playerIterator_;
 	GMlog() << "----------------------------------------\n";
 	GMlog() << "Player's " << currentPlayer()->name() << " turn.\n";
 }
