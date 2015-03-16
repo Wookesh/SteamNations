@@ -72,24 +72,25 @@ SNTypes::amount BonusManager::cost (SNTypes::tier tier) {
 	return bonusCost[tier];
 }
 
-QVector< QPair< BonusType, SNTypes::tier > > BonusManager::applicableBonuses(Player *player) {
-	QVector< QPair< BonusType, SNTypes::tier > > ret;
+QList< QPair< BonusType, SNTypes::tier > > BonusManager::applicableBonuses(Player *player) {
+	QList< QPair< BonusType, SNTypes::tier > > ret;
+	
 	
 	for (Bonus *bonus : bonuses_) {
 		if (bonus->canApply(player)) {
-			ret.push_back(qMakePair<BonusType, SNTypes::tier>(bonus->type(), bonus->tier());
+			ret.append(qMakePair<BonusType, SNTypes::tier>(bonus->type(), bonus->tier()));
 		}
 	}
 	
 	return ret;
 }
 
-QVector< QPair< BonusType, SNTypes::tier > > BonusManager::appliedBonuses(Player *player) {
-	QVector< QPair< BonusType, SNTypes::tier > > ret;
+QList< QPair< BonusType, SNTypes::tier > > BonusManager::appliedBonuses(Player *player) {
+	QList< QPair< BonusType, SNTypes::tier > > ret;
 	
 	for (Bonus *bonus : bonuses_) {
-		if (player->hasBonus(bonus)) {
-			ret.push_back(qMakePair<BonusType, SNTypes::tier>(bonus->type(), bonus->tier());
+		if (player->hasBonus(bonus->type(), bonus->tier())) {
+			ret.append(qMakePair(bonus->type(), bonus->tier()));
 		}
 	}
 	

@@ -15,8 +15,8 @@ public:
 	static void clean();
 	Bonus *getBonus(BonusType type, SNTypes::tier tier);
 	SNTypes::amount cost(SNTypes::tier tier);
-	QVector< QPair<BonusType, SNTypes::tier> > applicableBonuses(Player *player);
-	QVector< QPair<BonusType, SNTypes::tier> > appliedBonuses(Player *player);
+	QList< QPair<BonusType, SNTypes::tier> > applicableBonuses(Player *player);
+	QList< QPair<BonusType, SNTypes::tier> > appliedBonuses(Player *player);
 	bool canApply(Player *, BonusType, SNTypes::tier);
 	void applyBonus(Player *, BonusType, SNTypes::tier);
 private:
