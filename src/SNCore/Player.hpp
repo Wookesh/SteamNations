@@ -48,6 +48,7 @@ public:
 	
 	bool applyBonus(BonusType type, SNTypes::tier tier);
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
+	bool hasBonus(Bonus *bonus);
 	
 	bool canAffordBuilding(Resource type);
 	void payForBuilding(Resource type);

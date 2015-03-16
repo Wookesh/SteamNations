@@ -10,5 +10,6 @@
 		<file>qml/gui/MenuButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>
 		<file>qml/gui/SNImage.qml</file>
+		<file>qml/gui/TechWindow.qml</file>
 	</qresource>
 </RCC>

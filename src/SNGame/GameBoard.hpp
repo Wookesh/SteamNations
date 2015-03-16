@@ -16,6 +16,7 @@ class Action;
 class Tile;
 class ActionType;
 class InfoBox;
+class BonusManager;
 
 class GameBoard : public QQuickItem {
 Q_OBJECT
@@ -26,6 +27,7 @@ public:
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 	Q_INVOKABLE void makeAction(int action);
 	Q_PROPERTY(InfoBox *infobox READ infobox)
+	Q_PROPERTY(BonusManager *bonusManager READ bonusManager)
 	
 protected:
 	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
@@ -35,10 +37,12 @@ private:
 	const Object *selectedObject_;
 	UID selectedObjectID_;
 	InfoBox *infobox_;
+	BonusManager *bonusManager_;
 	
 	QVector<Action *> mapActions_;
 	QVector<Action *> objectActions_;
 	InfoBox *infobox();
+	BonusManager *bonusManager();
 	void select(const Tile *tile);
 	QHash<int,BoardField *> nodeMap;
 

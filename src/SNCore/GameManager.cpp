@@ -206,6 +206,7 @@ void GameManager::endTurn()
 	emit turnEnded();
 	setNextPlayer();
 	currentPlayer_->updateBefore();
+	BonusManager::get()->reloadBonuses();
 	emit turnReady();
 }
 

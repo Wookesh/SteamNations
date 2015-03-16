@@ -1,5 +1,5 @@
 #include "Bonuses.hpp"
-
+#include "GameManager.hpp"
 #include "Player.hpp"
 
 QVector<Bonus *> BonusManager::bonuses_ = QVector<Bonus *>(9);
@@ -101,7 +101,34 @@ bool BonusManager::canApply(Player *player, BonusType type, SNTypes::tier tier) 
 	return getBonus(type, tier)->canApply(player);
 }
 
-
 void BonusManager::applyBonus (Player *player, BonusType type, SNTypes::tier tier) {
-	getBonus(type, tier)->apply(player);
+	player->applyBonus(type, tier);
 }
+
+void BonusManager::tryToApplyBonus(int bonus)
+{
+	if(bonuses_[bonus]->canApply(GameManager::get()->currentPlayer())){
+		applyBonus(GameManager::get()->currentPlayer(),bonuses_[bonus]->type(), bonuses_[bonus]->tier());
+// 		qDebug() <<"applied " << bonus;
+		
+	}
+	emit bonusesUpdated();
+}
+
+bool BonusManager::isApplied(int bonus)
+{
+	
+	return GameManager::get()->currentPlayer()->hasBonus(bonuses_[bonus]);
+}
+
+bool BonusManager::isAffordable(int bonus)
+{
+	return bonuses_[bonus]->canApply(GameManager::get()->currentPlayer());
+}
+
+void BonusManager::reloadBonuses()
+{
+	emit bonusesUpdated();
+}
+
+

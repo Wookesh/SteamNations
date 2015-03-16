@@ -23,6 +23,7 @@
 #include "SNCore/Player.hpp"
 #include "SNCore/Actions/Action.hpp"
 #include "SNCore/Actions/Actions.hpp"
+#include "SNCore/Bonuses/Bonuses.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -52,6 +53,9 @@ GameBoard::GameBoard(QQuickItem *parent)
 	GameManager::init();
 	GameManager::get()->initGame(Board::MAXWIDTH, Board::MAXWIDTH);
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
+	
+	BonusManager::init();
+	bonusManager_ = BonusManager::get();
 }
 
 InfoBox* GameBoard::infobox()
@@ -334,3 +338,8 @@ void GameBoard::makeAction(int action)
 	select(selectedObject_->tile());
 }
  
+BonusManager* GameBoard::bonusManager()
+{
+	return bonusManager_;
+}
+

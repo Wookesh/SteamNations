@@ -204,3 +204,8 @@ bool Player::canAffordBuilding(Resource type) {
 void Player::payForBuilding(Resource type) {
 	resources_[Resource::Gold] -= buildingCost_[type];
 }
+
+bool Player::hasBonus(Bonus* bonus)
+{
+	return hasBonus(bonus->type(), bonus->tier());
+}

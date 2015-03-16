@@ -27,8 +27,9 @@ Rectangle {
 			source: "qrc:///techButton"
 			anchors.top: menuButton.bottom
 			
-			onClicked:
-				console.log("TechButton clicked\n")
+			onClicked :{
+				techWindow.visible = !techWindow.visible;
+			}
 		}
 		
 		MenuButton {
@@ -69,6 +70,7 @@ Rectangle {
 			id: nextTurnButton
 			x: -nextTurnButton.width / 3
 			y: staticLeftForeground.height - (nextTurnButton.width * 1 / 2)
+			
 		}
 	}
 	
@@ -77,6 +79,8 @@ Rectangle {
 		x: gameUI.width - objectInfoBox.width 
 		z: 1
 	}
+	
+	
 	
 	MouseArea {
 		anchors.fill: parent
@@ -120,8 +124,16 @@ Rectangle {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
 				objectInfoBox.createConnections();
+				techWindow.createConnections();
 			}
 		}
+	}
+	
+	TechWindow {
+		id:techWindow
+		x: (gameUI.width - techWindow.width)/2 
+		y: (gameUI.height - techWindow.height)/2 
+		z: 1
 	}
 	
 	GameConsole {
