@@ -13,9 +13,9 @@ class Player;
 EnumClassWithStrings(BonusType, quint8, War, Def, Eco)
 
 static const QHash<SNTypes::tier, SNTypes::amount> bonusCost = {
-	{1, 0},
-	{2, 0},
-	{3, 0},
+	{1, 50},
+	{2, 100},
+	{3, 200},
 };
 
 class Bonus {
