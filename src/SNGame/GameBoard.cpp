@@ -142,20 +142,25 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 					hexTexture_ = textureManager_->texture("Field");
 				child->setTexture(hexTexture_);
 				child->setRect(pos.x()-hexTexture_->textureSize().width() / 2, pos.y() - hexTexture_->textureSize().height() / 2, hexTexture_->textureSize().width(), hexTexture_->textureSize().height());
+				child->appendChildNode(new QSGNode());
 				node->appendChildNode(child);
 			}
 		}
 		
 		emit boardSet();
 	} else {
-		
+		//FIXME trzeba bardziej dynamicznie zarządzać kiedy usuwamy node'y, szczególnie te z ciniem
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
  				QPointF pos = coordToPos(i, j);
 				QSGNode *child = nodeMap[index(i, j)]->node();
 				Tile *tile = GameManager::get()->board()->getTile(i,j);
-				child->removeAllChildNodes();
-				if(tile->visionState(GameManager::get()->currentPlayer()) == VisionType::Visible) {
+				QSGNode *placeholder = child->firstChild();
+				delete placeholder;
+				child->appendChildNode(new QSGNode());
+				child = child->firstChild();
+				
+				if (tile->visible(GameManager::get()->currentPlayer())) {
 					if (tile->town()) {
 						QSGSimpleTextureNode *townShadow = new QSGSimpleTextureNode();
 						QSGTexture *texture_= textureManager_->texture("TownShadow");
@@ -190,7 +195,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 						unit->setTexture(texture_);
 						child->appendChildNode(unit);
 					}
-				} else if(tile->visionState(GameManager::get()->currentPlayer()) == VisionType::Invisible) {
+				} else {
 					QSGSimpleTextureNode *fogNode = new QSGSimpleTextureNode();
 					QSGTexture *texture_ = textureManager_->texture("Fog");
 					fogNode->setTexture(texture_);
@@ -201,6 +206,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 		}
 		for (Action *action : mapActions_) {
 			QSGNode *child = nodeMap[index(action->tile()->position().x(), action->tile()->position().y())]->node();
+			child = child->firstChild();
 			QSGOpacityNode *opacity = new QSGOpacityNode();
 			opacity->setOpacity(SHADOW_OPACITY);
 			QSGGeometryNode *shadow = new QSGGeometryNode();
