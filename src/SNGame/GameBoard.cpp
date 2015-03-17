@@ -7,6 +7,7 @@
 #include <QSGNode>
 #include <QTimer>
 #include <QPixmap>
+#include <QDebug>
 
 #include "SNCore/GameManager.hpp"
 #include "SNCore/Board.hpp"
@@ -21,7 +22,6 @@
 #include "SNCore/Objects/Object.hpp"
 #include "InfoBox.hpp"
 #include "SNCore/Player.hpp"
-#include "SNCore/Actions/Action.hpp"
 #include "SNCore/Actions/Actions.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
@@ -44,13 +44,11 @@ void GameBoard::nextFrame()
 
 GameBoard::GameBoard(QQuickItem *parent)
 	: QQuickItem(parent), textureManager_(new TextureManager(this)), selectedObject_(nullptr),
-	infobox_(new InfoBox())
+	infobox_(new InfoBox()), boardSet_(false)
 {
 	setFlag(QQuickItem::ItemHasContents, true);
 	setAntialiasing(true);
 	initTimer();
-	GameManager::init();
-	GameManager::get()->initGame(Board::MAXWIDTH, Board::MAXWIDTH);
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
 }
 
@@ -102,15 +100,31 @@ const qreal GameBoard::GBsin(int i)
 
 QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 {
+	QSGNode *node = mainNode;
+	if (GameManager::get()->board() == nullptr) {
+		boardSet_ = false;
+		return mainNode;
+	}
+	
 	if (!textureManager_->isLoaded())
 		textureManager_->loadTextures(window());
 	
 	int width = GameManager::get()->board()->width();
 	int height = GameManager::get()->board()->height();
 	
-	QSGNode *node = mainNode;
+	if (!boardSet_) {
+		qDebug() << width << " " << height;
+		boardSet_  = true;
+		qDeleteAll(nodeMap.values());
+		nodeMap.clear();
+		if (mainNode) {
+			mainNode->removeAllChildNodes();
+			delete mainNode;
+		} 
+		node = nullptr;
+	}
+	
 	if (!node) {
-		
 		node = new QSGNode();
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -132,6 +146,8 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				node->appendChildNode(child);
 			}
 		}
+		
+		emit boardSet();
 	} else {
 		
 		for (int i = 0; i < width; i++) {
@@ -222,28 +238,39 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 QPoint GameBoard::pixelToHex(int x, int y)
 {
 	int size = BoardField::SIZE;
-	double q = 2./3 * (x+size) / size;
-	double r = (-1./3 * (x+size) + 1./3*sqrt(3) * (y+size*sqrt(3)/2)) / size;
+	double q = 2.0 / 3 * (x + size) / size;
+	double r = (-1.0 / 3 * (x + size) + 1.0 / 3 * sqrt(3) * (y + size * sqrt(3) / 2)) / size;
 	QPointF prob(x,y);
-	QPoint p[4];
-	p[0] = QPoint(floor(q), floor(r));
-	p[1] = QPoint(ceil(q), ceil(r));
-	p[2] = QPoint(floor(q), ceil(r));
-	p[3] = QPoint(ceil(q), floor(r));
+	QPoint c(qFloor(q), qFloor(r));
+	QVector<QPoint> p({
+		{c.x(),c.y()}, 
+		{c.x(),c.y() + 1}, 
+		{c.x(),c.y() - 1}, 
+		{c.x() + 1,c.y()}, 
+		{c.x() - 1,c.y()}, 
+		{c.x() + 1,c.y() - 1}, 
+		{c.x() - 1,c.y() + 1}
+	});
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe;
-	for (int i = 0; i < 4; i++) {
+	int whichONe;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
+	int missmatches = 0;
+	for (int i = 0; i < p.size(); ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
-		if(tile) {
-			QPointF tmp =coordToPos(tile->position());
+		
+		if (tile) {
+			QPointF tmp = coordToPos(tile->position());
 			tmp -= prob;
-			if(sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y()) < missmatch) {
-				missmatch = sqrt(tmp.x()*tmp.x() + tmp.y()*tmp.y());
+			if (sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) < missmatch) {
+				missmatch = sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y());
 				whichONe = i;
 			}
+		} else {
+			++missmatches;
 		}
 	}
-	return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+	if (missmatches != p.size())
+		return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+	return GameManager::get()->board()->getTileAxial(0,0)->position();
 }
 
 void GameBoard::clearActions()
@@ -284,9 +311,6 @@ void GameBoard::getActions()
 	infobox_->setVisible(true);
 }
 
-
-
-
 void GameBoard::select(const Tile *tile)
 {
 	if (selectedObject_ == nullptr) {
@@ -317,7 +341,6 @@ void GameBoard::select(const Tile *tile)
 	}
 }
 
-
 void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 {
 	static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
@@ -334,3 +357,22 @@ void GameBoard::makeAction(int action)
 	select(selectedObject_->tile());
 }
  
+qint16 GameBoard::boardHeight()
+{
+	
+	if (boardSet_) {
+		static const int BOARD_HEIGHT = BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height();
+		return BOARD_HEIGHT;
+	}
+	return 0;
+	
+}
+
+qint16 GameBoard::boardWidth()
+{
+	if (boardSet_) {
+		static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
+		return BOARD_WIDTH;
+	}
+	return 0;
+}

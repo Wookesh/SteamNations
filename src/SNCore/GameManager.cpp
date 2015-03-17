@@ -45,6 +45,67 @@ GameManager::~GameManager()
 
 }
 
+bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)
+{
+	//Validate
+	if (playerNames.size() != playersCount || playerColors.size() != playersCount)
+		return false;
+	
+	if (playersCount < 2 || playersCount > 4)
+		return false;
+	
+	if (width < 10 || width > 50)
+		return false;
+	
+	if (height < 10 || height > 50)
+		return false;
+	
+	for (QString name : playerNames)
+		if (name.isEmpty())
+			return false;
+	
+	//Create Board
+	
+	initBoard(width, height);
+	
+	//CreatePlayers
+	int no = 0;
+	
+	for (QString playerName : playerNames) {
+		
+		Player *player = new Player(playerName, playerColors[no].value<QColor>());
+		players_.push_back(player);
+		board_->addPlayerVisionToTiles(player);
+		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
+		
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
+		
+		spawnCenter.second += 1;
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Infantry).perform();
+		
+		player->updateBefore();
+		++no;
+	}
+	
+	playerIterator_ = --players_.end();
+	setNextPlayer();
+	return true;
+}
+
+void GameManager::initBoard(int width, int height, int seed) 
+{
+	if (board_ != nullptr)
+		delete board_;
+	board_ = new Board(width, height, seed);
+	
+	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
+}
+
+void GameManager::setPlayers(QList< Player * > &players) 
+{
+	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
+}
+
 void GameManager::addObject(Object *object) 
 {
 	object->setId(serial_->next());
@@ -150,41 +211,6 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 	return possibleActions;
 }
 
-
-void GameManager::setPlayers(QList< Player * > &players) 
-{
-	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
-}
-
-void GameManager::initGame(int width, int height, int seed) 
-{
-	board_ = new Board(width, height, seed);
-	
-	// Test players
-	Player *andrzej = new Player ("Andrzej", Qt::black);
-	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
-	
-	QList<Player *> lista;
-	lista.push_back (andrzej);
-	lista.push_back (zbyszek);
-	setPlayers (lista);
-	
-	board_->addPlayerVisionToTiles(andrzej);
-	board_->addPlayerVisionToTiles(zbyszek);
-	
-	setNextPlayer();
-	
-	SpawnUnitAction(andrzej, board_->getTile(25, 25), PrototypeType::Settler).perform();
-	SpawnUnitAction(andrzej, board_->getTile(25, 24), PrototypeType::Infantry).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 26), PrototypeType::Settler).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 25), PrototypeType::Infantry).perform();
-	
-	andrzej->updateBefore();
-	zbyszek->updateBefore();
-	
-	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
-}
-
 void GameManager::check(const Player *player) 
 {
 	GMlog() << "Game won by" << player->name();
@@ -197,7 +223,16 @@ void GameManager::startGame()
 
 void GameManager::endGame() 
 {
-
+	qDeleteAll(objects_.values());
+	objects_.clear();
+	
+	qDeleteAll(players_);
+	players_.clear();
+	
+	Board *tmp;
+	tmp = board_;
+	board_ = nullptr;
+	delete tmp;
 }
 
 void GameManager::endTurn() 
@@ -222,12 +257,11 @@ Player *GameManager::currentPlayer() const
 
 void GameManager::setNextPlayer() 
 {
-	static QList<Player *>::iterator it = --players_.end();
-	if (++it == players_.end()) {
-		it = players_.begin();
+	if (++playerIterator_ == players_.end()) {
+		playerIterator_ = players_.begin();
 		prepareNewTurn();
 	}
-	currentPlayer_ = *it;
+	currentPlayer_ = *playerIterator_;
 	GMlog() << "----------------------------------------\n";
 	GMlog() << "Player's " << currentPlayer()->name() << " turn.\n";
 }

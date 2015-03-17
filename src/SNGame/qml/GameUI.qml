@@ -88,10 +88,10 @@ Rectangle {
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
 			if (wheel.angleDelta.y > 0) {
-				if (scene.scale < 2)
+				if ((scene.scale < 2) && (scene.height*(scene.scale - 0.05) >= 1080*root.globalScale.height))
 					scene.scale += 0.05
 			} else {
-				if (scene.scale > 0.5)
+				if ((scene.scale > 0.5) && (scene.width*(scene.scale - 0.05) >= (1920*root.globalScale.width - menuButton.width)))
 					scene.scale -= 0.05
 			}
 			if (scene.x < drag.minimumX)
@@ -109,6 +109,8 @@ Rectangle {
 			scene.click(mouseX, mouseY, scene.x, scene.y, scene.scale)
 		}
 
+		property Board scene;
+
 		Board {
 			width: 5960
 			height: 6920
@@ -116,10 +118,19 @@ Rectangle {
 			y: -3000
 			id: scene
 			
+			function setBoard() {
+				console.log("nowa mapa");
+				scene.width = scene.boardWidth;
+				scene.height = scene.boardHeight;
+				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
+				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+			}
+			
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
 				objectInfoBox.createConnections();
+				scene.boardSet.connect(scene.setBoard);
 			}
 		}
 	}

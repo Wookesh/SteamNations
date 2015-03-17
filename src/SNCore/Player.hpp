@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QString>
 #include <QVector>
+#include <QtGui/QColor>
 
 
 #include "Objects/Prototypes/Prototype.hpp"
@@ -18,10 +19,11 @@ class Player {
 public:
 	static const QHash<Resource, SNTypes::amount> BASE_BUILDING_COST;
 	
-	Player(const QString &name, Qt::GlobalColor color);
+	Player(const QString &name, QColor color);
 	virtual ~Player();
 	
 	QString name() const;
+	QColor color() const;
 	
 	void updateBefore();
 	void updateAfter();
@@ -44,8 +46,6 @@ public:
 	QList<Prototype *> prototypes();
 	QList<Prototype *> soldierPrototypes();
 	
-	Qt::GlobalColor color() const;
-	
 	bool applyBonus(Bonus *bonus);
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
 	
@@ -54,11 +54,11 @@ public:
 private:
 	Town *capital_;
 	QString name_;
+	QColor color_;
 	QVector<Town *> towns_;
 	QVector<Unit *> units_;
 	QHash<PrototypeType, Prototype *> prototypes_;
 	QHash<PrototypeType, Prototype *> soldierPrototypes_;
-	Qt::GlobalColor color_;
 	QHash<Resource, unsigned int> resources_;
 	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses_;
 	QHash<Resource, SNTypes::amount> buildingCost_;

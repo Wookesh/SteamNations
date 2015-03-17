@@ -13,7 +13,7 @@ const QHash<Resource, SNTypes::amount> Player::BASE_BUILDING_COST = {
 	{Resource::Food, SNCfg::BUILDING_FOOD_COST}
 };
 
-Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), name_(name), color_(color)
+Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(name), color_(color)
 {
 	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
 	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
@@ -35,26 +35,23 @@ Player::Player(const QString &name, Qt::GlobalColor color) : capital_(nullptr), 
 
 Player::~Player()
 {
-	for (auto element : prototypes_.keys()) {
-		Prototype *aux = prototypes_.take(element);
-		delete aux;
-	}
+	qDeleteAll(prototypes_);
+	prototypes_.clear();
 	
-	while (!units_.isEmpty()) {
-		Unit *aux = units_.takeLast();
-		delete aux;
-	}
-	
-	while (!towns_.isEmpty()) {
-		Town *aux = towns_.takeLast();
-		delete aux;
-	}
+	units_.clear();
+	towns_.clear();
 }
 
 QString Player::name() const
 {
 	return name_;
 }
+
+QColor Player::color() const
+{
+	return color_;
+}
+
 
 void Player::obtainTown(Town *town)
 {
@@ -68,11 +65,6 @@ void Player::destroyTown (Town *town) {
 			break;
 		}
 	}
-}
-
-Qt::GlobalColor Player::color() const
-{
-	return color_;
 }
 
 unsigned int Player::getTownCount() {

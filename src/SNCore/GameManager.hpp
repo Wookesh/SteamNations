@@ -22,8 +22,9 @@ public:
 	static void init();
 	static void clean();
 	
-	void initGame(int width, int height, int seed = qrand());
-	void endGame();
+	Q_INVOKABLE bool useSettings(int width, int height, int playersCount, const QStringList &names, const QVariantList &colors);
+	void initBoard(int width, int height, int seed = qrand());
+	Q_INVOKABLE void endGame();
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);
@@ -56,6 +57,7 @@ private:
 	int currentTurn_;
 	QHash<UID,Object *> objects_;
 	Console *console_;
+	QList<Player *>::iterator playerIterator_;
 	
 	void setNextPlayer();
 	void prepareNewTurn();
@@ -87,3 +89,4 @@ public:
 };
 
 #endif
+
