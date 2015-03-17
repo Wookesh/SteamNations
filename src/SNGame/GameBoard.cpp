@@ -113,7 +113,6 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 	int height = GameManager::get()->board()->height();
 	
 	if (!boardSet_) {
-		qDebug() << width << " " << height;
 		boardSet_  = true;
 		qDeleteAll(nodeMap.values());
 		nodeMap.clear();
@@ -361,8 +360,7 @@ qint16 GameBoard::boardHeight()
 {
 	
 	if (boardSet_) {
-		static const int BOARD_HEIGHT = BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height();
-		return BOARD_HEIGHT;
+		return (BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height());
 	}
 	return 0;
 	
@@ -371,8 +369,7 @@ qint16 GameBoard::boardHeight()
 qint16 GameBoard::boardWidth()
 {
 	if (boardSet_) {
-		static const int BOARD_WIDTH = (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
-		return BOARD_WIDTH;
+		return (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
 	}
 	return 0;
 }
