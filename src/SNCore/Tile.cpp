@@ -5,11 +5,59 @@
 #include "Board.hpp"
 #include "Player.hpp"
 
-Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, unsigned int weight) :
+Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, TileType type, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
-	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight), building_(Resource::None)
+	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight), building_(Resource::None),
+	tileType_(type)
 {
-
+	if (type == TileType::Random) {
+		int i = qrand();
+		switch(i % 11) {
+			case 0:
+				tileType_ = TileType::Desert;
+				break;
+				
+			case 1:
+				tileType_ = TileType::Field;
+				break;
+				
+			case 2:
+				tileType_ = TileType::Forest;
+				break;
+				
+			case 3:
+				tileType_ = TileType::Hill;
+				break;
+				
+			case 4:
+				tileType_ = TileType::Mountain;
+				break;
+				
+			case 5:
+				tileType_ = TileType::Jungle;
+				break;
+				
+			case 6:
+				tileType_ = TileType::Ruins1;
+				break;
+				
+			case 7:
+				tileType_ = TileType::Ruins2;
+				break;
+				
+			case 8:
+				tileType_ = TileType::Snow1;
+				break;
+				
+			case 9:
+				tileType_ = TileType::Snow2;
+				break;
+				
+			case 10:
+				tileType_ = TileType::Tundra;
+				break;
+		}
+	}
 }
 
 Tile::~Tile() 
@@ -189,4 +237,8 @@ void Tile::setVisionState(const Player* player, VisionType visionType) {
 
 bool Tile::visible(const Player *player) const {
 	return visionState(player) == VisionType::Visible;
+}
+
+TileType Tile::tileType() const {
+	return tileType_;
 }
