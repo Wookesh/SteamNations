@@ -35,8 +35,13 @@ public:
 	void addNewTile();
 	Tile *chooseBestTile(QVector<Tile *> tiles);
 	
-	bool canBuild(Tile *tile, Resource building);
+	bool canBuild(Tile *tile, Resource building) const;
 	void createBuilding(Tile *tile, Resource building);
+	
+	bool isCapital() const;
+	
+	SNTypes::population population() const;
+	unsigned int size() const;
 private:
 	QString name_;
 	QVector<Tile *> townTiles_;
@@ -44,6 +49,8 @@ private:
 	SNTypes::amount food_;
 	SNTypes::amount foodGoal_;
 	bool hasBuiltThisTurn_;
+	bool capital_;
+	Player *capitalPlayer_;
 };
 
 #endif

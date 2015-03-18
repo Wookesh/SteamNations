@@ -4,6 +4,7 @@
 #include "Objects/Unit.hpp"
 #include "Tile.hpp"
 #include "Config.hpp"
+#include "GameManager.hpp"
 
 #include <QtCore>
 
@@ -31,6 +32,8 @@ Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(nam
 	};
 	
 	buildingCost_ = BASE_BUILDING_COST;
+	lastIncome_[Resource::Gold] = 0;
+	lastIncome_[Resource::Research] = 0;
 }
 
 Player::~Player()
@@ -94,6 +97,8 @@ bool Player::removeResource(Resource resource, unsigned int val)
 void Player::updateBefore() {
 	// internal stuff
 	// doSth()...
+	SNTypes::amount gold = resource(Resource::Gold);
+	SNTypes::amount research = resource(Resource::Research);
 	
 	// Units
 	for (auto unit : units_) {
@@ -105,6 +110,11 @@ void Player::updateBefore() {
 		town->updateBefore();
 	}
 	
+	lastIncome_[Resource::Gold] = resource(Resource::Gold) - gold;
+	lastIncome_[Resource::Research] = resource(Resource::Research) - research;
+	
+	GameManager::get()->checkIfWin(this, WinCondition::Domination);
+	GameManager::get()->checkIfWin(this, WinCondition::Economic);
 	// internal stuff
 	// wrapUp()...
 }
@@ -194,4 +204,33 @@ bool Player::canAffordBuilding(Resource type) {
 
 void Player::payForBuilding(Resource type) {
 	resources_[Resource::Gold] -= buildingCost_[type];
+}
+
+int Player::nOfTowns() {
+	return towns_.size();
+}
+
+SNTypes::population Player::population() const {
+	SNTypes::population ret = 0;
+	
+	for (Town *town : towns_)
+		ret += town->population();
+	
+	return ret;
+}
+
+unsigned int Player::landSize() const {
+	unsigned int ret = 0;
+	
+	for (Town *town : towns_)
+		ret += town->size();
+	
+	return ret;
+}
+
+SNTypes::amount Player::lastIncome(Resource resource) const {
+	if (resource != Resource::Gold && resource != Resource::Research)
+		return 0;
+	
+	return lastIncome_[resource];
 }

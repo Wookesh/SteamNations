@@ -74,6 +74,10 @@ bool Soldier::capture(Town *town)
 {
 	if (canCapture(town->tile())) {
 		town->setOwner(owner());
+		
+		if (town->isCapital())
+			GameManager::get()->checkIfWin(owner_, WinCondition::Conquest);
+		
 		return true;
 	}
 	return false;

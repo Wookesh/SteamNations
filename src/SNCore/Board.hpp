@@ -39,8 +39,9 @@ public:
 	
 	QPair<int, int> getUnitSpawnCenter(int number, int total) const;
 	
-	unsigned int width();
-	unsigned int height();
+	unsigned int width() const;
+	unsigned int height() const;
+	unsigned int size() const;
 	
 	void updateBefore();
 	
