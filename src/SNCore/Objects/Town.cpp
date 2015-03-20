@@ -9,9 +9,16 @@
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
-	food_(0), hasBuiltThisTurn_(0)
-{
+	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr)
+{	
 	owner->obtainTown(this);
+	
+	if (owner->capital() == nullptr) {
+		owner->setCapital(this);
+		capital_ = true;
+		capitalPlayer_ = owner;
+	}
+	
 	for (Tile *nTile : GameManager::get()->board()->getInRange(tile_, 1))
 		if (nTile->localTown() == nullptr) {
 			nTile->setLocalTown(this);
@@ -151,7 +158,7 @@ void Town::createBuilding (Tile *tile, Resource building) {
 	owner_->payForBuilding(building);
 }
 
-bool Town::canBuild (Tile *tile, Resource building) {
+bool Town::canBuild (Tile *tile, Resource building) const {
 	if (tile->localTown() != this)
 		return false;
 	
@@ -165,4 +172,16 @@ bool Town::canBuild (Tile *tile, Resource building) {
 		return false;
 	
 	return true;
+}
+
+bool Town::isCapital() const {
+	return capital_;
+}
+
+SNTypes::population Town::population() const {
+	return population_;
+}
+
+unsigned int Town::size() const {
+	return townTiles_.size();
 }

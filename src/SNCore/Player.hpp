@@ -34,6 +34,7 @@ public:
 	
 	Town *capital();
 	void setCapital(Town *town);
+	int nOfTowns();
 	
 	Unit *createUnit(PrototypeType type, Tile *tile);
 	void destroyUnit(Unit *unit);
@@ -51,6 +52,11 @@ public:
 	
 	bool canAffordBuilding(Resource type);
 	void payForBuilding(Resource type);
+	
+	SNTypes::population population() const;
+	unsigned int landSize() const;
+	
+	SNTypes::amount lastIncome(Resource resource) const;
 private:
 	Town *capital_;
 	QString name_;
@@ -62,6 +68,7 @@ private:
 	QHash<Resource, unsigned int> resources_;
 	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses_;
 	QHash<Resource, SNTypes::amount> buildingCost_;
+	QHash<Resource, SNTypes::amount> lastIncome_;
 };
 
 #endif

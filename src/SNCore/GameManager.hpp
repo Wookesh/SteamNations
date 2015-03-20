@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "Serial.hpp"
+#include "EnumHelpers.hpp"
+#include "SNTypes.hpp"
+#include "Config.hpp"
 
 #define GMlog() GameManager::get()->console()->in()
 
@@ -11,6 +14,8 @@ class Console;
 class Board;
 class Object;
 class Player;
+
+EnumClassWithStrings(WinCondition, quint8, Domination, Technology, Conquest, Economic, Any)
 
 class GameManager : public QObject {
 Q_OBJECT
@@ -44,6 +49,12 @@ public:
 	QVector<Action *> mapActions(const Object *object);
 	QVector<Action *> objectActions(const Object *object);
 	
+	SNTypes::population totalPopulation() const;
+	SNTypes::amount totalGold() const;
+	SNTypes::amount totalGoldIncome() const;
+	
+	void checkIfWin(Player *player, WinCondition condition);
+	
 protected:
 	GameManager(QObject *parent = nullptr);
 	virtual ~GameManager();
@@ -67,7 +78,6 @@ private:
 public slots:
 	void removeObject(UID uid);
 	void startGame();
-	void checkIfWin(Player *player);
 	void endTurn();
 	void check(const Player *player);
 	

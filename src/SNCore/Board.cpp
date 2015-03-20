@@ -74,16 +74,20 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 	}
 }
 
-unsigned int Board::height()
+unsigned int Board::height() const
 {
 	return height_;
 }
 
-unsigned int Board::width()
+unsigned int Board::width() const
 {
 	return width_;
 }
 
+unsigned int Board::size() const 
+{
+	return height_ * width_;
+}
 
 unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const {
 	unsigned int amount = 0;
