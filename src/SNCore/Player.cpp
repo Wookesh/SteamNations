@@ -70,9 +70,16 @@ void Player::destroyTown (Town *town) {
 	}
 }
 
-unsigned int Player::getTownCount() {
+unsigned int Player::getTownCount() 
+{
 	return towns_.count();
 }
+
+unsigned int Player::getUnitsCount()
+{
+	return units_.count();
+}
+
 
 unsigned int Player::resource(Resource resource) const
 {

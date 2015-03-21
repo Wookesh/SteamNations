@@ -38,6 +38,7 @@ public:
 	
 	Unit *createUnit(PrototypeType type, Tile *tile);
 	void destroyUnit(Unit *unit);
+	unsigned int getUnitsCount();
 	
 	unsigned int resource(Resource resource) const;
 	void addResource(Resource resource, unsigned int val);
