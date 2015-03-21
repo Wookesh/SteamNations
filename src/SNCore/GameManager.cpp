@@ -287,7 +287,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 			}
 		}
 		
-		emitEndIfWin(domination);
+		emitEndIfWin(domination, player);
 	}
 	
 	if (condition == WinCondition::Technology || condition == WinCondition::Any) {
@@ -301,7 +301,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		float landPercentage = (float) (player->landSize()) / (float) (board_->size());
 		
 		emitEndIfWin(popPercentage > SNCfg::DOMINATION_POPULATION_WIN_CONDITION && 
-			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION);
+			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION, player);
 	}
 	
 	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
@@ -310,7 +310,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
 		
 		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
-			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION);
+			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player);
 	}
 }
 
