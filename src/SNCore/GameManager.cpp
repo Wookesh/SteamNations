@@ -278,7 +278,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 {
 	if (condition == WinCondition::Conquest || condition == WinCondition::Any) {
 		GMlog() << "Checking if " << player->name() << " has won the game by conquest\n";
-
+		
 		bool domination = true;
 		for (Player *pl : players()) {
 			if (pl->capital()->owner() != player) {
@@ -287,41 +287,38 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 			}
 		}
 		
-		if (domination) {
-			GMlog() << "\tWith result : " << true << "\n";
-			emit gameEnded(player);
-		} else 
-			GMlog() << "\tWith result : " << false << "\n";
-	} 
+		emitEndIfWin(domination);
+	}
 	
 	if (condition == WinCondition::Technology || condition == WinCondition::Any) {
 		GMlog() << "Checking if " << player->name() << " has won the game by technology advancement\n";
 		// TODO: After bonusManager gets merged
-	} 
+	}
+	
 	if (condition == WinCondition::Domination || condition == WinCondition::Any) {
 		GMlog() << "Checking if " << player->name() << " has won the game by domination\n";
 		float popPercentage = (float) (player->population()) / (float) (totalPopulation());
 		float landPercentage = (float) (player->landSize()) / (float) (board_->size());
 		
-		if (popPercentage > SNCfg::DOMINATION_POPULATION_WIN_CONDITION && 
-			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION) {
-			GMlog() << "\tWith result : " << true << "\n";
-			emit gameEnded(player);
-		} else 
-			GMlog() << "\tWith result : " << false << "\n";
+		emitEndIfWin(popPercentage > SNCfg::DOMINATION_POPULATION_WIN_CONDITION && 
+			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION);
 	}
+	
 	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
 		GMlog() << "Checking if " << player->name() << " has won the game by economic advantage\n";
 		float goldPercentage = (float) (player->resource(Resource::Gold)) / (float) (totalGold());
 		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
 		
-		if (goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
-			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION) {
-			GMlog() << "\tWith result : " << true << "\n";
-			emit gameEnded(player);
-		} else
-			GMlog() << "\tWith result : " << false << "\n";
+		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
+			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION);
 	}
+}
+
+void GameManager::emitEndIfWin(bool result, Player *player)
+{
+	GMlog() << "\tWith result : " << result << "\n";
+	if (result)
+		emit gameEnded(player);
 }
 
 void GameManager::setWinConditions() 

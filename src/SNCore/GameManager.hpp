@@ -74,6 +74,7 @@ private:
 	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
+	void emitEndIfWin(bool result, Player *player);
 	
 public slots:
 	void removeObject(UID uid);
