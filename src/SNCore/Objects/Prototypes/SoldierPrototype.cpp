@@ -52,6 +52,12 @@ const QHash<PrototypeType, SNTypes::hp> SoldierPrototype::BASE_DAMAGE = {
 	{PrototypeType::Artillery, ARTILLERY_DMG}
 };
 
+const QHash<PrototypeType, SNTypes::distance> SoldierPrototype::BASE_VISION_RANGE = {
+	{PrototypeType::Infantry, INFANTRY_VISIONRANGE},
+	{PrototypeType::Heavy, HEAVY_VISIONRANGE},
+	{PrototypeType::Artillery, ARTILLERY_VISIONRANGE}
+};
+
 const QHash<PrototypeType, QHash<PrototypeType, float> > SoldierPrototype::DAMAGE_MULTIPLIERS = {
 	{PrototypeType::Infantry, {
 		{PrototypeType::Infantry, 1.0},
@@ -71,10 +77,10 @@ const QHash<PrototypeType, QHash<PrototypeType, float> > SoldierPrototype::DAMAG
 };
 
 SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
-	SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health, 
+	SNTypes::ap actionPoints,SNTypes::amount cost, SNTypes::hp health, SNTypes::distance visionRange,
 	SNTypes::ap attackCost, SNTypes::distance attackRange, SNTypes::distance ctrAtkRange, 
 	SNTypes::dmg damage) :
-	Prototype(type, name, actionPoints, cost, health), 
+	Prototype(type, name, actionPoints, cost, health, visionRange), 
 	attackCost_(attackCost), 
 	attackRange_(attackRange),
 	ctrAtkRange_(ctrAtkRange),
@@ -85,7 +91,7 @@ SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 }
 
 SoldierPrototype::SoldierPrototype(PrototypeType type) :
-	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type]),
+	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type], BASE_VISION_RANGE[type]),
 	attackCost_(BASE_ATTACK_COST[type]), attackRange_(BASE_ATTACK_RANGE[type]), 
 	ctrAtkRange_(BASE_CTRATK_RANGE[type]), damage_(BASE_DAMAGE[type])
 {

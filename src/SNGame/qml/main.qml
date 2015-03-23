@@ -13,12 +13,26 @@ Rectangle {
 		source: "qrc:///TrashBarusa.ttf"
 	}
 	
+	CreateGame {
+		id: createGame
+		visible: false
+		onBack: {
+			createGame.visible = false
+			mainMenu.visible = true
+		}
+		onStart: {
+			createGame.visible = false
+			gameUI.visible = true
+		}
+	}
+	
 	GameUI {
 		id: gameUI
 		visible: false
 		onExit: {
 			gameUI.visible = false
 			mainMenu.visible = true
+			gmib.gameManager.endGame()
 		}
 	}
 
@@ -26,7 +40,7 @@ Rectangle {
 		id: mainMenu
 		visible: true
 		onNewGameClicked: {
-			gameUI.visible = true
+			createGame.visible = true
 			mainMenu.visible = false
 		}
 	}
@@ -34,6 +48,4 @@ Rectangle {
 	GameManagerInstanceBox {
 		id: gmib
 	}
-
-
 }

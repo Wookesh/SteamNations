@@ -6,8 +6,7 @@
 #include "Player.hpp"
 #include "Object.hpp"
 #include "Town.hpp"
-
-
+#include "SNCore/Console.hpp"
 
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
@@ -15,6 +14,8 @@ Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *paren
 	actionPointsLeft_(0),
 	healthLeft_(prototype->health())
 {
+	GameManager::get()->console()->in() << "Created unit " << name() << " for player " << owner->name() << "\n";
+	updateVision();
 }
 
 Unit::~Unit()
@@ -71,9 +72,10 @@ SNTypes::hp Unit::healthLeft() const
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft() &&
-		GameManager::get()->currentPlayer() == owner() &&
-		(tile->town() == nullptr ? true : tile->town()->owner() == owner()))
+		(GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft()) &&
+		(GameManager::get()->currentPlayer() == owner()) &&
+		(tile->town() == nullptr ? true : tile->town()->owner() == owner()) &&
+		(tile->visionState(owner()) == VisionType::Visible))
 		return true;
 	return false;
 }
@@ -85,6 +87,7 @@ bool Unit::move(Tile *tile, SNTypes::ap moveCost)
 		tile_->setUnit(nullptr);
 		tile->setUnit(this);
 		setTile(tile);
+		updateVision();
 		emit positionChanged();
 		return true;
 	}
@@ -102,4 +105,12 @@ void Unit::removeHealth(SNTypes::dmg damage)
 bool Unit::checkForDeath() 
 {
 	return healthLeft_ <= 0;
+}
+
+void Unit::updateVision()
+{
+	QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile(), prototype_->visionRange());
+	for (Tile *tile : tiles) {
+		tile->setVisionState(owner(), VisionType::Visible);
+	}
 }

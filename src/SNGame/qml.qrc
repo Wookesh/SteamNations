@@ -1,14 +1,21 @@
 <RCC>
 	<qresource prefix="/">
 		<file>qml/main.qml</file>
+		<file>qml/CreateGame.qml</file>
 		<file>qml/GameUI.qml</file>
 		<file>qml/GameConsole.qml</file>
 		<file>qml/MainMenu.qml</file>
 		<file>qml/gui/ObjectInfoBox.qml</file>
 		<file>qml/gui/ParamDisplay.qml</file>
+		<file>qml/gui/PlayerDataEntry.qml</file>
 		<file>qml/gui/StaticLeftForeground.qml</file>
+		<file>qml/gui/StateButton.qml</file>
 		<file>qml/gui/MenuButton.qml</file>
+		<file>qml/gui/TextButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>
 		<file>qml/gui/SNImage.qml</file>
+		
+		<file>qml/gui/colorPicker/ColorCell.qml</file>
+		<file>qml/gui/colorPicker/ColorPicker.qml</file>
 	</qresource>
 </RCC>

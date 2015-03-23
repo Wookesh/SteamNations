@@ -26,6 +26,8 @@ public:
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 	Q_INVOKABLE void makeAction(int action);
 	Q_PROPERTY(InfoBox *infobox READ infobox)
+	Q_PROPERTY(qint16 boardWidth READ boardWidth)
+	Q_PROPERTY(qint16 boardHeight READ boardHeight)
 	
 protected:
 	QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData);
@@ -35,6 +37,7 @@ private:
 	const Object *selectedObject_;
 	UID selectedObjectID_;
 	InfoBox *infobox_;
+	bool boardSet_;
 	
 	QVector<Action *> mapActions_;
 	QVector<Action *> objectActions_;
@@ -48,6 +51,9 @@ private:
 	const qreal GBcos(int i);
 	const qreal GBsin(int i);
 	
+	qint16 boardHeight();
+	qint16 boardWidth();
+	
 	QPoint pixelToHex(int x, int y);
 	static const QColor highlightColor(ActionType actionType);
 	
@@ -60,6 +66,7 @@ public slots:
 signals:
 	void selectionUpdate();
 	void noSelection();
+	void boardSet();
 };
 #endif // GAMEBOARD_HPP
 

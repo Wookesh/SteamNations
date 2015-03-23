@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 	if (initialSize.width() < initialSize.height())
 		initialSize.transpose();
 	
+	GameManager::init();
+	
 	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
 	qmlRegisterType<Console>("SN", 1, 0, "SNConsole");
 	qmlRegisterType<GameManagerInstanceBox>("SN", 1, 0, "GameManagerInstanceBox");
