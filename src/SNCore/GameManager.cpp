@@ -50,31 +50,72 @@ void GameManager::load(const QString &saveFile)
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::ReadOnly)) {
 		QDataStream in(&gameSave);
-		loadPlayers(in);
+		if (!loadPlayers(in)) return;
+		if (!loadBoard(in)) return;
 	}
 }
 
-void GameManager::loadPlayers(QDataStream &in)
+bool GameManager::loadPlayers(QDataStream &in)
 {
 	int playersCount;
 	in >> playersCount;
 	if (playersCount < 2 || playersCount > 4) {
 		errorLoading();
-		return;
+		return false;
 	}
 	
 	for (int i = 0; i < playersCount; ++i) {
 		QString playerName;
 		QColor playerColor;
-		
 		in >> playerName >> playerColor;
+		Player *player = new Player(playerName, playerColor);
+		players_.push_back(player);
+		board_->addPlayerVisionToTiles(player);
+	}
+	QString currentPlayerSaved;
+	in >> currentPlayerSaved;
+	playerIterator_ = players_.begin();
+	while (playerIterator_ != players_.end() && (*playerIterator_)->name() != currentPlayerSaved)
+		++playerIterator_;
+	if (playerIterator_ == players_.end())
+		return false;
+	
+	return true;
+}
+
+void GameManager::savePlayers(QDataStream &out)
+{
+	out << players_.count();
+	for (Player *player : players_) {
+		out << player->name() << player->color();
+	}
+	out << (*playerIterator_)->name();
+}
+
+bool GameManager::loadBoard(QDataStream &in)
+{
+	int width, height;
+	in >> width >> height;
+	
+	if (width < 10 || width > 50)
+		return false;
+	
+	if (height < 10 || height > 50)
+		return false;
+	
+	for (int i = 0; i < width * height; ++i) {
 		
 	}
 }
 
 void GameManager::save(const QString &saveFile)
 {
-
+	QFile gameSave(saveFile);
+	if (gameSave.open(QIODevice::WriteOnly)) {
+		QDataStream out(&gameSave);
+		savePlayers();
+		
+	}
 }
 
 void GameManager::errorLoading()

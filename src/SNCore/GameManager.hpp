@@ -80,7 +80,9 @@ private:
 	void setWinConditions();
 	Object *objectP(UID uid);
 	void emitEndIfWin(bool result, Player *player);
-	void loadPlayers(QDataStream &in);
+	bool loadPlayers(QDataStream &in);
+	void savePlayers(QDataStream &out);
+	bool loadBoard(QDataStream &in);
 	
 public slots:
 	void removeObject(UID uid);
