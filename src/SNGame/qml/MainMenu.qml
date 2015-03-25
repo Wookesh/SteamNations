@@ -41,13 +41,4 @@ Rectangle {
 		anchors.left: newGame.right
 		anchors.leftMargin: 10
 	}
-	
-	TextButton {
-		id: load
-		text: "Load"
-		onClicked: {
-			gmib.gameManager.load("/home/wookesh/TestSave.sn")
-			mainMenu.gameLoaded()
-		}
-	}
 }

@@ -24,6 +24,10 @@ Rectangle {
 			createGame.visible = false
 			gameUI.visible = true
 		}
+		onGameLoaded: {
+			createGame.visible = false
+			gameUI.visible = true
+		}
 	}
 	
 	GameUI {
@@ -41,10 +45,6 @@ Rectangle {
 		visible: true
 		onNewGameClicked: {
 			createGame.visible = true
-			mainMenu.visible = false
-		}
-		onGameLoaded: {
-			gameUI.visible = true
 			mainMenu.visible = false
 		}
 	}
