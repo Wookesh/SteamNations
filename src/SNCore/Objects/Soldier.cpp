@@ -11,20 +11,21 @@ Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, Q
 
 }
 
-bool Soldier::canAttack(Tile* currTile)
+bool Soldier::canAttack(Tile *currTile)
 {
 	if ((GameManager::get()->currentPlayer() == owner()) &&
 		(GameManager::get()->board()->getAbsoluteDistance(tile(), currTile) <= attackRange()) &&
 		(currTile->unit() != nullptr) &&
 		(currTile->unit()->owner() != owner()) &&
-		(actionPointsLeft() >= attackCost())
+		(actionPointsLeft() >= attackCost()) &&
+		(currTile->visionState(owner()) == VisionType::Visible)
 		)
 		return true;
 	
 	return false;
 }
 
-bool Soldier::attack(Unit* unit)
+bool Soldier::attack(Unit *unit)
 {
 	if (canAttack(unit->tile())) {
 		actionPointsLeft_ -= attackCost();
@@ -57,21 +58,26 @@ SNTypes::dmg Soldier::damage() const
 	return qRound(dmg);
 }
 
-bool Soldier::canCapture(Tile* currTile)
-{	
-	if((GameManager::get()->currentPlayer() == owner()) &&
+bool Soldier::canCapture(Tile *currTile)
+{
+	if ((GameManager::get()->currentPlayer() == owner()) &&
 		(currTile->town() != nullptr) &&
 		(currTile->town()->owner() != owner()) &&
-		(currTile->unit() == nullptr))
+		(currTile->unit() == nullptr) &&
+		(currTile->visionState(owner()) == VisionType::Visible))
 		return true;
 	
 	return false;
 }
 
-bool Soldier::capture(Town* town)
+bool Soldier::capture(Town *town)
 {
 	if (canCapture(town->tile())) {
 		town->setOwner(owner());
+		
+		if (town->isCapital())
+			GameManager::get()->checkIfWin(owner_, WinCondition::Conquest);
+		
 		return true;
 	}
 	return false;

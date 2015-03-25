@@ -45,6 +45,67 @@ GameManager::~GameManager()
 
 }
 
+bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)
+{
+	//Validate
+	if (playerNames.size() != playersCount || playerColors.size() != playersCount)
+		return false;
+	
+	if (playersCount < 2 || playersCount > 4)
+		return false;
+	
+	if (width < 10 || width > 50)
+		return false;
+	
+	if (height < 10 || height > 50)
+		return false;
+	
+	for (QString name : playerNames)
+		if (name.isEmpty())
+			return false;
+	
+	//Create Board
+	
+	initBoard(width, height);
+	
+	//CreatePlayers
+	int no = 0;
+	
+	for (QString playerName : playerNames) {
+		
+		Player *player = new Player(playerName, playerColors[no].value<QColor>());
+		players_.push_back(player);
+		board_->addPlayerVisionToTiles(player);
+		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
+		
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
+		
+		spawnCenter.second += 1;
+		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Infantry).perform();
+		
+		player->updateBefore();
+		++no;
+	}
+	
+	playerIterator_ = --players_.end();
+	setNextPlayer();
+	return true;
+}
+
+void GameManager::initBoard(int width, int height, int seed) 
+{
+	if (board_ != nullptr)
+		delete board_;
+	board_ = new Board(width, height, seed);
+	
+	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
+}
+
+void GameManager::setPlayers(QList< Player * > &players) 
+{
+	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
+}
+
 void GameManager::addObject(Object *object) 
 {
 	object->setId(serial_->next());
@@ -127,7 +188,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 		for (int range = 0; range < tiles.size(); ++range) {
 			for (Tile * currTile : tiles[range]) {
 				if (unit->canMove(currTile))
-					possibleActions.push_back(new MoveAction (unit, currTile, range));
+					possibleActions.push_back(new MoveAction(unit, currTile, range));
 			}
 		}
 		
@@ -150,41 +211,6 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 	return possibleActions;
 }
 
-
-void GameManager::setPlayers(QList< Player * > &players) 
-{
-	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
-}
-
-void GameManager::initGame(int width, int height, int seed) 
-{
-	board_ = new Board(width, height, seed);
-	
-	// Test players
-	Player *andrzej = new Player ("Andrzej", Qt::black);
-	Player *zbyszek = new Player ("Zbyszek", Qt::darkBlue);
-	
-	QList<Player *> lista;
-	lista.push_back (andrzej);
-	lista.push_back (zbyszek);
-	setPlayers (lista);
-	
-	board_->addPlayerVisionToTiles(andrzej);
-	board_->addPlayerVisionToTiles(zbyszek);
-	
-	setNextPlayer();
-	
-	SpawnUnitAction(andrzej, board_->getTile(25, 25), PrototypeType::Settler).perform();
-	SpawnUnitAction(andrzej, board_->getTile(25, 24), PrototypeType::Infantry).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 26), PrototypeType::Settler).perform();
-	SpawnUnitAction(zbyszek, board_->getTile(24, 25), PrototypeType::Infantry).perform();
-	
-	andrzej->updateBefore();
-	zbyszek->updateBefore();
-	
-	QObject::connect(this, &GameManager::gameEnded, this, &GameManager::check);
-}
-
 void GameManager::check(const Player *player) 
 {
 	GMlog() << "Game won by" << player->name();
@@ -197,7 +223,16 @@ void GameManager::startGame()
 
 void GameManager::endGame() 
 {
-
+	qDeleteAll(objects_.values());
+	objects_.clear();
+	
+	qDeleteAll(players_);
+	players_.clear();
+	
+	Board *tmp;
+	tmp = board_;
+	board_ = nullptr;
+	delete tmp;
 }
 
 void GameManager::endTurn() 
@@ -223,12 +258,11 @@ Player *GameManager::currentPlayer() const
 
 void GameManager::setNextPlayer() 
 {
-	static QList<Player *>::iterator it = --players_.end();
-	if (++it == players_.end()) {
-		it = players_.begin();
+	if (++playerIterator_ == players_.end()) {
+		playerIterator_ = players_.begin();
 		prepareNewTurn();
 	}
-	currentPlayer_ = *it;
+	currentPlayer_ = *playerIterator_;
 	GMlog() << "----------------------------------------\n";
 	GMlog() << "Player's " << currentPlayer()->name() << " turn.\n";
 }
@@ -241,14 +275,51 @@ void GameManager::prepareNewTurn()
 	board_->updateBefore();
 }
 
-void GameManager::checkIfWin(Player *player) 
+void GameManager::checkIfWin(Player *player, WinCondition condition) 
 {
-	GMlog() << "Checking if " << player->name() << " has won the game\n";
-	if (player->getTownCount() >= 3) {
-		GMlog() << "\tWith result : " << true << "\n";
-		emit gameEnded(player);
+	if (condition == WinCondition::Conquest || condition == WinCondition::Any) {
+		GMlog() << "Checking if " << player->name() << " has won the game by conquest\n";
+		
+		bool domination = true;
+		for (Player *pl : players()) {
+			if (pl->capital()->owner() != player) {
+				domination = false;
+				break;
+			}
+		}
+		
+		emitEndIfWin(domination, player);
 	}
-	GMlog() << "\tWith result : " << false << "\n";
+	
+	if (condition == WinCondition::Technology || condition == WinCondition::Any) {
+		GMlog() << "Checking if " << player->name() << " has won the game by technology advancement\n";
+		// TODO: After bonusManager gets merged
+	}
+	
+	if (condition == WinCondition::Domination || condition == WinCondition::Any) {
+		GMlog() << "Checking if " << player->name() << " has won the game by domination\n";
+		float popPercentage = (float) (player->population()) / (float) (totalPopulation());
+		float landPercentage = (float) (player->landSize()) / (float) (board_->size());
+		
+		emitEndIfWin(popPercentage > SNCfg::DOMINATION_POPULATION_WIN_CONDITION && 
+			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION, player);
+	}
+	
+	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
+		GMlog() << "Checking if " << player->name() << " has won the game by economic advantage\n";
+		float goldPercentage = (float) (player->resource(Resource::Gold)) / (float) (totalGold());
+		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
+		
+		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
+			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player);
+	}
+}
+
+void GameManager::emitEndIfWin(bool result, Player *player)
+{
+	GMlog() << "\tWith result : " << result << "\n";
+	if (result)
+		emit gameEnded(player);
 }
 
 void GameManager::setWinConditions() 
@@ -260,4 +331,31 @@ void GameManager::setWinConditions()
 GameManager *GameManagerInstanceBox::gm()
 {
 	return GameManager::get();
+}
+
+SNTypes::population GameManager::totalPopulation() const {
+	SNTypes::population ret = 0;
+	
+	for (Player *player : players_)
+		ret += player->population();
+	
+	return ret;
+}
+
+SNTypes::amount GameManager::totalGold() const {
+	SNTypes::amount ret = 0;
+	
+	for (Player *player : players_)
+		ret += player->resource(Resource::Gold);
+	
+	return ret;
+}
+
+SNTypes::amount GameManager::totalGoldIncome() const {
+	SNTypes::amount ret = 0;
+	
+	for (Player *player : players_)
+		ret += player->lastIncome(Resource::Gold);
+	
+	return ret;
 }

@@ -8,13 +8,13 @@
 #include "Town.hpp"
 #include "SNCore/Console.hpp"
 
-
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
 	actionPointsLeft_(0),
 	healthLeft_(prototype->health())
 {
+	GameManager::get()->console()->in() << "Created unit " << name() << " for player " << owner->name() << "\n";
 	updateVision();
 }
 
@@ -72,9 +72,10 @@ SNTypes::hp Unit::healthLeft() const
 bool Unit::canMove(const Tile *tile) const
 {
 	if (tile->unit() == nullptr && 
-		GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft() &&
-		GameManager::get()->currentPlayer() == owner() &&
-		(tile->town() == nullptr ? true : tile->town()->owner() == owner()))
+		(GameManager::get()->board()->getAbsoluteDistance(tile, tile_) <= actionPointsLeft()) &&
+		(GameManager::get()->currentPlayer() == owner()) &&
+		(tile->town() == nullptr ? true : tile->town()->owner() == owner()) &&
+		(tile->visionState(owner()) == VisionType::Visible))
 		return true;
 	return false;
 }
