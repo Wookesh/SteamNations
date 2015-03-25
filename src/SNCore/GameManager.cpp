@@ -52,7 +52,6 @@ bool GameManager::loadPlayers(QDataStream &in)
 	if (playersCount < 2 || playersCount > 4)
 		return false;
 	
-	// TODO: posiadane surowce
 	for (int i = 0; i < playersCount; ++i) {
 		QString playerName;
 		QColor playerColor;
@@ -75,8 +74,6 @@ bool GameManager::loadPlayers(QDataStream &in)
 		return false;
 	
 	currentPlayer_ = *playerIterator_;
-	
-	qDebug() << "loaded players";
 	
 	return true;
 }
