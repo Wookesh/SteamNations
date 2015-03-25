@@ -29,6 +29,8 @@ Rectangle {
 			
 			onClicked :{
 				techWindow.visible = !techWindow.visible;
+				if(techWindow.visible)
+					techWindow.bonusesUpdated();
 			}
 		}
 		

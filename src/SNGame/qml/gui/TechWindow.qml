@@ -91,7 +91,6 @@ SNImage {
 	function createConnections() {
 		snBonusManager = scene.bonusManager;
 		snBonusManager.bonusesUpdated.connect(techWindow.bonusesUpdated);
-		bonusesUpdated();
 	}
 	
 	Rectangle{
@@ -124,7 +123,7 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSize) / 4 + this.width
+		x: 2*(parent.width - 3 * imageSize) / 4 + imageSize
 		y: 2*(parent.height - 3 * imageSize) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
@@ -147,7 +146,7 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSize) / 4 + 2*this.width
+		x: 3*(parent.width - 3 * imageSize) / 4 + 2*imageSize
 		y: 2*(parent.height - 3 * imageSize) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
