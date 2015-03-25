@@ -100,8 +100,8 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSize) / 4
-		y: 2*(parent.height - 3 * imageSize) / 4
+		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
+		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(0);
@@ -123,8 +123,8 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSize) / 4 + imageSize
-		y: 2*(parent.height - 3 * imageSize) / 4
+		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
+		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(1);
@@ -146,8 +146,8 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSize) / 4 + 2*imageSize
-		y: 2*(parent.height - 3 * imageSize) / 4
+		x: (3*(parent.width - 3 * imageSize) / 4 + 2*imageSize) * root.globalScale.width
+		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(2);
@@ -168,8 +168,8 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSize) / 4
-		y: 3*(parent.height - 3 * imageSize) / 4 + imageSize/2
+		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
+		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(3);
@@ -191,8 +191,8 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSize) / 4 + imageSize
-		y: 3*(parent.height - 3 * imageSize) / 4 + imageSize/2
+		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
+		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(4);
@@ -214,8 +214,8 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSize) / 4 + 2*imageSize
-		y: 3*(parent.height - 3 * imageSize) / 4 + imageSize/2
+		x: (3*(parent.width - 3 * imageSize) / 4 + 2*imageSize) * root.globalScale.width
+		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(5);
@@ -237,8 +237,8 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSize) / 4
-		y: 4*(parent.height - 3 * imageSize) / 4 + imageSize
+		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
+		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(6);
@@ -260,8 +260,8 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSize) / 4 + imageSize
-		y: 4*(parent.height - 3 * imageSize) / 4 + imageSize
+		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
+		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(7);
@@ -283,8 +283,8 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSize) / 4 +2*imageSize
-		y: 4*(parent.height - 3 * imageSize) / 4 + imageSize
+		x: (3*(parent.width - 3 * imageSize) / 4 +2*imageSize) * root.globalScale.width
+		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(8);
