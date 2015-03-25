@@ -32,9 +32,8 @@ public:
 	void initBoard(int width, int height, int seed = qrand());
 	Q_INVOKABLE void endGame();
 	
-	void load(const QString &saveFile);
-	void save(const QString &saveFile);
-	void errorLoading();
+	Q_INVOKABLE void load(const QString &saveFile);
+	Q_INVOKABLE void save(const QString &saveFile);
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);
@@ -46,6 +45,7 @@ public:
 
 	Player *currentPlayer() const;
 	int currentTurn() const;
+	Player *player(const QString &name);
 	
 	void addObject(Object *object);
 	const Object *object(UID uid) const;
@@ -84,10 +84,9 @@ private:
 	void savePlayers(QDataStream &out);
 	bool loadBoard(QDataStream &in);
 	bool loadObjects(QDataStream &in);
-	bool loadTown(QDataStream &in);
-	bool loadUnit(QDataStream &in);
-	
-	Player *player(const QString &name);
+	void saveObjects(QDataStream &out);
+	bool loadTown(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner);
+	bool loadUnit(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner);
 	
 public slots:
 	void removeObject(UID uid);

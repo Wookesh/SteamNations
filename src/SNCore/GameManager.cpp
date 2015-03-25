@@ -45,28 +45,14 @@ GameManager::~GameManager()
 
 }
 
-void GameManager::load(const QString &saveFile)
-{
-	QFile gameSave(saveFile);
-	if (gameSave.open(QIODevice::ReadOnly)) {
-		QDataStream in(&gameSave);
-		if (!loadPlayers(in)) return;
-		if (!loadBoard(in)) return;
-		if (!loadObjects(in)) return;
-		
-		gameSave.close();
-	}
-}
-
 bool GameManager::loadPlayers(QDataStream &in)
 {
 	int playersCount;
 	in >> playersCount;
-	if (playersCount < 2 || playersCount > 4) {
-		errorLoading();
+	if (playersCount < 2 || playersCount > 4)
 		return false;
-	}
 	
+	// TODO: posiadane surowce
 	for (int i = 0; i < playersCount; ++i) {
 		QString playerName;
 		QColor playerColor;
@@ -103,11 +89,17 @@ void GameManager::savePlayers(QDataStream &out)
 
 bool GameManager::loadBoard(QDataStream &in)
 {
-	Board *possibleBoard = new Board(10, 10);
+	Board *possibleBoard = new Board(10, 10); // Wookesh NOTE: maybe change it to some other value or make default constructor
 	if (!possibleBoard->load(in)) {
 		delete possibleBoard;
 		return false;
 	}
+	
+	if (board_ != nullptr)
+		delete board_;
+	board_ = possibleBoard;
+	
+	return true;
 }
 
 bool GameManager::loadObjects(QDataStream &in)
@@ -116,34 +108,92 @@ bool GameManager::loadObjects(QDataStream &in)
 	in >> objectsCount;
 	
 	for (int i = 0; i < objectsCount; ++i) {
+		ObjectType objectType = ObjectType::Unit; // Wookesh NOTE: No default value
+		unsigned int posX, posY;
+		QString ownerName;
+		in >> objectType >> posX >> posY >> ownerName;
 		
+		if (posX > board_->width() || posY > board_->height())
+			return false;
+	
+		if (player(ownerName) == nullptr)
+			return false;
 		
-		if (!loadTown(in)) return false;
+		if (objectType == ObjectType::Unit) {
+			if (!loadUnit(in, posX, posY, player(ownerName))) return false;
+		} else if (objectType == ObjectType::Town) {
+			if (!loadTown(in, posX, posY, player(ownerName))) return false;
+		}
 	}
 	
 	return true;
 }
 
-bool GameManager::loadTown(QDataStream &in)
+void GameManager::saveObjects(QDataStream &out)
 {
-	
+	out << objects_.count();
+	/* Wookesh NOTE: I've splited serialization into to parts: 
+	 * 1) things we need to create object 
+	 * 2) things we can assign after creation
+	 * This made loadObjects() similar to this function
+	 */
+	for (Object *object : objects_.values()) {
+		out << object->type() << object->tile()->position().x() << object->tile()->position().y() << object->owner()->name();
+		if (object->type() == ObjectType::Unit)
+			out << static_cast<Unit *>(object)->pType();
+		object->save(out);
+	}
 }
 
 
+bool GameManager::loadTown(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner)
+{
+	if (!CreateTownAction(owner, board_->getTile(posX, posY)).perform())
+		return false;
+	
+	if (!board_->getTile(posX, posY)->town()->load(in)) 
+		return false;
+	
+	return true;
+}
+
+bool GameManager::loadUnit(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner)
+{
+	PrototypeType type = PrototypeType::Settler;
+	in >> type;
+
+	SpawnUnitAction(owner, board_->getTile(posX, posY), type).perform();
+	
+	if (!board_->getTile(posX, posY)->unit()->load(in))
+		return false;
+	
+	return true;
+}
+
+void GameManager::load(const QString &saveFile)
+{
+	QFile gameSave(saveFile);
+	if (gameSave.open(QIODevice::ReadOnly)) {
+		QDataStream in(&gameSave);
+		if (!loadBoard(in)) return;
+		if (!loadPlayers(in)) return;
+		if (!loadObjects(in)) return;
+		
+		gameSave.close();
+	}
+}
 
 void GameManager::save(const QString &saveFile)
 {
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::WriteOnly)) {
 		QDataStream out(&gameSave);
+		board_->save(out);
 		savePlayers(out);
+		saveObjects(out);
 		
+		gameSave.close();
 	}
-}
-
-void GameManager::errorLoading()
-{
-	
 }
 
 bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)

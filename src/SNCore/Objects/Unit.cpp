@@ -114,3 +114,17 @@ void Unit::updateVision()
 		tile->setVisionState(owner(), VisionType::Visible);
 	}
 }
+
+bool Unit::load(QDataStream &in)
+{
+	in >> actionPointsLeft_ >> healthLeft_;
+	return true;
+}
+
+
+bool Unit::save(QDataStream &out)
+{
+	out << actionPointsLeft_ << healthLeft_;
+	return true;
+}
+

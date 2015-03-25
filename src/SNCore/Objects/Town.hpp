@@ -42,6 +42,9 @@ public:
 	
 	SNTypes::population population() const;
 	unsigned int size() const;
+	
+	virtual bool load(QDataStream &in);
+	virtual bool save(QDataStream &out);
 private:
 	QString name_;
 	QVector<Tile *> townTiles_;

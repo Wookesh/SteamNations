@@ -63,16 +63,3 @@ void Object::setId(const UID id)
 	if (id_ == Serial::EmptyUid)
 		id_ = id;
 }
-
-QDataStream &operator<<(QDataStream &out, const Object &object)
-{
-	out << object.owner()->name() << object.type();
-	return out;
-}
-
-QDataStream &operator>>(QDataStream &in, Object &object)
-{
-// 	QString playerName;
-// 	in >> playerName >> object.type_;
-	return in;
-}

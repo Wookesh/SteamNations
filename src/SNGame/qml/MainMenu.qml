@@ -8,6 +8,7 @@ Rectangle {
 	height: parent.height
 
 	signal newGameClicked()
+	signal gameLoaded();
 	
 	Image {
 		id: background
@@ -39,5 +40,14 @@ Rectangle {
 		anchors.verticalCenter: newGame.verticalCenter
 		anchors.left: newGame.right
 		anchors.leftMargin: 10
+	}
+	
+	TextButton {
+		id: load
+		text: "Load"
+		onClicked: {
+			gmib.gameManager.load("/home/wookesh/TestSave.sn")
+			mainMenu.gameLoaded()
+		}
 	}
 }

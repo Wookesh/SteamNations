@@ -36,6 +36,9 @@ public:
 	
 	virtual void updateBefore() = 0;
 	virtual void updateAfter() = 0;
+	
+	virtual bool load(QDataStream &in) = 0;
+	virtual bool save(QDataStream &out) = 0;
 protected:
 	Player *owner_;
 	Tile *tile_;
@@ -46,12 +49,7 @@ signals:
 	void ownerChanged(Player *player);
 	void positionChanged();
 	void objectDestroyed(UID id);
-friend QDataStream &operator<<(QDataStream &out, const Object &object);
-friend QDataStream &operator>>(QDataStream &in, Object &object);
 };
-
-QDataStream &operator<<(QDataStream &out, const Object &object);
-QDataStream &operator>>(QDataStream &in, Object &object);
 
 
 #endif

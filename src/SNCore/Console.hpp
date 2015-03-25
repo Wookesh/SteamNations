@@ -47,6 +47,7 @@ private:
 	
 	void printUnits();
 	void printTowns();
+	void save();
 	static const int FLUSHTIME = 100;
 public slots:
 	void read();

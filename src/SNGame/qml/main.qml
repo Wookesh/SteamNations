@@ -43,6 +43,10 @@ Rectangle {
 			createGame.visible = true
 			mainMenu.visible = false
 		}
+		onGameLoaded: {
+			gameUI.visible = true
+			mainMenu.visible = false
+		}
 	}
 	
 	GameManagerInstanceBox {

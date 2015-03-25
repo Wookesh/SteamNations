@@ -10,7 +10,7 @@
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
 	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr)
-{	
+{
 	owner->obtainTown(this);
 	
 	if (owner->capital() == nullptr) {
@@ -186,36 +186,39 @@ unsigned int Town::size() const {
 	return townTiles_.size();
 }
 
-QDataStream &operator<<(QDataStream &out, const Town &town)
+bool Town::save(QDataStream &out)
 {
-	out << static_cast<const Object &>(town);
-	out << town.name_ << town.population_ << town.food_ << town.foodGoal_ << town.hasBuiltThisTurn_;
-	out << town.townTiles_.size();
+	out << name_ << population_ << food_ << foodGoal_ << hasBuiltThisTurn_ << capital_ << capitalPlayer_->name();
+	out << townTiles_.size();
 	
-	for (Tile *tile : town.townTiles_) {
+	for (Tile *tile : townTiles_)
 		out << tile->axial();
-	}
 	
-	return out;
+	return true;
 }
 
-QDataStream &operator>>(QDataStream &in, Town &town)
+bool Town::load(QDataStream &in)
 {
-	//in >> static_cast<Object>(town);
-	in >> town.name_ >> town.population_ >> town.food_ >> town.foodGoal_ >> town.hasBuiltThisTurn_;
+	QString capitalPlayerName;
 	int townTilesCount;
-	in >> townTilesCount;
+	in >> name_ >> population_ >> food_ >> foodGoal_ >> hasBuiltThisTurn_ >> capital_ >> capitalPlayerName >> townTilesCount;
+	
+	Player *player = GameManager::get()->player(capitalPlayerName);
+	if (player == nullptr)
+		return false;
+	
+	player->setCapital(this);
+	capitalPlayer_ = player;
+	
 	for (int i = 0; i < townTilesCount; ++i) {
 		QPoint pos;
 		in >> pos;
 		Tile *tile = GameManager::get()->board()->getTileAxial(pos.x(), pos.y());
-		if (tile != nullptr) {
-			town.townTiles_.push_back(tile);
-		} else { 
-			GameManager::get()->errorLoading();
-			return in;
-		}
+		if (tile != nullptr)
+			townTiles_.push_back(tile);
+		else 
+			return false;
 	}
 	
-	return in;
+	return true;
 }
