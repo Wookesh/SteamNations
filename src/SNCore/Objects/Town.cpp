@@ -188,8 +188,7 @@ unsigned int Town::size() const {
 
 bool Town::save(QDataStream &out)
 {
-	out << name_ << population_ << food_ << foodGoal_ << hasBuiltThisTurn_ << capital_ << capitalPlayer_->name();
-	out << townTiles_.size();
+	out << name_ << population_ << food_ << foodGoal_ << hasBuiltThisTurn_ << capital_ << capitalPlayer_->name() << townTiles_.size();
 	
 	for (Tile *tile : townTiles_)
 		out << tile->axial();
@@ -209,6 +208,8 @@ bool Town::load(QDataStream &in)
 	
 	player->setCapital(this);
 	capitalPlayer_ = player;
+	
+	townTiles_.clear();
 	
 	for (int i = 0; i < townTilesCount; ++i) {
 		QPoint pos;
