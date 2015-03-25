@@ -250,6 +250,10 @@ SNTypes::amount Player::lastIncome(Resource resource) const
 
 bool Player::load(QDataStream &in)
 {
+	
+	for (PrototypeType prototype: PrototypeType::labels())
+		if (!prototypes_[prototype]->load(in)) return false;
+	
 	for (Resource r : Resource::labels())
 		in >> resources_[r];
 	
@@ -266,6 +270,9 @@ bool Player::load(QDataStream &in)
 
 bool Player::save(QDataStream &out)
 {
+	for (PrototypeType prototype: PrototypeType::labels())
+		prototypes_[prototype]->save(out);
+	
 	for (Resource r : Resource::labels())
 		out << resources_[r];
 	
