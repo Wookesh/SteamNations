@@ -83,6 +83,11 @@ private:
 	bool loadPlayers(QDataStream &in);
 	void savePlayers(QDataStream &out);
 	bool loadBoard(QDataStream &in);
+	bool loadObjects(QDataStream &in);
+	bool loadTown(QDataStream &in);
+	bool loadUnit(QDataStream &in);
+	
+	Player *player(const QString &name);
 	
 public slots:
 	void removeObject(UID uid);

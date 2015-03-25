@@ -59,6 +59,8 @@ public:
 	bool visible(const Player *player) const;
 	
 	TileType tileType() const;
+	bool load(QDataStream &in);
+	bool save(QDataStream &out);
 private:
 	Town *town_;
 	Town *localTown_;
@@ -71,9 +73,6 @@ private:
 	Resource building_;
 	QMap<const Player *, VisionType> visionState_;
 	TileType tileType_;
-friend QDataStream &operator<<(QDataStream &out, const Tile &tile); 
 };
-
-QDataStream &operator<<(QDataStream &out, const Tile &tile); 
 
 #endif

@@ -161,3 +161,21 @@ void SoldierPrototype::addMultiplier (float multi)
 	attackMultiplier_ += multi;
 }
 
+bool SoldierPrototype::load(QDataStream &in)
+{
+	in >> attackCost_ >> attackRange_ >> ctrAtkRange_ >> damage_ >> attackMultiplier_;
+	for (PrototypeType type : attackBonus_.keys())
+		in >> attackBonus_[type];
+	
+	return Prototype::load(in);
+}
+
+bool SoldierPrototype::save(QDataStream &out)
+{
+	out << attackCost_ << attackRange_ << ctrAtkRange_ << damage_ << attackMultiplier_;
+	for (PrototypeType type : attackBonus_.keys())
+		out << attackBonus_[type];
+	return Prototype::save(out);
+}
+
+

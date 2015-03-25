@@ -38,6 +38,9 @@ public:
 	
 	float attackBonus(PrototypeType) const;
 	void addMultiplier(float multi);
+	
+	virtual bool load(QDataStream &in);
+	virtual bool save(QDataStream &out);
 
 private:
 	SNTypes::ap attackCost_;

@@ -52,6 +52,9 @@ void GameManager::load(const QString &saveFile)
 		QDataStream in(&gameSave);
 		if (!loadPlayers(in)) return;
 		if (!loadBoard(in)) return;
+		if (!loadObjects(in)) return;
+		
+		gameSave.close();
 	}
 }
 
@@ -71,7 +74,11 @@ bool GameManager::loadPlayers(QDataStream &in)
 		Player *player = new Player(playerName, playerColor);
 		players_.push_back(player);
 		board_->addPlayerVisionToTiles(player);
+		
+		for (Prototype *prototype : player->prototypes())
+			if (!prototype->load(in)) return false;
 	}
+	
 	QString currentPlayerSaved;
 	in >> currentPlayerSaved;
 	playerIterator_ = players_.begin();
@@ -88,32 +95,48 @@ void GameManager::savePlayers(QDataStream &out)
 	out << players_.count();
 	for (Player *player : players_) {
 		out << player->name() << player->color();
+		for (Prototype *prototype: player->prototypes())
+			prototype->save(out);
 	}
 	out << (*playerIterator_)->name();
 }
 
 bool GameManager::loadBoard(QDataStream &in)
 {
-	int width, height;
-	in >> width >> height;
-	
-	if (width < 10 || width > 50)
+	Board *possibleBoard = new Board(10, 10);
+	if (!possibleBoard->load(in)) {
+		delete possibleBoard;
 		return false;
-	
-	if (height < 10 || height > 50)
-		return false;
-	
-	for (int i = 0; i < width * height; ++i) {
-		
 	}
 }
+
+bool GameManager::loadObjects(QDataStream &in)
+{
+	int objectsCount;
+	in >> objectsCount;
+	
+	for (int i = 0; i < objectsCount; ++i) {
+		
+		
+		if (!loadTown(in)) return false;
+	}
+	
+	return true;
+}
+
+bool GameManager::loadTown(QDataStream &in)
+{
+	
+}
+
+
 
 void GameManager::save(const QString &saveFile)
 {
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::WriteOnly)) {
 		QDataStream out(&gameSave);
-		savePlayers();
+		savePlayers(out);
 		
 	}
 }
@@ -182,6 +205,14 @@ void GameManager::initBoard(int width, int height, int seed)
 void GameManager::setPlayers(QList< Player * > &players) 
 {
 	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
+}
+
+Player *GameManager::player(const QString &name)
+{
+	for (Player *player : players_)
+		if (player->name() == name)
+			return player;
+	return nullptr;
 }
 
 void GameManager::addObject(Object *object) 

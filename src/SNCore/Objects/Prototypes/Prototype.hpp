@@ -40,6 +40,9 @@ public:
 	void addHealthBonus(float bonus);
 	void setHealthBonus(float bonus);
 	
+	virtual bool load(QDataStream &in);
+	virtual bool save(QDataStream &out);
+	
 protected:
 	PrototypeType type_;
 	QString name_;
