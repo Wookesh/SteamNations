@@ -26,6 +26,9 @@ public:
 	GameBoard(QQuickItem *parent = 0);
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 	Q_INVOKABLE void makeAction(int action);
+	Q_INVOKABLE unsigned int getGold();
+	Q_INVOKABLE unsigned int getFood();
+	Q_INVOKABLE unsigned int getResearch();
 	Q_PROPERTY(InfoBox *infobox READ infobox)
 	Q_PROPERTY(BonusManager *bonusManager READ bonusManager)
 	Q_PROPERTY(qint16 boardWidth READ boardWidth)
@@ -63,6 +66,7 @@ private:
 	
 	void getActions();
 	void clearActions();
+	void updateResources();
 private slots:
 	void nextFrame();
 public slots:
@@ -71,6 +75,7 @@ signals:
 	void selectionUpdate();
 	void noSelection();
 	void boardSet();
+	void resourcesUpdated();
 };
 #endif // GAMEBOARD_HPP
 

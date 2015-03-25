@@ -47,7 +47,7 @@ Rectangle {
 		ParamDisplay {
 			id: goldDisplay
 			iconSource: "qrc:///gold"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: playerButton.bottom
 			anchors.right: playerButton.right
 		}
@@ -55,7 +55,7 @@ Rectangle {
 		ParamDisplay {
 			id: researchDisplay
 			iconSource: "qrc:///research"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: goldDisplay.bottom
 			anchors.right: goldDisplay.right
 		}
@@ -63,7 +63,7 @@ Rectangle {
 		ParamDisplay {
 			id: foodDisplay
 			iconSource: "qrc:///food"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: researchDisplay.bottom
 			anchors.right: researchDisplay.right
 		}
@@ -132,17 +132,20 @@ Rectangle {
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
 			}
 			
+			function updateResources() {
+				goldDisplay.paramValue = scene.getGold();
+				foodDisplay.paramValue = scene.getFood();
+				researchDisplay.paramValue = scene.getResearch();
+			}
+			
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
 				objectInfoBox.createConnections();
-				/* TODO: LOOK HERE
-				 * Shit ain't working. With techWindow line there's a
-				 * segfault. Without it, techs aren't really working
-				 * properly either.
-				 */
 				scene.boardSet.connect(scene.setBoard);
+				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
+				
 			}
 		}
 	}
