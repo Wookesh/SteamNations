@@ -13,6 +13,7 @@ protected:
 	Player *player_;
 	QString name_;
 friend class Console;
+friend class GameManager;
 };
 
 #endif

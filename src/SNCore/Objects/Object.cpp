@@ -63,4 +63,3 @@ void Object::setId(const UID id)
 	if (id_ == Serial::EmptyUid)
 		id_ = id;
 }
-

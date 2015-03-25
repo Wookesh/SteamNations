@@ -8,6 +8,7 @@ Rectangle {
 	height: parent.height
 
 	signal newGameClicked()
+	signal gameLoaded();
 	
 	Image {
 		id: background

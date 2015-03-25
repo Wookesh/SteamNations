@@ -24,6 +24,10 @@ Rectangle {
 			createGame.visible = false
 			gameUI.visible = true
 		}
+		onGameLoaded: {
+			createGame.visible = false
+			gameUI.visible = true
+		}
 	}
 	
 	GameUI {

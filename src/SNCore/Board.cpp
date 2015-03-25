@@ -9,12 +9,11 @@
 #include "Tile.hpp"
 #include "Objects/Town.hpp"
 
-Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) {
-    for (unsigned int i = 0; i < height_; ++i)
-		for (unsigned int j = 0; j < width_; ++j) {
-			Tile *tile = new Tile(j, i, Resource::None, qrand() % 5 + 3);
-			tiles_.push_back(tile);
-		}
+Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) 
+{
+	for (unsigned int i = 0; i < height_; ++i)
+		for (unsigned int j = 0; j < width_; ++j)
+			tiles_.push_back(new Tile(j, i, Resource::None, qrand() % 5 + 3));
 		
 	qsrand(seed);
 	QSet<Tile *> visited;
@@ -89,7 +88,8 @@ unsigned int Board::size() const
 	return height_ * width_;
 }
 
-unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const {
+unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const 
+{
 	unsigned int amount = 0;
 	for (int i = 0; i < tiles.size(); ++i) {
 		if (tiles[i]->resource() == resource)
@@ -98,7 +98,8 @@ unsigned int Board::nOfTilesWith(QVector<Tile *> &tiles, Resource resource) cons
 	return amount;
 }
 
-Board::~Board() {
+Board::~Board() 
+{
 	qDeleteAll(tiles_);
 	tiles_.clear();
 }
@@ -106,7 +107,8 @@ Board::~Board() {
 /*
  * Returns pointer to a tile with (x, y) coordinates in "odd-q" vertical layout
  */
-Tile* Board::getTile(int x, int y) const {
+Tile* Board::getTile(int x, int y) const 
+{
 	if (x < 0 || y < 0 || x + y * width_ >= height_ * width_)
 		return nullptr;
 	
@@ -124,21 +126,24 @@ Tile *Board::getTileAxial(QPoint p) const
 }
 
 
-Tile* Board::getTileAxial(int x, int y) const {
+Tile* Board::getTileAxial(int x, int y) const 
+{
 	int q = x;
 	int r = y + (x - (x&1)) / 2;
 	
 	return getTile(q, r);
 }
 
-Tile* Board::getTileCube(int x, int y, int z) const {
+Tile* Board::getTileCube(int x, int y, int z) const 
+{
 	int q = x;
 	int r = z + (x - (x&1)) / 2;
 	
 	return getTile(q, r);
 }
 
-unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) const {
+unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) const 
+{
 	QPoint axial1 = tile1->axial();
 	QPoint axial2 = tile2->axial();
 	
@@ -150,7 +155,8 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 	return (abs(q1 - q2) + abs(r1 - r2) + abs(q1 + r1 - q2 - r2)) / 2;
 }
 
-QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
+QVector<Tile *> Board::getNeighbours(const Tile *tile) const 
+{
 	static const QPoint neighbours[] = {
 		QPoint(1, 0), QPoint(1, -1), QPoint(0, -1), 
 		QPoint(-1, 0), QPoint(-1, 1), QPoint(0, 1)
@@ -171,7 +177,8 @@ QVector<Tile *> Board::getNeighbours(const Tile *tile) const {
 	return ret;
 }
 
-QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const {
+QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const 
+{
 	QVector<Tile *> inRange;
 	QPoint pos = tile->axial();
 	int cube_x = pos.x();
@@ -198,7 +205,8 @@ QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const {
  * auto result = getReable(tile_, max_range)
  * result[i] - tiles in range i from tile_
  */
-QVector<QVector<Tile *> > Board::getReachable(Tile *tile, const int range, const Player* player) const {
+QVector<QVector<Tile *> > Board::getReachable(Tile *tile, const int range, const Player* player) const 
+{
 	QSet<Tile *> visited;
 	visited.insert(tile);
 	QVector<QVector<Tile *> > reachable(range + 1);
@@ -225,7 +233,6 @@ QVector<QVector<Tile *> > Board::getReachable(Tile *tile, const int range, const
 		}
 	}
 	
-
 	return reachable;
 }
 /*
@@ -293,7 +300,8 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
  * Returns tiles that surround the town. If [onlyFree] is true, then only tiles
  * that do not belong to any other town are returned.
  */
-QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const {
+QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const 
+{
 	QVector<Tile *> ret;
 	
 	Tile *start = town->tile();
@@ -334,14 +342,47 @@ QPair<int, int> Board::getUnitSpawnCenter(int number, int total) const
 	}
 }
 
-void Board::updateBefore() {
+void Board::updateBefore() 
+{
 	for (Tile *tile : tiles_)
 		tile->updateBefore();
 }
 
-void Board::addPlayerVisionToTiles(const Player *player) {
+void Board::addPlayerVisionToTiles(const Player *player) 
+{
 	for (Tile *tile : tiles_)
 		tile->addPlayerToVisionState(player);
+}
+
+bool Board::save(QDataStream &out)
+{
+	out << width_ << height_;
+	for (Tile *tile : tiles_)
+		tile->save(out);
+	return true;
+}
+
+bool Board::load(QDataStream &in)
+{
+	in >> width_ >> height_;
+	
+	if (width_ < 10 || width_ > 50)
+		return false;
+	
+	if (height_ < 10 || height_ > 50)
+		return false;
+	
+	qDeleteAll(tiles_);
+	tiles_.clear();
+	
+	for (unsigned int i = 0; i < height_; ++i)
+		for (unsigned int j = 0; j < width_; ++j)
+			tiles_.push_back(new Tile(j, i));
+	
+	for (Tile *tile : tiles_)
+		if (!tile->load(in)) return false;
+	
+	return true;
 }
 
 

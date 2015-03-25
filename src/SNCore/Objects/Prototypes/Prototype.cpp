@@ -77,3 +77,15 @@ void Prototype::setVisionRange(SNTypes::distance visionRange)
 {
 	visionRange_ = visionRange;
 }
+
+bool Prototype::load(QDataStream &in)
+{
+	in >> actionPoints_ >> cost_ >>  health_ >> healthBonus_ >> visionRange_;
+	return true;
+}
+
+bool Prototype::save(QDataStream &out)
+{
+	out << actionPoints() << cost_ << health_ << healthBonus_ << visionRange_;
+	return true;
+}

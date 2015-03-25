@@ -9,6 +9,7 @@ Rectangle {
 	
 	signal back()
 	signal start()
+	signal gameLoaded()
 	
 	function addPlayer() {
 		if (gameData.playersCount < 4) {
@@ -155,6 +156,15 @@ Rectangle {
 			onClicked:
 				createGame.tryToStart();
 		}
+		
+		TextButton {
+			id: load
+			text: "Load"
+			onClicked: {
+				gmib.gameManager.load("/home/wookesh/TestSave.sn")
+				createGame.gameLoaded()
+			}
+	}
 	}
 	
 }

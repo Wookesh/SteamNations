@@ -181,7 +181,8 @@ int Tile::takeResources()
 	return ret;
 }
 
-void Tile::gatherResource(Town *town) {
+void Tile::gatherResource(Town *town) 
+{
 	if (resource_ == Resource::Food) {
 		town->addFood(takeResources());
 	} else {
@@ -190,14 +191,16 @@ void Tile::gatherResource(Town *town) {
 }
 
 
-/*
- * 	Returns movement cost of the tile. If it's not passable, weight should be less than 0.
+/**
+ * Returns movement cost of the tile. If it's not passable, weight should be less than 0.
  */
-int Tile::weight() const {
+int Tile::weight() const 
+{
 	return weight_;
 }
 
-bool Tile::passable (const Player *player) const {
+bool Tile::passable (const Player *player) const 
+{
 	if (weight_ < 0)
 		return false;
 	
@@ -210,35 +213,70 @@ bool Tile::passable (const Player *player) const {
 	return true;
 }
 
-Resource Tile::building() const {
+Resource Tile::building() const 
+{
 	return building_;
 }
 
-void Tile::setBuilding(Resource type) {
+void Tile::setBuilding(Resource type) 
+{
 	building_ = type;
 }
 
-void Tile::addPlayerToVisionState(const Player *player) {
+void Tile::addPlayerToVisionState(const Player *player) 
+{
 	visionState_.insert(player, VisionType::Invisible);
 }
 
-QMap< const Player*, VisionType > Tile::visionState() const {
+QMap< const Player*, VisionType > Tile::visionState() const 
+{
 	return visionState_;
 }
 
-VisionType Tile::visionState(const Player* player) const {
+VisionType Tile::visionState(const Player* player) const 
+{
 	return visionState_.value(player, VisionType::Invisible);
 }
 
 
-void Tile::setVisionState(const Player* player, VisionType visionType) {
+void Tile::setVisionState(const Player* player, VisionType visionType) 
+{
 	visionState_.insert(player, visionType);
 }
 
-bool Tile::visible(const Player *player) const {
+bool Tile::visible(const Player *player) const 
+{
 	return visionState(player) == VisionType::Visible;
 }
 
-TileType Tile::tileType() const {
+TileType Tile::tileType() const 
+{
 	return tileType_;
+}
+
+bool Tile::load(QDataStream &in)
+{
+	in >> resource_ >> resourceProduction_ >> tileType_ >> produced_ >> weight_ >> building_;
+	
+	for (Player *player: GameManager::get()->players())
+		addPlayerToVisionState(player);
+	for (int i = 0; i < GameManager::get()->players().size(); ++i) {
+		QString playerName;
+		VisionType vision = VisionType::Invisible;
+		in >> playerName >> vision;
+		Player *player = GameManager::get()->player(playerName);
+		if (player == nullptr)
+			return false;
+		visionState_.insert(player, vision);
+	}
+	return true;
+}
+
+bool Tile::save(QDataStream &out)
+{
+	out << resource_ << resourceProduction_ << tileType_ << produced_ << weight_ << building_;
+	
+	for (const Player *player: visionState_.keys())
+		out << player->name() << visionState_.value(player, VisionType::Invisible);
+	return true;
 }

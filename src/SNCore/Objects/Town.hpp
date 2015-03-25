@@ -42,6 +42,9 @@ public:
 	
 	SNTypes::population population() const;
 	unsigned int size() const;
+	
+	virtual bool load(QDataStream &in);
+	virtual bool save(QDataStream &out);
 private:
 	QString name_;
 	QVector<Tile *> townTiles_;
@@ -51,6 +54,12 @@ private:
 	bool hasBuiltThisTurn_;
 	bool capital_;
 	Player *capitalPlayer_;
+
+friend QDataStream &operator<<(QDataStream &out, const Town &town);
+friend QDataStream &operator>>(QDataStream &in, Town &town);
 };
+
+QDataStream &operator<<(QDataStream &out, const Town &town);
+QDataStream &operator>>(QDataStream &in, Town &town);
 
 #endif

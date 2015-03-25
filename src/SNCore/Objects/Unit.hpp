@@ -33,6 +33,10 @@ public:
 	bool checkForDeath();
 	
 	void updateVision();
+	
+	bool load(QDataStream &in);
+	bool save(QDataStream &out);
+	
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;

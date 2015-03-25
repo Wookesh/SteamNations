@@ -46,6 +46,8 @@ public:
 	void updateBefore();
 	
 	void addPlayerVisionToTiles(const Player *player);
+	bool load(QDataStream &in);
+	bool save(QDataStream &out);
 private:
 	unsigned int height_;
 	unsigned int width_;

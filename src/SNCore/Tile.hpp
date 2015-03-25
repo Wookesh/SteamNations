@@ -59,6 +59,8 @@ public:
 	bool visible(const Player *player) const;
 	
 	TileType tileType() const;
+	bool load(QDataStream &in);
+	bool save(QDataStream &out);
 private:
 	Town *town_;
 	Town *localTown_;

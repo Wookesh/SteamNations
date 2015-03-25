@@ -10,7 +10,7 @@
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
 	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr)
-{	
+{
 	owner->obtainTown(this);
 	
 	if (owner->capital() == nullptr) {
@@ -184,4 +184,42 @@ SNTypes::population Town::population() const {
 
 unsigned int Town::size() const {
 	return townTiles_.size();
+}
+
+bool Town::save(QDataStream &out)
+{
+	out << name_ << population_ << food_ << foodGoal_ << hasBuiltThisTurn_ << capital_ << capitalPlayer_->name() << townTiles_.size();
+	
+	for (Tile *tile : townTiles_)
+		out << tile->axial();
+	
+	return true;
+}
+
+bool Town::load(QDataStream &in)
+{
+	QString capitalPlayerName;
+	int townTilesCount;
+	in >> name_ >> population_ >> food_ >> foodGoal_ >> hasBuiltThisTurn_ >> capital_ >> capitalPlayerName >> townTilesCount;
+	
+	Player *player = GameManager::get()->player(capitalPlayerName);
+	if (player == nullptr)
+		return false;
+	
+	player->setCapital(this);
+	capitalPlayer_ = player;
+	
+	townTiles_.clear();
+	
+	for (int i = 0; i < townTilesCount; ++i) {
+		QPoint pos;
+		in >> pos;
+		Tile *tile = GameManager::get()->board()->getTileAxial(pos.x(), pos.y());
+		if (tile != nullptr)
+			townTiles_.push_back(tile);
+		else 
+			return false;
+	}
+	
+	return true;
 }

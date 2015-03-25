@@ -101,7 +101,8 @@ bool Console::parseCommand(const QString &input)
 {
 	static QHash<QString, void (Console::*)()> commands({
 		{QString("printUnits"), &Console::printUnits},
-		{QString("printTowns"), &Console::printTowns}
+		{QString("printTowns"), &Console::printTowns},
+		{QString("save"), &Console::save}
 	});
 	if (commands.contains(input)) {
 		(*this.*(commands[input]))();
@@ -127,6 +128,12 @@ void Console::printTowns()
 		}
 	}
 }
+
+void Console::save()
+{
+	GameManager::get()->save("/home/wookesh/TestSave.sn");
+}
+
 
 Player *Console::playerFromName(const QString &name)
 {

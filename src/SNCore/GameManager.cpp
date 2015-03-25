@@ -45,6 +45,155 @@ GameManager::~GameManager()
 
 }
 
+bool GameManager::loadPlayers(QDataStream &in)
+{
+	int playersCount;
+	in >> playersCount;
+	if (playersCount < 2 || playersCount > 4)
+		return false;
+	
+	for (int i = 0; i < playersCount; ++i) {
+		QString playerName;
+		QColor playerColor;
+		in >> playerName >> playerColor;
+		Player *player = new Player(playerName, playerColor);
+		players_.push_back(player);
+		
+		if (!player->load(in)) return false;
+	}
+	
+	QString currentPlayerSaved;
+	in >> currentPlayerSaved;
+	playerIterator_ = players_.begin();
+	while (playerIterator_ != players_.end() && (*playerIterator_)->name() != currentPlayerSaved)
+		++playerIterator_;
+	if (playerIterator_ == players_.end())
+		return false;
+	
+	currentPlayer_ = *playerIterator_;
+	
+	return true;
+}
+
+void GameManager::savePlayers(QDataStream &out)
+{
+	out << players_.count();
+	for (Player *player : players_) {
+		out << player->name() << player->color();
+		player->save(out);
+	}
+	out << (*playerIterator_)->name();
+}
+
+bool GameManager::loadBoard(QDataStream &in)
+{
+	Board *possibleBoard = new Board(10, 10); // Wookesh NOTE: maybe change it to some other value or make default constructor
+	if (!possibleBoard->load(in)) {
+		delete possibleBoard;
+		return false;
+	}
+	
+	if (board_ != nullptr)
+		delete board_;
+	board_ = possibleBoard;
+	
+	return true;
+}
+
+bool GameManager::loadObjects(QDataStream &in)
+{
+	int objectsCount;
+	in >> objectsCount;
+	
+	for (int i = 0; i < objectsCount; ++i) {
+		ObjectType objectType = ObjectType::Unit; // Wookesh NOTE: No default value
+		unsigned int posX, posY;
+		QString ownerName;
+		in >> objectType >> posX >> posY >> ownerName;
+		
+		if (posX > board_->width() || posY > board_->height())
+			return false;
+	
+		if (player(ownerName) == nullptr)
+			return false;
+		
+		if (objectType == ObjectType::Unit) {
+			if (!loadUnit(in, posX, posY, player(ownerName))) return false;
+		} else if (objectType == ObjectType::Town) {
+			if (!loadTown(in, posX, posY, player(ownerName))) return false;
+		}
+	}
+	
+	return true;
+}
+
+void GameManager::saveObjects(QDataStream &out)
+{
+	out << objects_.count();
+	/* Wookesh NOTE: I've splited serialization into to parts: 
+	 * 1) things we need to create object 
+	 * 2) things we can assign after creation
+	 * This made loadObjects() similar to this function
+	 */
+	for (Object *object : objects_.values()) {
+		out << object->type() << object->tile()->position().x() << object->tile()->position().y() << object->owner()->name();
+		if (object->type() == ObjectType::Unit)
+			out << static_cast<Unit *>(object)->pType();
+		object->save(out);
+	}
+}
+
+
+bool GameManager::loadTown(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner)
+{
+	if (!CreateTownAction(owner, board_->getTile(posX, posY)).perform())
+		return false;
+	
+	if (!board_->getTile(posX, posY)->town()->load(in)) 
+		return false;
+	
+	return true;
+}
+
+bool GameManager::loadUnit(QDataStream &in, unsigned int posX, unsigned int posY, Player *owner)
+{
+	PrototypeType type = PrototypeType::Settler;
+	in >> type;
+
+	SpawnUnitAction(owner, board_->getTile(posX, posY), type).perform();
+	
+	if (!board_->getTile(posX, posY)->unit()->load(in))
+		return false;
+	
+	return true;
+}
+
+void GameManager::load(const QString &saveFile)
+{
+	QFile gameSave(saveFile);
+	if (gameSave.open(QIODevice::ReadOnly)) {
+		QDataStream in(&gameSave);
+		if (!loadPlayers(in)) return;
+		if (!loadBoard(in)) return;
+		if (!loadObjects(in)) return;
+		
+		gameSave.close();
+	}
+}
+
+void GameManager::save(const QString &saveFile)
+{
+	QFile gameSave(saveFile);
+	if (gameSave.open(QIODevice::WriteOnly)) {
+		QDataStream out(&gameSave);
+		savePlayers(out);
+		board_->save(out);
+		saveObjects(out);
+		
+		gameSave.close();
+	}
+}
+
 bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)
 {
 	//Validate
@@ -104,6 +253,14 @@ void GameManager::initBoard(int width, int height, int seed)
 void GameManager::setPlayers(QList< Player * > &players) 
 {
 	players_ = players; //nie jestem pewien czy nie trzeba czegos usuwac
+}
+
+Player *GameManager::player(const QString &name)
+{
+	for (Player *player : players_)
+		if (player->name() == name)
+			return player;
+	return nullptr;
 }
 
 void GameManager::addObject(Object *object) 
