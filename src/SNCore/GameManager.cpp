@@ -59,10 +59,11 @@ bool GameManager::loadPlayers(QDataStream &in)
 		in >> playerName >> playerColor;
 		Player *player = new Player(playerName, playerColor);
 		players_.push_back(player);
-// 		board_->addPlayerVisionToTiles(player);
 		
 		for (Prototype *prototype : player->prototypes())
 			if (!prototype->load(in)) return false;
+		
+		player->load(in);
 	}
 	
 	QString currentPlayerSaved;
@@ -87,6 +88,7 @@ void GameManager::savePlayers(QDataStream &out)
 		out << player->name() << player->color();
 		for (Prototype *prototype: player->prototypes())
 			prototype->save(out);
+		player->save(out);
 	}
 	out << (*playerIterator_)->name();
 }

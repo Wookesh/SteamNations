@@ -101,7 +101,8 @@ bool Player::removeResource(Resource resource, unsigned int val)
 	return false;
 }
 
-void Player::updateBefore() {
+void Player::updateBefore()
+{
 	// internal stuff
 	// doSth()...
 	SNTypes::amount gold = resource(Resource::Gold);
@@ -204,12 +205,14 @@ bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
 	return bonuses_[type][tier];
 }
 
-bool Player::canAffordBuilding(Resource type) {
+bool Player::canAffordBuilding(Resource type)
+{
 	return buildingCost_[type] <= resources_[Resource::Gold];
 		
 }
 
-void Player::payForBuilding(Resource type) {
+void Player::payForBuilding(Resource type)
+{
 	resources_[Resource::Gold] -= buildingCost_[type];
 }
 
@@ -217,7 +220,8 @@ int Player::nOfTowns() {
 	return towns_.size();
 }
 
-SNTypes::population Player::population() const {
+SNTypes::population Player::population() const
+{
 	SNTypes::population ret = 0;
 	
 	for (Town *town : towns_)
@@ -226,7 +230,8 @@ SNTypes::population Player::population() const {
 	return ret;
 }
 
-unsigned int Player::landSize() const {
+unsigned int Player::landSize() const
+{
 	unsigned int ret = 0;
 	
 	for (Town *town : towns_)
@@ -235,9 +240,44 @@ unsigned int Player::landSize() const {
 	return ret;
 }
 
-SNTypes::amount Player::lastIncome(Resource resource) const {
+SNTypes::amount Player::lastIncome(Resource resource) const
+{
 	if (resource != Resource::Gold && resource != Resource::Research)
 		return 0;
 	
 	return lastIncome_[resource];
 }
+
+bool Player::load(QDataStream &in)
+{
+	for (Resource r : Resource::labels())
+		in >> resources_[r];
+	
+	for (BonusType bType: bonuses_.keys())
+		in >> bonuses_[bType];
+	
+	for (Resource r : buildingCost_.keys())
+		in >> buildingCost_[r];
+	
+	for (Resource r : lastIncome_.keys())
+		in >> lastIncome_[r];
+	return true;
+}
+
+bool Player::save(QDataStream &out)
+{
+	for (Resource r : Resource::labels())
+		out << resources_[r];
+	
+	for (BonusType bType: bonuses_.keys())
+		out << bonuses_[bType];
+	
+	for (Resource r : buildingCost_.keys())
+		out << buildingCost_[r];
+	
+	for (Resource r : lastIncome_.keys())
+		out << lastIncome_[r];
+	
+	return true;
+}
+

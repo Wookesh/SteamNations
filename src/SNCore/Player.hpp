@@ -58,6 +58,10 @@ public:
 	unsigned int landSize() const;
 	
 	SNTypes::amount lastIncome(Resource resource) const;
+	
+	bool load(QDataStream &in);
+	bool save(QDataStream &out);
+	
 private:
 	Town *capital_;
 	QString name_;
