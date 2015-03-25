@@ -256,7 +256,8 @@ TileType Tile::tileType() const
 
 bool Tile::load(QDataStream &in)
 {
-	in >> resource_ >> resourceProduction_ >> tileType_;
+	in >> resource_ >> resourceProduction_ >> tileType_ >> produced_ >> weight_ >> building_;
+	
 	for (Player *player: GameManager::get()->players())
 		addPlayerToVisionState(player);
 	for (int i = 0; i < GameManager::get()->players().size(); ++i) {
@@ -273,7 +274,8 @@ bool Tile::load(QDataStream &in)
 
 bool Tile::save(QDataStream &out)
 {
-	out << resource_ << resourceProduction_ << tileType_;
+	out << resource_ << resourceProduction_ << tileType_ << produced_ << weight_ << building_;
+	
 	for (const Player *player: visionState_.keys())
 		out << player->name() << visionState_.value(player, VisionType::Invisible);
 	return true;
