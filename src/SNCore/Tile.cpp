@@ -257,11 +257,24 @@ TileType Tile::tileType() const
 bool Tile::load(QDataStream &in)
 {
 	in >> resource_ >> resourceProduction_ >> tileType_;
+	for (Player *player: GameManager::get()->players())
+		addPlayerToVisionState(player);
+	for (int i = 0; i < GameManager::get()->players().size(); ++i) {
+		QString playerName;
+		VisionType vision = VisionType::Invisible;
+		in >> playerName >> vision;
+		Player *player = GameManager::get()->player(playerName);
+		if (player == nullptr)
+			return false;
+		visionState_.insert(player, vision);
+	}
 	return true;
 }
 
 bool Tile::save(QDataStream &out)
 {
 	out << resource_ << resourceProduction_ << tileType_;
+	for (const Player *player: visionState_.keys())
+		out << player->name() << visionState_.value(player, VisionType::Invisible);
 	return true;
 }

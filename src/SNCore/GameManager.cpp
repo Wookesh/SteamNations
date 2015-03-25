@@ -59,7 +59,7 @@ bool GameManager::loadPlayers(QDataStream &in)
 		in >> playerName >> playerColor;
 		Player *player = new Player(playerName, playerColor);
 		players_.push_back(player);
-		board_->addPlayerVisionToTiles(player);
+// 		board_->addPlayerVisionToTiles(player);
 		
 		for (Prototype *prototype : player->prototypes())
 			if (!prototype->load(in)) return false;
@@ -72,6 +72,10 @@ bool GameManager::loadPlayers(QDataStream &in)
 		++playerIterator_;
 	if (playerIterator_ == players_.end())
 		return false;
+	
+	currentPlayer_ = *playerIterator_;
+	
+	qDebug() << "loaded players";
 	
 	return true;
 }
@@ -175,8 +179,8 @@ void GameManager::load(const QString &saveFile)
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::ReadOnly)) {
 		QDataStream in(&gameSave);
-		if (!loadBoard(in)) return;
 		if (!loadPlayers(in)) return;
+		if (!loadBoard(in)) return;
 		if (!loadObjects(in)) return;
 		
 		gameSave.close();
@@ -188,8 +192,8 @@ void GameManager::save(const QString &saveFile)
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::WriteOnly)) {
 		QDataStream out(&gameSave);
-		board_->save(out);
 		savePlayers(out);
+		board_->save(out);
 		saveObjects(out);
 		
 		gameSave.close();
