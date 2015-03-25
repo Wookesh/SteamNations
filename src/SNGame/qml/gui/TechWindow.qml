@@ -10,7 +10,8 @@ SNImage {
 	property var name  : "undefined"
 	property var nameBoxHeight : 180 * root.globalScale.height
 	property var boxWidth: 220 * root.globalScale.width
-	property var imageSize: 80
+	property var imageSizeH: 80 * root.globalScale.height
+	property var imageSizeW: 80 * root.globalScale.width
 	property var applied:"green"
 	property var affordable: "yellow"
 	property var unaffordable:"red"
@@ -95,13 +96,13 @@ SNImage {
 	
 	Rectangle{
 		id:defence1
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
-		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
+		x: (parent.width - 3 * imageSizeW) / 4
+		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(0);
@@ -118,13 +119,13 @@ SNImage {
 	
 	Rectangle{
 		id:defence2
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
-		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
+		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(1);
@@ -141,13 +142,13 @@ SNImage {
 	
 	Rectangle{
 		id:defence3
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: (3*(parent.width - 3 * imageSize) / 4 + 2*imageSize) * root.globalScale.width
-		y: (2*(parent.height - 3 * imageSize) / 4) * root.globalScale.height
+		x: 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(2);
@@ -163,13 +164,13 @@ SNImage {
 	}
 	Rectangle{
 		id:warfare1
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
-		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
+		x: (parent.width - 3 * imageSizeW) / 4
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(3);
@@ -186,13 +187,13 @@ SNImage {
 	
 	Rectangle{
 		id:warfare2
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
-		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
+		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(4);
@@ -209,13 +210,13 @@ SNImage {
 	
 	Rectangle{
 		id:warfare3
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: (3*(parent.width - 3 * imageSize) / 4 + 2*imageSize) * root.globalScale.width
-		y: (3*(parent.height - 3 * imageSize) / 4 + imageSize/2) * root.globalScale.height
+		x: 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(5);
@@ -232,13 +233,13 @@ SNImage {
 	
 	Rectangle{
 		id:economy1
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW
+		height:imageSizeH 
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: ((parent.width - 3 * imageSize) / 4) * root.globalScale.width
-		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
+		x: (parent.width - 3 * imageSizeW) / 4
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(6);
@@ -255,13 +256,13 @@ SNImage {
 	
 	Rectangle{
 		id:economy2
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH 
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: (2*(parent.width - 3 * imageSize) / 4 + imageSize) * root.globalScale.width
-		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
+		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(7);
@@ -278,13 +279,13 @@ SNImage {
 	
 	Rectangle{
 		id:economy3
-		width:imageSize * root.globalScale.width
-		height:imageSize * root.globalScale.height
+		width:imageSizeW 
+		height:imageSizeH
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: (3*(parent.width - 3 * imageSize) / 4 +2*imageSize) * root.globalScale.width
-		y: (4*(parent.height - 3 * imageSize) / 4 + imageSize) * root.globalScale.height
+		x: 3*(parent.width - 3 * imageSizeW) / 4 +2*imageSizeW
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(8);
