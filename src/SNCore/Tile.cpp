@@ -186,7 +186,7 @@ void Tile::gatherResource(Town *town)
 	if (resource_ == Resource::Food) {
 		town->addFood(takeResources());
 	} else {
-		town->owner()->addResource(resource_, takeResources());	
+		town->owner()->addResource(resource_, takeResources());
 	}
 }
 
