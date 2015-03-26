@@ -14,7 +14,7 @@
 		<file>qml/gui/TextButton.qml</file>
 		<file>qml/gui/NextTurnButton.qml</file>
 		<file>qml/gui/SNImage.qml</file>
-		
+		<file>qml/gui/TechWindow.qml</file>
 		<file>qml/gui/colorPicker/ColorCell.qml</file>
 		<file>qml/gui/colorPicker/ColorPicker.qml</file>
 	</qresource>

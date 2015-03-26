@@ -2,6 +2,7 @@
 #define GAME_MANAGER_HPP
 
 #include <QObject>
+#include "Bonuses/Bonuses.hpp"
 #include "Serial.hpp"
 #include <QString>
 #include "EnumHelpers.hpp"

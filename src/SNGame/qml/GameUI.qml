@@ -27,8 +27,11 @@ Rectangle {
 			source: "qrc:///techButton"
 			anchors.top: menuButton.bottom
 			
-			onClicked:
-				console.log("TechButton clicked\n")
+			onClicked :{
+				techWindow.visible = !techWindow.visible;
+				if(techWindow.visible)
+					techWindow.bonusesUpdated();
+			}
 		}
 		
 		MenuButton {
@@ -44,7 +47,7 @@ Rectangle {
 		ParamDisplay {
 			id: goldDisplay
 			iconSource: "qrc:///gold"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: playerButton.bottom
 			anchors.right: playerButton.right
 		}
@@ -52,7 +55,7 @@ Rectangle {
 		ParamDisplay {
 			id: researchDisplay
 			iconSource: "qrc:///research"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: goldDisplay.bottom
 			anchors.right: goldDisplay.right
 		}
@@ -60,7 +63,7 @@ Rectangle {
 		ParamDisplay {
 			id: foodDisplay
 			iconSource: "qrc:///food"
-			paramValue: 10
+			paramValue: 0
 			anchors.top: researchDisplay.bottom
 			anchors.right: researchDisplay.right
 		}
@@ -69,6 +72,7 @@ Rectangle {
 			id: nextTurnButton
 			x: -nextTurnButton.width / 3
 			y: staticLeftForeground.height - (nextTurnButton.width * 1 / 2)
+			
 		}
 	}
 	
@@ -77,6 +81,8 @@ Rectangle {
 		x: gameUI.width - objectInfoBox.width 
 		z: 1
 	}
+	
+	
 	
 	MouseArea {
 		anchors.fill: parent
@@ -126,13 +132,29 @@ Rectangle {
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
 			}
 			
+			function updateResources() {
+				goldDisplay.paramValue = scene.getGold();
+				foodDisplay.paramValue = scene.getFood();
+				researchDisplay.paramValue = scene.getResearch();
+			}
+			
 			Component.onCompleted: {
 				gameConsole.createConnections();
 				nextTurnButton.createConnections();
 				objectInfoBox.createConnections();
 				scene.boardSet.connect(scene.setBoard);
+				scene.resourcesUpdated.connect(scene.updateResources);
+				techWindow.createConnections();
+				
 			}
 		}
+	}
+	
+	TechWindow {
+		id:techWindow
+		x: (gameUI.width - techWindow.width)/2 
+		y: (gameUI.height - techWindow.height)/2 
+		z: 1
 	}
 	
 	GameConsole {

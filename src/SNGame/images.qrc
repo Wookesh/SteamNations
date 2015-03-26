@@ -23,6 +23,7 @@
 		<file alias="leftForeground">images/ozdoba_bok_lewy.png</file>
 		<file alias="infoBoxBackground">images/prawy_panel.png</file>
 		<file alias="frameSmall">images/frame_small.png</file>
+		<file alias="techWindow">images/okno_tech.png</file>
 		
 		<file alias="research">images/research.png</file>
 		<file alias="food">images/food.png</file>

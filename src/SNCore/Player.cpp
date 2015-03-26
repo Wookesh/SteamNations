@@ -190,8 +190,9 @@ QList< Prototype * > Player::soldierPrototypes()
 	return soldierPrototypes_.values();
 }
 
-bool Player::applyBonus(Bonus *bonus) 
+bool Player::applyBonus(BonusType type, SNTypes::tier tier) 
 {
+	Bonus *bonus = BonusManager::get()->getBonus(type, tier);
 	if (bonus->apply(this)) {
 		bonuses_[bonus->type()][bonus->tier()] = true;
 		removeResource(Resource::Research, bonus->cost());
@@ -214,6 +215,11 @@ bool Player::canAffordBuilding(Resource type)
 void Player::payForBuilding(Resource type)
 {
 	resources_[Resource::Gold] -= buildingCost_[type];
+}
+
+bool Player::hasBonus(Bonus* bonus)
+{
+	return hasBonus(bonus->type(), bonus->tier());
 }
 
 int Player::nOfTowns() {

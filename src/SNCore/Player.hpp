@@ -47,9 +47,12 @@ public:
 	Prototype *prototype(PrototypeType type);
 	QList<Prototype *> prototypes();
 	QList<Prototype *> soldierPrototypes();
-	
+		
+	bool applyBonus(BonusType type, SNTypes::tier tier);
 	bool applyBonus(Bonus *bonus);
+	
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
+	bool hasBonus(Bonus *bonus);
 	
 	bool canAffordBuilding(Resource type);
 	void payForBuilding(Resource type);

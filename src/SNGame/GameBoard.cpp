@@ -23,6 +23,8 @@
 #include "InfoBox.hpp"
 #include "SNCore/Player.hpp"
 #include "SNCore/Actions/Actions.hpp"
+#include "SNCore/Bonuses/Bonuses.hpp"
+#include "SNCore/Resources.hpp"
 
 QTimer *GameBoard::timer_ = nullptr;
 
@@ -35,6 +37,7 @@ void GameBoard::initTimer()
 	}
 	
 	connect(timer_, &QTimer::timeout, this, &GameBoard::nextFrame);
+	connect(GameManager::get(), &GameManager::turnReady, this, &GameBoard::updateResources);
 }
 
 void GameBoard::nextFrame()
@@ -50,6 +53,9 @@ GameBoard::GameBoard(QQuickItem *parent)
 	setAntialiasing(true);
 	initTimer();
 	connect(GameManager::get(), &GameManager::turnEnded ,this, &GameBoard::clearActions);
+	
+	BonusManager::init();
+	bonusManager_ = BonusManager::get();
 }
 
 InfoBox* GameBoard::infobox()
@@ -362,6 +368,11 @@ void GameBoard::makeAction(int action)
 	select(selectedObject_->tile());
 }
  
+BonusManager* GameBoard::bonusManager()
+{
+	return bonusManager_;
+}
+
 qint16 GameBoard::boardHeight()
 {
 	
@@ -378,4 +389,24 @@ qint16 GameBoard::boardWidth()
 		return (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
 	}
 	return 0;
+}
+
+unsigned int GameBoard::getFood()
+{
+	return GameManager::get()->currentPlayer()->resource(Resource::Food);
+}
+
+unsigned int GameBoard::getGold()
+{
+	return GameManager::get()->currentPlayer()->resource(Resource::Gold);
+}
+
+unsigned int GameBoard::getResearch()
+{
+	return GameManager::get()->currentPlayer()->resource(Resource::Research);
+}
+
+void GameBoard::updateResources()
+{
+	emit resourcesUpdated();
 }
