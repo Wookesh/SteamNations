@@ -450,7 +450,10 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 	
 	if (condition == WinCondition::Technology || condition == WinCondition::Any) {
 		GMlog() << "Checking if " << player->name() << " has won the game by technology advancement\n";
-		// TODO: After bonusManager gets merged
+		
+		emitEndIfWin(player->hasBonus(BonusType::Eco, 3) &&
+			player->hasBonus(BonusType::Def, 3) &&
+			player->hasBonus(BonusType::War, 3), player);
 	}
 	
 	if (condition == WinCondition::Domination || condition == WinCondition::Any) {

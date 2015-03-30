@@ -103,6 +103,7 @@ bool BonusManager::canApply(Player *player, BonusType type, SNTypes::tier tier) 
 
 void BonusManager::applyBonus (Player *player, BonusType type, SNTypes::tier tier) {
 	player->applyBonus(type, tier);
+	GameManager::get()->checkIfWin(player, WinCondition::Technology);
 }
 
 void BonusManager::tryToApplyBonus(int bonus)
