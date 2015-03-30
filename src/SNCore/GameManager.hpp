@@ -30,7 +30,7 @@ public:
 	static void clean();
 	
 	Q_INVOKABLE bool useSettings(int width, int height, int playersCount, const QStringList &names, const QVariantList &colors);
-	void initBoard(int width, int height, int seed = qrand());
+	void initBoard(int width, int height, int seed = time(NULL));
 	Q_INVOKABLE void endGame();
 	
 	Q_INVOKABLE void load(const QString &saveFile);

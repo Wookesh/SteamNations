@@ -13,7 +13,7 @@ public:
 	
 	static const QString BASE_NAME;
 	static const SNTypes::ap BASE_MOVE_RANGE = 2;
-	static const SNTypes::amount BASE_COST = 0;
+	static const SNTypes::amount BASE_COST = 200;
 	static const SNTypes::hp BASE_HEALTH = 1;
 	static const SNTypes::distance BASE_VISION_RANGE = 2;
 };

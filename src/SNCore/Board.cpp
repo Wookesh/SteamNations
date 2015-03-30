@@ -318,7 +318,7 @@ QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const
 				
 				discovered.insert(tile);
 				
-				if (tile->town() != town) {
+				if (tile->localTown() != town) {
 					if (tile->town() == nullptr || !onlyFree) {
 						ret.push_back(tile);
 					}

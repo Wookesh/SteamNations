@@ -6,7 +6,7 @@
  */
 
 #define INFANTRY_AP 2
-#define INFANTRY_COST 0
+#define INFANTRY_COST 25
 #define INFANTRY_NAME "Infantry"
 #define INFANTRY_HEALTH 20
 #define INFANTRY_ATKRANGE 2
@@ -23,7 +23,7 @@
  */
 
 #define HEAVY_AP 3
-#define HEAVY_COST 0
+#define HEAVY_COST 50
 #define HEAVY_NAME "Tank"
 #define HEAVY_HEALTH 35
 #define HEAVY_ATKRANGE 3
@@ -40,7 +40,7 @@
  */
 
 #define ARTILLERY_AP 2
-#define ARTILLERY_COST 0
+#define ARTILLERY_COST 100
 #define ARTILLERY_NAME "Artillery"
 #define ARTILLERY_HEALTH 35
 #define ARTILLERY_ATKRANGE 4

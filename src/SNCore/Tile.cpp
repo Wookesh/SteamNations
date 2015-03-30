@@ -2,8 +2,11 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 #include "GameManager.hpp"
+#include "Console.hpp"
 #include "Board.hpp"
 #include "Player.hpp"
+
+#define GMlog() GameManager::get()->console()->in()
 
 Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, TileType type, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
@@ -178,6 +181,13 @@ int Tile::takeResources()
 	
 	int ret = produced_ + bonus;
 	produced_ = 0;
+	GMlog() << "Added " << ret << " resource of ";
+	if (resource_ == Resource::Food)
+		GMlog() << "Food\n";
+	else if (resource_ == Resource::Gold) 
+		GMlog() << "Gold\n";
+	else if (resource_ == Resource::Research)
+		GMlog() << "Research\n";
 	return ret;
 }
 

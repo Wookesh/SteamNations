@@ -3,9 +3,12 @@
 #include "../Tile.hpp"
 #include "../Player.hpp"
 #include "../GameManager.hpp"
+#include "../Console.hpp"
 #include <Board.hpp>
 #include <QDebug>
 #include <QtAlgorithms>
+
+#define GMlog() GameManager::get()->console()->in()
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
@@ -48,61 +51,50 @@ void Town::setFoodGoal() {
 
 void Town::addNewTile() {
 	Board *board = GameManager::get()->board();
-	Tile *newTile = chooseBestTile(board->getSurroundings(this));
+	QVector<Tile *> possibleTiles = board->getSurroundings(this);
+	GMlog() << "Possible " << possibleTiles.size() << " new tiles.\n";
+	Tile *newTile = chooseBestTile(possibleTiles);
+	
 	if (newTile == nullptr)
 		return;
 	
+	GMlog() << "Added new tile\n";
 	townTiles_.push_back(newTile);
 	newTile->setLocalTown(this);
-}
-
-/*
- * Function for comparing tiles while deciding which one to adjacent to a town.
- * Prefers tiles with higher resource production and closer to the town;
- */
-bool compareTiles(Tile* &tile1, Tile* &tile2) {
-	int weight1 = tile1->resourceProduction();
-	int weight2 = tile2->resourceProduction();
-	QVector<Tile *> neigh1 = GameManager::get()->board()->getNeighbours(tile1);
-	int ctr = 1;
-	for (Tile *tile : neigh1) {
-		if (tile->town() == tile1->town()) {
-			++ctr;
-			weight1 += ctr;
-		}
-	}
-	ctr = 0;
-	QVector<Tile *> neigh2 = GameManager::get()->board()->getNeighbours(tile1);
-	for (Tile *tile : neigh2) {
-		if (tile->town() == tile2->town()) {
-			++ctr;
-			weight2 += ctr;
-		}
-	}
-
-	return weight1 < weight2;
 }
 
 Tile *Town::chooseBestTile(QVector< Tile * > tiles) {
 	if (tiles.empty())
 		return nullptr;
 	
-	qSort(tiles.begin(), tiles.end(), compareTiles);
+	Tile *ret = nullptr;
+	int value = -1;
 	
-	// Cause the best element will be at the end
-	return tiles.back();
+	for (Tile *tile : tiles) {
+		int weight = qMax((int) tile->resourceProduction() - (int) GameManager::get()->board()->getAbsoluteDistance(tile, tile_), 0);
+		
+		if (weight > value) {
+			value = weight;
+			ret = tile;
+		}
+	}
+	
+	return ret;
 }
 
 
 void Town::updateBefore() 
 {
 	qDebug() << name() << __FUNCTION__;
-	for (Tile *tile : townTiles_)
+	for (Tile *tile : townTiles_) {
+		tile->updateBefore();
 		if (tile->resource() != Resource::None) {
 			tile->gatherResource(this);
 		}
+	}
 		
 	if (food_ > foodGoal_) {
+		GMlog() << "Food goal reached. Growing.\n";
 		food_ = food_ - foodGoal_;
 		++population_;
 		setFoodGoal();
@@ -124,6 +116,7 @@ void Town::updateAfter()
 }
 
 void Town::addFood(SNTypes::amount food) {
+	//GMlog() << "Added " << food << " food for total of " << food_ << "\n";
 	food_ += food;
 }
 
