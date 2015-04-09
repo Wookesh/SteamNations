@@ -54,12 +54,6 @@ private:
 	bool hasBuiltThisTurn_;
 	bool capital_;
 	Player *capitalPlayer_;
-
-friend QDataStream &operator<<(QDataStream &out, const Town &town);
-friend QDataStream &operator>>(QDataStream &in, Town &town);
 };
-
-QDataStream &operator<<(QDataStream &out, const Town &town);
-QDataStream &operator>>(QDataStream &in, Town &town);
 
 #endif

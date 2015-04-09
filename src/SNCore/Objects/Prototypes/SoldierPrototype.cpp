@@ -93,7 +93,7 @@ SoldierPrototype::SoldierPrototype(PrototypeType type, const QString &name,
 SoldierPrototype::SoldierPrototype(PrototypeType type) :
 	Prototype(type, BASE_NAME[type], ACTION_POINTS[type], BASE_COST[type], BASE_HEALTH[type], BASE_VISION_RANGE[type]),
 	attackCost_(BASE_ATTACK_COST[type]), attackRange_(BASE_ATTACK_RANGE[type]), 
-	ctrAtkRange_(BASE_CTRATK_RANGE[type]), damage_(BASE_DAMAGE[type])
+	ctrAtkRange_(BASE_CTRATK_RANGE[type]), damage_(BASE_DAMAGE[type]), attackMultiplier_(1.0f)
 {
 }
 
