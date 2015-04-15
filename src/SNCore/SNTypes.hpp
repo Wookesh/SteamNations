@@ -44,6 +44,11 @@ namespace SNTypes {
 	 * Technology tier
 	 */
 	typedef quint16 tier;
+	
+	/**
+	 * Heuristic value
+	 */
+	typedef qint16 heur;
 }
 
 #endif
