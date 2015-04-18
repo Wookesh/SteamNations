@@ -128,3 +128,7 @@ bool Unit::save(QDataStream &out)
 	return true;
 }
 
+SNTypes::distance Unit::visionRange() const
+{
+	return this->prototype_->visionRange();
+}
