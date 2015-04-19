@@ -1,11 +1,6 @@
-#include <limits>
-#include <algorithm>
+#include "Simple.hpp"
 #include "SNCore/GameManager.hpp"
 #include "SNCore/Board.hpp"
-#include "SNCore/Player.hpp"
-#include "SNCore/SNTypes.hpp"
-#include "SNCore/Tile.hpp"
-#include "SNCore/Objects/Objects.hpp"
 #include "SNCore/Objects/Prototypes/Prototypes.hpp"
 #include "SNCore/Resources.hpp"
 
