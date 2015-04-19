@@ -30,8 +30,6 @@ add_library(SNCore
 	)
 qt5_use_modules(SNCore Core)
 
-add_subdirectory(AI)
-
 #set(test_sources
 #    UnitTests/unit_tests.cpp
 #)
