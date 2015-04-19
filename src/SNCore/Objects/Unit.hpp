@@ -37,6 +37,7 @@ public:
 	bool load(QDataStream &in);
 	bool save(QDataStream &out);
 	
+	Tile *findBestTarget();
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;

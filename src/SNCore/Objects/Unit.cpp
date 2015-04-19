@@ -7,6 +7,7 @@
 #include "Object.hpp"
 #include "Town.hpp"
 #include "SNCore/Console.hpp"
+#include "SNCore/AI/AI.hpp"
 
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
@@ -127,4 +128,10 @@ bool Unit::save(QDataStream &out)
 	out << actionPointsLeft_ << healthLeft_;
 	return true;
 }
+
+Tile *Unit::findBestTarget()
+{
+	return AI::alphaBeta(tile_, 10);
+}
+
 
