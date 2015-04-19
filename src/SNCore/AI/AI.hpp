@@ -10,6 +10,7 @@ class Player;
 class Unit;
 class Soldier;
 class Town;
+class Settler;
 
 namespace AI {
 	
@@ -26,6 +27,12 @@ namespace AI {
 	SNTypes::heur soldierUnitValue(Soldier *soldier, Unit *unit);
 	SNTypes::heur soldierTownValue(Soldier *soldier, Town *town);
 	SNTypes::heur unitWanderValue(Unit *unit, Tile *tile);
+	SNTypes::heur economyHeuristic(Player* player); //budowac jednostki czy budynki
+	SNTypes::heur townBuildBuildingHeuristic(Town* town); //czy dobry town do budowania budynkow
+	SNTypes::heur townBuildUnitHeuristic(Town* town); // czy dobry town do budowania jednostek
+	SNTypes::heur soldierHeuristic(Soldier* soldier, Tile* tile); //ocena tile'a przez soldiera
+	SNTypes::heur settlerHeuristic(Settler* settler, Tile* tile); //ocena tile'a przez settlera 
+	SNTypes::heur settlerSettleHeuristic(Settler *settler, Tile *tile); //ocena tile do settlowania przez settlera
 }
 
 #endif
