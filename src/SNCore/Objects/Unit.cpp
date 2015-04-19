@@ -122,7 +122,6 @@ bool Unit::load(QDataStream &in)
 	return true;
 }
 
-
 bool Unit::save(QDataStream &out)
 {
 	out << actionPointsLeft_ << healthLeft_;
@@ -131,7 +130,10 @@ bool Unit::save(QDataStream &out)
 
 Tile *Unit::findBestTarget()
 {
-	return AI::alphaBeta(tile_, 10);
+	return AI::evaluate(owner_, this, [](Unit *u, Tile *t){return 1;});
 }
 
-
+SNTypes::distance Unit::visionRange() const
+{
+	return this->prototype_->visionRange();
+}

@@ -26,6 +26,8 @@ public:
 	SNTypes::hp health() const;
 	SNTypes::hp healthLeft() const;
 	
+	SNTypes::distance visionRange() const;
+	
 	bool canMove(const Tile *tile) const;
 	bool move(Tile *tile, SNTypes::ap moveCost);
 	virtual void getAttacked(Soldier *) = 0;

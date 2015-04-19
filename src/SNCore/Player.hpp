@@ -64,7 +64,6 @@ public:
 	
 	bool load(QDataStream &in);
 	bool save(QDataStream &out);
-	
 private:
 	Town *capital_;
 	QString name_;

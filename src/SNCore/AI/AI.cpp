@@ -6,8 +6,8 @@
 #include "SNCore/Objects/Town.hpp"
 #include "SNCore/Objects/Unit.hpp"
 
-#include <QSet>
 #include <QVector>
+#include <QQueue>
 
 namespace AI {
 	
@@ -22,7 +22,7 @@ namespace AI {
 		QSet<Tile *> targetTiles;
 		QQueue<Tile *> tilesToVisit;
 		
-		tilesToVisit.insert(player->capital()->tile());
+		tilesToVisit.enqueue(player->capital()->tile());
 		
 		while (!tilesToVisit.isEmpty()) {
 			Tile *tile = tilesToVisit.dequeue();

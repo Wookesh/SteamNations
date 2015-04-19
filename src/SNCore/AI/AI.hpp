@@ -1,6 +1,8 @@
 #ifndef AI_MODULE_HPP
 #define AI_MODULE_HPP
+
 #include <limits>
+#include <QSet>
 
 class Tile;
 class Player;
