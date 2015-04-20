@@ -12,6 +12,7 @@ Item {
 	function createConnections() {
 		nextTurn.clicked.connect(rotationTimer.start);
 		nextTurn.clicked.connect(gmib.gameManager.endTurn);
+		nextTurn.clicked.connect(scene.hideInfoBox);
 		gmib.gameManager.turnReady.connect(rotationTimer.stop);
 	}
 	

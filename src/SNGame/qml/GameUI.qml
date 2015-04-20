@@ -73,6 +73,7 @@ Rectangle {
 			x: -nextTurnButton.width / 3
 			y: staticLeftForeground.height - (nextTurnButton.width * 1 / 2)
 			
+			
 		}
 	}
 	
@@ -130,6 +131,10 @@ Rectangle {
 				scene.scale = 1;
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+			}
+			
+			function hideInfoBox() {
+				objectInfoBox.visible = false
 			}
 			
 			function updateResources() {
