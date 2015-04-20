@@ -13,6 +13,7 @@ Rectangle {
 	StaticLeftForeground {
 		id: staticLeftForeground
 		z: 1
+		visible:false
 		
 		MenuButton {
 			id: menuButton
@@ -82,8 +83,7 @@ Rectangle {
 		x: gameUI.width - objectInfoBox.width 
 		z: 1
 	}
-	
-	
+
 	
 	MouseArea {
 		anchors.fill: parent
@@ -133,8 +133,10 @@ Rectangle {
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
 			}
 			
-			function hideInfoBox() {
+			function afterTurn() {
 				objectInfoBox.visible = false
+				staticLeftForeground.visible = false
+				splashScreen.visible = true
 			}
 			
 			function updateResources() {
@@ -161,6 +163,31 @@ Rectangle {
 		y: (gameUI.height - techWindow.height)/2 
 		z: 1
 	}
+	
+	Rectangle {
+		id:splashScreen
+		visible:true
+		anchors.fill:parent
+		color:"black"
+		MouseArea {
+			anchors.fill:parent
+			onClicked:{
+				splashScreen.visible = false
+				staticLeftForeground.visible = true
+			}
+			Label {
+				text:"Click to start turn"
+				color:"white"
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.horizontalCenter: parent.horizontalCenter
+				font.family: snFont.name
+				font.pixelSize: 64
+			}
+			
+		}
+		
+	}
+	
 	
 	GameConsole {
 		id: gameConsole
