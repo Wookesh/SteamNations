@@ -1,13 +1,15 @@
 #include "Settler.hpp"
 #include "Prototypes/SettlerPrototype.hpp"
 #include "Town.hpp"
-#include "../Tile.hpp"
-#include "../GameManager.hpp"
-#include "../Board.hpp"
-#include "../Player.hpp"
+#include "SNCore/Tile.hpp"
+#include "SNCore/GameManager.hpp"
+#include "SNCore/Board.hpp"
+#include "SNCore/Player.hpp"
+#include "SNCore/AI/AI.hpp"
 #include <QDebug>
 
-Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent) : Unit(tile, prototype, owner, parent)
+Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent):
+	Unit(tile, prototype, owner, AI::settlerHeuristic, parent)
 {
 
 }

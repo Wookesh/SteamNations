@@ -1,12 +1,14 @@
 #include "Soldier.hpp"
-#include "../Tile.hpp"
+#include "SNCore/Tile.hpp"
 #include "Town.hpp"
 #include "Prototypes/SoldierPrototype.hpp"
-#include "../GameManager.hpp"
-#include <Board.hpp>
-#include <Player.hpp>
+#include "SNCore/GameManager.hpp"
+#include "SNCore/Board.hpp"
+#include "SNCore/Player.hpp"
+#include "SNCore/AI/AI.hpp"
 
-Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent): Unit(tile, prototype, owner, parent)
+Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent):
+	Unit(tile, prototype, owner, AI::soldierHeuristic, parent)
 {
 
 }

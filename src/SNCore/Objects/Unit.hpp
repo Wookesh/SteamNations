@@ -6,11 +6,12 @@
 
 class Prototype;
 class Soldier;
+class Tile;
 
 class Unit : public Object {
 Q_OBJECT
 public:
-	Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent = nullptr);
+	Unit(Tile *tile, const Prototype *prototype, Player *owner, SNTypes::heur (*heuristic)(Unit *, Tile *), QObject *parent = nullptr);
 	virtual ~Unit();
 	
 	virtual void updateBefore() override;
@@ -46,6 +47,7 @@ protected:
 	SNTypes::hp healthLeft_;
 	
 	void spentActionPoints(SNTypes::ap actionPoints);
+	SNTypes::heur (*heuristic_)(Unit *, Tile *);
 };
 
 #endif

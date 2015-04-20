@@ -50,7 +50,7 @@ namespace AI {
 		return targetTiles;
 	}
 	
-	Tile *evaluate(Player *player, Unit *unit, int (*heuristic)(Unit *,Tile *))
+	Tile *evaluate(Player *player, Unit *unit, SNTypes::heur (*heuristic)(Unit *,Tile *))
 	{
 		QSet<Tile *> targets = getAllTargets(player);
 		QPair<int, Tile *> bestTarget;
@@ -61,7 +61,6 @@ namespace AI {
 		return bestTarget.second;
 	}
 	
-		
 	SNTypes::heur economyHeuristic(Player* player) 
 	{
 		qint16 their = 0;
@@ -93,15 +92,16 @@ namespace AI {
 		return -((SNTypes::heur)minimum);
 	}
 
-	SNTypes::heur soldierHeuristic(Soldier* soldier, Tile* tile)
+	SNTypes::heur soldierHeuristic(Unit* unit, Tile* tile)
 	{
+		Soldier *soldier = static_cast<Soldier *>(unit);
 		if (tile->unit()) {
 			Unit *unitFromTile = tile->unit();
 			if (unitFromTile->owner() == soldier->owner()) 
 				return minInf;
 			return soldierUnitValue(soldier, unitFromTile);
 		}
-		if (tile->town()){
+		if (tile->town()) {
 			Town *townFromTile = tile->town();
 			if (townFromTile->owner() == soldier->owner()) 
 				return minInf;
@@ -110,11 +110,13 @@ namespace AI {
 		return unitWanderValue(soldier, tile);
 	}
 	
-	SNTypes::heur settlerHeuristic(Settler* settler, Tile* tile)
+	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile)
 	{
+		Settler *settler = static_cast<Settler *>(unit);
 		if (tile->unit() || tile->town()) 
 			return minInf;
-		
+		if (tile->visible(settler->owner()))
+			return settlerSettleHeuristic(settler, tile);
 		return unitWanderValue(settler, tile);
 	}
 	
@@ -123,10 +125,10 @@ namespace AI {
 		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile, 1);
 		int resources[4] = {0, 0, 0, 0};
 		for (Tile *newTownTiles: tiles) {
-			if (newTownTiles->resource() == Resource::Gold) resources[0]++;
-			if (newTownTiles->resource() == Resource::Research) resources[1]++;
-			if (newTownTiles->resource() == Resource::Food) resources[2]++;
-			if (newTownTiles->resource() == Resource::None) resources[3]++;
+			if (newTownTiles->resource() == Resource::Gold) ++resources[0];
+			if (newTownTiles->resource() == Resource::Research) ++resources[1];
+			if (newTownTiles->resource() == Resource::Food) ++resources[2];
+			if (newTownTiles->resource() == Resource::None) ++resources[3];
 		}
 		//najlepszy town to taki ktory ma 4 golda i 3 food/research.
 		//najgorszy to jak ma 7 none
@@ -140,7 +142,7 @@ namespace AI {
 		int myPower = 0;
 		int theirPower = 0;
 		
-		for (Tile *tile: aroundTheir){
+		for (Tile *tile: aroundTheir) {
 			if (tile->unit()) {
 				if (tile->unit()->pType() != PrototypeType::Settler){
 					if (tile->unit()->owner() == ours->unit()->owner())
@@ -151,7 +153,7 @@ namespace AI {
 			}
 		}
 		
-		for (Tile *tile: aroundOurs){
+		for (Tile *tile: aroundOurs) {
 			if (tile->unit()) {
 				if (tile->unit()->pType() != PrototypeType::Settler){
 					if (tile->unit()->owner() == ours->unit()->owner())

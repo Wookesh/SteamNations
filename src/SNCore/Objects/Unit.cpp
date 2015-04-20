@@ -9,11 +9,12 @@
 #include "SNCore/Console.hpp"
 #include "SNCore/AI/AI.hpp"
 
-Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, QObject *parent) :
+Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, SNTypes::heur (*heuristic)(Unit *, Tile *), QObject *parent) :
     Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
 	actionPointsLeft_(0),
-	healthLeft_(prototype->health())
+	healthLeft_(prototype->health()),
+	heuristic_(heuristic)
 {
 	GameManager::get()->console()->in() << "Created unit " << name() << " for player " << owner->name() << "\n";
 	updateVision();
@@ -130,7 +131,7 @@ bool Unit::save(QDataStream &out)
 
 Tile *Unit::findBestTarget()
 {
-	return AI::evaluate(owner_, this, [](Unit *u, Tile *t){return 1;});
+	return AI::evaluate(owner_, this, heuristic_);
 }
 
 SNTypes::distance Unit::visionRange() const

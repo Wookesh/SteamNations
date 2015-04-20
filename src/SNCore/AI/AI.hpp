@@ -22,7 +22,7 @@ namespace AI {
 	const int wanderPriority = 0;
 	
 	QSet<Tile *> getAllTargets(Player *player);
-	Tile *evaluate(Player *player, Unit *unit, int (*heuristic)(Unit *,Tile *));
+	Tile *evaluate(Player *player, Unit *unit, SNTypes::heur (*heuristic)(Unit *,Tile *));
 	
 	SNTypes::heur soldierUnitValue(Soldier *soldier, Unit *unit);
 	SNTypes::heur soldierTownValue(Soldier *soldier, Town *town);
@@ -30,8 +30,8 @@ namespace AI {
 	SNTypes::heur economyHeuristic(Player* player); //budowac jednostki czy budynki
 	SNTypes::heur townBuildBuildingHeuristic(Town* town); //czy dobry town do budowania budynkow
 	SNTypes::heur townBuildUnitHeuristic(Town* town); // czy dobry town do budowania jednostek
-	SNTypes::heur soldierHeuristic(Soldier* soldier, Tile* tile); //ocena tile'a przez soldiera
-	SNTypes::heur settlerHeuristic(Settler* settler, Tile* tile); //ocena tile'a przez settlera 
+	SNTypes::heur soldierHeuristic(Unit *unit, Tile* tile); //ocena tile'a przez soldiera
+	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile); //ocena tile'a przez settlera 
 	SNTypes::heur settlerSettleHeuristic(Settler *settler, Tile *tile); //ocena tile do settlowania przez settlera
 }
 
