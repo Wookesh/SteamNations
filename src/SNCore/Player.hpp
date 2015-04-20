@@ -11,6 +11,8 @@
 #include "Resources.hpp"
 #include "Bonuses/Bonuses.hpp"
 
+#define GMlog() GameManager::get()->console()->in()
+
 class Tile;
 class Town;
 class Unit;
@@ -64,6 +66,8 @@ public:
 	
 	bool load(QDataStream &in);
 	bool save(QDataStream &out);
+	
+	virtual void performTurn() = 0;
 private:
 	Town *capital_;
 	QString name_;
@@ -76,6 +80,20 @@ private:
 	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses_;
 	QHash<Resource, SNTypes::amount> buildingCost_;
 	QHash<Resource, SNTypes::amount> lastIncome_;
+};
+
+class HumanPlayer : public Player {
+public:
+	HumanPlayer(const QString &name, QColor color);
+	virtual ~HumanPlayer();
+	virtual void performTurn();
+};
+
+class ComputerPlayer : public Player {
+public:
+	ComputerPlayer(const QString &name, QColor color);
+	virtual ~ComputerPlayer();
+	virtual void performTurn();
 };
 
 #endif

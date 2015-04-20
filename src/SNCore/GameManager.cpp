@@ -56,7 +56,7 @@ bool GameManager::loadPlayers(QDataStream &in)
 		QString playerName;
 		QColor playerColor;
 		in >> playerName >> playerColor;
-		Player *player = new Player(playerName, playerColor);
+		Player *player = new HumanPlayer(playerName, playerColor);
 		players_.push_back(player);
 		
 		if (!player->load(in)) return false;
@@ -220,9 +220,9 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	//CreatePlayers
 	int no = 0;
 	
+	int tescik = 0;
 	for (QString playerName : playerNames) {
-		
-		Player *player = new Player(playerName, playerColors[no].value<QColor>());
+		Player *player = new HumanPlayer(playerName, playerColors[no].value<QColor>());
 		players_.push_back(player);
 		board_->addPlayerVisionToTiles(player);
 		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
@@ -400,6 +400,7 @@ void GameManager::endTurn()
 	currentPlayer_->updateBefore();
 	BonusManager::get()->reloadBonuses();
 	emit turnReady();
+	currentPlayer()->performTurn();
 }
 
 

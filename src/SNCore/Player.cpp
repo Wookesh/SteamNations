@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Console.hpp"
 #include "Objects/Prototypes/Prototypes.hpp"
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
@@ -293,5 +294,29 @@ bool Player::save(QDataStream &out)
 	return true;
 }
 
+HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) {
+
+}
+
+HumanPlayer::~HumanPlayer() {
+
+}
+
+void HumanPlayer::performTurn() {
+	
+}
+
+void ComputerPlayer::performTurn() {
+	GMlog() << "ComputerPlayer turn\n";
+	GameManager::get()->endTurn();
+}
+
+ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) {
+
+}
+
+ComputerPlayer::~ComputerPlayer() {
+
+}
 
 
