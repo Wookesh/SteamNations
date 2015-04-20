@@ -92,31 +92,31 @@ SNImage {
 			source:"qrc:///unit/Town";
 			onClicked: scene.makeAction(0)
 		}
-		
-		MenuButton {
-			id:settler
-			source:"qrc:///unit/Settler";
-			onClicked:scene.makeAction(0);
-		}
+
 		
 		MenuButton {
 			id:infantry
 			source:"qrc:///unit/Infantry";
-			onClicked:scene.makeAction(1);
+			onClicked:scene.makeAction(0);
 		}
 		
 		MenuButton {
 			id:heavy
 			source:"qrc:///unit/Heavy";
-			onClicked:scene.makeAction(2);
+			onClicked:scene.makeAction(1);
 		}
 		
 		MenuButton {
 			id:artillery
 			source:"qrc:///unit/Artillery";
+			onClicked:scene.makeAction(2);
+		}
+			
+		MenuButton {
+			id:settler
+			source:"qrc:///unit/Settler";
 			onClicked:scene.makeAction(3);
 		}
-	
 	}
 	
 	SNImage{

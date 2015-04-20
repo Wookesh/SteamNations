@@ -10,7 +10,7 @@ class Player;
 class Unit;
 class Tile;
 
-EnumClassWithStrings(PrototypeType, quint8, Settler, Infantry, Heavy, Artillery)
+EnumClassWithStrings(PrototypeType, quint8, Infantry, Heavy, Artillery, Settler)
 
 class Prototype {
 public:

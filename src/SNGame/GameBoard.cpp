@@ -364,8 +364,10 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 
 void GameBoard::makeAction(int action)
 {
-	objectActions_[action]->perform();
-	select(selectedObject_->tile());
+	if(action < objectActions_.length()) {
+		objectActions_[action]->perform();
+		select(selectedObject_->tile());
+	}
 }
  
 BonusManager* GameBoard::bonusManager()
