@@ -3,6 +3,7 @@
 
 #include "Object.hpp"
 #include "Prototypes/Prototype.hpp"
+#include "SNCore/Actions/Action.hpp"
 
 class Prototype;
 class Soldier;
@@ -30,6 +31,9 @@ public:
 	SNTypes::distance visionRange() const;
 	
 	bool canMove(const Tile *tile) const;
+	
+	virtual bool canPerform(ActionType action, const Tile *tile) const;
+	
 	bool move(Tile *tile, SNTypes::ap moveCost);
 	virtual void getAttacked(Soldier *) = 0;
 	void removeHealth(SNTypes::dmg);
@@ -41,12 +45,14 @@ public:
 	bool save(QDataStream &out);
 	
 	Tile *findBestTarget();
+	QPair<ActionType, Tile *> getTargetWithAction();
 protected:
 	const Prototype *prototype_;
 	SNTypes::ap actionPointsLeft_;
 	SNTypes::hp healthLeft_;
 	
 	void spentActionPoints(SNTypes::ap actionPoints);
+	virtual ActionType getActionType(Tile *tile) = 0;
 	SNTypes::heur (*heuristic_)(Unit *, Tile *);
 };
 

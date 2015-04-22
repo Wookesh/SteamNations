@@ -109,7 +109,7 @@ Board::~Board()
  */
 Tile* Board::getTile(int x, int y) const 
 {
-	if (x < 0 || y < 0 || x + y * width_ >= height_ * width_)
+	if (x < 0 || y < 0 || x >= width_ || y >= height_)
 		return nullptr;
 	
 	return tiles_[x + y * width_];
@@ -287,10 +287,10 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
 	
 	Tile *current = dest;
 	QVector<Tile *> path;
-	path.push_back(current);
+	path.push_front(current);
 	while (current != start) {
 		current = cameFrom[current];
-		path.push_front(current);
+		path.push_back(current);
 	}
 	
 	return path;

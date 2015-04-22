@@ -23,7 +23,7 @@ Settler::~Settler()
 		owner_->destroyUnit(this);
 }
 
-bool Settler::canSettle(Tile * tile) const
+bool Settler::canSettle(const Tile *tile) const
 {
 	if (tile == tile_ && tile->town() == nullptr && GameManager::get()->currentPlayer() == owner_)
 		return true;
@@ -46,6 +46,12 @@ bool Settler::settle()
 	return true;
 }
 
+bool Settler::canPerform(ActionType action, const Tile *tile) const
+{
+	if (action == ActionType::Settle)
+		return canSettle(tile);
+	return Unit::canPerform(action, tile);
+}
 
 Town *Settler::createTown()
 {
@@ -58,4 +64,11 @@ Town *Settler::createTown()
 void Settler::getAttacked(Soldier *) 
 {
 	removeHealth(healthLeft());
+}
+
+ActionType Settler::getActionType(Tile *tile)
+{
+	if (!tile->visible(owner()))
+		return ActionType::Move;
+	return ActionType::Settle;
 }

@@ -11,12 +11,13 @@ Q_OBJECT
 public:
 	Soldier(Tile *tile, const SoldierPrototype *prototype, Player *owner, QObject *parent = nullptr);
 	
-	bool canCapture(Tile *currTile);
+	bool canCapture(const Tile *currTile) const;
 	bool capture(Town *town);
 	
-	bool canAttack(Tile *currTile);
+	bool canAttack(const Tile *currTile) const;
 	bool attack(Unit *unit);
 	
+	bool canPerform(ActionType, const Tile *tile) const override;
 	float attackBonus(Soldier *soldier);
 	
 	SNTypes::ap attackCost() const;
@@ -25,6 +26,8 @@ public:
 	SNTypes::dmg damage() const;
 	
 	virtual void getAttacked(Soldier *) override;
+protected:
+	virtual ActionType getActionType(Tile *tile) override;
 };
 
 

@@ -8,6 +8,7 @@
 #include "EnumHelpers.hpp"
 #include "SNTypes.hpp"
 #include "Config.hpp"
+#include "SNCore/Actions/Action.hpp"
 
 #define GMlog() GameManager::get()->console()->in()
 
@@ -16,6 +17,8 @@ class Console;
 class Board;
 class Object;
 class Player;
+class Tile;
+class Unit;
 
 EnumClassWithStrings(WinCondition, quint8, Domination, Technology, Conquest, Economic, Any)
 
@@ -54,6 +57,7 @@ public:
 	
 	QVector<Action *> mapActions(const Object *object);
 	QVector<Action *> objectActions(const Object *object);
+	Action *getUnitAction(Unit *unit, ActionType action, Tile *tile);
 	
 	SNTypes::population totalPopulation() const;
 	SNTypes::amount totalGold() const;

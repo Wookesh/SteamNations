@@ -10,67 +10,48 @@
 
 #include <QVector>
 #include <QQueue>
+#include <QSet>
 
 namespace AI {
 	
-	QSet<Tile *> getAllTargets(Player *player) 
+	Tile *evaluate(Player *player, Unit *unit, SNTypes::heur (*heuristic)(Unit *,Tile *))
 	{
-		static Player *previousPlayer = nullptr;
-		static QSet<Tile *> previousTargets;
-		if (previousPlayer == player)
-			return previousTargets;
+		QPair<int, Tile *> bestTarget(minInf, nullptr);
 		
 		QSet<Tile *> visitedTiles;
-		QSet<Tile *> targetTiles;
 		QQueue<Tile *> tilesToVisit;
 		
-		tilesToVisit.enqueue(player->capital()->tile());
+		tilesToVisit.enqueue(unit->tile());
+		visitedTiles.insert(unit->tile());
 		
 		while (!tilesToVisit.isEmpty()) {
 			Tile *tile = tilesToVisit.dequeue();
-			visitedTiles.insert(tile);
-			if (!tile->visible(player)) {
-				targetTiles.insert(tile);
-			} else {
-				if ((tile->unit() != nullptr && tile->unit()->owner() != player) 
-					|| (tile->town() != nullptr && tile->town()->owner() != player))
-					targetTiles.insert(tile);
-				
+			if (tile->visible(player)) {
 				QVector<Tile *> neighbours = GameManager::get()->board()->getNeighbours(tile);
 				for (Tile *nTile : neighbours) {
-					if (!visitedTiles.contains(nTile))
+					if (!visitedTiles.contains(nTile)) {
 						tilesToVisit.enqueue(nTile);
+						visitedTiles.insert(nTile);
+					}
 				}
 			}
-		}
-		
-		previousPlayer = player;
-		previousTargets = targetTiles;
-		
-		return targetTiles;
-	}
-	
-	Tile *evaluate(Player *player, Unit *unit, SNTypes::heur (*heuristic)(Unit *,Tile *))
-	{
-		QSet<Tile *> targets = getAllTargets(player);
-		QPair<int, Tile *> bestTarget;
-		for (Tile *tile: targets) {
 			int hVal = heuristic(unit, tile);
 			bestTarget = hVal > bestTarget.first ? qMakePair(hVal, tile) : bestTarget;
 		}
+		
 		return bestTarget.second;
 	}
 	
 	SNTypes::heur economyHeuristic(Player* player) 
 	{
-		qint16 their = 0;
+		SNTypes::heur their = 0;
 		QList <Player*> players = GameManager::get()->players();
 		for (Player *other: players) {
 			if (player != other)
 				their += other->getUnitsCount();
 		}
 		their /= players.length() - 1;
-		qint16 ours = player->getUnitsCount();
+		SNTypes::heur ours = player->getUnitsCount();
 		return ours - their;
 	}
 
@@ -107,7 +88,9 @@ namespace AI {
 				return minInf;
 			return soldierTownValue(soldier, townFromTile);
 		}
-		return unitWanderValue(soldier, tile);
+		if (!tile->visible(unit->owner()))
+			return unitWanderValue(soldier, tile);
+		return minInf;
 	}
 	
 	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile)
@@ -135,7 +118,7 @@ namespace AI {
 		return (resources[0] + 1)*(std::abs(resources[1] - resources[2]) + 1) - (resources[3]);
 	}
 	
-	SNTypes::heur getSigma(Tile *ours, Tile *their) {
+	SNTypes::heur getSigma(Tile *ours, Tile *their, Player *me, Player *enemy) {
 		QVector<Tile *> aroundTheir = GameManager::get()->board()->getInRange(their, sigmaCheckingRange);
 		QVector<Tile *> aroundOurs = GameManager::get()->board()->getInRange(ours, sigmaCheckingRange);
 		
@@ -144,10 +127,10 @@ namespace AI {
 		
 		for (Tile *tile: aroundTheir) {
 			if (tile->unit()) {
-				if (tile->unit()->pType() != PrototypeType::Settler){
-					if (tile->unit()->owner() == ours->unit()->owner())
+				if (tile->unit()->pType() != PrototypeType::Settler) {
+					if (tile->unit()->owner() == me)
 						myPower++;
-					if (tile->unit()->owner() == their->unit()->owner())
+					if (tile->unit()->owner() == enemy)
 						theirPower++;
 				}
 			}
@@ -155,10 +138,10 @@ namespace AI {
 		
 		for (Tile *tile: aroundOurs) {
 			if (tile->unit()) {
-				if (tile->unit()->pType() != PrototypeType::Settler){
-					if (tile->unit()->owner() == ours->unit()->owner())
+				if (tile->unit()->pType() != PrototypeType::Settler) {
+					if (tile->unit()->owner() == me)
 						myPower++;
-					if (tile->unit()->owner() == their->unit()->owner())
+					if (tile->unit()->owner() == enemy)
 						theirPower++;
 				}
 			}
@@ -169,14 +152,14 @@ namespace AI {
 	SNTypes::heur soldierTownValue(Soldier *soldier, Town *town)
 	{
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(soldier->tile(), town->tile())).length();
-		int sigma = getSigma(soldier->tile(), town->tile());
+		int sigma = getSigma(soldier->tile(), town->tile(), soldier->owner(), town->owner());
 		return -length + sigma + townCapturePriority;
 	}
 
 	SNTypes::heur soldierUnitValue(Soldier *soldier, Unit *unit)
 	{
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(soldier->tile(), unit->tile())).length();
-		int sigma = getSigma(soldier->tile(), unit->tile());
+		int sigma = getSigma(soldier->tile(), unit->tile(), soldier->owner(), unit->owner());
 		return -length + sigma + unitAttackPriority;
 	}
 

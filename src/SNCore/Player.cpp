@@ -6,6 +6,7 @@
 #include "Tile.hpp"
 #include "Config.hpp"
 #include "GameManager.hpp"
+#include "Board.hpp"
 
 #include <QtCore>
 
@@ -294,28 +295,61 @@ bool Player::save(QDataStream &out)
 	return true;
 }
 
-HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) {
+HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) 
+{
 
 }
 
-HumanPlayer::~HumanPlayer() {
+HumanPlayer::~HumanPlayer() 
+{
 
 }
 
-void HumanPlayer::performTurn() {
-	
+void HumanPlayer::performTurn() 
+{
+	qDebug() << "HumanPlayer";
 }
 
-void ComputerPlayer::performTurn() {
-	GMlog() << "ComputerPlayer turn\n";
-	GameManager::get()->endTurn();
+void ComputerPlayer::performTurn() 
+{
+	qDebug() << "ComputerPlayer";
+	for (Unit *unit : units_) {
+		qDebug() << unit->name() << unit->tile()->position();
+		QPair<ActionType, Tile *> target = unit->getTargetWithAction();
+		qDebug() << "Start to perform action: " << target.second->position().x() << target.second->position().y() << (QString)(target.first);
+		QVector<Tile *> path = GameManager::get()->board()->pathToTile(unit->tile(), target.second);
+		path.pop_back();
+		bool canDoSomething = true;
+		do {
+			if (unit->canPerform(target.first, target.second)) {
+				Action *action = GameManager::get()->getUnitAction(unit, target.first, target.second);
+				if (action)
+					action->perform();
+				else
+					qDebug() << "ERROR";
+				canDoSomething = false;
+			} else if (!path.isEmpty() && unit->canMove(path.last())) {
+				Action *action = GameManager::get()->getUnitAction(unit, ActionType::Move, path.last());
+				if (action)
+					action->perform();
+				else
+					qDebug() << "ERROR";
+				path.pop_back();
+			} else {
+				canDoSomething = false;
+			}
+		} while (canDoSomething);
+	}
+	//GameManager::get()->endTurn();
 }
 
-ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) {
+ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) 
+{
 
 }
 
-ComputerPlayer::~ComputerPlayer() {
+ComputerPlayer::~ComputerPlayer() 
+{
 
 }
 

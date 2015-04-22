@@ -2,7 +2,6 @@
 #define AI_MODULE_HPP
 
 #include <limits>
-#include <QSet>
 #include "SNCore/SNTypes.hpp"
 
 class Tile;
@@ -21,7 +20,6 @@ namespace AI {
 	const int unitAttackPriority = 4;
 	const int wanderPriority = 0;
 	
-	QSet<Tile *> getAllTargets(Player *player);
 	Tile *evaluate(Player *player, Unit *unit, SNTypes::heur (*heuristic)(Unit *,Tile *));
 	
 	SNTypes::heur soldierUnitValue(Soldier *soldier, Unit *unit);

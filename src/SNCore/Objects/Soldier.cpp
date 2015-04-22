@@ -13,7 +13,7 @@ Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, Q
 
 }
 
-bool Soldier::canAttack(Tile *currTile)
+bool Soldier::canAttack(const Tile *currTile) const
 {
 	if ((GameManager::get()->currentPlayer() == owner()) &&
 		(GameManager::get()->board()->getAbsoluteDistance(tile(), currTile) <= attackRange()) &&
@@ -60,7 +60,7 @@ SNTypes::dmg Soldier::damage() const
 	return qRound(dmg);
 }
 
-bool Soldier::canCapture(Tile *currTile)
+bool Soldier::canCapture(const Tile *currTile) const
 {
 	if ((GameManager::get()->currentPlayer() == owner()) &&
 		(currTile->town() != nullptr) &&
@@ -85,8 +85,17 @@ bool Soldier::capture(Town *town)
 	return false;
 }
 
+bool Soldier::canPerform(ActionType action, const Tile *tile) const
+{
+	if (action == ActionType::Capture)
+		return canCapture(tile);
+	if (action == ActionType::Attack)
+		return canAttack(tile);
+	return Unit::canPerform(action, tile);
+}
 
-float Soldier::attackBonus (Soldier *soldier) {
+float Soldier::attackBonus (Soldier *soldier) 
+{
 	return dynamic_cast<const SoldierPrototype *>(prototype_)->attackBonus(soldier->pType());
 }
 
@@ -106,4 +115,14 @@ void Soldier::getAttacked(Soldier *soldier)
 	
 	removeHealth(finalDmg);
 }
+
+ActionType Soldier::getActionType(Tile *tile)
+{
+	if (tile->unit())
+		return ActionType::Attack;
+	if (tile->town() && pType() == PrototypeType::Infantry)
+		return ActionType::Capture;
+	return ActionType::Move;
+}
+
 

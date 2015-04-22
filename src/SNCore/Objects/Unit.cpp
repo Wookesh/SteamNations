@@ -96,6 +96,13 @@ bool Unit::move(Tile *tile, SNTypes::ap moveCost)
 	return false;
 }
 
+bool Unit::canPerform(ActionType action, const Tile *tile) const
+{
+	if (action == ActionType::Move)
+		return canMove(tile);
+	return false;
+}
+
 void Unit::removeHealth(SNTypes::dmg damage) 
 {
 	healthLeft_ = damage >= healthLeft_ ? 0 : healthLeft_ - damage;
@@ -133,6 +140,14 @@ Tile *Unit::findBestTarget()
 {
 	return AI::evaluate(owner_, this, heuristic_);
 }
+
+QPair<ActionType, Tile *> Unit::getTargetWithAction()
+{
+	Tile *tile = findBestTarget();
+	ActionType action = getActionType(tile);
+	return qMakePair(action, tile);
+}
+
 
 SNTypes::distance Unit::visionRange() const
 {

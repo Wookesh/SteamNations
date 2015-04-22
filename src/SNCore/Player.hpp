@@ -68,7 +68,7 @@ public:
 	bool save(QDataStream &out);
 	
 	virtual void performTurn() = 0;
-private:
+protected:
 	Town *capital_;
 	QString name_;
 	QColor color_;

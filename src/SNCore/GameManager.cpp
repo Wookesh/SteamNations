@@ -220,9 +220,8 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	//CreatePlayers
 	int no = 0;
 	
-	int tescik = 0;
 	for (QString playerName : playerNames) {
-		Player *player = new HumanPlayer(playerName, playerColors[no].value<QColor>());
+		Player *player = new ComputerPlayer(playerName, playerColors[no].value<QColor>());
 		players_.push_back(player);
 		board_->addPlayerVisionToTiles(player);
 		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
@@ -238,6 +237,7 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	
 	playerIterator_ = --players_.end();
 	setNextPlayer();
+	currentPlayer()->performTurn();
 	return true;
 }
 
@@ -367,6 +367,30 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 	}
 	return possibleActions;
 }
+
+Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
+{
+	if (action == ActionType::Move) {
+		return new MoveAction(unit, tile, board_->getAbsoluteDistance(tile, unit->tile()));
+	}
+	if (action == ActionType::Settle) {
+		if (unit->pType() == PrototypeType::Settler)
+			return new SettleAction(static_cast<Settler *>(unit));
+		return nullptr;
+	}
+	if (action == ActionType::Capture) {
+		if (unit->pType() == PrototypeType::Infantry && tile->town())
+			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
+		return nullptr;
+	}
+	if (action == ActionType::Attack) {
+		if (unit->pType() != PrototypeType::Settler && tile->unit())
+			return new AttackAction(static_cast<Soldier *>(unit), tile->unit());
+		return nullptr;
+	}
+	return nullptr;
+}
+
 
 void GameManager::check(const Player *player) 
 {
