@@ -8,6 +8,15 @@ Row {
 	property bool disabled: false
 	property alias color: colorPicker.cellColor
 	property alias name: nameBox.text
+	property alias computer:ai.checked
+	
+	CheckBox {
+		id:ai
+		text: "AI"
+		checked: false
+		height:parent.height
+	}
+
 	
 	TextField {
 		id: nameBox

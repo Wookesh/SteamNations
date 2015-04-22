@@ -194,7 +194,7 @@ void GameManager::save(const QString &saveFile)
 	}
 }
 
-bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QVariantList &playerColors)
+bool GameManager::useSettings(int width, int height, int playersCount, const QStringList &playerNames, const QList<bool> &computers, const QVariantList &playerColors)
 {
 	//Validate
 	if (playerNames.size() != playersCount || playerColors.size() != playersCount)
@@ -219,9 +219,12 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	
 	//CreatePlayers
 	int no = 0;
-	
 	for (QString playerName : playerNames) {
-		Player *player = new ComputerPlayer(playerName, playerColors[no].value<QColor>());
+		Player *player;
+		if(computers[no])
+			player = new ComputerPlayer(playerName, playerColors[no].value<QColor>());
+		else
+			player = new HumanPlayer(playerName, playerColors[no].value<QColor>());
 		players_.push_back(player);
 		board_->addPlayerVisionToTiles(player);
 		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);

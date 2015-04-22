@@ -28,11 +28,13 @@ Rectangle {
 	function tryToStart() {
 		var playerNames = [];
 		var playerColors = [];
+		var playerAI = [];
 		for (var i = 0; i < gameData.playersCount; ++i) {
 			playerNames[i] = gameData.entries[i].name;
 			playerColors[i] = gameData.entries[i].color;
+			playerAI[i] = gameData.entries[i].computer;
 		}
-		gmib.gameManager.useSettings(gameData.boardWidth, gameData.boardHeight, gameData.playersCount, playerNames, playerColors);
+		gmib.gameManager.useSettings(gameData.boardWidth, gameData.boardHeight, gameData.playersCount, playerNames, playerAI, playerColors);
 		createGame.start();
 	}
 	

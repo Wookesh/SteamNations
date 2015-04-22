@@ -32,7 +32,7 @@ public:
 	static void init();
 	static void clean();
 	
-	Q_INVOKABLE bool useSettings(int width, int height, int playersCount, const QStringList &names, const QVariantList &colors);
+	Q_INVOKABLE bool useSettings(int width, int height, int playersCount, const QStringList &names, const QList<bool> &computers, const QVariantList &colors);
 	void initBoard(int width, int height, int seed = time(NULL));
 	Q_INVOKABLE void endGame();
 	
