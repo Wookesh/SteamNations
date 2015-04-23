@@ -25,7 +25,9 @@ Settler::~Settler()
 
 bool Settler::canSettle(const Tile *tile) const
 {
-	if (tile == tile_ && tile->town() == nullptr && GameManager::get()->currentPlayer() == owner_)
+	if (tile == tile_ && tile->town() == nullptr 
+		&& tile->localTown() == nullptr
+		&& GameManager::get()->currentPlayer() == owner_)
 		return true;
 	return false;
 }
