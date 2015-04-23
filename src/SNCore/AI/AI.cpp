@@ -115,6 +115,7 @@ namespace AI {
 		}
 		//najlepszy town to taki ktory ma 4 golda i 3 food/research.
 		//najgorszy to jak ma 7 none
+		//FIXME 3~4 fooda, i inny surowiec, minimalizujemy None
 		return (resources[0] + 1)*(std::abs(resources[1] - resources[2]) + 1) - (resources[3]);
 	}
 	

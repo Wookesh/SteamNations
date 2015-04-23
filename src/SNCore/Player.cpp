@@ -340,7 +340,7 @@ void ComputerPlayer::performTurn()
 			}
 		} while (canDoSomething);
 	}
-	//GameManager::get()->endTurn();
+	GameManager::get()->endTurn();
 }
 
 ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) 

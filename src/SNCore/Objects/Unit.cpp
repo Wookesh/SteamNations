@@ -10,7 +10,7 @@
 #include "SNCore/AI/AI.hpp"
 
 Unit::Unit(Tile *tile, const Prototype *prototype, Player *owner, SNTypes::heur (*heuristic)(Unit *, Tile *), QObject *parent) :
-    Object(tile, ObjectType::Unit, owner, parent),
+	Object(tile, ObjectType::Unit, owner, parent),
 	prototype_(prototype),
 	actionPointsLeft_(0),
 	healthLeft_(prototype->health()),
