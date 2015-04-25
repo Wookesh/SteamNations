@@ -15,9 +15,9 @@ Rectangle {
 		z: 1
 		visible: false
 		
-		MenuButton {
+		TextButton {
 			id: menuButton
-			source: "qrc:///menuButton"
+			text: "Exit"
 			
 			onClicked:{
 				scene.exit();
@@ -25,9 +25,9 @@ Rectangle {
 			}
 		}
 		
-		MenuButton {
+		TextButton {
 			id: techButton
-			source: "qrc:///techButton"
+			text: "Technology"
 			anchors.top: menuButton.bottom
 			
 			onClicked :{
@@ -37,13 +37,13 @@ Rectangle {
 			}
 		}
 		
-		MenuButton {
+		TextButton {
 			id: playerButton
-			source: "qrc:///playersInfo"
+			text: "Save"
 			anchors.top: techButton.bottom
 			
 			onClicked:
-				console.log("PlayersInfoButton clicked\n")
+				gmib.gameManager.save();
 		}
 		
 		ParamDisplay {

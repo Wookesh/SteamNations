@@ -173,17 +173,19 @@ bool GameManager::loadUnit(QDataStream &in, unsigned int posX, unsigned int posY
 	return true;
 }
 
-void GameManager::load(const QString &saveFile)
+bool GameManager::load(const QString &saveFile)
 {
 	QFile gameSave(saveFile);
 	if (gameSave.open(QIODevice::ReadOnly)) {
 		QDataStream in(&gameSave);
-		if (!loadPlayers(in)) return;
-		if (!loadBoard(in)) return;
-		if (!loadObjects(in)) return;
+		if (!loadPlayers(in)) return false;
+		if (!loadBoard(in)) return false;
+		if (!loadObjects(in)) return false;
 		
 		gameSave.close();
+		return true;
 	}
+	return false;
 }
 
 void GameManager::save(const QString &saveFile)
