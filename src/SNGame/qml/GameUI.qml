@@ -129,17 +129,16 @@ Rectangle {
 			
 			function afterTurn() {
 				scene.clearSelect();
-				staticLeftForeground.visible = false;
-				splashScreen.show();
 			}
 			
 			function beforeTurn() {
+				splashScreen.show();
 				centerBoard();
 			}
 			
 			function centerBoard() {
-				scene.x = -scene.boardCenter().x +1920/2 * root.globalScale.width
-				scene.y = -scene.boardCenter().y +1080/2 * root.globalScale.height
+				scene.x = -scene.boardCenter().x + 1920 / 2 * root.globalScale.width
+				scene.y = -scene.boardCenter().y + 1080 / 2 * root.globalScale.height
 			}
 			
 			function updateResources() {
@@ -154,7 +153,6 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
-				//scene.afterTurn();
 			}
 		}
 	}
@@ -192,6 +190,7 @@ Rectangle {
 		function show() {
 			var name = gmib.gameManager.currentPlayerName();
 			splashText.text = "Player's " + name +  " Turn\nClick to start turn";
+			staticLeftForeground.visible = false;
 			splashScreen.visible = true;
 		}
 	}
