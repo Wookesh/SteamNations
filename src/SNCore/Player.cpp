@@ -363,3 +363,14 @@ bool Player::hasSettler() {
 }
 
 
+Tile *Player::centralPositon() {
+	if (capital_ != nullptr)
+		return capital_->tile();
+	
+	if (!units_.empty())
+		return units_[0]->tile();
+	
+	// Should never reach this point!
+	return GameManager::get()->board()->getTile(0, 0);
+}
+
