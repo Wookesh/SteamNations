@@ -13,7 +13,7 @@ Rectangle {
 	StaticLeftForeground {
 		id: staticLeftForeground
 		z: 1
-		visible: true
+		visible: false
 		
 		MenuButton {
 			id: menuButton
@@ -124,6 +124,7 @@ Rectangle {
 				scene.scale = 1;
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+				scene.clearSelect();
 				beforeTurn();
 			}
 			
@@ -166,7 +167,7 @@ Rectangle {
 	
 	Rectangle {
 		id: splashScreen
-		visible: false
+		visible: true
 		anchors.fill: parent
 		color: "black"
 
@@ -178,7 +179,7 @@ Rectangle {
 			}
 			Label {
 				id: splashText
-				text: "Click to start turn" 
+				text: ""
 				color: "white"
 				anchors.verticalCenter: parent.verticalCenter
 				anchors.horizontalCenter: parent.horizontalCenter
@@ -189,7 +190,7 @@ Rectangle {
 		
 		function show() {
 			var name = gmib.gameManager.currentPlayerName();
-			splashText.text = "Player's " + name +  " Turn\nClick to start turn";
+			splashText.text =  name +  "'s  turn\nClick to start turn";
 			staticLeftForeground.visible = false;
 			splashScreen.visible = true;
 		}
