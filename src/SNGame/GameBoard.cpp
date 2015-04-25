@@ -210,6 +210,45 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				}
 			}
 		}
+		
+					if(selectedObject_) {
+						if((selectedObject_->type() == ObjectType::Town) && (selectedObject_->owner() == GameManager::get()->currentPlayer())) {
+							const Town *town = static_cast<const Town*>(selectedObject_);
+							for(Tile *townTile : town->townTiles()){
+									
+								QSGNode *child = nodeMap[index(townTile->position().x(), townTile->position().y())]->node();
+								child = child->firstChild();
+								QSGOpacityNode *opacity = new QSGOpacityNode();
+								opacity->setOpacity(SHADOW_OPACITY);
+								QSGGeometryNode *shadow = new QSGGeometryNode();
+								QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 18);
+								geometry->setDrawingMode(GL_TRIANGLES);
+								QPointF pos = coordToPos(townTile->position().x(), townTile->position().y());
+								
+								for (int i = 0; i < 6; ++i) {
+									geometry->vertexDataAsPoint2D()[3 * i].set(
+										BoardField::SIZE * GBcos(i) + pos.x(),
+										BoardField::SIZE * GBsin(i) + pos.y());
+									geometry->vertexDataAsPoint2D()[3 * i + 1].set(
+										BoardField::SIZE * GBcos((i + 1) % 6) + pos.x(),
+										BoardField::SIZE * GBsin((i + 1) % 6) + pos.y());
+									geometry->vertexDataAsPoint2D()[3 * i + 2].set(
+										pos.x(),
+										pos.y());
+								}
+								
+								QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
+								material->setColor(Qt::white);
+								shadow->setGeometry(geometry);
+								shadow->setFlag(QSGNode::OwnsGeometry);
+								shadow->setMaterial(material);
+								shadow->setFlag(QSGNode::OwnsMaterial);
+								child->appendChildNode(opacity);
+								opacity->appendChildNode(shadow);
+								
+							}
+						}
+					}
 		for (Action *action : mapActions_) {
 			QSGNode *child = nodeMap[index(action->tile()->position().x(), action->tile()->position().y())]->node();
 			child = child->firstChild();
@@ -241,6 +280,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 			child->appendChildNode(opacity);
 			opacity->appendChildNode(shadow);
 		}
+		
 	}
 	
 	return node;
@@ -263,7 +303,7 @@ QPoint GameBoard::pixelToHex(int x, int y)
 		{c.x() - 1,c.y() + 1}
 	});
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
+	int whichONe;
 	int missmatches = 0;
 	for (int i = 0; i < p.size(); ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
@@ -411,4 +451,13 @@ unsigned int GameBoard::getResearch()
 void GameBoard::updateResources()
 {
 	emit resourcesUpdated();
+}
+
+void GameBoard::exit()
+{
+	selectedObject_ = nullptr;
+	mapActions_.clear();
+	objectActions_.clear();
+	nodeMap.clear();
+	boardSet_ = false;
 }

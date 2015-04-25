@@ -24,6 +24,7 @@ public:
 	static const int INTERVAL = 250;
 	qreal SHADOW_OPACITY = 0.2;
 	GameBoard(QQuickItem *parent = 0);
+	Q_INVOKABLE void exit();
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 	Q_INVOKABLE void makeAction(int action);
 	Q_INVOKABLE unsigned int getGold();

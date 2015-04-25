@@ -19,8 +19,10 @@ Rectangle {
 			id: menuButton
 			source: "qrc:///menuButton"
 			
-			onClicked:
-				gameUI.exit()
+			onClicked:{
+				scene.exit();
+				gameUI.exit();
+			}
 		}
 		
 		MenuButton {
@@ -134,7 +136,8 @@ Rectangle {
 			}
 			
 			function afterTurn() {
-				objectInfoBox.visible = false
+				scene.clearSelect();
+				//objectInfoBox.visible = false
 				staticLeftForeground.visible = false
 				splashScreen.visible = true
 			}

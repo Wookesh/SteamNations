@@ -467,9 +467,17 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		
 		bool domination = true;
 		for (Player *pl : players()) {
-			if (pl->capital()->owner() != player) {
-				domination = false;
-				break;
+			// if [pl] has a capital, then check if [player] owns it
+			if (pl->capital() != nullptr) {
+				if (pl->capital()->owner() != player) {
+					domination = false;
+					break;
+				}
+			} else if (pl != player) { // if [pl] doesn't have a capital, check if he has a settler
+				if (pl->hasSettler()) {
+					domination = false;
+					break;
+				}
 			}
 		}
 		

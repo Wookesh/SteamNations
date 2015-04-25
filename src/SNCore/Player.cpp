@@ -364,4 +364,24 @@ ComputerPlayer::~ComputerPlayer()
 
 }
 
+bool Player::hasSettler() {
+	for (Unit *unit : units_) {
+		if (unit->pType() == PrototypeType::Settler) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+Tile *Player::centralPositon() {
+	if (capital_ != nullptr)
+		return capital_->tile();
+	
+	if (!units_.empty())
+		return units_[0]->tile();
+	
+	// Should never reach this point!
+	return GameManager::get()->board()->getTile(0, 0);
+}
 
