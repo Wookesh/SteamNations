@@ -82,7 +82,7 @@ const QColor GameBoard::highlightColor(ActionType actionType)
 	return map[actionType];
 }
 
-const qreal GameBoard::GBcos(int i)
+qreal GameBoard::GBcos(int i)
 {
 	static const QVector<qreal> map = []{
 		QVector<qreal> result;
@@ -93,7 +93,7 @@ const qreal GameBoard::GBcos(int i)
 	return map[i];
 }
 
-const qreal GameBoard::GBsin(int i)
+qreal GameBoard::GBsin(int i)
 {
 	static const QVector<qreal> map = []{
 		QVector<qreal> result;
@@ -421,9 +421,11 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 
 void GameBoard::makeAction(int action)
 {
-	if(action < objectActions_.length()) {
+	if (action < objectActions_.length()) {
+		const Tile *tile = selectedObject_->tile();
 		objectActions_[action]->perform();
-		select(selectedObject_->tile());
+		clearSelect();
+		select(tile);
 	}
 }
  

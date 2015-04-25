@@ -37,7 +37,7 @@ const Unit *BoardField::unit()
 	return unit_;
 }
 
-void BoardField::highlight(ActionType actionType)
+void BoardField::highlight()
 {
 	highlighted_ = true;
 }

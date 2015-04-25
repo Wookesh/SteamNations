@@ -57,8 +57,8 @@ private:
 	int index(int x, int y);
 	void initTimer();
 
-	const qreal GBcos(int i);
-	const qreal GBsin(int i);
+	qreal GBcos(int i);
+	qreal GBsin(int i);
 	
 	qint16 boardHeight();
 	qint16 boardWidth();

@@ -6,7 +6,7 @@
 #include "SNCore/Objects/Unit.hpp"
 #include <QDebug>
 
-InfoBox::InfoBox(QObject* parent) : visible_(false), selectedObject_(nullptr)
+InfoBox::InfoBox(QObject* parent): QObject(parent), visible_(false), selectedObject_(nullptr)
 {
 
 }
