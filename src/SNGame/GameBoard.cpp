@@ -436,19 +436,15 @@ BonusManager* GameBoard::bonusManager()
 
 qint16 GameBoard::boardHeight()
 {
-	
-	if (boardSet_) {
+	if (boardSet_)
 		return (BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height());
-	}
 	return 0;
-	
 }
 
 qint16 GameBoard::boardWidth()
 {
-	if (boardSet_) {
+	if (boardSet_)
 		return (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
-	}
 	return 0;
 }
 
