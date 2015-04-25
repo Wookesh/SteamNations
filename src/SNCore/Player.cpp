@@ -295,6 +295,17 @@ bool Player::save(QDataStream &out)
 	return true;
 }
 
+QVector<Unit *> Player::units() const
+{
+	return units_;
+}
+
+QVector<Town *> Player::towns() const
+{
+	return towns_;
+}
+
+
 HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) 
 {
 
@@ -343,14 +354,36 @@ void ComputerPlayer::performTurn()
 	GameManager::get()->endTurn();
 }
 
-ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) 
+ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color), playerToAttack_(nullptr), lastTimeSettlerBought_(0) 
 {
-
+	//playerToAttack_ = nullptr;
 }
 
 ComputerPlayer::~ComputerPlayer() 
 {
 
 }
+
+Player *ComputerPlayer::playerToAttack() const
+{
+	return playerToAttack_;
+}
+
+void ComputerPlayer::setPlayerToAttack(Player* player)
+{
+	playerToAttack_ = player;
+}
+
+int ComputerPlayer::lastTimeSettlerBought() const
+{
+	return lastTimeSettlerBought_;
+}
+
+void ComputerPlayer::setLastTimeSettlerBought(int now)
+{
+	lastTimeSettlerBought_ = now;
+}
+
+
 
 

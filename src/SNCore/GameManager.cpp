@@ -7,6 +7,7 @@
 #include "Actions/Actions.hpp"
 
 #include <QDebug>
+#include <QDateTime>
 
 GameManager *GameManager::instance = nullptr;
 
@@ -23,6 +24,7 @@ void GameManager::init()
 {
 	clean();
 	instance = new GameManager();
+	qsrand(QDateTime::currentDateTime().toTime_t());
 }
 
 void GameManager::clean() 

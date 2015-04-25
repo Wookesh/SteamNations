@@ -11,7 +11,8 @@
 Settler::Settler(Tile *tile, const SettlerPrototype *prototype, Player *owner, QObject *parent):
 	Unit(tile, prototype, owner, AI::settlerHeuristic, parent)
 {
-
+	if (ComputerPlayer *cp = dynamic_cast<ComputerPlayer *>(owner)) 
+		cp->setLastTimeSettlerBought(GameManager::get()->currentTurn());
 }
 
 Settler::~Settler()
@@ -73,4 +74,15 @@ ActionType Settler::getActionType(Tile *tile)
 	if (!tile->visible(owner()))
 		return ActionType::Move;
 	return ActionType::Settle;
+}
+
+int Settler::turnWithoutSettle() const
+{
+	return turnWithoutSettle_;
+}
+
+void Settler::updateAfter()
+{
+	Unit::updateAfter();
+	++turnWithoutSettle_;
 }

@@ -68,6 +68,9 @@ public:
 	bool save(QDataStream &out);
 	
 	virtual void performTurn() = 0;
+	
+	QVector<Unit *> units() const;
+	QVector<Town *> towns() const;
 protected:
 	Town *capital_;
 	QString name_;
@@ -94,6 +97,13 @@ public:
 	ComputerPlayer(const QString &name, QColor color);
 	virtual ~ComputerPlayer();
 	virtual void performTurn();
+	Player *playerToAttack() const;
+	void setPlayerToAttack(Player *player);
+	int lastTimeSettlerBought() const;
+	void setLastTimeSettlerBought(int now);
+private: 
+	Player *playerToAttack_;
+	int lastTimeSettlerBought_;
 };
 
 #endif
