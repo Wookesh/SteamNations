@@ -46,7 +46,6 @@ Rectangle {
 				console.log("PlayersInfoButton clicked\n")
 		}
 		
-		
 		ParamDisplay {
 			id: goldDisplay
 			iconSource: "qrc:///gold"
@@ -61,14 +60,6 @@ Rectangle {
 			paramValue: 0
 			anchors.top: goldDisplay.bottom
 			anchors.right: goldDisplay.right
-		}
-		
-		ParamDisplay {
-			id: foodDisplay
-			iconSource: "qrc:///food"
-			paramValue: 0
-			anchors.top: researchDisplay.bottom
-			anchors.right: researchDisplay.right
 		}
 		
 		NextTurnButton {
@@ -144,7 +135,6 @@ Rectangle {
 			
 			function updateResources() {
 				goldDisplay.paramValue = scene.getGold();
-				foodDisplay.paramValue = scene.getFood();
 				researchDisplay.paramValue = scene.getResearch();
 			}
 			
@@ -155,7 +145,6 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
-				
 			}
 		}
 	}
