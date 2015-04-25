@@ -50,6 +50,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	Player *player(const QString &name);
+	Q_INVOKABLE QString currentPlayerName();
 	
 	void addObject(Object *object);
 	const Object *object(UID uid) const;

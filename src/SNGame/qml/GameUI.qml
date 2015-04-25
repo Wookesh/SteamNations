@@ -13,7 +13,7 @@ Rectangle {
 	StaticLeftForeground {
 		id: staticLeftForeground
 		z: 1
-		visible:false
+		visible: true
 		
 		MenuButton {
 			id: menuButton
@@ -128,9 +128,8 @@ Rectangle {
 			
 			function afterTurn() {
 				scene.clearSelect();
-				//objectInfoBox.visible = false
-				staticLeftForeground.visible = false
-				splashScreen.visible = true
+				staticLeftForeground.visible = false;
+				splashScreen.show();
 			}
 			
 			function updateResources() {
@@ -145,39 +144,46 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
+				//scene.afterTurn();
 			}
 		}
 	}
 	
 	TechWindow {
-		id:techWindow
-		x: (gameUI.width - techWindow.width)/2 
-		y: (gameUI.height - techWindow.height)/2 
+		id: techWindow
+		x: (gameUI.width - techWindow.width) / 2 
+		y: (gameUI.height - techWindow.height) / 2 
 		z: 1
 	}
 	
 	Rectangle {
-		id:splashScreen
-		visible:true
-		anchors.fill:parent
-		color:"black"
+		id: splashScreen
+		visible: false
+		anchors.fill: parent
+		color: "black"
+
 		MouseArea {
-			anchors.fill:parent
-			onClicked:{
+			anchors.fill: parent
+			onClicked: {
 				splashScreen.visible = false
 				staticLeftForeground.visible = true
 			}
 			Label {
-				text:"Click to start turn"
-				color:"white"
+				id: splashText
+				text: "Click to start turn" 
+				color: "white"
 				anchors.verticalCenter: parent.verticalCenter
 				anchors.horizontalCenter: parent.horizontalCenter
 				font.family: snFont.name
 				font.pixelSize: 64
 			}
-			
 		}
 		
+		function show() {
+			var name = gmib.gameManager.currentPlayerName();
+			splashText.text = "Player's " + name +  " Turn\nClick to start turn";
+			splashScreen.visible = true;
+		}
 	}
 	
 	

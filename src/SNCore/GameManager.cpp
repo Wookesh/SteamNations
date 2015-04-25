@@ -441,6 +441,12 @@ Player *GameManager::currentPlayer() const
 	return currentPlayer_;
 }
 
+QString GameManager::currentPlayerName()
+{
+	return currentPlayer_->name();
+}
+
+
 void GameManager::setNextPlayer() 
 {
 	if (++playerIterator_ == players_.end()) {
