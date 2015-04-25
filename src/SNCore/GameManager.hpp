@@ -36,8 +36,8 @@ public:
 	void initBoard(int width, int height, int seed = time(NULL));
 	Q_INVOKABLE void endGame();
 	
-	Q_INVOKABLE void load(const QString &saveFile);
-	Q_INVOKABLE void save(const QString &saveFile);
+	Q_INVOKABLE bool load(const QString &saveFile = QDir::home().absolutePath() + "/.SNSave");
+	Q_INVOKABLE void save(const QString &saveFile = QDir::home().absolutePath() + "/.SNSave");
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);
