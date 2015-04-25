@@ -475,8 +475,8 @@ void GameBoard::updateResources()
 void GameBoard::exit()
 {
 	selectedObject_ = nullptr;
-	//qDeleteAll(mapActions_);
-	//qDeleteAll(objectActions_);
+	qDeleteAll(mapActions_);
+	qDeleteAll(objectActions_);
 	qDeleteAll(nodeMap);
 	mapActions_.clear();
 	objectActions_.clear();
