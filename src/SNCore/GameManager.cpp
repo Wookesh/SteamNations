@@ -402,9 +402,9 @@ Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 }
 
 
-void GameManager::check(const Player *player) 
+void GameManager::check(const QString playerName) 
 {
-	GMlog() << "Game won by" << player->name();
+	GMlog() << "Game won by" << playerName;
 }
 
 void GameManager::startGame() 
@@ -494,7 +494,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 			}
 		}
 		
-		emitEndIfWin(domination, player);
+		emitEndIfWin(domination, player, "conquest");
 	}
 	
 	if (condition == WinCondition::Technology || condition == WinCondition::Any) {
@@ -502,7 +502,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		
 		emitEndIfWin(player->hasBonus(BonusType::Eco, 3) &&
 			player->hasBonus(BonusType::Def, 3) &&
-			player->hasBonus(BonusType::War, 3), player);
+			player->hasBonus(BonusType::War, 3), player, "technology advancement");
 	}
 	
 	if (condition == WinCondition::Domination || condition == WinCondition::Any) {
@@ -511,7 +511,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		float landPercentage = (float) (player->landSize()) / (float) (board_->size());
 		
 		emitEndIfWin(popPercentage > SNCfg::DOMINATION_POPULATION_WIN_CONDITION && 
-			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION, player);
+			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION, player, "domination");
 	}
 	
 	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
@@ -520,15 +520,15 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
 		
 		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
-			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player);
+			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player, "economic advantage");
 	}
 }
 
-void GameManager::emitEndIfWin(bool result, Player *player)
+void GameManager::emitEndIfWin(bool result, Player *player, QString winType)
 {
 	GMlog() << "\tWith result : " << result << "\n";
 	if (result)
-		emit gameEnded(player);
+		emit gameEnded(player->name(), winType);
 }
 
 void GameManager::setWinConditions() 

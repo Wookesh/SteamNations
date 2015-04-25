@@ -125,6 +125,7 @@ Rectangle {
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
 				scene.clearSelect();
+				winScreen.visible = false;
 				beforeTurn();
 			}
 			
@@ -154,6 +155,7 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
+				gmib.gameManager.gameEnded.connect(winScreen.show);
 			}
 		}
 	}
@@ -196,6 +198,37 @@ Rectangle {
 		}
 	}
 	
+	Rectangle {
+		id: winScreen
+		visible: false
+		anchors.fill: parent
+		color: "black"
+		z:2
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				scene.exit();
+				gameUI.exit();
+			}
+			
+			Label {
+				id: winText
+				text: ""
+				color: "white"
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.horizontalCenter: parent.horizontalCenter
+				font.family: snFont.name
+				font.pixelSize: 64
+			}
+		}
+		
+		function show(name, type) {
+			winText.text =  name +  " has won the game by " +type + ". \nClick to exit";
+			staticLeftForeground.visible = false;
+			winScreen.visible = true;
+		}
+	}
 	
 	GameConsole {
 		id: gameConsole

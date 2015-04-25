@@ -85,7 +85,7 @@ private:
 	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
-	void emitEndIfWin(bool result, Player *player);
+	void emitEndIfWin(bool result, Player *player, QString winType);
 	bool loadPlayers(QDataStream &in);
 	void savePlayers(QDataStream &out);
 	bool loadBoard(QDataStream &in);
@@ -98,12 +98,12 @@ public slots:
 	void removeObject(UID uid);
 	void startGame();
 	void endTurn();
-	void check(const Player *player);
+	void check(const QString playerName);
 	
 signals:
 	void turnEnded();
 	void gameInitialized();
-	void gameEnded(const Player *winner);
+	void gameEnded(const QString winnerName, const QString type);
 	void turnReady();
 	void objectCreated(UID uid);
 	
