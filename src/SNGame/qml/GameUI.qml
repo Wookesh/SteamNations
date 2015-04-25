@@ -124,12 +124,22 @@ Rectangle {
 				scene.scale = 1;
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+				beforeTurn();
 			}
 			
 			function afterTurn() {
 				scene.clearSelect();
 				staticLeftForeground.visible = false;
 				splashScreen.show();
+			}
+			
+			function beforeTurn() {
+				centerBoard();
+			}
+			
+			function centerBoard() {
+				scene.x = -scene.boardCenter().x +1920/2 * root.globalScale.width
+				scene.y = -scene.boardCenter().y +1080/2 * root.globalScale.height
 			}
 			
 			function updateResources() {

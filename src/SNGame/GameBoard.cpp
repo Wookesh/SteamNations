@@ -456,8 +456,16 @@ void GameBoard::updateResources()
 void GameBoard::exit()
 {
 	selectedObject_ = nullptr;
+	//qDeleteAll(mapActions_);
+	//qDeleteAll(objectActions_);
+	qDeleteAll(nodeMap);
 	mapActions_.clear();
 	objectActions_.clear();
 	nodeMap.clear();
 	boardSet_ = false;
+}
+
+QPointF GameBoard::boardCenter()
+{
+	return coordToPos(GameManager::get()->currentPlayer()->centralPositon()->position());
 }
