@@ -353,4 +353,13 @@ ComputerPlayer::~ComputerPlayer()
 
 }
 
+bool Player::hasSettler() {
+	for (Unit *unit : units_) {
+		if (unit->pType() == PrototypeType::Settler) {
+			return true;
+		}
+	}
+	return false;
+}
+
 

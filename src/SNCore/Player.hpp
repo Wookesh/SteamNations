@@ -67,6 +67,8 @@ public:
 	bool load(QDataStream &in);
 	bool save(QDataStream &out);
 	
+	bool hasSettler();
+	
 	virtual void performTurn() = 0;
 protected:
 	Town *capital_;
