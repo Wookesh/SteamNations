@@ -61,6 +61,10 @@ void Town::addNewTile() {
 	GMlog() << "Added new tile\n";
 	townTiles_.push_back(newTile);
 	newTile->setLocalTown(this);
+	
+	for (Tile *t : board->getNeighbours(newTile)) {
+		t->setVisionState(owner_, VisionType::Visible);
+	}
 }
 
 Tile *Town::chooseBestTile(QVector< Tile * > tiles) {

@@ -6,6 +6,7 @@
 #include "SNCore/Board.hpp"
 #include "SNCore/Player.hpp"
 #include "SNCore/AI/AI.hpp"
+#include "SNCore/Console.hpp"
 
 Soldier::Soldier(Tile* tile, const SoldierPrototype* prototype, Player *owner, QObject* parent):
 	Unit(tile, prototype, owner, AI::soldierHeuristic, parent)
