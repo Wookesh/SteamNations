@@ -91,7 +91,7 @@ unsigned int Player::resource(Resource resource) const
 
 void Player::addResource(Resource resource, unsigned int val)
 {
-	qDebug() << "Player" << name() << "received" << val << "of" << QString(resource);
+	GMlog() << "Player" << name() << "received" << val << "of" << QString(resource) <<"\n";
 	resources_[resource] += val;
 }
 
