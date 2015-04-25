@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.1
 TextButton {
 	id: textButton
 	
+	property bool checked : background.visible
 	source: "qrc:///textButton"
 	
 	function check() {
@@ -17,7 +18,7 @@ TextButton {
 	
 	Image {
 		id: background
-		source: "qrc:///textButtonShadow3"
+		source: "qrc:///textButtonShadow4"
 		z: -1
 		visible: false
 		width: parent.width

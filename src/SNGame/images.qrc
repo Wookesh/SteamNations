@@ -5,6 +5,7 @@
 		<file alias="textButton">images/button.png</file>
 		<file alias="textButton3">images/buttons/buttonTestPlus3px.png</file>
 		<file alias="textButtonShadow3">images/buttons/buttonWhitePlus3px.png</file>
+		<file alias="textButtonShadow4">images/buttons/buttonWhitePlus4px.png</file>
 		<file alias="playersInfo">images/players_info.png</file>
 		<file alias="startButton">images/start_button.png</file>
 		<file alias="exitButton">images/exit_button.png</file>
