@@ -306,6 +306,13 @@ HumanPlayer::~HumanPlayer()
 
 }
 
+bool HumanPlayer::save(QDataStream &out)
+{
+	out << false;
+	return Player::save(out);
+}
+
+
 void HumanPlayer::performTurn() 
 {
 	GMlog() << "HumanPlayer";
@@ -363,6 +370,13 @@ ComputerPlayer::~ComputerPlayer()
 {
 
 }
+
+bool ComputerPlayer::save(QDataStream &out)
+{
+	out << true;
+	return Player::save(out);
+}
+
 
 bool Player::hasSettler() {
 	for (Unit *unit : units_) {

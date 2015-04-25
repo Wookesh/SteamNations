@@ -55,8 +55,13 @@ bool GameManager::loadPlayers(QDataStream &in)
 	for (int i = 0; i < playersCount; ++i) {
 		QString playerName;
 		QColor playerColor;
-		in >> playerName >> playerColor;
-		Player *player = new HumanPlayer(playerName, playerColor);
+		bool isComputer;
+		in >> playerName >> playerColor >> isComputer;
+		Player *player = nullptr;
+		if (isComputer)
+			player = new ComputerPlayer(playerName, playerColor);
+		else
+			player = new HumanPlayer(playerName, playerColor);
 		players_.push_back(player);
 		
 		if (!player->load(in)) return false;
