@@ -19,8 +19,8 @@ Row {
 			else
 				ai.check();
 		}
-		height:parent.height
-		width:ai.height
+		height: frame.height
+		width: ai.height
 		
 	}
 
