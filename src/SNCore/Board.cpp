@@ -134,7 +134,7 @@ Tile* Board::getTileAxial(int x, int y) const
 	return getTile(q, r);
 }
 
-Tile* Board::getTileCube(int x, int y, int z) const 
+Tile* Board::getTileCube(int x, int z) const 
 {
 	int q = x;
 	int r = z + (x - (x&1)) / 2;
@@ -183,12 +183,11 @@ QVector<Tile *> Board::getInRange(const Tile *tile, const int range) const
 	QPoint pos = tile->axial();
 	int cube_x = pos.x();
 	int cube_z = pos.y();
-	int cube_y = -cube_x - cube_z;
 	
 	for (int dx = -range; dx <= range; ++dx) {
 		for (int dy = std::max(-range, -dx - range); dy <= std::min(range, -dx + range); ++dy) {
 			int dz = -dx - dy;
-			Tile *reachable = getTileCube(cube_x + dx, cube_y + dy, cube_z + dz);
+			Tile *reachable = getTileCube(cube_x + dx, cube_z + dz);
 			
 			if (reachable != nullptr)
 				inRange.push_back(reachable);

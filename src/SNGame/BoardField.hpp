@@ -21,7 +21,7 @@ public:
 	const Town *town();
 	void setTown( Town *town);
 	
-	void highlight(ActionType actionType);
+	void highlight();
 	void unhighlight();
 	
 	static QColor highlightColor(ActionType type);

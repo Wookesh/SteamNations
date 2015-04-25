@@ -82,7 +82,7 @@ const QColor GameBoard::highlightColor(ActionType actionType)
 	return map[actionType];
 }
 
-const qreal GameBoard::GBcos(int i)
+qreal GameBoard::GBcos(int i)
 {
 	static const QVector<qreal> map = []{
 		QVector<qreal> result;
@@ -93,7 +93,7 @@ const qreal GameBoard::GBcos(int i)
 	return map[i];
 }
 
-const qreal GameBoard::GBsin(int i)
+qreal GameBoard::GBsin(int i)
 {
 	static const QVector<qreal> map = []{
 		QVector<qreal> result;
@@ -140,12 +140,29 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
  				QPointF pos = coordToPos(i, j);
 				QSGTexture *hexTexture_ = textureManager_->texture("Tundra");
 				//TODO tymczasowe, póki nie ma typu tile-a
-				if (tile->resource() == Resource::Gold)
-					hexTexture_ = textureManager_->texture("Hill");
-				if (tile->resource() == Resource::Research)
-					hexTexture_ = textureManager_->texture("Ruins2");
-				if (tile->resource() == Resource::Food)
+				if (tile->tileType() == TileType::Desert)
+					hexTexture_ = textureManager_->texture("Desert");
+				if (tile->tileType() == TileType::Field)
 					hexTexture_ = textureManager_->texture("Field");
+				if (tile->tileType() == TileType::Forest)
+					hexTexture_ = textureManager_->texture("Forest");
+				if (tile->tileType() == TileType::Hill)
+					hexTexture_ = textureManager_->texture("Hill");
+				if (tile->tileType() == TileType::Mountain)
+					hexTexture_ = textureManager_->texture("Mountain");
+				if (tile->tileType() == TileType::Jungle)
+					hexTexture_ = textureManager_->texture("Jungle");
+				if (tile->tileType() == TileType::Ruins1)
+					hexTexture_ = textureManager_->texture("Ruins1");
+				if (tile->tileType() == TileType::Ruins2)
+					hexTexture_ = textureManager_->texture("Ruins2");
+				if (tile->tileType() == TileType::Snow1)
+					hexTexture_ = textureManager_->texture("Snow1");
+				if (tile->tileType() == TileType::Snow2)
+					hexTexture_ = textureManager_->texture("Snow2");
+				if (tile->tileType() == TileType::Tundra)
+					hexTexture_ = textureManager_->texture("Tundra");
+				
 				child->setTexture(hexTexture_);
 				child->setRect(pos.x()-hexTexture_->textureSize().width() / 2, pos.y() - hexTexture_->textureSize().height() / 2, hexTexture_->textureSize().width(), hexTexture_->textureSize().height());
 				child->appendChildNode(new QSGNode());
@@ -210,6 +227,45 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				}
 			}
 		}
+		
+					if(selectedObject_) {
+						if((selectedObject_->type() == ObjectType::Town) && (selectedObject_->owner() == GameManager::get()->currentPlayer())) {
+							const Town *town = static_cast<const Town*>(selectedObject_);
+							for(Tile *townTile : town->townTiles()){
+									
+								QSGNode *child = nodeMap[index(townTile->position().x(), townTile->position().y())]->node();
+								child = child->firstChild();
+								QSGOpacityNode *opacity = new QSGOpacityNode();
+								opacity->setOpacity(SHADOW_OPACITY);
+								QSGGeometryNode *shadow = new QSGGeometryNode();
+								QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 18);
+								geometry->setDrawingMode(GL_TRIANGLES);
+								QPointF pos = coordToPos(townTile->position().x(), townTile->position().y());
+								
+								for (int i = 0; i < 6; ++i) {
+									geometry->vertexDataAsPoint2D()[3 * i].set(
+										BoardField::SIZE * GBcos(i) + pos.x(),
+										BoardField::SIZE * GBsin(i) + pos.y());
+									geometry->vertexDataAsPoint2D()[3 * i + 1].set(
+										BoardField::SIZE * GBcos((i + 1) % 6) + pos.x(),
+										BoardField::SIZE * GBsin((i + 1) % 6) + pos.y());
+									geometry->vertexDataAsPoint2D()[3 * i + 2].set(
+										pos.x(),
+										pos.y());
+								}
+								
+								QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
+								material->setColor(Qt::white);
+								shadow->setGeometry(geometry);
+								shadow->setFlag(QSGNode::OwnsGeometry);
+								shadow->setMaterial(material);
+								shadow->setFlag(QSGNode::OwnsMaterial);
+								child->appendChildNode(opacity);
+								opacity->appendChildNode(shadow);
+								
+							}
+						}
+					}
 		for (Action *action : mapActions_) {
 			QSGNode *child = nodeMap[index(action->tile()->position().x(), action->tile()->position().y())]->node();
 			child = child->firstChild();
@@ -241,6 +297,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 			child->appendChildNode(opacity);
 			opacity->appendChildNode(shadow);
 		}
+		
 	}
 	
 	return node;
@@ -263,7 +320,7 @@ QPoint GameBoard::pixelToHex(int x, int y)
 		{c.x() - 1,c.y() + 1}
 	});
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe;//TODO zrobić to jakoś ładniej, rozwiązanie chwilowe
+	int whichONe;
 	int missmatches = 0;
 	for (int i = 0; i < p.size(); ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
@@ -364,9 +421,11 @@ void GameBoard::click(int mouseX, int mouseY, int x, int y, float scale)
 
 void GameBoard::makeAction(int action)
 {
-	if(action < objectActions_.length()) {
+	if (action < objectActions_.length()) {
+		const Tile *tile = selectedObject_->tile();
 		objectActions_[action]->perform();
-		select(selectedObject_->tile());
+		clearSelect();
+		select(tile);
 	}
 }
  
@@ -377,19 +436,15 @@ BonusManager* GameBoard::bonusManager()
 
 qint16 GameBoard::boardHeight()
 {
-	
-	if (boardSet_) {
+	if (boardSet_)
 		return (BoardField::SIZE * sqrt(3) * GameManager::get()->board()->height());
-	}
 	return 0;
-	
 }
 
 qint16 GameBoard::boardWidth()
 {
-	if (boardSet_) {
+	if (boardSet_)
 		return (BoardField::SIZE * GameManager::get()->board()->width() * 3 / 2 - BoardField::SIZE / 2);
-	}
 	return 0;
 }
 
@@ -411,4 +466,21 @@ unsigned int GameBoard::getResearch()
 void GameBoard::updateResources()
 {
 	emit resourcesUpdated();
+}
+
+void GameBoard::exit()
+{
+	selectedObject_ = nullptr;
+	qDeleteAll(mapActions_);
+	qDeleteAll(objectActions_);
+	qDeleteAll(nodeMap);
+	mapActions_.clear();
+	objectActions_.clear();
+	nodeMap.clear();
+	boardSet_ = false;
+}
+
+QPointF GameBoard::boardCenter()
+{
+	return coordToPos(GameManager::get()->currentPlayer()->centralPositon()->position());
 }

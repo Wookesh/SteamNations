@@ -131,7 +131,7 @@ void Console::printTowns()
 
 void Console::save()
 {
-	GameManager::get()->save("/home/wookesh/TestSave.sn");
+	GameManager::get()->save();
 }
 
 

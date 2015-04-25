@@ -36,8 +36,8 @@ public:
 	void initBoard(int width, int height, int seed = time(NULL));
 	Q_INVOKABLE void endGame();
 	
-	Q_INVOKABLE void load(const QString &saveFile);
-	Q_INVOKABLE void save(const QString &saveFile);
+	Q_INVOKABLE bool load(const QString &saveFile = QDir::home().absolutePath() + "/.SNSave");
+	Q_INVOKABLE void save(const QString &saveFile = QDir::home().absolutePath() + "/.SNSave");
 	
 	QList<Player *> players() const;
 	void setPlayers(QList<Player *> &players);
@@ -50,6 +50,7 @@ public:
 	Player *currentPlayer() const;
 	int currentTurn() const;
 	Player *player(const QString &name);
+	Q_INVOKABLE QString currentPlayerName();
 	
 	void addObject(Object *object);
 	const Object *object(UID uid) const;
@@ -84,7 +85,7 @@ private:
 	void prepareNewTurn();
 	void setWinConditions();
 	Object *objectP(UID uid);
-	void emitEndIfWin(bool result, Player *player);
+	void emitEndIfWin(bool result, Player *player, QString winType);
 	bool loadPlayers(QDataStream &in);
 	void savePlayers(QDataStream &out);
 	bool loadBoard(QDataStream &in);
@@ -97,12 +98,12 @@ public slots:
 	void removeObject(UID uid);
 	void startGame();
 	void endTurn();
-	void check(const Player *player);
+	void check(const QString playerName);
 	
 signals:
 	void turnEnded();
 	void gameInitialized();
-	void gameEnded(const Player *winner);
+	void gameEnded(const QString winnerName, const QString type);
 	void turnReady();
 	void objectCreated(UID uid);
 	

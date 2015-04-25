@@ -13,19 +13,21 @@ Rectangle {
 	StaticLeftForeground {
 		id: staticLeftForeground
 		z: 1
-		visible:false
+		visible: false
 		
-		MenuButton {
+		TextButton {
 			id: menuButton
-			source: "qrc:///menuButton"
+			text: "Exit"
 			
-			onClicked:
-				gameUI.exit()
+			onClicked:{
+				scene.exit();
+				gameUI.exit();
+			}
 		}
 		
-		MenuButton {
+		TextButton {
 			id: techButton
-			source: "qrc:///techButton"
+			text: "Technology"
 			anchors.top: menuButton.bottom
 			
 			onClicked :{
@@ -35,15 +37,14 @@ Rectangle {
 			}
 		}
 		
-		MenuButton {
+		TextButton {
 			id: playerButton
-			source: "qrc:///playersInfo"
+			text: "Save"
 			anchors.top: techButton.bottom
 			
 			onClicked:
-				console.log("PlayersInfoButton clicked\n")
+				gmib.gameManager.save();
 		}
-		
 		
 		ParamDisplay {
 			id: goldDisplay
@@ -59,14 +60,6 @@ Rectangle {
 			paramValue: 0
 			anchors.top: goldDisplay.bottom
 			anchors.right: goldDisplay.right
-		}
-		
-		ParamDisplay {
-			id: foodDisplay
-			iconSource: "qrc:///food"
-			paramValue: 0
-			anchors.top: researchDisplay.bottom
-			anchors.right: researchDisplay.right
 		}
 		
 		NextTurnButton {
@@ -131,17 +124,27 @@ Rectangle {
 				scene.scale = 1;
 				scene.x = (1920 * root.globalScale.width - scene.width) / 2 + menuButton.width;
 				scene.y = (1080 * root.globalScale.height - scene.height) / 2;
+				scene.clearSelect();
+				winScreen.visible = false;
+				beforeTurn();
 			}
 			
 			function afterTurn() {
-				objectInfoBox.visible = false
-				staticLeftForeground.visible = false
-				splashScreen.visible = true
+				scene.clearSelect();
+			}
+			
+			function beforeTurn() {
+				splashScreen.show();
+				centerBoard();
+			}
+			
+			function centerBoard() {
+				scene.x = -scene.boardCenter().x + 1920 / 2 * root.globalScale.width
+				scene.y = -scene.boardCenter().y + 1080 / 2 * root.globalScale.height
 			}
 			
 			function updateResources() {
 				goldDisplay.paramValue = scene.getGold();
-				foodDisplay.paramValue = scene.getFood();
 				researchDisplay.paramValue = scene.getResearch();
 			}
 			
@@ -152,42 +155,80 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
-				
+				gmib.gameManager.gameEnded.connect(winScreen.show);
 			}
 		}
 	}
 	
 	TechWindow {
-		id:techWindow
-		x: (gameUI.width - techWindow.width)/2 
-		y: (gameUI.height - techWindow.height)/2 
+		id: techWindow
+		x: (gameUI.width - techWindow.width) / 2 
+		y: (gameUI.height - techWindow.height) / 2 
 		z: 1
 	}
 	
 	Rectangle {
-		id:splashScreen
-		visible:true
-		anchors.fill:parent
-		color:"black"
+		id: splashScreen
+		visible: true
+		anchors.fill: parent
+		color: "black"
+
 		MouseArea {
-			anchors.fill:parent
-			onClicked:{
+			anchors.fill: parent
+			onClicked: {
 				splashScreen.visible = false
 				staticLeftForeground.visible = true
 			}
 			Label {
-				text:"Click to start turn"
-				color:"white"
+				id: splashText
+				text: ""
+				color: "white"
 				anchors.verticalCenter: parent.verticalCenter
 				anchors.horizontalCenter: parent.horizontalCenter
 				font.family: snFont.name
 				font.pixelSize: 64
 			}
-			
 		}
 		
+		function show() {
+			var name = gmib.gameManager.currentPlayerName();
+			splashText.text =  name +  "'s  turn\nClick to start turn";
+			staticLeftForeground.visible = false;
+			splashScreen.visible = true;
+		}
 	}
 	
+	Rectangle {
+		id: winScreen
+		visible: false
+		anchors.fill: parent
+		color: "black"
+		z:2
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				scene.exit();
+				gameUI.exit();
+			}
+			
+			Label {
+				id: winText
+				text: ""
+				color: "white"
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.horizontalCenter: parent.horizontalCenter
+				font.family: snFont.name
+				font.pixelSize: 64
+			}
+		}
+		
+		function show(name, type) {
+			winText.text =  name +  " has won the game by " +type + ". \nClick to exit";
+			staticLeftForeground.visible = false;
+			winScreen.visible = true;
+		}
+	}
 	
 	GameConsole {
 		id: gameConsole

@@ -7,6 +7,7 @@
 #include "Config.hpp"
 #include "GameManager.hpp"
 #include "Board.hpp"
+#include "AI/AI.hpp"
 
 #include <QtCore>
 
@@ -90,7 +91,7 @@ unsigned int Player::resource(Resource resource) const
 
 void Player::addResource(Resource resource, unsigned int val)
 {
-	qDebug() << "Player" << name() << "received" << val << "of" << QString(resource);
+	GMlog() << "Player" << name() << "received" << val << "of" << QString(resource) <<"\n";
 	resources_[resource] += val;
 }
 
@@ -316,20 +317,32 @@ HumanPlayer::~HumanPlayer()
 
 }
 
+bool HumanPlayer::save(QDataStream &out)
+{
+	out << false;
+	return Player::save(out);
+}
+
+
 void HumanPlayer::performTurn() 
 {
-	qDebug() << "HumanPlayer";
+	GMlog() << "HumanPlayer";
 }
 
 void ComputerPlayer::performTurn() 
 {
-	qDebug() << "ComputerPlayer";
+	GMlog() << "ComputerPlayer";
+	
+	/* ------------Technology--------------*/
+	
+	
+	/* ------------Units Move--------------*/
+	
 	for (Unit *unit : units_) {
-		qDebug() << unit->name() << unit->tile()->position();
 		QPair<ActionType, Tile *> target = unit->getTargetWithAction();
-		qDebug() << "Start to perform action: " << target.second->position().x() << target.second->position().y() << (QString)(target.first);
+		qDebug() << unit->name() << "on" << unit->tile()->position() << "starts to perform action " << target.second->position().x() << target.second->position().y() << (QString)(target.first);
 		QVector<Tile *> path = GameManager::get()->board()->pathToTile(unit->tile(), target.second);
-		path.pop_back();
+		path.pop_back(); // NOTE this is unit->tile()
 		bool canDoSomething = true;
 		do {
 			if (unit->canPerform(target.first, target.second)) {
@@ -337,7 +350,7 @@ void ComputerPlayer::performTurn()
 				if (action)
 					action->perform();
 				else
-					qDebug() << "ERROR";
+					qDebug() << "ERROR"; 
 				canDoSomething = false;
 			} else if (!path.isEmpty() && unit->canMove(path.last())) {
 				Action *action = GameManager::get()->getUnitAction(unit, ActionType::Move, path.last());
@@ -351,6 +364,11 @@ void ComputerPlayer::performTurn()
 			}
 		} while (canDoSomething);
 	}
+	
+	/* ------------Production--------------*/
+	
+// 	bool shouldBuy = AI::shouldBuyUnit();
+	
 	GameManager::get()->endTurn();
 }
 
@@ -384,6 +402,30 @@ void ComputerPlayer::setLastTimeSettlerBought(int now)
 	lastTimeSettlerBought_ = now;
 }
 
+bool ComputerPlayer::save(QDataStream &out)
+{
+	out << true;
+	return Player::save(out);
+}
 
 
+bool Player::hasSettler() {
+	for (Unit *unit : units_) {
+		if (unit->pType() == PrototypeType::Settler) {
+			return true;
+		}
+	}
+	return false;
+}
 
+
+Tile *Player::centralPositon() {
+	if (capital_ != nullptr)
+		return capital_->tile();
+	
+	if (!units_.empty())
+		return units_[0]->tile();
+	
+	// Should never reach this point!
+	return GameManager::get()->board()->getTile(0, 0);
+}

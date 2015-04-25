@@ -13,7 +13,7 @@ EnumClassWithStrings(ActionType, quint8, Attack, Capture, CreateTown, CreateUnit
 class Action {
 public:
 	Action(Object *mainObject, Tile *tile, ActionType type);
-	~Action();
+	virtual ~Action();
 	
 	virtual bool perform() = 0;
 	const Tile *tile() const;
