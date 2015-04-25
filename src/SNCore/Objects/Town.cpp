@@ -216,3 +216,8 @@ bool Town::load(QDataStream &in)
 	
 	return true;
 }
+
+const QVector< Tile* >& Town::townTiles() const
+{
+	return townTiles_;
+}
