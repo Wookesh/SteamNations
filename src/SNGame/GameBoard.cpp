@@ -140,12 +140,29 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
  				QPointF pos = coordToPos(i, j);
 				QSGTexture *hexTexture_ = textureManager_->texture("Tundra");
 				//TODO tymczasowe, póki nie ma typu tile-a
-				if (tile->resource() == Resource::Gold)
-					hexTexture_ = textureManager_->texture("Hill");
-				if (tile->resource() == Resource::Research)
-					hexTexture_ = textureManager_->texture("Ruins2");
-				if (tile->resource() == Resource::Food)
+				if (tile->tileType() == TileType::Desert)
+					hexTexture_ = textureManager_->texture("Desert");
+				if (tile->tileType() == TileType::Field)
 					hexTexture_ = textureManager_->texture("Field");
+				if (tile->tileType() == TileType::Forest)
+					hexTexture_ = textureManager_->texture("Forest");
+				if (tile->tileType() == TileType::Hill)
+					hexTexture_ = textureManager_->texture("Hill");
+				if (tile->tileType() == TileType::Mountain)
+					hexTexture_ = textureManager_->texture("Mountain");
+				if (tile->tileType() == TileType::Jungle)
+					hexTexture_ = textureManager_->texture("Jungle");
+				if (tile->tileType() == TileType::Ruins1)
+					hexTexture_ = textureManager_->texture("Ruins1");
+				if (tile->tileType() == TileType::Ruins2)
+					hexTexture_ = textureManager_->texture("Ruins2");
+				if (tile->tileType() == TileType::Snow1)
+					hexTexture_ = textureManager_->texture("Snow1");
+				if (tile->tileType() == TileType::Snow2)
+					hexTexture_ = textureManager_->texture("Snow2");
+				if (tile->tileType() == TileType::Tundra)
+					hexTexture_ = textureManager_->texture("Tundra");
+				
 				child->setTexture(hexTexture_);
 				child->setRect(pos.x()-hexTexture_->textureSize().width() / 2, pos.y() - hexTexture_->textureSize().height() / 2, hexTexture_->textureSize().width(), hexTexture_->textureSize().height());
 				child->appendChildNode(new QSGNode());
