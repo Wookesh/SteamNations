@@ -30,6 +30,7 @@ public:
 	Q_INVOKABLE unsigned int getGold();
 	Q_INVOKABLE unsigned int getFood();
 	Q_INVOKABLE unsigned int getResearch();
+	Q_INVOKABLE QPointF boardCenter();
 	Q_PROPERTY(InfoBox *infobox READ infobox)
 	Q_PROPERTY(BonusManager *bonusManager READ bonusManager)
 	Q_PROPERTY(qint16 boardWidth READ boardWidth)
