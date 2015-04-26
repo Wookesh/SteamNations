@@ -403,6 +403,12 @@ Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 	return nullptr;
 }
 
+Action *GameManager::getProduceAction(Town *town, PrototypeType prototype)
+{
+	if (town)
+		return new CreateUnitAction(town, prototype);
+	return nullptr;
+}
 
 void GameManager::check(const QString playerName) 
 {
@@ -529,8 +535,8 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 void GameManager::emitEndIfWin(bool result, Player *player, QString winType)
 {
 	GMlog() << "\tWith result : " << result << "\n";
-	if (result)
-		emit gameEnded(player->name(), winType);
+// 	if (result)
+// 		emit gameEnded(player->name(), winType);
 }
 
 void GameManager::setWinConditions() 

@@ -89,7 +89,6 @@ Tile *Town::chooseBestTile(QVector< Tile * > tiles) {
 
 void Town::updateBefore() 
 {
-	qDebug() << name() << __FUNCTION__;
 	for (Tile *tile : townTiles_) {
 		tile->updateBefore();
 		if (tile->resource() != Resource::None) {

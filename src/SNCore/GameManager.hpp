@@ -9,6 +9,7 @@
 #include "SNTypes.hpp"
 #include "Config.hpp"
 #include "SNCore/Actions/Action.hpp"
+#include "SNCore/Objects/Prototypes/Prototype.hpp"
 
 #define GMlog() GameManager::get()->console()->in()
 
@@ -19,6 +20,7 @@ class Object;
 class Player;
 class Tile;
 class Unit;
+class Town;
 
 EnumClassWithStrings(WinCondition, quint8, Domination, Technology, Conquest, Economic, Any)
 
@@ -59,6 +61,7 @@ public:
 	QVector<Action *> mapActions(const Object *object);
 	QVector<Action *> objectActions(const Object *object);
 	Action *getUnitAction(Unit *unit, ActionType action, Tile *tile);
+	Action *getProduceAction(Town *town, PrototypeType prototype);
 	
 	SNTypes::population totalPopulation() const;
 	SNTypes::amount totalGold() const;

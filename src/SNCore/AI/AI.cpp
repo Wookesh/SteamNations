@@ -151,10 +151,12 @@ namespace AI {
 				GameManager::get()->players().at(playerNo) :
 				GameManager::get()->players().at((playerNo + 1) % GameManager::get()->players().length()));
 			playerNo = (playerNo + 1) % GameManager::get()->players().length();
-		}	
+		}
+		
 		SNTypes::heur direction = player->playerToAttack()->capital() ? GameManager::get()->board()->getAbsoluteDistance(unit->tile(), player->playerToAttack()->capital()->tile()) - 
 			GameManager::get()->board()->getAbsoluteDistance(tile, player->playerToAttack()->capital()->tile()) + (qrand() % 4) - 3: 
 			(qrand() % 4) - 3;
+		
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(unit->tile(), tile)).length();
 		
 		return -length + unit->visionRange() + direction/2;
@@ -165,8 +167,10 @@ namespace AI {
 		Settler *settler = static_cast<Settler *>(unit);
 		if (tile->unit() || tile->town()) 
 			return minInf;
+		
 		if (tile->visible(settler->owner()))
 			return settlerSettleHeuristic(settler, tile);
+		
 		return settlerWanderValue(settler, tile);
 	}
 	
@@ -227,12 +231,12 @@ namespace AI {
 				}
 			} else if (tile->town()) {
 				if (tile->town()->owner() == town->owner()) 
-					myPower ++;
+					myPower++;
 				else 
 					theirPower++;
 			}
 		}
-		float ratio = (myPower + 1)/(theirPower + 1);
+		qreal ratio = (myPower + 1) / (theirPower + 1);
 		return ratio < forfeitTownRatio ? minInf : - myPower + theirPower;
 	}
 	
@@ -244,40 +248,38 @@ namespace AI {
 	
 	QList<PrototypeType> whichUnitsCreate(Player* player)
 	{
-		if (player->getTownCount() > 0) {
-			
-			QList<PrototypeType> result;
+		QList<PrototypeType> result;
+		if (!player->towns().isEmpty()) {
 			int gold = player->resource(Resource::Gold);
 			ComputerPlayer *cp = static_cast<ComputerPlayer *>(player);
 			if (GameManager::get()->currentTurn() - cp->lastTimeSettlerBought() > maxTimeWithoutSettler) {
 				if (gold - SettlerPrototype::BASE_COST >= 0) {
 					result.push_back(PrototypeType::Settler);
 					gold -= SettlerPrototype::BASE_COST;
-				} else
+				} else {
 					return result;
+				}
 			}
 			QMap<Player *, int> infantries;
 			QMap<Player *, int> heavies;
 			QMap<Player *, int> artilleries;
 			
 			QList<Player *> players = GameManager::get()->players();
-			for(Player *other: players) {
+			for (Player *other: players) {
 				infantries[other] = 0;
 				heavies[other] = 0;
 				artilleries[other] = 0;
 			}
-			for(Player *p: players)  {
+			
+			for (Player *p: players)  {
 				QVector<Unit *> units = p->units();
 				for (Unit *unit: units) {
-					if (unit->pType() == PrototypeType::Infantry) {
+					if (unit->pType() == PrototypeType::Infantry)
 						++infantries[p];
-					}
-					if (unit->pType() == PrototypeType::Heavy) {
+					if (unit->pType() == PrototypeType::Heavy)
 						++heavies[p];
-					}
-					if (unit->pType() == PrototypeType::Artillery) { 
+					if (unit->pType() == PrototypeType::Artillery)
 						++artilleries[p];
-					}
 				}
 			}
 			
@@ -292,15 +294,14 @@ namespace AI {
 				}
 			}
 			
-			
-			float myArtilleryCounterPower = (infantries[player] + 1)/(artillery + 1);
-			float myInfantryCounterPower = (heavies[player] + 1)/(infantry + 1);
-			float myHeavyCounterPower = (artilleries[player] + 1)/(heavy + 1);
+			qreal myArtilleryCounterPower = (infantries[player] + 1)/(artillery + 1);
+			qreal myInfantryCounterPower = (heavies[player] + 1)/(infantry + 1);
+			qreal myHeavyCounterPower = (artilleries[player] + 1)/(heavy + 1);
 			bool biggerArmy = myInfantryCounterPower > goodCounterRatio && 
 				myHeavyCounterPower > goodCounterRatio && 
 				myArtilleryCounterPower > goodCounterRatio;
 			bool noMoneyLeft = false;
-			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft))  {
+			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
 				
 				if (infantry > heavy) {
 					if (infantry > artillery) {
@@ -471,43 +472,38 @@ namespace AI {
 									noMoneyLeft = true;
 								}
 							} 
-							
 						}
 					}
 				}
 				
-				myArtilleryCounterPower = (infantries[player] + 1)/(artillery + 1);
-				myInfantryCounterPower = (heavies[player] + 1)/(infantry + 1);
-				myHeavyCounterPower = (artilleries[player] + 1)/(heavy + 1);
+				myArtilleryCounterPower = (infantries[player] + 1) / (artillery + 1);
+				myInfantryCounterPower = (heavies[player] + 1) / (infantry + 1);
+				myHeavyCounterPower = (artilleries[player] + 1) / (heavy + 1);
 				
 				biggerArmy = myInfantryCounterPower >= goodCounterRatio && 
 					myHeavyCounterPower >= goodCounterRatio && 
 					myArtilleryCounterPower >= goodCounterRatio;
 			}
-			return result;
-			
-			
-		} else {
-			QList<PrototypeType> empty;
-			return empty;
 		}
-
+		return result;
 	}
 	
-	bool compareTownValues(const QPair<Town *, SNTypes::heur> &f1, const QPair<Town *, SNTypes::heur> &f2) {
+	bool compareTownValues(const QPair<Town *, SNTypes::heur> &f1, const QPair<Town *, SNTypes::heur> &f2) 
+	{
 		return f1.second < f2.second;
 	}
 	
 	QMap<Town *, PrototypeType> buildHeuristic(Player* player)
 	{
 		QList<PrototypeType> prototypesToBuy = whichUnitsCreate(player);
-		if (prototypesToBuy.length() > 0) {
+		qDebug() << prototypesToBuy.size();
+		QMap<Town *, PrototypeType> result;
+		if (!prototypesToBuy.isEmpty()) {
 			QList<QPair<Town *, SNTypes::heur>> townSoldierValues;
 			QList<QPair<Town *, SNTypes::heur>> townSettlerValues;
-			QMap<Town *, PrototypeType> result;
 			Town *townSettler = nullptr;
+			
 			if (prototypesToBuy.first() == PrototypeType::Settler) {
-				
 				for (Town *town: player->towns()) 
 					if (town->tile()->unit() == nullptr) 
 						townSettlerValues.push_back(qMakePair(town, townCreateSettlerHeuristic(town)));
@@ -517,22 +513,19 @@ namespace AI {
 				townSettler = townSettlerValues.first().first;
 				prototypesToBuy.pop_front();
 			}
+			
 			for (Town *town: player->towns()) 
 				if (town->tile()->unit() == nullptr) 
 					if (town != townSettler)
 						townSoldierValues.push_back(qMakePair(town, townCreateSoldierHeuristic(town)));
-				
+			
 			qSort(townSoldierValues.begin(), townSoldierValues.end(), compareTownValues);
 			for (PrototypeType type: prototypesToBuy) {
 				result.insert(townSoldierValues.first().first, type);
 				townSoldierValues.pop_front();
 			}
-			return result;
-		} else {
-			QMap<Town *, PrototypeType> empty;
-			return empty;
-		}
-		
+		} 
+		return result;
 	}
 	
 	BonusType whichTechnologyPath(Player* player)
@@ -542,14 +535,11 @@ namespace AI {
 		for(Player *other: players) 
 			if (other != player)
 				otherUnits += player->getUnitsCount();
-		float ratio = (player->getTownCount() * 3) / otherUnits;
+		qreal ratio = otherUnits != 0 ? (player->getUnitsCount() * 3) / otherUnits : std::numeric_limits<qreal>::max();
 		if (ratio < defensePathRatio)
 			return BonusType::Def;
 		if (ratio >= warfarePathRatio)
 			return BonusType::War;
 		return BonusType::Eco;
 	}
-	
-
-
 }
