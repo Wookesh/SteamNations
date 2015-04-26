@@ -333,8 +333,6 @@ void ComputerPlayer::performTurn()
 {
 	GMlog() << "ComputerPlayer";
 	
-	qDebug() << "Towns count :" << towns_.size();
-	
 	/* ------------Technology--------------*/
 	
 	static BonusType techPath = BonusType::War;
@@ -374,21 +372,16 @@ void ComputerPlayer::performTurn()
 	
 	/* ------------Production--------------*/
 	
-	qDebug() << "Production:";
-	
 	QMap<Town *,PrototypeType> production = AI::buildHeuristic(this);
 	qDebug() << production.size();
 	for (Town *town: production.keys()) {
 		PrototypeType proto = production.value(town, PrototypeType::Settler);
-		qDebug() << (QString)(proto);
 		Action *action = GameManager::get()->getProduceAction(town, proto);
 		if (action)
 			action->perform();
 		else
 			qDebug() << "ERROR";
 	}
-	
-	qDebug() << "End of production List";
 	
 	//GameManager::get()->endTurn();
 }

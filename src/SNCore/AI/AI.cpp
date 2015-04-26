@@ -278,10 +278,8 @@ namespace AI {
 						maxEnemiesUnis[prototype] = std::max(maxEnemiesUnis[prototype], unitsMap[p][prototype]);
 			
 			QHash<PrototypeType, qreal> myCounterPower;
-			
 			for (PrototypeType prototype: prototypesList)
 				myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
-			
 			
 			bool biggerArmy = true;
 			for (PrototypeType prototype: prototypesList)
