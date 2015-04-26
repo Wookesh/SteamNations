@@ -282,9 +282,6 @@ namespace AI {
 			for (PrototypeType prototype: prototypesList)
 				myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
 			
-// 			bool biggerArmy = myCounterPower[PrototypeType::Infantry] > goodCounterRatio && 
-// 				myCounterPower[PrototypeType::Heavy] > goodCounterRatio && 
-// 				myCounterPower[PrototypeType::Artillery] > goodCounterRatio;
 			
 			bool biggerArmy = true;
 			for (PrototypeType prototype: prototypesList)
@@ -294,7 +291,7 @@ namespace AI {
 			
 			QMultiMap<int, PrototypeType> order;
 			for (PrototypeType prototype: prototypesList)
-				order.insert(maxEnemiesUnis[prototype], prototype);
+				order.insert(-maxEnemiesUnis[prototype], prototype);
 			
 			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
 				
