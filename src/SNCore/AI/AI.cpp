@@ -106,18 +106,17 @@ namespace AI {
 		Soldier *soldier = static_cast<Soldier *>(unit);
 		if (tile->unit()) {
 			Unit *unitFromTile = tile->unit();
-			if (unitFromTile->owner() == soldier->owner()) 
-				return minInf;
-			return soldierUnitValue(soldier, unitFromTile);
-		}
-		if (tile->town()) {
+			if (unitFromTile->owner() != soldier->owner()) 
+				return soldierUnitValue(soldier, unitFromTile);
+			
+		} else if (tile->town()) {
 			Town *townFromTile = tile->town();
-			if (townFromTile->owner() == soldier->owner()) 
-				return minInf;
-			return soldierTownValue(soldier, townFromTile);
-		}
-		if (!tile->visible(unit->owner()))
+			if (townFromTile->owner() != soldier->owner()) 
+				return soldierTownValue(soldier, townFromTile);
+			
+		} else if (!tile->visible(unit->owner())) {
 			return soldierWanderValue(soldier, tile);
+		}
 		return minInf;
 	}
 
@@ -260,229 +259,64 @@ namespace AI {
 					return result;
 				}
 			}
-			QMap<Player *, int> infantries;
-			QMap<Player *, int> heavies;
-			QMap<Player *, int> artilleries;
+			QMap<Player *, QHash<PrototypeType, int>> unitsMap;
 			
-			QList<Player *> players = GameManager::get()->players();
-			for (Player *other: players) {
-				infantries[other] = 0;
-				heavies[other] = 0;
-				artilleries[other] = 0;
-			}
+			const QVector<PrototypeType> prototypesList = QVector<PrototypeType>({{PrototypeType::Artillery},
+				{PrototypeType::Heavy}, {PrototypeType::Infantry}});
 			
-			for (Player *p: players)  {
-				QVector<Unit *> units = p->units();
-				for (Unit *unit: units) {
-					if (unit->pType() == PrototypeType::Infantry)
-						++infantries[p];
-					if (unit->pType() == PrototypeType::Heavy)
-						++heavies[p];
-					if (unit->pType() == PrototypeType::Artillery)
-						++artilleries[p];
-				}
-			}
+			for (Player *p: GameManager::get()->players())
+				for (Unit *unit: p->units())
+					++unitsMap[p][unit->pType()];
 			
-			int infantry = 0;
-			int heavy = 0;
-			int artillery = 0;
-			for(Player *p: players) {
-				if (p != player) {
-					infantry = std::max(infantry, infantries[p]);
-					heavy = std::max(infantry, heavies[p]);
-					artillery = std::max(infantry, artilleries[p]);
-				}
-			}
+			QHash<PrototypeType, int> maxEnemiesUnis;
+			for (PrototypeType prototype: prototypesList)
+				maxEnemiesUnis[prototype] = 0;
 			
-			qreal myArtilleryCounterPower = (infantries[player] + 1)/(artillery + 1);
-			qreal myInfantryCounterPower = (heavies[player] + 1)/(infantry + 1);
-			qreal myHeavyCounterPower = (artilleries[player] + 1)/(heavy + 1);
-			bool biggerArmy = myInfantryCounterPower > goodCounterRatio && 
-				myHeavyCounterPower > goodCounterRatio && 
-				myArtilleryCounterPower > goodCounterRatio;
+			for(Player *p: GameManager::get()->players())
+				if (p != player)
+					for (PrototypeType prototype: prototypesList)
+						maxEnemiesUnis[prototype] = std::max(maxEnemiesUnis[prototype], unitsMap[p][prototype]);
+			
+			QHash<PrototypeType, qreal> myCounterPower;
+			
+			for (PrototypeType prototype: prototypesList)
+				myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
+			
+// 			bool biggerArmy = myCounterPower[PrototypeType::Infantry] > goodCounterRatio && 
+// 				myCounterPower[PrototypeType::Heavy] > goodCounterRatio && 
+// 				myCounterPower[PrototypeType::Artillery] > goodCounterRatio;
+			
+			bool biggerArmy = true;
+			for (PrototypeType prototype: prototypesList)
+				biggerArmy = biggerArmy && myCounterPower[prototype] > goodCounterRatio;
+			
 			bool noMoneyLeft = false;
+			
+			QMultiMap<int, PrototypeType> order;
+			for (PrototypeType prototype: prototypesList)
+				order.insert(maxEnemiesUnis[prototype], prototype);
+			
 			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
 				
-				if (infantry > heavy) {
-					if (infantry > artillery) {
-						if (heavy > artillery) { //i h a
-							if (myInfantryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-									result.push_back(PrototypeType::Heavy);
-									++heavies[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myHeavyCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-									result.push_back(PrototypeType::Artillery);
-									++artilleries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myArtilleryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-									result.push_back(PrototypeType::Infantry);
-									++infantries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-								} else {
-									noMoneyLeft = true;
-								}
-							}
-							
-						} else { //i a h
-							if (myInfantryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-									result.push_back(PrototypeType::Heavy);
-									++heavies[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myArtilleryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-									result.push_back(PrototypeType::Infantry);
-									++infantries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myHeavyCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-									result.push_back(PrototypeType::Artillery);
-									++artilleries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-								} else {
-									noMoneyLeft = true;
-								}
-							}
-							
+				for (PrototypeType prototype : order) {
+					if (myCounterPower[prototype] <= goodCounterRatio) {
+						if (gold - SoldierPrototype::BASE_COST[prototype] >= 0) {
+							result.push_back(prototype);
+							++unitsMap[player][prototype];
+							gold -= SoldierPrototype::BASE_COST[prototype];
+						} else {
+							noMoneyLeft = true;
 						}
-					} else { // a i h
-						if (myArtilleryCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-								result.push_back(PrototypeType::Infantry);
-								++infantries[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-							} else {
-								noMoneyLeft = true;
-							}
-						
-						} else if (myInfantryCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-								result.push_back(PrototypeType::Heavy);
-								++heavies[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-							} else {
-								noMoneyLeft = true;
-							}
-						} else if (myHeavyCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-								result.push_back(PrototypeType::Artillery);
-								++artilleries[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-							} else {
-								noMoneyLeft = true;
-							}
-						}
-					}
-				} else {
-					if (infantry > artillery) { //h i a
-						if (myHeavyCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-								result.push_back(PrototypeType::Artillery);
-								++artilleries[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-							} else {
-								noMoneyLeft = true;
-							}
-						} else if (myInfantryCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-								result.push_back(PrototypeType::Heavy);
-								++heavies[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-							} else {
-								noMoneyLeft = true;
-							}
-						} else if (myArtilleryCounterPower <= goodCounterRatio) {
-							if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-								result.push_back(PrototypeType::Infantry);
-								++infantries[player];
-								gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-							} else {
-								noMoneyLeft = true;
-							}
-						
-						}
-					} else {
-						
-						if (heavy > artillery) { //h a i
-							if (myHeavyCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-									result.push_back(PrototypeType::Artillery);
-									++artilleries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-								} else {
-									noMoneyLeft = true;
-								}
-							}else if (myArtilleryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-									result.push_back(PrototypeType::Infantry);
-									++infantries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-								} else {
-									noMoneyLeft = true;
-								}
-							}
-							else if (myInfantryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-									result.push_back(PrototypeType::Heavy);
-									++heavies[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-								} else {
-									noMoneyLeft = true;
-								}
-							}
-							
-						} else { //a h i
-							if (myArtilleryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Infantry] >= 0) {
-									result.push_back(PrototypeType::Infantry);
-									++infantries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Infantry];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myHeavyCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Artillery] >= 0) {
-									result.push_back(PrototypeType::Artillery);
-									++artilleries[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Artillery];
-								} else {
-									noMoneyLeft = true;
-								}
-							} else if (myInfantryCounterPower <= goodCounterRatio) {
-								if (gold - SoldierPrototype::BASE_COST[PrototypeType::Heavy] >= 0) {
-									result.push_back(PrototypeType::Heavy);
-									++heavies[player];
-									gold -= SoldierPrototype::BASE_COST[PrototypeType::Heavy];
-								} else {
-									noMoneyLeft = true;
-								}
-							} 
-						}
+						break;
 					}
 				}
 				
-				myArtilleryCounterPower = (infantries[player] + 1) / (artillery + 1);
-				myInfantryCounterPower = (heavies[player] + 1) / (infantry + 1);
-				myHeavyCounterPower = (artilleries[player] + 1) / (heavy + 1);
+				for (PrototypeType prototype: prototypesList)
+					myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
 				
-				biggerArmy = myInfantryCounterPower >= goodCounterRatio && 
-					myHeavyCounterPower >= goodCounterRatio && 
-					myArtilleryCounterPower >= goodCounterRatio;
+				biggerArmy = true;
+				for (PrototypeType prototype: prototypesList)
+					biggerArmy = biggerArmy && myCounterPower[prototype] > goodCounterRatio;
 			}
 		}
 		return result;
