@@ -40,6 +40,7 @@ namespace AI {
 	
 	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile); //ocena tile'a przez settlera 
 	SNTypes::heur settlerSettleHeuristic(Settler *settler, Tile *tile); //ocena tile do settlowania przez settlera
+	SNTypes::heur settlerSettleCapitalHeuristic(Settler *settler, Tile *tile); //ocena tile do settlowania przez settlera
 	SNTypes::heur settlerWanderValue(Settler *settler, Tile *tile);
 	
 	SNTypes::heur townCreateSoldierHeuristic(Town *town); //w ktorym townie budowac soldiera
