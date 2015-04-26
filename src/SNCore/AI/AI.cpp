@@ -13,6 +13,7 @@
 #include <QPoint>
 #include <QList>
 #include <QMap>
+#include <QDebug>
 
 namespace AI {
 	
@@ -154,7 +155,7 @@ namespace AI {
 		
 		SNTypes::heur direction = player->playerToAttack()->capital() ? GameManager::get()->board()->getAbsoluteDistance(unit->tile(), player->playerToAttack()->capital()->tile()) - 
 			GameManager::get()->board()->getAbsoluteDistance(tile, player->playerToAttack()->capital()->tile()) + (qrand() % 4) - 3: 
-			(qrand() % 4) - 3;
+			(qrand() % 4) - 4;
 		
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(unit->tile(), tile)).length();
 		
@@ -185,23 +186,39 @@ namespace AI {
 		}
 		//najlepszy town to taki ktory ma 3-4 fooda i 3-4 gold/research.
 		//najgorszy to jak ma 7 none
-		//FIXME 3~4 fooda, i inny surowiec, minimalizujemy None
 		return (resources[2] + 1)*(std::abs(resources[1] - resources[0]) + 1) - (resources[3]);
 	}
 	
+	SNTypes::heur settlerSettleCapitalHeuristic(Settler* settler, Tile* tile)
+	{
+		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile, 1);
+		int resources[4] = {0, 0, 0, 0};
+		for (Tile *newTownTiles: tiles) {
+			if (newTownTiles->resource() == Resource::Gold) ++resources[0];
+			if (newTownTiles->resource() == Resource::Research) ++resources[1];
+			if (newTownTiles->resource() == Resource::Food) ++resources[2];
+			if (newTownTiles->resource() == Resource::None) ++resources[3];
+		}
+		//najlepszy town to taki ktory ma 5 gold i 2 food.
+		return (resources[0]*(resources[2] + 3)) - (resources[3]);
+	}
+
+	
 	SNTypes::heur settlerWanderValue(Settler* settler, Tile* tile)
 	{
-		
+		SNTypes::heur power = getPowerAround(tile, settler->owner(), sigmaCheckingRange);
+		SNTypes::heur tileValue;
 		if (settler->owner()->capital() == nullptr) {
 			SNTypes::heur length = (GameManager::get()->board()->pathToTile(settler->tile(), tile)).length();
 			if (settler->actionPoints() * (turnWithoutSettleMax - settler->turnWithoutSettle()) < length) {
 				return minInf;
 			}
+			tileValue = settlerSettleCapitalHeuristic(settler, tile);
 		}
-		SNTypes::heur tileValue = settlerSettleHeuristic(settler, tile);
+		else 
+			tileValue = settlerSettleHeuristic(settler, tile);
 		
-		SNTypes::heur power = getPowerAround(tile, settler->owner(), sigmaCheckingRange);
-		return tileValue * power;
+		return tileValue + power;
 	}
 
 
@@ -279,13 +296,13 @@ namespace AI {
 			
 			QHash<PrototypeType, qreal> myCounterPower; //myCounterPower[a] -> myCounter power on a
 			
-			const QHash<PrototypeType, int> counters = { //counters[a] = b -> prototypesList[b] counters a
-				{PrototypeType::Artillery, 2},
-				{PrototypeType::Infantry, 1},
-				{PrototypeType::Heavy, 0},
+			const QHash<PrototypeType, PrototypeType> counters = { //counters[a] = b -> prototypesList[b] counters a
+				{PrototypeType::Artillery, PrototypeType::Infantry},
+				{PrototypeType::Infantry, PrototypeType::Heavy},
+				{PrototypeType::Heavy, PrototypeType::Artillery},
 			};
 			for (PrototypeType prototype: prototypesList)
-				myCounterPower[prototype] = (unitsMap[player][prototypesList[counters[prototype]]] + 1) / (maxEnemiesUnis[prototype] + 1);
+				myCounterPower[prototype] = (unitsMap[player][counters.value(prototype, PrototypeType::Infantry)] + 1) / (maxEnemiesUnis[prototype] + 1);
 			
 			
 			bool biggerArmy = true;
@@ -302,10 +319,10 @@ namespace AI {
 				
 				for (PrototypeType prototype : order) {
 					if (myCounterPower[prototype] <= goodCounterRatio) {
-						if (gold - SoldierPrototype::BASE_COST[prototypesList[counters[prototype]]] >= 0) {
-							result.push_back(prototypesList[counters[prototype]]);
-							++unitsMap[player][prototypesList[counters[prototype]]];
-							gold -= SoldierPrototype::BASE_COST[prototypesList[counters[prototype]]];
+						if (gold - SoldierPrototype::BASE_COST[counters.value(prototype, PrototypeType::Infantry)] >= 0) {
+							result.push_back(counters.value(prototype, PrototypeType::Infantry));
+							++unitsMap[player][counters.value(prototype, PrototypeType::Infantry)];
+							gold -= SoldierPrototype::BASE_COST[counters.value(prototype, PrototypeType::Infantry)];
 						} else {
 							noMoneyLeft = true;
 						}
@@ -314,7 +331,7 @@ namespace AI {
 				}
 				
 				for (PrototypeType prototype: prototypesList)
-					myCounterPower[prototype] = (unitsMap[player][prototypesList[counters[prototype]]] + 1) / (maxEnemiesUnis[prototype] + 1);
+					myCounterPower[prototype] = (unitsMap[player][counters.value(prototype, PrototypeType::Infantry)] + 1) / (maxEnemiesUnis[prototype] + 1);
 			
 				biggerArmy = true;
 				for (PrototypeType prototype: prototypesList)
@@ -401,8 +418,8 @@ namespace AI {
 			for (BonusType bonus: bonusList) 
 				if (!player->hasBonus(bonus, 3))
 					return bonus;
-			
-		
 		//cant have 3, should never get here
+		if (has3 == 3)
+			qDebug() << "Error: AI - whichTechnologyPath";
 	}
 }
