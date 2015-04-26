@@ -522,21 +522,22 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 			landPercentage > SNCfg::DOMINATION_LAND_WIN_CONDITION, player, "domination");
 	}
 	
-	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
-		GMlog() << "Checking if " << player->name() << " has won the game by economic advantage\n";
-		float goldPercentage = (float) (player->resource(Resource::Gold)) / (float) (totalGold());
-		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
-		
-		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
-			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player, "economic advantage");
-	}
+	//NOTE closed due to #93
+// 	if (condition == WinCondition::Economic || condition == WinCondition::Any) {
+// 		GMlog() << "Checking if " << player->name() << " has won the game by economic advantage\n";
+// 		float goldPercentage = (float) (player->resource(Resource::Gold)) / (float) (totalGold());
+// 		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
+// 		
+// 		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
+// 			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player, "economic advantage");
+// 	}
 }
 
 void GameManager::emitEndIfWin(bool result, Player *player, QString winType)
 {
 	GMlog() << "\tWith result : " << result << "\n";
-// 	if (result)
-// 		emit gameEnded(player->name(), winType);
+	if (result)
+		emit gameEnded(player->name(), winType);
 }
 
 void GameManager::setWinConditions() 
