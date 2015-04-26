@@ -277,9 +277,16 @@ namespace AI {
 					for (PrototypeType prototype: prototypesList)
 						maxEnemiesUnis[prototype] = std::max(maxEnemiesUnis[prototype], unitsMap[p][prototype]);
 			
-			QHash<PrototypeType, qreal> myCounterPower;
+
+			QHash<PrototypeType, qreal> myCounterPower; //myCounterPower[a] -> myCounter power on a
+			
+			const QHash<PrototypeType, int> counters = { //counters[a] = b -> prototypesList[b] counters a
+				{PrototypeType::Artillery, 2},
+				{PrototypeType::Infantry, 1},
+				{PrototypeType::Heavy, 0},
+			};
 			for (PrototypeType prototype: prototypesList)
-				myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
+				myCounterPower[prototype] = (unitsMap[player][prototypesList[counters[prototype]]] + 1) / (maxEnemiesUnis[prototype] + 1);
 			
 			bool biggerArmy = true;
 			for (PrototypeType prototype: prototypesList)
@@ -295,10 +302,10 @@ namespace AI {
 				
 				for (PrototypeType prototype : order) {
 					if (myCounterPower[prototype] <= goodCounterRatio) {
-						if (gold - SoldierPrototype::BASE_COST[prototype] >= 0) {
-							result.push_back(prototype);
-							++unitsMap[player][prototype];
-							gold -= SoldierPrototype::BASE_COST[prototype];
+						if (gold - SoldierPrototype::BASE_COST[prototypesList[counters[prototype]]] >= 0) {
+							result.push_back(prototypesList[counters[prototype]]);
+							++unitsMap[player][prototypesList[counters[prototype]]];
+							gold -= SoldierPrototype::BASE_COST[prototypesList[counters[prototype]]];
 						} else {
 							noMoneyLeft = true;
 						}
@@ -307,8 +314,8 @@ namespace AI {
 				}
 				
 				for (PrototypeType prototype: prototypesList)
-					myCounterPower[prototype] = (unitsMap[player][prototype] + 1) / (maxEnemiesUnis[prototype] + 1);
-				
+					myCounterPower[prototype] = (unitsMap[player][prototypesList[counters[prototype]]] + 1) / (maxEnemiesUnis[prototype] + 1);
+			
 				biggerArmy = true;
 				for (PrototypeType prototype: prototypesList)
 					biggerArmy = biggerArmy && myCounterPower[prototype] > goodCounterRatio;
@@ -365,10 +372,37 @@ namespace AI {
 			if (other != player)
 				otherUnits += player->getUnitsCount();
 		qreal ratio = otherUnits != 0 ? (player->getUnitsCount() * 3) / otherUnits : std::numeric_limits<qreal>::max();
-		if (ratio < defensePathRatio)
-			return BonusType::Def;
-		if (ratio >= warfarePathRatio)
-			return BonusType::War;
-		return BonusType::Eco;
+		const QVector<BonusType> bonusList = {BonusType::Def, BonusType::War, BonusType::Eco};
+		int has3 = 0;
+		for (BonusType bonus: bonusList) 
+			has3 += player->hasBonus(bonus, 3) ? 1 : 0;
+		
+		if (has3 == 0) {
+			if (ratio < defensePathRatio)
+				return BonusType::Def;
+			if (ratio >= warfarePathRatio)
+				return BonusType::War;
+			return BonusType::Eco;
+		} 
+		if (has3 == 1) {
+			if (player->hasBonus(BonusType::Eco, 3)) 
+				return ratio > (defensePathRatio + warfarePathRatio)/2 ? BonusType::War : BonusType::Def;
+			if (player->hasBonus(BonusType::War, 3)) {
+				if (ratio < defensePathRatio)
+					return BonusType::Def;
+				return BonusType::Eco;
+			}
+			// has def
+			if (ratio < defensePathRatio)
+				return BonusType::War;
+			return BonusType::Eco;
+		}
+		if (has3 == 2) 
+			for (BonusType bonus: bonusList) 
+				if (!player->hasBonus(bonus, 3))
+					return bonus;
+			
+		
+		//cant have 3, should never get here
 	}
 }
