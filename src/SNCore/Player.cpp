@@ -209,6 +209,15 @@ bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
 	return bonuses_[type][tier];
 }
 
+SNTypes::tier Player::bonusLevel(BonusType bonus)
+{
+	for (SNTypes::tier tier = 0; tier < 3; ++tier) {
+		if (hasBonus(bonus, tier + 1))
+			return tier;
+	}
+	return 0;
+}
+
 bool Player::canAffordBuilding(Resource type)
 {
 	return buildingCost_[type] <= resources_[Resource::Gold];
@@ -336,10 +345,11 @@ void ComputerPlayer::performTurn()
 	/* ------------Technology--------------*/
 	
 	static BonusType techPath = BonusType::War;
-	if (GameManager::get()->currentTurn() % 5 == 0) {
+	if (GameManager::get()->currentTurn() % 5 == 0)
 		techPath = AI::whichTechnologyPath(this);
-		qDebug() << "Technology path" << (QString)(techPath);
-	}
+	
+	SNTypes::tier tier = bonusLevel(techPath) + 1;
+	applyBonus(techPath, tier);
 	
 	/* ------------Units Move--------------*/
 	
@@ -373,7 +383,6 @@ void ComputerPlayer::performTurn()
 	/* ------------Production--------------*/
 	
 	QMap<Town *,PrototypeType> production = AI::buildHeuristic(this);
-	qDebug() << production.size();
 	for (Town *town: production.keys()) {
 		PrototypeType proto = production.value(town, PrototypeType::Settler);
 		Action *action = GameManager::get()->getProduceAction(town, proto);
@@ -383,7 +392,7 @@ void ComputerPlayer::performTurn()
 			qDebug() << "ERROR";
 	}
 	
-	//GameManager::get()->endTurn();
+	GameManager::get()->endTurn();
 }
 
 ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color), playerToAttack_(nullptr), lastTimeSettlerBought_(0) 

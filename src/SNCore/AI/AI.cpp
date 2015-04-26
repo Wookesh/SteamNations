@@ -332,7 +332,6 @@ namespace AI {
 	QMap<Town *, PrototypeType> buildHeuristic(Player* player)
 	{
 		QList<PrototypeType> prototypesToBuy = whichUnitsCreate(player);
-		qDebug() << prototypesToBuy.size();
 		QMap<Town *, PrototypeType> result;
 		if (!prototypesToBuy.isEmpty()) {
 			QList<QPair<Town *, SNTypes::heur>> townSoldierValues;

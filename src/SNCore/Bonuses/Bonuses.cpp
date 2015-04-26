@@ -50,7 +50,8 @@ BonusManager::~BonusManager() {
 }
 
 
-Bonus *BonusManager::getBonus(BonusType type, SNTypes::tier tier) {
+Bonus *BonusManager::getBonus(BonusType type, SNTypes::tier tier) 
+{
 	int aux;
 	
 	if (type == BonusType::Def)
@@ -97,11 +98,13 @@ QList< QPair< BonusType, SNTypes::tier > > BonusManager::appliedBonuses(Player *
 	return ret;
 }
 
-bool BonusManager::canApply(Player *player, BonusType type, SNTypes::tier tier) {
+bool BonusManager::canApply(Player *player, BonusType type, SNTypes::tier tier) 
+{
 	return getBonus(type, tier)->canApply(player);
 }
 
-void BonusManager::applyBonus (Player *player, BonusType type, SNTypes::tier tier) {
+void BonusManager::applyBonus(Player *player, BonusType type, SNTypes::tier tier) 
+{
 	player->applyBonus(type, tier);
 	GameManager::get()->checkIfWin(player, WinCondition::Technology);
 }
