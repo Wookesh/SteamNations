@@ -17,7 +17,12 @@ EnumClassWithStrings(TileType, quint8, Desert, Field, Forest, Hill, Mountain, Ju
 
 class Tile {
 public:
-	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None, int resourceProduction = 5, TileType tileType = TileType::Random, unsigned int weight = 1);
+	static const QVector<TileType> goldTiles;
+	static const QVector<TileType> foodTiles;
+	static const QVector<TileType> researchTiles;
+	static const QVector<TileType> emptyTiles;
+	static const QHash<Resource, QVector<TileType>> tileTypeMap;
+	Tile(unsigned int x, unsigned int y, Resource resource = Resource::None, int resourceProduction = 5, unsigned int weight = 1);
 	~Tile();
 	
 	Town *town();
@@ -57,6 +62,8 @@ public:
 	VisionType visionState(const Player *player) const;
 	void setVisionState(const Player *player, VisionType visionType);
 	bool visible(const Player *player) const;
+	
+	void setTileType();
 	
 	TileType tileType() const;
 	bool load(QDataStream &in);

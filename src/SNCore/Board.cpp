@@ -23,18 +23,22 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 		switch(i % 3) {
 			case 0:
 				rnd->setResource(Resource::Gold);
+				rnd->setTileType();
 				break;
 				
 			case 1:
 				rnd->setResource(Resource::Research);
+				rnd->setTileType();
 				break;
 				
 			case 2:
 				rnd->setResource(Resource::Food);
+				rnd->setTileType();
 				break;
 				
 			default:
 				rnd->setResource(Resource::None);
+				rnd->setTileType();
 		}
 		toVisit.enqueue(rnd);
 	}
@@ -42,7 +46,7 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 	while (!toVisit.isEmpty()) {
 		Tile *tile = toVisit.dequeue();
 		
-		if (visited.contains(tile))
+		if (visited.contains(tile)) 
 			continue;
 		
 		visited.insert(tile);
@@ -54,8 +58,10 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 		}
 		
 		/* 10% chance that tile is gonna stay empty */
-		if (qrand() % 10 == 0 || tile->resource() != Resource::None)
+		if (qrand() % 10 == 0 || tile->resource() != Resource::None) {
+			tile->setTileType();
 			continue;
+		}
 		
 		unsigned int gold = nOfTilesWith(neighbours, Resource::Gold);
 		unsigned int research = nOfTilesWith(neighbours, Resource::Research);
@@ -70,6 +76,8 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 			tile->setResource(Resource::Research);
 		else 
 			qDebug() << "Case not covered";
+		
+		tile->setTileType();
 	}
 }
 

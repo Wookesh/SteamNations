@@ -8,59 +8,35 @@
 
 #define GMlog() GameManager::get()->console()->in()
 
-Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, TileType type, unsigned int weight) :
+const QVector<TileType> Tile::goldTiles = {
+	TileType::Hill, TileType::Mountain
+};
+
+const QVector<TileType> Tile::foodTiles = {
+	TileType::Field, TileType::Tundra, TileType::Forest
+};
+
+const QVector<TileType> Tile::researchTiles = {
+	TileType::Jungle, TileType::Ruins1, TileType::Ruins2
+};
+
+const QVector<TileType> Tile::emptyTiles = {
+	TileType::Desert, TileType::Snow1, TileType::Snow2
+};
+
+const QHash<Resource, QVector<TileType>> Tile::tileTypeMap = {
+	{Resource::None, emptyTiles},
+	{Resource::Gold, goldTiles},
+	{Resource::Research, researchTiles},
+	{Resource::Food, foodTiles}
+};
+
+
+Tile::Tile(unsigned int x_, unsigned int y_, Resource resource, int resourceProduction, unsigned int weight) :
 	town_(nullptr), localTown_(nullptr), unit_(nullptr), position_(x_, y_),
 	resource_(resource), resourceProduction_(resourceProduction), produced_(0), weight_(weight), building_(Resource::None),
-	tileType_(type)
+	tileType_(TileType::Desert)
 {
-	if (type == TileType::Random) {
-		int i = qrand();
-		switch(i % 11) {
-			case 0:
-				tileType_ = TileType::Desert;
-				break;
-				
-			case 1:
-				tileType_ = TileType::Field;
-				break;
-				
-			case 2:
-				tileType_ = TileType::Forest;
-				break;
-				
-			case 3:
-				tileType_ = TileType::Hill;
-				break;
-				
-			case 4:
-				tileType_ = TileType::Mountain;
-				break;
-				
-			case 5:
-				tileType_ = TileType::Jungle;
-				break;
-				
-			case 6:
-				tileType_ = TileType::Ruins1;
-				break;
-				
-			case 7:
-				tileType_ = TileType::Ruins2;
-				break;
-				
-			case 8:
-				tileType_ = TileType::Snow1;
-				break;
-				
-			case 9:
-				tileType_ = TileType::Snow2;
-				break;
-				
-			case 10:
-				tileType_ = TileType::Tundra;
-				break;
-		}
-	}
 }
 
 Tile::~Tile() 
@@ -289,4 +265,9 @@ bool Tile::save(QDataStream &out)
 	for (const Player *player: visionState_.keys())
 		out << player->name() << visionState_.value(player, VisionType::Invisible);
 	return true;
+}
+
+void Tile::setTileType() {
+	int i = qrand() % tileTypeMap[resource_].length();
+	tileType_ = tileTypeMap[resource_][i];
 }
