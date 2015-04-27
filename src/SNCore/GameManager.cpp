@@ -529,7 +529,7 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		
 		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
 			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION &&
-			player->resource(Resource::Gold) > SNCfg::ECONOMIC_GOLD_MIN_GOLD, player);
+			player->resource(Resource::Gold) > SNCfg::ECONOMIC_GOLD_MIN_GOLD, player, "global economy control");
 	}
 
 }
