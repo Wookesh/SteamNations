@@ -362,6 +362,11 @@ bool Player::hasSettler() {
 	return false;
 }
 
+bool Player::hasAnyUnit() {
+	return !units_.empty();
+}
+
+
 
 Tile *Player::centralPositon() {
 	if (capital_ != nullptr)

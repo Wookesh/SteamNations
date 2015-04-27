@@ -68,6 +68,7 @@ public:
 	bool save(QDataStream &out);
 	
 	bool hasSettler();
+	bool hasAnyUnit();
 	Tile *centralPositon();
 	
 	virtual void performTurn() = 0;

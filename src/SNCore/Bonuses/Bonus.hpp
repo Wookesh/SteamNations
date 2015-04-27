@@ -4,6 +4,7 @@
 #include <QtGlobal>
 #include <QHash>
 
+#include "../Config.hpp"
 #include "../EnumHelpers.hpp"
 #include "../Resources.hpp"
 #include "../SNTypes.hpp"
@@ -13,9 +14,9 @@ class Player;
 EnumClassWithStrings(BonusType, quint8, War, Def, Eco)
 
 static const QHash<SNTypes::tier, SNTypes::amount> bonusCost = {
-	{1, 50},
-	{2, 100},
-	{3, 200},
+	{1, SNCfg::TECHNOLOGY_COST_TIER1},
+	{2, SNCfg::TECHNOLOGY_COST_TIER2},
+	{3, SNCfg::TECHNOLOGY_COST_TIER3},
 };
 
 class Bonus {

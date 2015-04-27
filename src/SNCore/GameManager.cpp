@@ -473,8 +473,8 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 					domination = false;
 					break;
 				}
-			} else if (pl != player) { // if [pl] doesn't have a capital, check if he has a settler
-				if (pl->hasSettler()) {
+			} else if (pl != player) { // if [pl] doesn't have a capital, check if he has any unit
+				if (pl->hasAnyUnit()) {
 					domination = false;
 					break;
 				}
@@ -507,7 +507,8 @@ void GameManager::checkIfWin(Player *player, WinCondition condition)
 		float goldIncomePercentage = (float) (player->lastIncome(Resource::Gold)) / (float) (totalGoldIncome());
 		
 		emitEndIfWin(goldPercentage > SNCfg::ECONOMIC_GOLD_WIN_CONDITION &&
-			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION, player);
+			goldIncomePercentage > SNCfg::ECONOMIC_GOLD_INCOME_WIN_CONDITION &&
+			player->resource(Resource::Gold) > SNCfg::ECONOMIC_GOLD_MIN_GOLD, player);
 	}
 }
 

@@ -18,6 +18,14 @@ namespace SNCfg {
 	const float DOMINATION_LAND_WIN_CONDITION = 0.65f; 
 	const float ECONOMIC_GOLD_WIN_CONDITION = 0.80f;
 	const float ECONOMIC_GOLD_INCOME_WIN_CONDITION = 0.66f;
+	const SNTypes::amount ECONOMIC_GOLD_MIN_GOLD = 1500;
+	
+	/*
+	 * Techs cost
+	 */
+	const SNTypes::amount TECHNOLOGY_COST_TIER1 = 250;
+	const SNTypes::amount TECHNOLOGY_COST_TIER2 = 500;
+	const SNTypes::amount TECHNOLOGY_COST_TIER3 = 1000;
 }
 
 #endif
