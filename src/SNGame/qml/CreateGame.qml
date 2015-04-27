@@ -163,10 +163,11 @@ Rectangle {
 			id: load
 			text: "Load"
 			onClicked: {
-				gmib.gameManager.load("/home/wookesh/TestSave.sn")
-				createGame.gameLoaded()
+				if (gmib.gameManager.load()) {
+					createGame.gameLoaded();
+				}
 			}
-	}
+		}
 	}
 	
 }

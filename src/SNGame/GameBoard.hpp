@@ -24,11 +24,13 @@ public:
 	static const int INTERVAL = 250;
 	qreal SHADOW_OPACITY = 0.2;
 	GameBoard(QQuickItem *parent = 0);
+	Q_INVOKABLE void exit();
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
 	Q_INVOKABLE void makeAction(int action);
 	Q_INVOKABLE unsigned int getGold();
 	Q_INVOKABLE unsigned int getFood();
 	Q_INVOKABLE unsigned int getResearch();
+	Q_INVOKABLE QPointF boardCenter();
 	Q_PROPERTY(InfoBox *infobox READ infobox)
 	Q_PROPERTY(BonusManager *bonusManager READ bonusManager)
 	Q_PROPERTY(qint16 boardWidth READ boardWidth)
@@ -55,8 +57,8 @@ private:
 	int index(int x, int y);
 	void initTimer();
 
-	const qreal GBcos(int i);
-	const qreal GBsin(int i);
+	qreal GBcos(int i);
+	qreal GBsin(int i);
 	
 	qint16 boardHeight();
 	qint16 boardWidth();

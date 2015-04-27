@@ -14,6 +14,7 @@ Item {
 		nextTurn.clicked.connect(gmib.gameManager.endTurn);
 		nextTurn.clicked.connect(scene.afterTurn);
 		gmib.gameManager.turnReady.connect(rotationTimer.stop);
+		gmib.gameManager.turnReady.connect(scene.beforeTurn);
 	}
 	
 	Image {

@@ -10,11 +10,18 @@ Row {
 	property alias name: nameBox.text
 	property alias computer:ai.checked
 	
-	CheckBox {
+	StateButton {
 		id:ai
 		text: "AI"
-		checked: false
-		height:parent.height
+		onClicked:{
+			if (checked)
+				ai.uncheck();
+			else
+				ai.check();
+		}
+		height: frame.height
+		width: ai.height
+		
 	}
 
 	

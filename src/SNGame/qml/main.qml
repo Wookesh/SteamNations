@@ -22,10 +22,12 @@ Rectangle {
 		}
 		onStart: {
 			createGame.visible = false
+			gameUI.focus = true;
 			gameUI.visible = true
 		}
 		onGameLoaded: {
 			createGame.visible = false
+			gameUI.focus = true;
 			gameUI.visible = true
 		}
 	}

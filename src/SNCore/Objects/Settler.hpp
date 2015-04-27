@@ -17,9 +17,13 @@ public:
 	bool canPerform(ActionType action, const Tile *tile) const override;
 	Town *createTown();
 	
+	virtual void updateAfter() override;
 	virtual void getAttacked(Soldier *) override;
+	int turnWithoutSettle() const;
+	
 protected:
 	virtual ActionType getActionType(Tile *tile) override;
+	int turnWithoutSettle_;
 signals:
 	void townCreated(Player *player);
 	void capitalCreated(Player *player);

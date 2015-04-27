@@ -7,6 +7,7 @@
 #include "Config.hpp"
 #include "GameManager.hpp"
 #include "Board.hpp"
+#include "AI/AI.hpp"
 
 #include <QtCore>
 
@@ -90,7 +91,7 @@ unsigned int Player::resource(Resource resource) const
 
 void Player::addResource(Resource resource, unsigned int val)
 {
-	qDebug() << "Player" << name() << "received" << val << "of" << QString(resource);
+	GMlog() << "Player" << name() << "received" << val << "of" << QString(resource) <<"\n";
 	resources_[resource] += val;
 }
 
@@ -208,6 +209,15 @@ bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
 	return bonuses_[type][tier];
 }
 
+SNTypes::tier Player::bonusLevel(BonusType bonus)
+{
+	for (SNTypes::tier tier = 0; tier < 3; ++tier) {
+		if (hasBonus(bonus, tier + 1))
+			return tier;
+	}
+	return 0;
+}
+
 bool Player::canAffordBuilding(Resource type)
 {
 	return buildingCost_[type] <= resources_[Resource::Gold];
@@ -295,6 +305,17 @@ bool Player::save(QDataStream &out)
 	return true;
 }
 
+QVector<Unit *> Player::units() const
+{
+	return units_;
+}
+
+QVector<Town *> Player::towns() const
+{
+	return towns_;
+}
+
+
 HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) 
 {
 
@@ -305,20 +326,38 @@ HumanPlayer::~HumanPlayer()
 
 }
 
+bool HumanPlayer::save(QDataStream &out)
+{
+	out << false;
+	return Player::save(out);
+}
+
+
 void HumanPlayer::performTurn() 
 {
-	qDebug() << "HumanPlayer";
+	GMlog() << "HumanPlayer";
 }
 
 void ComputerPlayer::performTurn() 
 {
-	qDebug() << "ComputerPlayer";
+	GMlog() << "ComputerPlayer";
+	
+	/* ------------Technology--------------*/
+	
+	static BonusType techPath = BonusType::War;
+	if (GameManager::get()->currentTurn() % 5 == 0)
+		techPath = AI::whichTechnologyPath(this);
+	
+	SNTypes::tier tier = bonusLevel(techPath) + 1;
+	applyBonus(techPath, tier);
+	
+	/* ------------Units Move--------------*/
+	
 	for (Unit *unit : units_) {
-		qDebug() << unit->name() << unit->tile()->position();
 		QPair<ActionType, Tile *> target = unit->getTargetWithAction();
-		qDebug() << "Start to perform action: " << target.second->position().x() << target.second->position().y() << (QString)(target.first);
+		qDebug() << unit->name() << "on" << unit->tile()->position() << "starts to perform action " << target.second->position().x() << target.second->position().y() << (QString)(target.first);
 		QVector<Tile *> path = GameManager::get()->board()->pathToTile(unit->tile(), target.second);
-		path.pop_back();
+		path.pop_back(); // NOTE this is unit->tile()
 		bool canDoSomething = true;
 		do {
 			if (unit->canPerform(target.first, target.second)) {
@@ -326,7 +365,7 @@ void ComputerPlayer::performTurn()
 				if (action)
 					action->perform();
 				else
-					qDebug() << "ERROR";
+					qDebug() << "ERROR"; 
 				canDoSomething = false;
 			} else if (!path.isEmpty() && unit->canMove(path.last())) {
 				Action *action = GameManager::get()->getUnitAction(unit, ActionType::Move, path.last());
@@ -340,18 +379,58 @@ void ComputerPlayer::performTurn()
 			}
 		} while (canDoSomething);
 	}
+	
+	/* ------------Production--------------*/
+	
+	QMap<Town *,PrototypeType> production = AI::buildHeuristic(this);
+	for (Town *town: production.keys()) {
+		PrototypeType proto = production.value(town, PrototypeType::Settler);
+		Action *action = GameManager::get()->getProduceAction(town, proto);
+		if (action)
+			action->perform();
+		else
+			qDebug() << "ERROR";
+	}
+	
 	GameManager::get()->endTurn();
 }
 
-ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color) 
+ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color), playerToAttack_(nullptr), lastTimeSettlerBought_(0) 
 {
-
+	//playerToAttack_ = nullptr;
 }
 
 ComputerPlayer::~ComputerPlayer() 
 {
 
 }
+
+Player *ComputerPlayer::playerToAttack() const
+{
+	return playerToAttack_;
+}
+
+void ComputerPlayer::setPlayerToAttack(Player* player)
+{
+	playerToAttack_ = player;
+}
+
+int ComputerPlayer::lastTimeSettlerBought() const
+{
+	return lastTimeSettlerBought_;
+}
+
+void ComputerPlayer::setLastTimeSettlerBought(int now)
+{
+	lastTimeSettlerBought_ = now;
+}
+
+bool ComputerPlayer::save(QDataStream &out)
+{
+	out << true;
+	return Player::save(out);
+}
+
 
 bool Player::hasSettler() {
 	for (Unit *unit : units_) {
@@ -378,4 +457,3 @@ Tile *Player::centralPositon() {
 	// Should never reach this point!
 	return GameManager::get()->board()->getTile(0, 0);
 }
-

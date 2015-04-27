@@ -26,7 +26,7 @@ public:
 	Tile *getTile(QPair<int, int > pos) const;
 	Tile *getTileAxial(QPoint p) const;
 	Tile *getTileAxial(int x, int y) const;
-	Tile *getTileCube(int x, int y, int z) const;
+	Tile *getTileCube(int x, int z) const;
 	
 	unsigned int nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const;
 	unsigned int getAbsoluteDistance(const Tile *tile1, const Tile *tile2) const;

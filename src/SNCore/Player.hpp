@@ -49,12 +49,14 @@ public:
 	Prototype *prototype(PrototypeType type);
 	QList<Prototype *> prototypes();
 	QList<Prototype *> soldierPrototypes();
-		
+	
 	bool applyBonus(BonusType type, SNTypes::tier tier);
 	bool applyBonus(Bonus *bonus);
 	
 	bool hasBonus(BonusType type, SNTypes::tier tier) const;
 	bool hasBonus(Bonus *bonus);
+	
+	SNTypes::tier bonusLevel(BonusType bonus);
 	
 	bool canAffordBuilding(Resource type);
 	void payForBuilding(Resource type);
@@ -65,13 +67,16 @@ public:
 	SNTypes::amount lastIncome(Resource resource) const;
 	
 	bool load(QDataStream &in);
-	bool save(QDataStream &out);
+	virtual bool save(QDataStream &out);
 	
 	bool hasSettler();
 	bool hasAnyUnit();
 	Tile *centralPositon();
 	
 	virtual void performTurn() = 0;
+	
+	QVector<Unit *> units() const;
+	QVector<Town *> towns() const;
 protected:
 	Town *capital_;
 	QString name_;
@@ -91,6 +96,7 @@ public:
 	HumanPlayer(const QString &name, QColor color);
 	virtual ~HumanPlayer();
 	virtual void performTurn();
+	virtual bool save(QDataStream &out);
 };
 
 class ComputerPlayer : public Player {
@@ -98,6 +104,16 @@ public:
 	ComputerPlayer(const QString &name, QColor color);
 	virtual ~ComputerPlayer();
 	virtual void performTurn();
+	
+	Player *playerToAttack() const;
+	void setPlayerToAttack(Player *player);
+	int lastTimeSettlerBought() const;
+	void setLastTimeSettlerBought(int now);
+private: 
+	Player *playerToAttack_;
+	int lastTimeSettlerBought_;
+
+	virtual bool save(QDataStream &out);
 };
 
 #endif

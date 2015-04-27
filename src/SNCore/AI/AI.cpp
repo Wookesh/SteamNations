@@ -8,9 +8,12 @@
 #include "SNCore/Objects/Settler.hpp"
 #include "SNCore/Objects/Soldier.hpp"
 
-#include <QVector>
 #include <QQueue>
 #include <QSet>
+#include <QPoint>
+#include <QList>
+#include <QMap>
+#include <QDebug>
 
 namespace AI {
 	
@@ -42,84 +45,8 @@ namespace AI {
 		return bestTarget.second;
 	}
 	
-	SNTypes::heur economyHeuristic(Player* player) 
+	SNTypes::heur getSigma(Tile *ours, Tile *their, Player *me, Player *enemy) 
 	{
-		SNTypes::heur their = 0;
-		QList <Player*> players = GameManager::get()->players();
-		for (Player *other: players) {
-			if (player != other)
-				their += other->getUnitsCount();
-		}
-		their /= players.length() - 1;
-		SNTypes::heur ours = player->getUnitsCount();
-		return ours - their;
-	}
-
-	SNTypes::heur townBuildBuildingHeuristic(Town* town)
-	{
-		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(town->tile(), checkingRange);
-		unsigned int minimum = checkingRange;
-		for (Tile *tile: tiles) 
-			minimum = std::min(minimum, GameManager::get()->board()->getAbsoluteDistance(town->tile(), tile));
-		return minimum;
-	}
-
-	SNTypes::heur townBuildUnitHeuristic(Town* town)
-	{
-		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(town->tile(), checkingRange);
-		unsigned int minimum = checkingRange;
-		for (Tile *tile: tiles) 
-			minimum = std::min(minimum, GameManager::get()->board()->getAbsoluteDistance(town->tile(), tile));
-		return -((SNTypes::heur)minimum);
-	}
-
-	SNTypes::heur soldierHeuristic(Unit* unit, Tile* tile)
-	{
-		Soldier *soldier = static_cast<Soldier *>(unit);
-		if (tile->unit()) {
-			Unit *unitFromTile = tile->unit();
-			if (unitFromTile->owner() == soldier->owner()) 
-				return minInf;
-			return soldierUnitValue(soldier, unitFromTile);
-		}
-		if (tile->town()) {
-			Town *townFromTile = tile->town();
-			if (townFromTile->owner() == soldier->owner()) 
-				return minInf;
-			return soldierTownValue(soldier, townFromTile);
-		}
-		if (!tile->visible(unit->owner()))
-			return unitWanderValue(soldier, tile);
-		return minInf;
-	}
-	
-	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile)
-	{
-		Settler *settler = static_cast<Settler *>(unit);
-		if (tile->unit() || tile->town()) 
-			return minInf;
-		if (tile->visible(settler->owner()))
-			return settlerSettleHeuristic(settler, tile);
-		return unitWanderValue(settler, tile);
-	}
-	
-	SNTypes::heur settlerSettleHeuristic(Settler *settler, Tile *tile) 
-	{
-		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile, 1);
-		int resources[4] = {0, 0, 0, 0};
-		for (Tile *newTownTiles: tiles) {
-			if (newTownTiles->resource() == Resource::Gold) ++resources[0];
-			if (newTownTiles->resource() == Resource::Research) ++resources[1];
-			if (newTownTiles->resource() == Resource::Food) ++resources[2];
-			if (newTownTiles->resource() == Resource::None) ++resources[3];
-		}
-		//najlepszy town to taki ktory ma 4 golda i 3 food/research.
-		//najgorszy to jak ma 7 none
-		//FIXME 3~4 fooda, i inny surowiec, minimalizujemy None
-		return (resources[0] + 1)*(std::abs(resources[1] - resources[2]) + 1) - (resources[3]);
-	}
-	
-	SNTypes::heur getSigma(Tile *ours, Tile *their, Player *me, Player *enemy) {
 		QVector<Tile *> aroundTheir = GameManager::get()->board()->getInRange(their, sigmaCheckingRange);
 		QVector<Tile *> aroundOurs = GameManager::get()->board()->getInRange(ours, sigmaCheckingRange);
 		
@@ -149,6 +76,50 @@ namespace AI {
 		}
 		return myPower - theirPower;
 	}
+	
+	SNTypes::heur getPowerAround(Tile *ours, Player *me, int range) 
+	{
+		QVector<Tile *> aroundOurs = GameManager::get()->board()->getInRange(ours, range);
+		int myPower = 0;
+		int theirPower = 0;
+		
+		for (Tile *tile: aroundOurs) {
+			if (tile->unit()) {
+				if (tile->unit()->pType() != PrototypeType::Settler) {
+					if (tile->unit()->owner() == me)
+						myPower++;
+					else
+						theirPower++;
+				}
+			} else if (tile->town()) {
+				if (tile->town()->owner() == me) 
+					myPower ++;
+				else 
+					theirPower++;
+			}
+		}
+		
+		return myPower - theirPower;
+	}
+	
+	SNTypes::heur soldierHeuristic(Unit* unit, Tile* tile)
+	{
+		Soldier *soldier = static_cast<Soldier *>(unit);
+		if (tile->unit()) {
+			Unit *unitFromTile = tile->unit();
+			if (unitFromTile->owner() != soldier->owner()) 
+				return soldierUnitValue(soldier, unitFromTile);
+			
+		} else if (tile->town()) {
+			Town *townFromTile = tile->town();
+			if (townFromTile->owner() != soldier->owner()) 
+				return soldierTownValue(soldier, townFromTile);
+			
+		} else if (!tile->visible(unit->owner())) {
+			return soldierWanderValue(soldier, tile);
+		}
+		return minInf;
+	}
 
 	SNTypes::heur soldierTownValue(Soldier *soldier, Town *town)
 	{
@@ -164,10 +135,290 @@ namespace AI {
 		return -length + sigma + unitAttackPriority;
 	}
 
-	SNTypes::heur unitWanderValue(Unit *unit, Tile *tile)
+	SNTypes::heur soldierWanderValue(Unit *unit, Tile *tile)
 	{
+		ComputerPlayer *player = static_cast<ComputerPlayer *>(unit->owner());
+		
+		int playerNo = qrand() % GameManager::get()->players().length();
+		if (player->playerToAttack() == nullptr) {
+			player->setPlayerToAttack(GameManager::get()->players().at(playerNo) != unit->owner() ?
+				GameManager::get()->players().at(playerNo) :
+				GameManager::get()->players().at((playerNo + 1) % GameManager::get()->players().length()));
+		}
+		
+		while ((player->playerToAttack()->getUnitsCount() == 0) && (player->playerToAttack()->getTownCount() == 0)) {
+			player->setPlayerToAttack(GameManager::get()->players().at(playerNo) != unit->owner() ?
+				GameManager::get()->players().at(playerNo) :
+				GameManager::get()->players().at((playerNo + 1) % GameManager::get()->players().length()));
+			playerNo = (playerNo + 1) % GameManager::get()->players().length();
+		}
+		
+		SNTypes::heur direction = player->playerToAttack()->capital() ? GameManager::get()->board()->getAbsoluteDistance(unit->tile(), player->playerToAttack()->capital()->tile()) - 
+			GameManager::get()->board()->getAbsoluteDistance(tile, player->playerToAttack()->capital()->tile()) + (qrand() % 4) - 3: 
+			(qrand() % 4) - 4;
+		
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(unit->tile(), tile)).length();
 		
-		return -length + unit->visionRange();
+		return -length + unit->visionRange() + direction/2;
+	}
+	
+	SNTypes::heur settlerHeuristic(Unit *unit, Tile* tile)
+	{
+		Settler *settler = static_cast<Settler *>(unit);
+		if (tile->unit() || tile->town()) 
+			return minInf;
+		
+		if (tile->visible(settler->owner()))
+			return settlerSettleHeuristic(settler, tile);
+		
+		return settlerWanderValue(settler, tile);
+	}
+	
+	SNTypes::heur settlerSettleHeuristic(Settler *settler, Tile *tile) 
+	{
+		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile, 1);
+		int resources[4] = {0, 0, 0, 0};
+		for (Tile *newTownTiles: tiles) {
+			if (newTownTiles->resource() == Resource::Gold) ++resources[0];
+			if (newTownTiles->resource() == Resource::Research) ++resources[1];
+			if (newTownTiles->resource() == Resource::Food) ++resources[2];
+			if (newTownTiles->resource() == Resource::None) ++resources[3];
+		}
+		//najlepszy town to taki ktory ma 3-4 fooda i 3-4 gold/research.
+		//najgorszy to jak ma 7 none
+		return (resources[2] + 1)*(std::abs(resources[1] - resources[0]) + 1) - (resources[3]);
+	}
+	
+	SNTypes::heur settlerSettleCapitalHeuristic(Settler* settler, Tile* tile)
+	{
+		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(tile, 1);
+		int resources[4] = {0, 0, 0, 0};
+		for (Tile *newTownTiles: tiles) {
+			if (newTownTiles->resource() == Resource::Gold) ++resources[0];
+			if (newTownTiles->resource() == Resource::Research) ++resources[1];
+			if (newTownTiles->resource() == Resource::Food) ++resources[2];
+			if (newTownTiles->resource() == Resource::None) ++resources[3];
+		}
+		//najlepszy town to taki ktory ma 5 gold i 2 food.
+		return (resources[0]*(resources[2] + 3)) - (resources[3]);
+	}
+
+	
+	SNTypes::heur settlerWanderValue(Settler* settler, Tile* tile)
+	{
+		SNTypes::heur power = getPowerAround(tile, settler->owner(), sigmaCheckingRange);
+		SNTypes::heur tileValue;
+		if (settler->owner()->capital() == nullptr) {
+			SNTypes::heur length = (GameManager::get()->board()->pathToTile(settler->tile(), tile)).length();
+			if (settler->actionPoints() * (turnWithoutSettleMax - settler->turnWithoutSettle()) < length) {
+				return minInf;
+			}
+			tileValue = settlerSettleCapitalHeuristic(settler, tile);
+		}
+		else 
+			tileValue = settlerSettleHeuristic(settler, tile);
+		
+		return tileValue + power;
+	}
+
+
+	SNTypes::heur townBuildUnitHeuristic(Town* town)
+	{
+		QVector<Tile *> tiles = GameManager::get()->board()->getInRange(town->tile(), checkingRange);
+		unsigned int minimum = checkingRange;
+		for (Tile *tile: tiles) 
+			minimum = std::min(minimum, GameManager::get()->board()->getAbsoluteDistance(town->tile(), tile));
+		return -((SNTypes::heur)minimum);
+	}
+	
+	SNTypes::heur townCreateSoldierHeuristic(Town* town)
+	{
+		QVector<Tile *> aroundOurs = GameManager::get()->board()->getInRange(town->tile(), sigmaCheckingRange - 1);
+		int myPower = 0;
+		int theirPower = 0;
+		
+		for (Tile *tile: aroundOurs) {
+			if (tile->unit()) {
+				if (tile->unit()->pType() != PrototypeType::Settler) {
+					if (tile->unit()->owner() == town->owner())
+						myPower++;
+					else
+						theirPower++;
+				}
+			} else if (tile->town()) {
+				if (tile->town()->owner() == town->owner()) 
+					myPower++;
+				else 
+					theirPower++;
+			}
+		}
+		qreal ratio = (myPower + 1) / (theirPower + 1);
+		return ratio < forfeitTownRatio ? minInf : - myPower + theirPower;
+	}
+	
+	SNTypes::heur townCreateSettlerHeuristic(Town* town)
+	{
+		return getPowerAround(town->tile(), town->owner(), sigmaCheckingRange - 1);
+	}
+	
+	
+	QList<PrototypeType> whichUnitsCreate(Player* player)
+	{
+		QList<PrototypeType> result;
+		if (!player->towns().isEmpty()) {
+			int gold = player->resource(Resource::Gold);
+			ComputerPlayer *cp = static_cast<ComputerPlayer *>(player);
+			if (GameManager::get()->currentTurn() - cp->lastTimeSettlerBought() > maxTimeWithoutSettler) {
+				if (gold - SettlerPrototype::BASE_COST >= 0) {
+					result.push_back(PrototypeType::Settler);
+					gold -= SettlerPrototype::BASE_COST;
+				} else {
+					return result;
+				}
+			}
+			QMap<Player *, QHash<PrototypeType, int>> unitsMap;
+			
+			const QVector<PrototypeType> prototypesList = QVector<PrototypeType>({{PrototypeType::Artillery},
+				{PrototypeType::Heavy}, {PrototypeType::Infantry}});
+			
+			for (Player *p: GameManager::get()->players())
+				for (Unit *unit: p->units())
+					++unitsMap[p][unit->pType()];
+			
+			QHash<PrototypeType, int> maxEnemiesUnis;
+			for (PrototypeType prototype: prototypesList)
+				maxEnemiesUnis[prototype] = 0;
+			
+			for(Player *p: GameManager::get()->players())
+				if (p != player)
+					for (PrototypeType prototype: prototypesList)
+						maxEnemiesUnis[prototype] = std::max(maxEnemiesUnis[prototype], unitsMap[p][prototype]);
+			
+
+			QHash<PrototypeType, qreal> myCounterPower; //myCounterPower[a] -> myCounter power on a
+			
+			const QHash<PrototypeType, PrototypeType> counters = { //counters[a] = b -> prototypesList[b] counters a
+				{PrototypeType::Artillery, PrototypeType::Infantry},
+				{PrototypeType::Infantry, PrototypeType::Heavy},
+				{PrototypeType::Heavy, PrototypeType::Artillery},
+			};
+			for (PrototypeType prototype: prototypesList)
+				myCounterPower[prototype] = (unitsMap[player][counters.value(prototype, PrototypeType::Infantry)] + 1) / (maxEnemiesUnis[prototype] + 1);
+			
+			bool biggerArmy = true;
+			for (PrototypeType prototype: prototypesList)
+				biggerArmy = biggerArmy && myCounterPower[prototype] > goodCounterRatio;
+			
+			bool noMoneyLeft = false;
+			
+			QMultiMap<int, PrototypeType> order;
+			for (PrototypeType prototype: prototypesList)
+				order.insert(-maxEnemiesUnis[prototype], prototype);
+			
+			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
+				
+				for (PrototypeType prototype : order) {
+					if (myCounterPower[prototype] <= goodCounterRatio) {
+						if (gold - SoldierPrototype::BASE_COST[counters.value(prototype, PrototypeType::Infantry)] >= 0) {
+							result.push_back(counters.value(prototype, PrototypeType::Infantry));
+							++unitsMap[player][counters.value(prototype, PrototypeType::Infantry)];
+							gold -= SoldierPrototype::BASE_COST[counters.value(prototype, PrototypeType::Infantry)];
+						} else {
+							noMoneyLeft = true;
+						}
+						break;
+					}
+				}
+				
+				for (PrototypeType prototype: prototypesList)
+					myCounterPower[prototype] = (unitsMap[player][counters.value(prototype, PrototypeType::Infantry)] + 1) / (maxEnemiesUnis[prototype] + 1);
+			
+				biggerArmy = true;
+				for (PrototypeType prototype: prototypesList)
+					biggerArmy = biggerArmy && myCounterPower[prototype] > goodCounterRatio;
+			}
+		}
+		return result;
+	}
+	
+	bool compareTownValues(const QPair<Town *, SNTypes::heur> &f1, const QPair<Town *, SNTypes::heur> &f2) 
+	{
+		return f1.second < f2.second;
+	}
+	
+	QMap<Town *, PrototypeType> buildHeuristic(Player* player)
+	{
+		QList<PrototypeType> prototypesToBuy = whichUnitsCreate(player);
+		QMap<Town *, PrototypeType> result;
+		if (!prototypesToBuy.isEmpty()) {
+			QList<QPair<Town *, SNTypes::heur>> townSoldierValues;
+			QList<QPair<Town *, SNTypes::heur>> townSettlerValues;
+			Town *townSettler = nullptr;
+			
+			if (prototypesToBuy.first() == PrototypeType::Settler) {
+				for (Town *town: player->towns()) 
+					if (town->tile()->unit() == nullptr) 
+						townSettlerValues.push_back(qMakePair(town, townCreateSettlerHeuristic(town)));
+				
+				qSort(townSettlerValues.begin(), townSettlerValues.end(), compareTownValues);
+				result.insert(townSettlerValues.first().first, PrototypeType::Settler);
+				townSettler = townSettlerValues.first().first;
+				prototypesToBuy.pop_front();
+			}
+			
+			for (Town *town: player->towns()) 
+				if (town->tile()->unit() == nullptr) 
+					if (town != townSettler)
+						townSoldierValues.push_back(qMakePair(town, townCreateSoldierHeuristic(town)));
+			
+			qSort(townSoldierValues.begin(), townSoldierValues.end(), compareTownValues);
+			for (PrototypeType type: prototypesToBuy) {
+				result.insert(townSoldierValues.first().first, type);
+				townSoldierValues.pop_front();
+			}
+		} 
+		return result;
+	}
+	
+	BonusType whichTechnologyPath(Player* player)
+	{
+		int otherUnits = 0;
+		QList<Player *> players = GameManager::get()->players();
+		for(Player *other: players) 
+			if (other != player)
+				otherUnits += player->getUnitsCount();
+		qreal ratio = otherUnits != 0 ? (player->getUnitsCount() * 3) / otherUnits : std::numeric_limits<qreal>::max();
+		const QVector<BonusType> bonusList = {BonusType::Def, BonusType::War, BonusType::Eco};
+		int has3 = 0;
+		for (BonusType bonus: bonusList) 
+			has3 += player->hasBonus(bonus, 3) ? 1 : 0;
+		
+		if (has3 == 0) {
+			if (ratio < defensePathRatio)
+				return BonusType::Def;
+			if (ratio >= warfarePathRatio)
+				return BonusType::War;
+			return BonusType::Eco;
+		} 
+		if (has3 == 1) {
+			if (player->hasBonus(BonusType::Eco, 3)) 
+				return ratio > (defensePathRatio + warfarePathRatio)/2 ? BonusType::War : BonusType::Def;
+			if (player->hasBonus(BonusType::War, 3)) {
+				if (ratio < defensePathRatio)
+					return BonusType::Def;
+				return BonusType::Eco;
+			}
+			// has def
+			if (ratio < defensePathRatio)
+				return BonusType::War;
+			return BonusType::Eco;
+		}
+		if (has3 == 2) 
+			for (BonusType bonus: bonusList) 
+				if (!player->hasBonus(bonus, 3))
+					return bonus;
+		//cant have 3, should never get here
+		if (has3 == 3)
+			qDebug() << "Error: AI - whichTechnologyPath";
 	}
 }

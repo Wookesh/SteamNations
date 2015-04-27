@@ -10,8 +10,6 @@ class Object;
 
 class InfoBox : public QObject {
 Q_OBJECT
-
-	
 public:
 	Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
 	Q_PROPERTY(QString name READ name )

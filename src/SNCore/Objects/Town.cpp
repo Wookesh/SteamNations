@@ -89,7 +89,6 @@ Tile *Town::chooseBestTile(QVector< Tile * > tiles) {
 
 void Town::updateBefore() 
 {
-	qDebug() << name() << __FUNCTION__;
 	for (Tile *tile : townTiles_) {
 		tile->updateBefore();
 		if (tile->resource() != Resource::None) {
@@ -219,4 +218,9 @@ bool Town::load(QDataStream &in)
 	}
 	
 	return true;
+}
+
+const QVector< Tile* >& Town::townTiles() const
+{
+	return townTiles_;
 }

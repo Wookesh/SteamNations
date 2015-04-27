@@ -36,6 +36,7 @@ SOURCES +=  src/SNCore/Tile.cpp \
 				src/SNCore/Actions/CreateTownAction.cpp \
 				src/SNCore/Actions/CreateBuildingAction.cpp \
 				src/SNCore/Actions/SettleAction.cpp \
+				src/SNCore/AI/AI.cpp \
 				src/SNGame/main.cpp \
 				src/SNGame/TextureManager.cpp \
 				src/SNGame/GameBoard.cpp \
@@ -85,6 +86,7 @@ HEADERS +=  src/SNCore/Config.hpp \
 				src/SNCore/Actions/CreateTownAction.hpp \
 				src/SNCore/Actions/SpawnUnitAction.hpp \
 				src/SNCore/Actions/CreateUnitAction.hpp \
+				src/SNCore/AI/AI.hpp \
 				src/SNGame/TextureManager.hpp \
 				src/SNGame/BoardField.hpp \
 				src/SNGame/InfoBox.hpp \
