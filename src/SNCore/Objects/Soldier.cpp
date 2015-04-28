@@ -67,19 +67,28 @@ bool Soldier::canCapture(const Tile *currTile) const
 		(currTile->town() != nullptr) &&
 		(currTile->town()->owner() != owner()) &&
 		(currTile->unit() == nullptr) &&
-		(currTile->visionState(owner()) == VisionType::Visible))
+		(currTile->visionState(owner()) == VisionType::Visible) &&
+		actionPointsLeft_ >= GameManager::get()->board()->getDistance(tile_, currTile) &&
+		GameManager::get()->board()->getDistance(tile_, currTile) >= 1)
 		return true;
 	
 	return false;
 }
 
-bool Soldier::capture(Town *town)
+bool Soldier::capture(Town *town, unsigned int captureCost)
 {
 	if (canCapture(town->tile())) {
 		town->setOwner(owner());
 		
 		if (town->isCapital())
 			GameManager::get()->checkIfWin(owner_, WinCondition::Conquest);
+		
+		spentActionPoints(captureCost);
+		tile_->setUnit(nullptr);
+		town->tile()->setUnit(this);
+		setTile(town->tile());
+		updateVision();
+		emit positionChanged();
 		
 		return true;
 	}

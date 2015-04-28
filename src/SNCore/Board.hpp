@@ -30,6 +30,7 @@ public:
 	
 	unsigned int nOfTilesWith(QVector<Tile *> &tiles, Resource resource) const;
 	unsigned int getAbsoluteDistance(const Tile *tile1, const Tile *tile2) const;
+	int getDistance(const Tile *tile1, const Tile *tile2) const;
 	
 	QVector<Tile *> getNeighbours(const Tile *tile) const;
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
