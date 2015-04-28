@@ -33,6 +33,7 @@ public:
 	void obtainTown(Town *town);
 	void destroyTown(Town *town);
 	unsigned int getTownCount();
+	int getFreeTownCount();
 	
 	Town *capital();
 	void setCapital(Town *town);

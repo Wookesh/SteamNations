@@ -78,6 +78,15 @@ unsigned int Player::getTownCount()
 	return towns_.count();
 }
 
+int Player::getFreeTownCount() 
+{
+	int count = 0;
+	for (Town *town : towns_)
+		if (!town->tile()->unit())
+			++count;
+	return count;
+}
+
 unsigned int Player::getUnitsCount()
 {
 	return units_.count();

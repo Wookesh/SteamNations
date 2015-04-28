@@ -315,7 +315,7 @@ namespace AI {
 			for (PrototypeType prototype: prototypesList)
 				order.insert(-maxEnemiesUnis[prototype], prototype);
 			
-			while ((result.length() < player->getTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
+			while ((result.length() < player->getFreeTownCount()) && (!biggerArmy) && (!noMoneyLeft)) {
 				
 				for (PrototypeType prototype : order) {
 					if (myCounterPower[prototype] <= goodCounterRatio) {
@@ -372,6 +372,8 @@ namespace AI {
 						townSoldierValues.push_back(qMakePair(town, townCreateSoldierHeuristic(town)));
 			
 			qSort(townSoldierValues.begin(), townSoldierValues.end(), compareTownValues);
+			// NOTE rewrite this for. Currently we are not checking if townSolderValues is not empty!
+			// this was couse of #98
 			for (PrototypeType type: prototypesToBuy) {
 				result.insert(townSoldierValues.first().first, type);
 				townSoldierValues.pop_front();
