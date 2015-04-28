@@ -320,7 +320,7 @@ QPoint GameBoard::pixelToHex(int x, int y)
 		{c.x() - 1,c.y() + 1}
 	});
 	double missmatch = std::numeric_limits<double>::max();
-	int whichONe;
+	int whichOne = 0;
 	int missmatches = 0;
 	for (int i = 0; i < p.size(); ++i) {
 		Tile *tile = GameManager::get()->board()->getTileAxial(p[i].x(), p[i].y());
@@ -330,14 +330,14 @@ QPoint GameBoard::pixelToHex(int x, int y)
 			tmp -= prob;
 			if (sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y()) < missmatch) {
 				missmatch = sqrt(tmp.x() * tmp.x() + tmp.y() * tmp.y());
-				whichONe = i;
+				whichOne = i;
 			}
 		} else {
 			++missmatches;
 		}
 	}
 	if (missmatches != p.size())
-		return GameManager::get()->board()->getTileAxial(p[whichONe].x(), p[whichONe].y())->position();
+		return GameManager::get()->board()->getTileAxial(p[whichOne].x(), p[whichOne].y())->position();
 	return GameManager::get()->board()->getTileAxial(0,0)->position();
 }
 
