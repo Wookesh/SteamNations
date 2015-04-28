@@ -99,6 +99,7 @@ bool Player::removeResource(Resource resource, unsigned int val)
 {
 	if (resources_[resource] >= val) {
 		resources_[resource] -= val;
+		GameManager::get()->updateResources();
 		return true;
 	}
 	return false;

@@ -37,7 +37,7 @@ void GameBoard::initTimer()
 	}
 	
 	connect(timer_, &QTimer::timeout, this, &GameBoard::nextFrame);
-	connect(GameManager::get(), &GameManager::turnReady, this, &GameBoard::updateResources);
+	connect(GameManager::get(), &GameManager::updateResourcesSignal, this, &GameBoard::updateResources);
 }
 
 void GameBoard::nextFrame()

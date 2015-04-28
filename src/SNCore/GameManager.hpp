@@ -69,6 +69,8 @@ public:
 	
 	void checkIfWin(Player *player, WinCondition condition);
 	
+	void updateResources();
+	
 protected:
 	GameManager(QObject *parent = nullptr);
 	virtual ~GameManager();
@@ -107,6 +109,7 @@ signals:
 	void turnEnded();
 	void gameInitialized();
 	void gameEnded(const QString winnerName, const QString type);
+	void updateResourcesSignal();
 	void turnReady();
 	void objectCreated(UID uid);
 	

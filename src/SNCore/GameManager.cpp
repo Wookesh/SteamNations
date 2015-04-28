@@ -442,6 +442,7 @@ void GameManager::endTurn()
 	currentPlayer_->updateBefore();
 	BonusManager::get()->reloadBonuses();
 	emit turnReady();
+	updateResources();
 	currentPlayer()->performTurn();
 }
 
@@ -577,4 +578,8 @@ SNTypes::amount GameManager::totalGoldIncome() const {
 		ret += player->lastIncome(Resource::Gold);
 	
 	return ret;
+}
+
+void GameManager::updateResources() {
+	emit updateResourcesSignal();
 }
