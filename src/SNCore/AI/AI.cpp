@@ -262,7 +262,7 @@ namespace AI {
 	}
 	
 	
-	QList<PrototypeType> whichUnitsCreate(Player* player)
+	QList<PrototypeType> whichUnitsCreate(Player *player)
 	{
 		QList<PrototypeType> result;
 		if (!player->towns().isEmpty()) {
@@ -273,7 +273,8 @@ namespace AI {
 					result.push_back(PrototypeType::Settler);
 					gold -= SettlerPrototype::BASE_COST;
 				} else {
-					return result;
+					if (getPowerAround(player->centralPositon(), player, sigmaCheckingRange) > 2) 
+						return result;
 				}
 			}
 			QMap<Player *, QHash<PrototypeType, int>> unitsMap;
@@ -375,8 +376,10 @@ namespace AI {
 			// NOTE rewrite this for. Currently we are not checking if townSolderValues is not empty!
 			// this was couse of #98
 			for (PrototypeType type: prototypesToBuy) {
-				result.insert(townSoldierValues.first().first, type);
-				townSoldierValues.pop_front();
+				if (!townSoldierValues.empty()) {
+					result.insert(townSoldierValues.first().first, type);
+					townSoldierValues.pop_front(); 
+				} 
 			}
 		} 
 		return result;
