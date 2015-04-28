@@ -255,7 +255,7 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 								}
 								
 								QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
-								material->setColor(Qt::white);
+								material->setColor(town->owner()->color());
 								shadow->setGeometry(geometry);
 								shadow->setFlag(QSGNode::OwnsGeometry);
 								shadow->setMaterial(material);

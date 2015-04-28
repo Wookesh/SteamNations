@@ -22,7 +22,7 @@ class GameBoard : public QQuickItem {
 Q_OBJECT
 public:
 	static const int INTERVAL = 250;
-	qreal SHADOW_OPACITY = 0.2;
+	qreal SHADOW_OPACITY = 0.4;
 	GameBoard(QQuickItem *parent = 0);
 	Q_INVOKABLE void exit();
 	Q_INVOKABLE void click(int mouseX, int mouseY, int x, int y, float scale);
