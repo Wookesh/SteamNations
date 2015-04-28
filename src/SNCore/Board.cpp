@@ -8,6 +8,9 @@
 #include "Board.hpp"
 #include "Tile.hpp"
 #include "Objects/Town.hpp"
+#include "Objects/Unit.hpp"
+#include "Console.hpp"
+#include "GameManager.hpp"
 
 Board::Board(unsigned int width, unsigned int height, unsigned int seed): height_(height), width_(width) 
 {
@@ -162,6 +165,48 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 	
 	return (abs(q1 - q2) + abs(r1 - r2) + abs(q1 + r1 - q2 - r2)) / 2;
 }
+
+// Returns -1 if there's no unit on tile1
+int Board::getDistance(const Tile *tile1, const Tile *tile2) const {
+	QSet<const Tile *> visited;
+	visited.insert(tile1);
+	if (tile1->unit() == nullptr)
+		return -1;
+	
+	const Player *player = tile1->unit()->owner();
+	SNTypes::ap range = tile1->unit()->actionPointsLeft();
+	QVector<QVector<const Tile *> > reachable(range + 1);
+	reachable[0].push_back(tile1);
+	
+	
+	for (int i = 1; i <= range; ++i) {
+		for (auto hex : reachable[i-1]) {
+			QVector<Tile *> neighbours = getNeighbours(hex);
+			
+			for (Tile *neighbour : neighbours) {
+				if (!visited.contains(neighbour)) {
+					visited.insert(neighbour);
+					
+					if (!neighbour->passable(player) || !neighbour->visible(player)) {
+						continue;
+					}
+					
+					int distance = i + neighbour->weight() - 1;
+					
+					if (distance <= range) {
+						reachable[distance].push_back(neighbour);
+						
+						if (neighbour == tile2)
+							return distance;
+					}
+				}
+			}
+		}
+	}
+	
+	return -1;
+}
+
 
 QVector<Tile *> Board::getNeighbours(const Tile *tile) const 
 {

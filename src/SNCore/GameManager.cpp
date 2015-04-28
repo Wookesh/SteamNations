@@ -373,7 +373,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 					possibleActions.push_back(new AttackAction(soldier, currTile->unit()));
 
 				if (soldier->canCapture(currTile))
-					possibleActions.push_back(new CaptureAction(soldier, currTile->town()));
+					possibleActions.push_back(new CaptureAction(soldier, currTile->town(), board_->getAbsoluteDistance(soldier->tile(), currTile)));
 			}
 		}
 	}
@@ -392,7 +392,7 @@ Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 	}
 	if (action == ActionType::Capture) {
 		if (unit->pType() == PrototypeType::Infantry && tile->town())
-			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
+			return new CaptureAction(static_cast<Soldier *>(unit), tile->town(), board_->getDistance(tile, unit->tile()));
 		return nullptr;
 	}
 	if (action == ActionType::Attack) {

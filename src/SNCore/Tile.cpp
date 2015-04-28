@@ -193,9 +193,6 @@ bool Tile::passable (const Player *player) const
 	if (unit_ != nullptr && unit_->owner() != player)
 		return false;
 	
-	if (town_ != nullptr && town_->owner() != player)
-		return false;
-		
 	return true;
 }
 

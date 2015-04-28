@@ -12,7 +12,7 @@ public:
 	Soldier(Tile *tile, const SoldierPrototype *prototype, Player *owner, QObject *parent = nullptr);
 	
 	bool canCapture(const Tile *currTile) const;
-	bool capture(Town *town);
+	bool capture(Town *town, unsigned int captureCost);
 	
 	bool canAttack(const Tile *currTile) const;
 	bool attack(Unit *unit);
