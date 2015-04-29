@@ -87,6 +87,7 @@ Rectangle {
 		drag.maximumY: 70 * scene.scale - scene.height * (1 - scene.scale) / 2
 		acceptedButtons: Qt.AllButtons
 		onWheel: {
+			
 			if (wheel.angleDelta.y > 0) {
 				if ((scene.scale < 2) && (scene.height*(scene.scale - 0.05) >= 1080*root.globalScale.height))
 					scene.scale += 0.05
@@ -102,7 +103,6 @@ Rectangle {
 				scene.y = drag.minimumY
 			if (scene.y > drag.maximumY)
 				scene.y = drag.maximumY
-			
 		}
 
 		onClicked: {
@@ -141,6 +141,20 @@ Rectangle {
 			function centerBoard() {
 				scene.x = -scene.boardCenter().x + 1920 / 2 * root.globalScale.width
 				scene.y = -scene.boardCenter().y + 1080 / 2 * root.globalScale.height
+				scene.scale = 1
+				var minimumX = parent.width - scene.width * (1 + scene.scale) / 2
+				var maximumX = menuButton.width + 80 * scene.scale - scene.width * (1 - scene.scale) / 2
+				var minimumY = parent.height - scene.height * (1 + scene.scale) / 2
+				var maximumY = 70 * scene.scale - scene.height * (1 - scene.scale) / 2
+			
+			if (scene.x < minimumX)
+				scene.x = minimumX
+			if (scene.x > maximumX)
+				scene.x = maximumX
+			if (scene.y < minimumY)
+				scene.y = minimumY
+			if (scene.y > maximumY)
+				scene.y = maximumY
 			}
 			
 			function updateResources() {
