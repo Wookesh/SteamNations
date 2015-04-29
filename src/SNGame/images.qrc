@@ -36,11 +36,29 @@
 		<file alias="unit/Heavy">images/units/heavy.png</file>
 		<file alias="unit/Town">images/town.png</file>
 		
-		<file alias="unit/SettlerShadow">images/units/settlerWhitePlus2px.png</file>
-		<file alias="unit/ArtilleryShadow">images/units/artileryWhitePlus2px.png</file>
-		<file alias="unit/InfantryShadow">images/units/infantryWhitePlus2px.png</file>
-		<file alias="unit/HeavyShadow">images/units/tankWhitePlus2px.png</file>
-		<file alias="unit/TownShadow">images/townWhitePlus2px.png</file>
+		<file alias="unit/SettlerBlueShadow">images/units/settlerBluePlus2px.png</file>
+		<file alias="unit/ArtilleryBlueShadow">images/units/artileryBluePlus2px.png</file>
+		<file alias="unit/InfantryBlueShadow">images/units/infantryBluePlus2px.png</file>
+		<file alias="unit/HeavyBlueShadow">images/units/tankBluePlus2px.png</file>
+		<file alias="unit/TownBlueShadow">images/townBluePlus2px.png</file>
+		
+		<file alias="unit/SettlerGreenShadow">images/units/settlerGreenPlus2px.png</file>
+		<file alias="unit/ArtilleryGreenShadow">images/units/artileryGreenPlus2px.png</file>
+		<file alias="unit/InfantryGreenShadow">images/units/infantryGreenPlus2px.png</file>
+		<file alias="unit/HeavyGreenShadow">images/units/tankGreenPlus2px.png</file>
+		<file alias="unit/TownGreenShadow">images/townGreenPlus2px.png</file>
+		
+		<file alias="unit/SettlerRedShadow">images/units/settlerRedPlus2px.png</file>
+		<file alias="unit/ArtilleryRedShadow">images/units/artileryRedPlus2px.png</file>
+		<file alias="unit/InfantryRedShadow">images/units/infantryRedPlus2px.png</file>
+		<file alias="unit/HeavyRedShadow">images/units/tankRedPlus2px.png</file>
+		<file alias="unit/TownRedShadow">images/townRedPlus2px.png</file>
+		
+		<file alias="unit/SettlerYellowShadow">images/units/settlerYellowPlus2px.png</file>
+		<file alias="unit/ArtilleryYellowShadow">images/units/artileryYellowPlus2px.png</file>
+		<file alias="unit/InfantryYellowShadow">images/units/infantryYellowPlus2px.png</file>
+		<file alias="unit/HeavyYellowShadow">images/units/tankYellowPlus2px.png</file>
+		<file alias="unit/TownYellowShadow">images/townYellowPlus2px.png</file>
 		
 		<file alias="hex/Desert">images/hexes/pustynia.png</file>
 		<file alias="hex/Fog">images/hexes/fog.png</file>

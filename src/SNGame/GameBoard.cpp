@@ -186,7 +186,12 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 				if (tile->visible(GameManager::get()->currentPlayer())) {
 					if (tile->town()) {
 						QSGSimpleTextureNode *townShadow = new QSGSimpleTextureNode();
-						QSGTexture *texture_= textureManager_->texture("TownShadow");
+						QColor color = tile->town()->owner()->color();
+						QString textureName = "TownGreenShadow";
+						if(color == Qt::red) textureName = "TownRedShadow";
+						if(color == Qt::blue) textureName = "TownBlueShadow";
+						if(color == Qt::yellow) textureName = "TownYellowShadow";
+						QSGTexture *texture_= textureManager_->texture(textureName);
 						
 						townShadow->setRect(pos.x()-texture_->textureSize().width() / 2, pos.y() - texture_->textureSize().height() / 2, texture_->textureSize().width(), texture_->textureSize().height());
 						townShadow->setTexture(texture_);
@@ -201,7 +206,14 @@ QSGNode *GameBoard::updatePaintNode(QSGNode *mainNode, UpdatePaintNodeData *)
 					if (tile->unit()) {
 						
 						QSGSimpleTextureNode *unitShadow = new QSGSimpleTextureNode();
-						QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType())+"Shadow");
+						
+						QColor unitColor = tile->unit()->owner()->color();
+						QString unitTextureName = "GreenShadow";
+						if(unitColor == Qt::red) unitTextureName = "RedShadow";
+						if(unitColor == Qt::blue) unitTextureName = "BlueShadow";
+						if(unitColor == Qt::yellow) unitTextureName = "YellowShadow";
+						
+						QSGTexture *texture_= textureManager_->texture((QString)(tile->unit()->pType())+unitTextureName);
 						
 						if (texture_ == nullptr)
 							GMlog() << "[ERROR] texture is null";
