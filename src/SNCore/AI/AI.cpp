@@ -362,9 +362,11 @@ namespace AI {
 						townSettlerValues.push_back(qMakePair(town, townCreateSettlerHeuristic(town)));
 				
 				qSort(townSettlerValues.begin(), townSettlerValues.end(), compareTownValues);
-				result.insert(townSettlerValues.first().first, PrototypeType::Settler);
-				townSettler = townSettlerValues.first().first;
-				prototypesToBuy.pop_front();
+				if (!townSettlerValues.isEmpty()) {
+					result.insert(townSettlerValues.first().first, PrototypeType::Settler);
+					townSettler = townSettlerValues.first().first;
+					prototypesToBuy.pop_front();
+				}
 			}
 			
 			for (Town *town: player->towns()) 
