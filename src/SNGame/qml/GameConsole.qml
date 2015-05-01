@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import SN 1.0
+import SNGM 1.0 as SN
 
 Rectangle {
 	id: gameConsole
@@ -14,7 +15,7 @@ Rectangle {
 	property SNConsole snConsole;
 	
 	function createConnections() {
-		snConsole = gmib.gameManager.console;
+		snConsole = SN.gm.console;
 		snConsole.logChanged.connect(display.updateText)
 		snConsole.historyChanged.connect(gameConsole.resetHistoryPos)
 	}

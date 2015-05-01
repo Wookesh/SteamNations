@@ -547,12 +547,6 @@ void GameManager::setWinConditions()
 
 }
 
-
-GameManager *GameManagerInstanceBox::gm()
-{
-	return GameManager::get();
-}
-
 SNTypes::population GameManager::totalPopulation() const {
 	SNTypes::population ret = 0;
 	

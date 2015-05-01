@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import "./gui"
 import SN 1.0
+import SNGM 1.0 as SN
 
 Rectangle {
 	id: gameUI
@@ -32,7 +33,7 @@ Rectangle {
 			
 			onClicked :{
 				techWindow.visible = !techWindow.visible;
-				if(techWindow.visible)
+				if (techWindow.visible)
 					techWindow.bonusesUpdated();
 			}
 		}
@@ -43,7 +44,7 @@ Rectangle {
 			anchors.top: techButton.bottom
 			
 			onClicked:
-				gmib.gameManager.save();
+				SN.gm.save();
 		}
 		
 		ParamDisplay {
@@ -169,7 +170,7 @@ Rectangle {
 				scene.boardSet.connect(scene.setBoard);
 				scene.resourcesUpdated.connect(scene.updateResources);
 				techWindow.createConnections();
-				gmib.gameManager.gameEnded.connect(winScreen.show);
+				SN.gm.gameEnded.connect(winScreen.show);
 			}
 		}
 	}
@@ -205,7 +206,7 @@ Rectangle {
 		}
 		
 		function show() {
-			var name = gmib.gameManager.currentPlayerName();
+			var name = SN.gm.currentPlayerName();
 			splashText.text =  name +  "'s  turn\nClick to start turn";
 			staticLeftForeground.visible = false;
 			splashScreen.visible = true;

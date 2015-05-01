@@ -12,6 +12,14 @@
 #include "InfoBox.hpp"
 #include "SNCore/Bonuses/Bonuses.hpp"
 
+QObject *getGM(QQmlEngine *engine, QJSEngine *jEngine) 
+{
+	Q_UNUSED(engine)
+	Q_UNUSED(jEngine)
+	
+	return GameManager::get();
+}
+
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
@@ -26,10 +34,9 @@ int main(int argc, char *argv[])
 	
 	qmlRegisterType<GameBoard>("SN", 1, 0, "Board");
 	qmlRegisterType<Console>("SN", 1, 0, "SNConsole");
-	qmlRegisterType<GameManagerInstanceBox>("SN", 1, 0, "GameManagerInstanceBox");
-	qmlRegisterType<GameManager>("SN", 1, 0, "GameManager");
 	qmlRegisterType<InfoBox>("SN", 1, 0, "InfoBox");
 	qmlRegisterType<BonusManager>("SN", 1, 0, "BonusManager");
+	qmlRegisterSingletonType<GameManager>("SNGM", 1, 0, "gm", getGM);
 	view.rootContext()->setContextProperty("initialSize", initialSize);
 	
 	QObject::connect(view.engine(), &QQmlEngine::quit, qApp, &QCoreApplication::quit);

@@ -1,4 +1,6 @@
 import QtQuick 2.3
+import SN 1.0
+import SNGM 1.0 as SN
 
 Item {
 	id: nextTurnButton
@@ -11,10 +13,10 @@ Item {
 	
 	function createConnections() {
 		nextTurn.clicked.connect(rotationTimer.start);
-		nextTurn.clicked.connect(gmib.gameManager.endTurn);
+		nextTurn.clicked.connect(SN.gm.endTurn);
 		nextTurn.clicked.connect(scene.afterTurn);
-		gmib.gameManager.turnReady.connect(rotationTimer.stop);
-		gmib.gameManager.turnReady.connect(scene.beforeTurn);
+		SN.gm.turnReady.connect(rotationTimer.stop);
+		SN.gm.turnReady.connect(scene.beforeTurn);
 	}
 	
 	Image {

@@ -116,12 +116,5 @@ signals:
 friend class Console;
 };
 
-class GameManagerInstanceBox : public QObject {
-Q_OBJECT
-public:
-	Q_PROPERTY(GameManager *gameManager READ gm)
-	GameManager *gm();
-};
-
 #endif
 

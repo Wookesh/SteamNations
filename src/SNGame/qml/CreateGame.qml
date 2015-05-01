@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import SN 1.0
+import SNGM 1.0 as SN
 import "./gui"
 
 Rectangle {
@@ -34,7 +35,7 @@ Rectangle {
 			playerColors[i] = gameData.entries[i].color;
 			playerAI[i] = gameData.entries[i].computer;
 		}
-		gmib.gameManager.useSettings(gameData.boardWidth, gameData.boardHeight, gameData.playersCount, playerNames, playerAI, playerColors);
+		SN.gm.useSettings(gameData.boardWidth, gameData.boardHeight, gameData.playersCount, playerNames, playerAI, playerColors);
 		createGame.start();
 	}
 	
@@ -163,7 +164,7 @@ Rectangle {
 			id: load
 			text: "Load"
 			onClicked: {
-				if (gmib.gameManager.load()) {
+				if (SN.gm.load()) {
 					createGame.gameLoaded();
 				}
 			}

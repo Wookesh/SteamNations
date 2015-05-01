@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import SN 1.0
+import SNGM 1.0 as SN
 
 Rectangle {
 	id: root
@@ -38,7 +39,7 @@ Rectangle {
 		onExit: {
 			gameUI.visible = false
 			mainMenu.visible = true
-			gmib.gameManager.endGame()
+			SN.gm.endGame()
 		}
 	}
 
@@ -49,9 +50,5 @@ Rectangle {
 			createGame.visible = true
 			mainMenu.visible = false
 		}
-	}
-	
-	GameManagerInstanceBox {
-		id: gmib
 	}
 }
