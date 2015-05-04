@@ -357,7 +357,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 		for (int range = 0; range < tiles.size(); ++range) {
 			for (Tile * currTile : tiles[range]) {
 				if (unit->canMove(currTile))
-					possibleActions.push_back(new MoveAction(unit, currTile, range));
+					possibleActions.push_back(new MoveAction(unit, currTile));
 			}
 		}
 		
@@ -373,7 +373,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 					possibleActions.push_back(new AttackAction(soldier, currTile->unit()));
 
 				if (soldier->canCapture(currTile))
-					possibleActions.push_back(new CaptureAction(soldier, currTile->town(), board_->getAbsoluteDistance(soldier->tile(), currTile)));
+					possibleActions.push_back(new CaptureAction(soldier, currTile->town()));
 			}
 		}
 	}
@@ -383,7 +383,7 @@ QVector<Action *> GameManager::mapActions(const Object *objectC)
 Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 {
 	if (action == ActionType::Move) {
-		return new MoveAction(unit, tile, board_->getAbsoluteDistance(tile, unit->tile()));
+		return new MoveAction(unit, tile);
 	}
 	if (action == ActionType::Settle) {
 		if (unit->pType() == PrototypeType::Settler)
@@ -392,7 +392,7 @@ Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 	}
 	if (action == ActionType::Capture) {
 		if (unit->pType() == PrototypeType::Infantry && tile->town())
-			return new CaptureAction(static_cast<Soldier *>(unit), tile->town(), board_->getDistance(tile, unit->tile()));
+			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
 		return nullptr;
 	}
 	if (action == ActionType::Attack) {

@@ -7,7 +7,7 @@ class Unit;
 
 class MoveAction : public Action {
 public :
-	MoveAction(Unit *mainObject, Tile *tile, unsigned int moveCost);
+	MoveAction(Unit *mainObject, Tile *tile);
 	virtual bool perform();
 	unsigned int moveCost();
 private:

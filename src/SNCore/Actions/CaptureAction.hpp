@@ -8,7 +8,7 @@ class Soldier;
 
 class CaptureAction : public Action {
 public :
-	CaptureAction(Soldier *mainObject, Town *town, unsigned int captureCost);
+	CaptureAction(Soldier *mainObject, Town *town);
 	
 	virtual bool perform();
 	unsigned int captureCost();
