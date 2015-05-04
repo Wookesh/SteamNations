@@ -166,11 +166,11 @@ unsigned int Board::getAbsoluteDistance(const Tile *tile1, const Tile *tile2) co
 	return (abs(q1 - q2) + abs(r1 - r2) + abs(q1 + r1 - q2 - r2)) / 2;
 }
 
-// Returns -1 if there's no unit on tile1
+// Returns -1 if there's no unit on tile1 or there's a unit on tile2
 int Board::getDistance(const Tile *tile1, const Tile *tile2) const {
 	QSet<const Tile *> visited;
 	visited.insert(tile1);
-	if (tile1->unit() == nullptr)
+	if (tile1->unit() == nullptr || tile2->unit() != nullptr)
 		return -1;
 	
 	const Player *player = tile1->unit()->owner();
@@ -327,7 +327,11 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
 			break;
 		
 		for (Tile *next : getNeighbours(current.first)) {
+			if (next->unit() != nullptr)
+				continue;
+			
 			int newCost = costSoFar[current.first] + next->weight();
+			
 			if (!costSoFar.contains(next) || newCost < costSoFar[next]) {
 				costSoFar[next] = newCost;
 				int priority = newCost + getAbsoluteDistance(next, dest);
@@ -339,7 +343,14 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
 	
 	Tile *current = dest;
 	QVector<Tile *> path;
+	
+	if (!cameFrom.contains(dest)) {
+		path.push_front(start);
+		return path;
+	}
+	
 	path.push_front(current);
+	
 	while (current != start) {
 		current = cameFrom[current];
 		path.push_back(current);
