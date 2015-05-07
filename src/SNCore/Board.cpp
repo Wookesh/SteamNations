@@ -327,7 +327,7 @@ QVector<Tile * > Board::pathToTile(Tile *start, Tile *dest) const
 			break;
 		
 		for (Tile *next : getNeighbours(current.first)) {
-			if (next->unit() != nullptr)
+			if (next->unit() != nullptr && next != dest)
 				continue;
 			
 			int newCost = costSoFar[current.first] + next->weight();
