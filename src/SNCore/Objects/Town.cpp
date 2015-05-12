@@ -1,9 +1,9 @@
 #include "Town.hpp"
 #include "Unit.hpp"
-#include "../Tile.hpp"
-#include "../Player.hpp"
-#include "../GameManager.hpp"
-#include "../Console.hpp"
+#include "SNCore/Tile.hpp"
+#include "SNCore/Player.hpp"
+#include "SNCore/GameManager.hpp"
+#include "SNCore/Console.hpp"
 #include <Board.hpp>
 #include <QDebug>
 #include <QtAlgorithms>
