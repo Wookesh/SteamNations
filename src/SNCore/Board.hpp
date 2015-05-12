@@ -36,7 +36,7 @@ public:
 	QVector<Tile *> getInRange(const Tile *tile, const int range) const;
 	QVector<QVector<Tile *> > getReachable(Tile *tile, const int range, const Player *player) const;
 	QVector<Tile *> pathToTile(Tile *start, Tile *dest) const;
-	QVector<Tile *> getSurroundings(Town *town, bool onlyFree=0) const;
+	QVector<Tile *> getSurroundings(Town *town, bool onlyFree = false) const;
 	
 	QPair<int, int> getUnitSpawnCenter(int number, int total) const;
 	
