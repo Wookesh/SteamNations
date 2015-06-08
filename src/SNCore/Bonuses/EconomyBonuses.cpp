@@ -7,7 +7,7 @@
  * Tier1
  */
 
-EconomyT1Bonus::EconomyT1Bonus() : Bonus (1, BonusType::Eco) {
+EconomyT1Bonus::EconomyT1Bonus() : Bonus (1, BonusType::Eco, SNCfg::ECO_TECH_DESCRIPTION_TIER1) {
 
 }
 
@@ -21,7 +21,7 @@ bool EconomyT1Bonus::apply(Player *player) {
  * Tier2
  */
 
-EconomyT2Bonus::EconomyT2Bonus() : Bonus (2, BonusType::Eco) {
+EconomyT2Bonus::EconomyT2Bonus() : Bonus (2, BonusType::Eco, SNCfg::ECO_TECH_DESCRIPTION_TIER2) {
 
 }
 
@@ -35,7 +35,7 @@ bool EconomyT2Bonus::apply(Player *player) {
  * Tier3
  */
 
-EconomyT3Bonus::EconomyT3Bonus() : Bonus (3, BonusType::Eco) {
+EconomyT3Bonus::EconomyT3Bonus() : Bonus (3, BonusType::Eco, SNCfg::ECO_TECH_DESCRIPTION_TIER3) {
 
 }
 

@@ -7,7 +7,7 @@
  * Tier1
  */
 
-DefenseT1Bonus::DefenseT1Bonus() : Bonus (1, BonusType::Def) {
+DefenseT1Bonus::DefenseT1Bonus() : Bonus (1, BonusType::Def, SNCfg::DEF_TECH_DESCRIPTION_TIER1) {
 
 }
 
@@ -26,7 +26,7 @@ bool DefenseT1Bonus::apply(Player *player) {
  * Tier2
  */
 
-DefenseT2Bonus::DefenseT2Bonus() : Bonus (2, BonusType::Def) {
+DefenseT2Bonus::DefenseT2Bonus() : Bonus (2, BonusType::Def, SNCfg::DEF_TECH_DESCRIPTION_TIER2) {
 
 }
 
@@ -46,7 +46,7 @@ bool DefenseT2Bonus::apply(Player *player) {
  * Tier3
  */
 
-DefenseT3Bonus::DefenseT3Bonus() : Bonus (3, BonusType::Def) {
+DefenseT3Bonus::DefenseT3Bonus() : Bonus (3, BonusType::Def, SNCfg::DEF_TECH_DESCRIPTION_TIER3) {
 
 }
 

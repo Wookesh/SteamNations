@@ -2,7 +2,7 @@
 #include <Player.hpp>
 #include <QDebug>
 
-Bonus::Bonus (SNTypes::tier tier, BonusType type) : tier_(tier), type_(type)
+Bonus::Bonus (SNTypes::tier tier, BonusType type, QString description) : tier_(tier), type_(type), description_(description)
 {
 
 }
@@ -34,4 +34,9 @@ bool Bonus::canApply(Player *player) const
 		!player->hasBonus(type_, tier_) &&
 		player->resource(Resource::Research) >= cost());
 	
+}
+
+QString Bonus::description() const
+{
+	return description_;
 }

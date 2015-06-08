@@ -1,6 +1,8 @@
 #ifndef SNCONFIG_HPP
 #define SNCONFIG_HPP
 
+#include <QString>
+
 #include "SNTypes.hpp"
 
 namespace SNCfg {
@@ -26,6 +28,19 @@ namespace SNCfg {
 	const SNTypes::amount TECHNOLOGY_COST_TIER1 = 250;
 	const SNTypes::amount TECHNOLOGY_COST_TIER2 = 500;
 	const SNTypes::amount TECHNOLOGY_COST_TIER3 = 1000;
+	
+	/*
+	 * Tech descriptions
+	 */
+	const QString WAR_TECH_DESCRIPTION_TIER1 = "Adds 10% more damage for all soldier units.";
+	const QString WAR_TECH_DESCRIPTION_TIER2 = "Increase movement range by 1 for all soldier units.";
+	const QString WAR_TECH_DESCRIPTION_TIER3 = "Increase attack range by 1 for all soldier units.";
+	const QString DEF_TECH_DESCRIPTION_TIER1 = "Speeds up town growth by 20%.";
+	const QString DEF_TECH_DESCRIPTION_TIER2 = "Increase counterattack range by 1 for all soldier units.";
+	const QString DEF_TECH_DESCRIPTION_TIER3 = "Soldiers get extra 10% damage per each AP left while defending.";
+	const QString ECO_TECH_DESCRIPTION_TIER1 = "Increase resource income by 10%.";
+	const QString ECO_TECH_DESCRIPTION_TIER2 = "Increase Settler movement range by 1.";
+	const QString ECO_TECH_DESCRIPTION_TIER3 = "Gold tiles generate double amount.";
 }
 
 #endif
