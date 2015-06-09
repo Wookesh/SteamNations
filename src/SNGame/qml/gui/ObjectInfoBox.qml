@@ -10,6 +10,7 @@ SNImage {
 	property var name  : "undefined"
 	property var nameBoxHeight : 180 * root.globalScale.height
 	property var boxWidth: 220 * root.globalScale.width
+	property var labelSize:20
 	
 	function unitChanged() {
 		healthBar.visible = true;
@@ -82,40 +83,75 @@ SNImage {
 	
 	Column {
 		id: iconColumn
-		anchors.top: objectInfoBox.top
-		anchors.topMargin: objectInfoBox.nameBoxHeight
-		anchors.right: objectInfoBox.right
-		anchors.rightMargin: objectInfoBox.boxWidth / 2
+// 		anchors.top: objectInfoBox.top
+// 		anchors.topMargin: objectInfoBox.nameBoxHeight
+// 		anchors.left: objectInfoBox.left+objectInfoBox.width-objectInfoBox.boxWidth
+// 		anchors.leftMargin: 0
 		
+		x:objectInfoBox.width*1.05-objectInfoBox.boxWidth
+		y:nameBoxHeight
 		MenuButton {
 			id:settle
 			source:"qrc:///unit/Town";
 			onClicked: scene.makeAction(0)
 		}
+		
 
-		
-		MenuButton {
+		Row{
 			id:infantry
-			source:"qrc:///unit/Infantry";
-			onClicked:scene.makeAction(0);
+			MenuButton {
+				source:"qrc:///unit/Infantry";
+				onClicked:scene.makeAction(0);
+				Label {
+					text:"25"
+					y:parent.height-this.height
+					font.family: snFont.name
+					font.pixelSize: labelSize
+					color: "white"
+				}
+			}
 		}
-		
-		MenuButton {
+		Row{
 			id:heavy
-			source:"qrc:///unit/Heavy";
-			onClicked:scene.makeAction(1);
+			MenuButton {
+				source:"qrc:///unit/Heavy";
+				onClicked:scene.makeAction(1);
+				Label {
+					text:"50"
+					y:parent.height-this.height
+					font.family: snFont.name
+					font.pixelSize: labelSize
+					color: "white"
+				}
+			}
 		}
-		
-		MenuButton {
+		Row{
 			id:artillery
-			source:"qrc:///unit/Artillery";
-			onClicked:scene.makeAction(2);
+			MenuButton {
+				source:"qrc:///unit/Artillery";
+				onClicked:scene.makeAction(2);
+				Label {
+					text:"100"
+					y:parent.height-this.height
+					font.family: snFont.name
+					font.pixelSize: labelSize
+					color: "white"
+				}
+			}
 		}
-			
-		MenuButton {
+		Row{
 			id:settler
-			source:"qrc:///unit/Settler";
-			onClicked:scene.makeAction(3);
+			MenuButton {
+				source:"qrc:///unit/Settler";
+				onClicked:scene.makeAction(3);
+				Label {
+					text:"200"
+					y:parent.height-this.height
+					font.family: snFont.name
+					font.pixelSize: labelSize
+					color: "white"
+				}
+			}
 		}
 	}
 	
