@@ -12,6 +12,9 @@ SNImage {
 	property var boxWidth: 220 * root.globalScale.width
 	property var imageSizeH: 80 * root.globalScale.height
 	property var imageSizeW: 80 * root.globalScale.width
+	property var labelWidth:imageSizeW*3/2
+	property var startingWidth: -(techWindow.width - 3 * imageSizeW) / 8
+	property var labelDist:2
 	property var applied:"green"
 	property var affordable: "yellow"
 	property var unaffordable:"red"
@@ -101,7 +104,7 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSizeW) / 4
+		x: startingWidth + (parent.width - 3 * imageSizeW) / 4
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
@@ -116,6 +119,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 2*(parent.height - 3 * imageSizeH) / 4
+		text: snBonusManager.desc(0)
+	}
 	
 	Rectangle{
 		id:defence2
@@ -124,7 +134,7 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		x: startingWidth + 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
@@ -139,6 +149,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		y: 2*(parent.height - 3 * imageSizeH) / 4
+		text: snBonusManager.desc(1)
+	}
 	
 	Rectangle{
 		id:defence3
@@ -147,7 +164,7 @@ SNImage {
 		color:"#2770C3"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		x: startingWidth + 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		MenuButton {
 			source:"qrc:///icon/Damage";
@@ -162,6 +179,14 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
+		y: 2*(parent.height - 3 * imageSizeH) / 4
+		text: snBonusManager.desc(2)
+	}
+	
 	Rectangle{
 		id:warfare1
 		width:imageSizeW 
@@ -169,7 +194,7 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSizeW) / 4
+		x: startingWidth + (parent.width - 3 * imageSizeW) / 4
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
@@ -184,6 +209,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
+		text: snBonusManager.desc(3)
+	}
 	
 	Rectangle{
 		id:warfare2
@@ -192,7 +224,7 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		x: startingWidth + 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
@@ -207,6 +239,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
+		text: snBonusManager.desc(4)
+	}
 	
 	Rectangle{
 		id:warfare3
@@ -215,7 +254,7 @@ SNImage {
 		color:"#aa2525"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		x: startingWidth + 3*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		MenuButton {
 			source:"qrc:///icon/Attack";
@@ -230,6 +269,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
+		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
+		text: snBonusManager.desc(5)
+	}
 	
 	Rectangle{
 		id:economy1
@@ -238,7 +284,7 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: (parent.width - 3 * imageSizeW) / 4
+		x: startingWidth + (parent.width - 3 * imageSizeW) / 4
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
@@ -253,6 +299,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
+		text: snBonusManager.desc(6)
+	}
 	
 	Rectangle{
 		id:economy2
@@ -261,7 +314,7 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
+		x: startingWidth + 2*(parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
@@ -276,6 +329,13 @@ SNImage {
 			}
 		}
 	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
+		text: snBonusManager.desc(7)
+	}
 	
 	Rectangle{
 		id:economy3
@@ -284,7 +344,7 @@ SNImage {
 		color:"#2ECA48"
 		border.color:unaffordable
 		border.width:5
-		x: 3*(parent.width - 3 * imageSizeW) / 4 +2*imageSizeW
+		x: startingWidth + 3*(parent.width - 3 * imageSizeW) / 4 +2*imageSizeW
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		MenuButton {
 			source:"qrc:///icon/Population";
@@ -298,6 +358,13 @@ SNImage {
 				color: "white"
 			}
 		}
+	}
+	Label{
+        wrapMode: Text.WordWrap
+		width:labelWidth
+		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
+		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
+		text: snBonusManager.desc(8)
 	}
 	
 	

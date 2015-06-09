@@ -135,4 +135,8 @@ void BonusManager::reloadBonuses()
 	emit bonusesUpdated();
 }
 
+QString BonusManager::desc(int bonus)
+{
+	return bonuses_[bonus]->description();
+}
 

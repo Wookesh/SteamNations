@@ -7,6 +7,7 @@
 #include "WarfareBonuses.hpp"
 #include "DefenseBonuses.hpp"
 #include "EconomyBonuses.hpp"
+#include <QString>
 
 class BonusManager : public QObject {
 Q_OBJECT
@@ -14,6 +15,7 @@ public:
 	Q_INVOKABLE void tryToApplyBonus(int bonus);
 	Q_INVOKABLE bool isApplied(int bonus);
 	Q_INVOKABLE bool isAffordable(int bonus);
+	Q_INVOKABLE QString desc(int bonus);
 	static BonusManager *get();
 	static void init();
 	static void clean();
