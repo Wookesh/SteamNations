@@ -130,7 +130,7 @@ ActionType Soldier::getActionType(Tile *tile)
 {
 	if (tile->unit())
 		return ActionType::Attack;
-	if (tile->town() && pType() == PrototypeType::Infantry)
+	if (tile->town())
 		return ActionType::Capture;
 	return ActionType::Move;
 }

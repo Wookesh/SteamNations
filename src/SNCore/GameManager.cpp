@@ -394,6 +394,12 @@ Action *GameManager::getUnitAction(Unit *unit, ActionType action, Tile *tile)
 	if (action == ActionType::Capture) {
 		if (unit->pType() == PrototypeType::Infantry && tile->town())
 			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
+		
+		if (unit->pType() == PrototypeType::Heavy && tile->town())
+			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
+		
+		if (unit->pType() == PrototypeType::Artillery && tile->town())
+			return new CaptureAction(static_cast<Soldier *>(unit), tile->town());
 		return nullptr;
 	}
 	if (action == ActionType::Attack) {

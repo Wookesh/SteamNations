@@ -76,7 +76,7 @@ Tile *Town::chooseBestTile(QVector< Tile * > tiles) {
 	int value = -1;
 	
 	for (Tile *tile : tiles) {
-		int weight = qMax((int) tile->resourceProduction() - (int) GameManager::get()->board()->getAbsoluteDistance(tile, tile_), 0);
+		int weight = qMax((int) tile->resourceProduction() - 2 * (int) GameManager::get()->board()->getAbsoluteDistance(tile, tile_), 0);
 		
 		if (weight > value) {
 			value = weight;

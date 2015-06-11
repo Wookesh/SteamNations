@@ -12,14 +12,14 @@ WarfareT1Bonus::WarfareT1Bonus() : Bonus (1, BonusType::War, SNCfg::WAR_TECH_DES
 }
 
 bool WarfareT1Bonus::apply(Player *player) {
-	if (!canApply(player))
+/*	if (!canApply(player))
 		return false;
 	
 	for (Prototype *element : player->soldierPrototypes()) {
 		SoldierPrototype *prototype = dynamic_cast<SoldierPrototype *>(element);
 		prototype->addMultiplier(0.1f);
 	}
-	
+*/	
 	return true;
 }
 

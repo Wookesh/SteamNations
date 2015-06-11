@@ -125,6 +125,8 @@ namespace AI {
 	{
 		SNTypes::heur length = (GameManager::get()->board()->pathToTile(soldier->tile(), town->tile())).length();
 		int sigma = getSigma(soldier->tile(), town->tile(), soldier->owner(), town->owner());
+		if (town->owner()->capital() == town)
+			return -length + sigma + capitalCapturePriority;
 		return -length + sigma + townCapturePriority;
 	}
 
