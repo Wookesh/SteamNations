@@ -12,7 +12,8 @@
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
 	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
-	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr)
+	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr),
+	baseFood_(3)
 {
 	owner->obtainTown(this);
 	
@@ -94,6 +95,7 @@ void Town::updateBefore()
 		if (tile->resource() != Resource::None) {
 			tile->gatherResource(this);
 		}
+		food_ += baseFood_;
 	}
 		
 	if (food_ > foodGoal_) {

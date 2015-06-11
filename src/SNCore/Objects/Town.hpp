@@ -52,6 +52,7 @@ private:
 	QVector<Tile *> townTiles_;
 	SNTypes::population population_;
 	SNTypes::amount food_;
+	SNTypes::amount baseFood_;
 	SNTypes::amount foodGoal_;
 	bool hasBuiltThisTurn_;
 	bool capital_;
