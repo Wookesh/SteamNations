@@ -125,6 +125,7 @@ SNImage {
 		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		text: snBonusManager.desc(0)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -155,6 +156,7 @@ SNImage {
 		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		text: snBonusManager.desc(1)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -185,6 +187,7 @@ SNImage {
 		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		text: snBonusManager.desc(2)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -215,6 +218,7 @@ SNImage {
 		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		text: snBonusManager.desc(3)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -245,6 +249,7 @@ SNImage {
 		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		text: snBonusManager.desc(4)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -275,6 +280,7 @@ SNImage {
 		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
 		y: 3*(parent.height - 3 * imageSizeH) / 4 + imageSizeH/2
 		text: snBonusManager.desc(5)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -305,6 +311,7 @@ SNImage {
 		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		text: snBonusManager.desc(6)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -335,6 +342,7 @@ SNImage {
 		x: startingWidth + labelDist  + 2*(parent.width - 3 * imageSizeW) / 4 + 2*imageSizeW
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		text: snBonusManager.desc(7)
+        font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -365,6 +373,7 @@ SNImage {
 		x: startingWidth + labelDist  + 3*(parent.width - 3 * imageSizeW) / 4 + 3*imageSizeW
 		y: 4*(parent.height - 3 * imageSizeH) / 4 + imageSizeH
 		text: snBonusManager.desc(8)
+        font.pixelSize: 11
 	}
 	
 	

@@ -56,18 +56,22 @@ Rectangle {
 		PlayerDataEntry {
 			id: p1
 			name: "Player1"
+			color: "red"
 		}
 		PlayerDataEntry {
 			id: p2
 			name: "Player2"
+			color: "green"
 		}
 		PlayerDataEntry {
 			id: p3
 			name: "Player3"
+			color: "blue"
 		}
 		PlayerDataEntry {
 			id: p4
 			name: "Player4"
+			color: "yellow"
 		}
 		Row {
 			spacing: 20

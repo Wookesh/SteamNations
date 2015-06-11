@@ -250,6 +250,7 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	playerIterator_ = --players_.end();
 	setNextPlayer();
 	currentPlayer()->performTurn();
+    startGame();
 	return true;
 }
 
@@ -417,7 +418,7 @@ void GameManager::check(const QString playerName)
 
 void GameManager::startGame() 
 {
-
+	updateResources();
 }
 
 void GameManager::endGame() 
