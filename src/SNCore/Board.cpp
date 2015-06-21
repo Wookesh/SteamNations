@@ -16,7 +16,7 @@ Board::Board(unsigned int width, unsigned int height, unsigned int seed): height
 {
 	for (unsigned int i = 0; i < height_; ++i)
 		for (unsigned int j = 0; j < width_; ++j)
-			tiles_.push_back(new Tile(j, i, Resource::None, qrand() % 5 + 3));
+			tiles_.push_back(new Tile(j, i, Resource::None, qrand() % 10 + 3));
 		
 	qsrand(seed);
 	QSet<Tile *> visited;

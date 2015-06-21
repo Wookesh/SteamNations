@@ -22,6 +22,7 @@ namespace AI {
 	const int checkingRange = 7;
 	const int sigmaCheckingRange = 3; //sigma = nasze - ich
 	const int townCapturePriority = 4;
+	const int capitalCapturePriority = 10;
 	const int unitAttackPriority = 6;
 	const int wanderPriority = 0;
 	const int turnWithoutSettleMax = 4;

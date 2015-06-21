@@ -4,10 +4,12 @@
 #include "Objects/Town.hpp"
 #include "Objects/Unit.hpp"
 #include "Tile.hpp"
+#include "Bonuses/Bonuses.hpp"
 #include "Config.hpp"
 #include "GameManager.hpp"
 #include "Board.hpp"
 #include "AI/AI.hpp"
+#include <iostream>
 
 #include <QtCore>
 
@@ -26,7 +28,7 @@ Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(nam
 	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
 	
 	for (Resource r : Resource::labels())
-		resources_[r] = 0;
+		resources_[r] = 100;
 	
 	bonuses_ = {
 		{BonusType::War, {{1, false}, {2, false}, {3, false}}},
@@ -221,8 +223,8 @@ bool Player::hasBonus(BonusType type, SNTypes::tier tier) const
 
 SNTypes::tier Player::bonusLevel(BonusType bonus)
 {
-	for (SNTypes::tier tier = 0; tier < 3; ++tier) {
-		if (hasBonus(bonus, tier + 1))
+	for (SNTypes::tier tier = 3; tier >= 1; --tier) {
+		if (hasBonus(bonus, tier))
 			return tier;
 	}
 	return 0;
@@ -355,11 +357,18 @@ void ComputerPlayer::performTurn()
 	/* ------------Technology--------------*/
 	
 	static BonusType techPath = BonusType::War;
-	if (GameManager::get()->currentTurn() % 5 == 0)
-		techPath = AI::whichTechnologyPath(this);
 	
 	SNTypes::tier tier = bonusLevel(techPath) + 1;
-	applyBonus(techPath, tier);
+	if (GameManager::get()->currentTurn() % 5 == 0 || tier == 4)
+		techPath = AI::whichTechnologyPath(this);
+	
+	tier = bonusLevel(techPath) + 1;
+	std::cout << "tier: " << tier << "\n";
+	if (BonusManager::get()->canApply(this, techPath, tier))
+	{
+		BonusManager::get()->applyBonus(this, techPath, tier);
+		std::cout << "Applied " << tier << " some-tech " << " bonus\n";
+	}
 	
 	/* ------------Units Move--------------*/
 	
@@ -402,7 +411,12 @@ void ComputerPlayer::performTurn()
 			qDebug() << "ERROR";
 	}
 	
-	GameManager::get()->endTurn();
+	std::cout << "resources: \n";
+	std::cout << "gold: " << this->resource(Resource::Gold);
+	std::cout << " research: " << this->resource(Resource::Research) << "\n";
+	
+	
+	return GameManager::get()->endTurn();
 }
 
 ComputerPlayer::ComputerPlayer (const QString& name, QColor color) : Player (name, color), playerToAttack_(nullptr), lastTimeSettlerBought_(0) 
