@@ -28,7 +28,7 @@ Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(nam
 	prototypes_[PrototypeType::Settler] = new SettlerPrototype();
 	
 	for (Resource r : Resource::labels())
-		resources_[r] = 100;
+		resources_[r] = 200;
 	
 	bonuses_ = {
 		{BonusType::War, {{1, false}, {2, false}, {3, false}}},

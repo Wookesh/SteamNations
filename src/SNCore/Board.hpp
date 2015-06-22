@@ -38,7 +38,7 @@ public:
 	QVector<Tile *> pathToTile(Tile *start, Tile *dest) const;
 	QVector<Tile *> getSurroundings(Town *town, bool onlyFree = false) const;
 	
-	QPair<int, int> getUnitSpawnCenter(int number, int total) const;
+	QVector<Tile *> getSpawnPoints(int total) const;
 	
 	unsigned int width() const;
 	unsigned int height() const;

@@ -18,6 +18,7 @@ SNImage {
 	property var applied:"green"
 	property var affordable: "yellow"
 	property var unaffordable:"red"
+	property var tech_cost_size:22
 	
 	visible: false
 	source: "qrc:///techWindow"
@@ -110,11 +111,11 @@ SNImage {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(0);
 			Label {
-				text:"1"
+				text:"250"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -125,7 +126,7 @@ SNImage {
 		x: startingWidth + labelDist  + (parent.width - 3 * imageSizeW) / 4 + imageSizeW
 		y: 2*(parent.height - 3 * imageSizeH) / 4
 		text: snBonusManager.desc(0)
-        font.pixelSize: 11
+		font.pixelSize: 11
 	}
 	
 	Rectangle{
@@ -141,11 +142,11 @@ SNImage {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(1);
 			Label {
-				text:"2"
+				text:"500"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -172,11 +173,11 @@ SNImage {
 			source:"qrc:///icon/Damage";
 			onClicked:snBonusManager.tryToApplyBonus(2);
 			Label {
-				text:"3"
+				text:"1000"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -203,11 +204,11 @@ SNImage {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(3);
 			Label {
-				text:"1"
+				text:"250"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -234,11 +235,11 @@ SNImage {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(4);
 			Label {
-				text:"2"
+				text:"500"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -265,11 +266,11 @@ SNImage {
 			source:"qrc:///icon/Attack";
 			onClicked:snBonusManager.tryToApplyBonus(5);
 			Label {
-				text:"3"
+				text:"1000"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -296,11 +297,11 @@ SNImage {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(6);
 			Label {
-				text:"1"
+				text:"250"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -327,11 +328,11 @@ SNImage {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(7);
 			Label {
-				text:"2"
+				text:"500"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}
@@ -358,11 +359,11 @@ SNImage {
 			source:"qrc:///icon/Population";
 			onClicked:snBonusManager.tryToApplyBonus(8);
 			Label {
-				text:"3"
+				text:"1000"
 				x:parent.width-this.width
 				y:parent.height-this.height
 				font.family: snFont.name
-				font.pixelSize: 32
+				font.pixelSize: tech_cost_size
 				color: "white"
 			}
 		}

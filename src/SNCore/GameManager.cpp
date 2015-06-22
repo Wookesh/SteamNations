@@ -185,6 +185,7 @@ bool GameManager::load(const QString &saveFile)
 		if (!loadObjects(in)) return false;
 		
 		gameSave.close();
+		emit updateResources();
 		return true;
 	}
 	return false;
@@ -228,20 +229,20 @@ bool GameManager::useSettings(int width, int height, int playersCount, const QSt
 	
 	//CreatePlayers
 	int no = 0;
+	QVector<Tile *> spawnPoints = board_->getSpawnPoints(playersCount);
+	
 	for (QString playerName : playerNames) {
 		Player *player;
 		if(computers[no])
 			player = new ComputerPlayer(playerName, playerColors[no].value<QColor>());
 		else
 			player = new HumanPlayer(playerName, playerColors[no].value<QColor>());
+		
 		players_.push_back(player);
 		board_->addPlayerVisionToTiles(player);
-		QPair<int, int> spawnCenter = board_->getUnitSpawnCenter(no, playersCount);
 		
-		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Settler).perform();
-		
-		spawnCenter.second += 1;
-		SpawnUnitAction(player, board_->getTile(spawnCenter), PrototypeType::Infantry).perform();
+		SpawnUnitAction(player, spawnPoints[no], PrototypeType::Settler).perform();
+		SpawnUnitAction(player, board_->getNeighbours(spawnPoints[no])[0], PrototypeType::Infantry).perform();
 		
 		player->updateBefore();
 		++no;

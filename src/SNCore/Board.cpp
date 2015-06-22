@@ -395,14 +395,32 @@ QVector<Tile *> Board::getSurroundings(Town *town, bool onlyFree) const
 	return ret;
 }
 
-QPair<int, int> Board::getUnitSpawnCenter(int number, int total) const
+QVector<Tile *> Board::getSpawnPoints(int total) const
 {
-	switch (total) {
-		case 2: return qMakePair(width_ / 4 * ((number % 2) * 2 + 1), height_ / 2);
-		case 3: return qMakePair(width_ / 4 * ((2 * number) % 3 + 1), height_ / 4 * ((number / 2) * 2 + 1));
-		case 4: return qMakePair(width_ / 4 * ((number % 2) * 2 + 1), height_ / 4 * ((number / 2) * 2 + 1));
-		default: return qMakePair(0, 0);
+	QVector<Tile *> ret;
+	
+	for (int i = 0; i < total; ++i) {
+		Tile *tile = getTile(qrand() % width_, qrand() % height_);
+		
+		/*
+		 * Possible infinite loop if there's too many players and too small map
+		 * Should never occur for our configuration (minimum map size 20x20 and
+		 * maximum of 4 players
+		 */
+		bool check = false;
+		for (Tile *t : ret) {
+			if (getAbsoluteDistance(tile, t) < 5) {
+				--i;
+				check = true;
+				break;
+			}
+		}
+		
+		if (!check)
+			ret.append(tile);
 	}
+	
+	return ret;
 }
 
 void Board::updateBefore() 

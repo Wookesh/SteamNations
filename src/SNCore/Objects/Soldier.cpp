@@ -118,6 +118,7 @@ void Soldier::getAttacked(Soldier *soldier)
 	SNTypes::dmg finalDmg = qRound(attackMultiplier * initialDmg);
 	
 	bool counterAttak = GameManager::get()->board()->getAbsoluteDistance(tile_, soldier->tile_) <= ctrAtkRange();
+
 	if (counterAttak) {
 		SNTypes::dmg counterAttackDmg = damage();
 		soldier->removeHealth(counterAttackDmg);
