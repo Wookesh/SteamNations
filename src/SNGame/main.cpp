@@ -43,8 +43,7 @@ int main(int argc, char *argv[])
 
 	view.setSource(QUrl("qrc:/qml/main.qml"));
 	
-	//view.showFullScreen();
-	view.showMaximized();
+	view.showFullScreen();
 	return app.exec();
 }
 
