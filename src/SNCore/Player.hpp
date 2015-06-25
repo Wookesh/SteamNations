@@ -78,6 +78,12 @@ public:
 	
 	QVector<Unit *> units() const;
 	QVector<Town *> towns() const;
+	
+	float bonusIncome();
+	void setBonusIncome(float);
+	
+	float bonusGold();
+	void setBonusGold(float);
 protected:
 	Town *capital_;
 	QString name_;
@@ -90,6 +96,8 @@ protected:
 	QHash<BonusType, QMap<SNTypes::tier, bool> > bonuses_;
 	QHash<Resource, SNTypes::amount> buildingCost_;
 	QHash<Resource, SNTypes::amount> lastIncome_;
+	float bonusIncome_;
+	float bonusGold_;
 };
 
 class HumanPlayer : public Player {

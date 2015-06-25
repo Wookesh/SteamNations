@@ -137,3 +137,12 @@ ActionType Soldier::getActionType(Tile *tile)
 }
 
 
+void Soldier::updateBefore() {
+	actionPointsLeft_ = actionPoints();
+	if (owner_->hasBonus(BonusType::Def, 2) &&
+		health() > healthLeft_ &&
+		tile()->localTown() != nullptr &&
+		tile()->localTown()->owner() == owner_) {
+			++healthLeft_;
+	}
+}

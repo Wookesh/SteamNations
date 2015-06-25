@@ -33,11 +33,13 @@ namespace SNCfg {
 	 * Tech descriptions
 	 */
 	const QString WAR_TECH_DESCRIPTION_TIER1 = "Adds 10% more damage for all soldiers.";
-	const QString WAR_TECH_DESCRIPTION_TIER2 = "Increase movement range by 1 for all soldiers.";
-	const QString WAR_TECH_DESCRIPTION_TIER3 = "Increase attack range by 1 for all soldiers.";
+	const QString WAR_TECH_DESCRIPTION_TIER2 = "Increase attack range by 1 for all soldiers.";
+	const QString WAR_TECH_DESCRIPTION_TIER3 = "Increase movement range by 1 for all soldiers.";
+	
 	const QString DEF_TECH_DESCRIPTION_TIER1 = "Increase HP by 10% for all soldiers.";
-	const QString DEF_TECH_DESCRIPTION_TIER2 = "Increase counterattack range by 1 for all soldiers.";
-	const QString DEF_TECH_DESCRIPTION_TIER3 = "Soldiers get extra 20% damage while defending.";
+	const QString DEF_TECH_DESCRIPTION_TIER2 = "Soldiers regenerate HP in friendly territory.";
+	const QString DEF_TECH_DESCRIPTION_TIER3 = "Artillery gains ability to counterattack.";
+	
 	const QString ECO_TECH_DESCRIPTION_TIER1 = "Increase resource income by 10%.";
 	const QString ECO_TECH_DESCRIPTION_TIER2 = "Increase Settler movement range by 1.";
 	const QString ECO_TECH_DESCRIPTION_TIER3 = "Gold tiles generate double amount.";

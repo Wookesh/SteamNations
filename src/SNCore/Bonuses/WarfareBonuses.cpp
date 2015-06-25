@@ -58,7 +58,6 @@ bool WarfareT3Bonus::apply(Player *player) {
 	for (Prototype *prototype : player->soldierPrototypes()) {
 		prototype->setActionPoints(prototype->actionPoints() + 1);
 	}
-
 	
 	return true;
 }

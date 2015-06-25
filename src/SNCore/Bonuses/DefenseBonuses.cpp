@@ -51,7 +51,11 @@ DefenseT3Bonus::DefenseT3Bonus() : Bonus (3, BonusType::Def, SNCfg::DEF_TECH_DES
 }
 
 bool DefenseT3Bonus::apply(Player *player) {
-	// TODO
+	if (!canApply(player))
+		return false;
+	
+	SoldierPrototype *prototype = dynamic_cast<SoldierPrototype *>(player->prototype(PrototypeType::Artillery));
+	prototype->setCtrAtkRange(prototype->ctrAtkRange() + prototype->attackRange());
 	
 	return true;
 }

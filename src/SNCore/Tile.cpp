@@ -169,10 +169,15 @@ int Tile::takeResources()
 
 void Tile::gatherResource(Town *town) 
 {
+	float incomeMultiplier = 1. + town->owner()->bonusIncome();
+	float bonusGold = 1. + town->owner()->bonusGold();
+	
 	if (resource_ == Resource::Food) {
-		town->addFood(takeResources());
-	} else {
-		town->owner()->addResource(resource_, takeResources());
+		town->addFood(incomeMultiplier * takeResources());
+	} else if (resource_ == Resource::Research) {
+		town->owner()->addResource(resource_, incomeMultiplier * takeResources());
+	} else if (resource_ == Resource::Gold) {
+		town->owner()->addResource(resource_, bonusGold * incomeMultiplier * takeResources());
 	}
 }
 

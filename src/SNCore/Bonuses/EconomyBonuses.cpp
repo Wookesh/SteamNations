@@ -12,7 +12,10 @@ EconomyT1Bonus::EconomyT1Bonus() : Bonus (1, BonusType::Eco, SNCfg::ECO_TECH_DES
 }
 
 bool EconomyT1Bonus::apply(Player *player) {
-	// TODO
+	if (!canApply(player))
+		return false;
+	
+	player->setBonusIncome(player->bonusIncome() + 0.1);
 	
 	return true;
 }
@@ -26,7 +29,11 @@ EconomyT2Bonus::EconomyT2Bonus() : Bonus (2, BonusType::Eco, SNCfg::ECO_TECH_DES
 }
 
 bool EconomyT2Bonus::apply(Player *player) {
-	// TODO
+	if (!canApply(player))
+		return false;
+	
+	Prototype *prototype = player->prototype(PrototypeType::Settler);
+	prototype->setActionPoints(prototype->actionPoints() + 1);
 	
 	return true;
 }
@@ -40,7 +47,10 @@ EconomyT3Bonus::EconomyT3Bonus() : Bonus (3, BonusType::Eco, SNCfg::ECO_TECH_DES
 }
 
 bool EconomyT3Bonus::apply(Player *player) {
-	// TODO
+	if (!canApply(player))
+		return false;
+	
+	player->setBonusGold(player->bonusGold() + 1.);
 	
 	return true;
 }

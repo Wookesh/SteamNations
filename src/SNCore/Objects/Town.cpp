@@ -11,9 +11,9 @@
 #define GMlog() GameManager::get()->console()->in()
 
 Town::Town(Tile *tile, Player *owner, const QString &name, QObject *parent) :
-	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),  
-	food_(0), hasBuiltThisTurn_(0), capital_(false), capitalPlayer_(nullptr),
-	baseFood_(3)
+	Object(tile, ObjectType::Town, owner, parent), name_(name), population_(1),
+	food_(0), baseFood_(3), hasBuiltThisTurn_(0), capital_(false), 
+	capitalPlayer_(nullptr)
 {
 	owner->obtainTown(this);
 	
@@ -95,7 +95,7 @@ void Town::updateBefore()
 		if (tile->resource() != Resource::None) {
 			tile->gatherResource(this);
 		}
-		food_ += baseFood_;
+		food_ += (1. + owner_->bonusIncome()) * baseFood_;
 	}
 		
 	if (food_ > foodGoal_) {

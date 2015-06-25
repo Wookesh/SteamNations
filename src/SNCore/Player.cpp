@@ -19,7 +19,8 @@ const QHash<Resource, SNTypes::amount> Player::BASE_BUILDING_COST = {
 	{Resource::Food, SNCfg::BUILDING_FOOD_COST}
 };
 
-Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(name), color_(color)
+Player::Player(const QString &name, QColor color) : capital_(nullptr), name_(name), color_(color), 
+	bonusIncome_(0.), bonusGold_(0.)
 {
 	prototypes_[PrototypeType::Infantry] = new SoldierPrototype(PrototypeType::Infantry);
 	prototypes_[PrototypeType::Heavy] = new SoldierPrototype(PrototypeType::Heavy);
@@ -327,6 +328,21 @@ QVector<Town *> Player::towns() const
 	return towns_;
 }
 
+float Player::bonusIncome() {
+	return bonusIncome_;
+}
+
+void Player::setBonusIncome (float val) {
+	bonusIncome_ = val;
+}
+
+float Player::bonusGold() {
+	return bonusGold_;
+}
+
+void Player::setBonusGold (float val) {
+	bonusGold_ = val;
+}
 
 HumanPlayer::HumanPlayer(const QString &name, QColor color) : Player(name, color) 
 {

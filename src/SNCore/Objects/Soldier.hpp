@@ -26,6 +26,7 @@ public:
 	SNTypes::dmg damage() const;
 	
 	virtual void getAttacked(Soldier *) override;
+	virtual void updateBefore() override;
 protected:
 	virtual ActionType getActionType(Tile *tile) override;
 };
